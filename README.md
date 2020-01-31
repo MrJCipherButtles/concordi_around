@@ -14,6 +14,7 @@ ConcordiaAround is a campus guide mobile application for Concordia University
 8. Divesh Patel, 40027989
 9. Mohammad Naimur Rashid, 40027867
 10. Chester Yu, 27769504
+11. Mehrdad Ahmadi, 40026720
 
 ## Getting Started
 
