@@ -34,4 +34,5 @@ samples, guidance on mobile development, and a full API reference.
 ### Prototypes
 
 - Prototype designed by Garo Balouzian - [Link here](https://www.figma.com/file/XzHOtigWV0hs67zmfdpPtm/Concordia-Navigation-App?node-id=0%3A1)
+- Prototype designed by Seyedhoessein Noorbakhsh - [Link here](https://www.figma.com/file/WlTDgUjK4guinFq5b1VtfV/ConcordiAround?node-id=0%3A1)
 
