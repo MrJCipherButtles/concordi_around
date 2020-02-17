@@ -55,10 +55,9 @@ jobs:
 
 before_script:
   # try to avoid downloading flutter
-  - if [ ! -f $HOME/flutter/bin/flutter ] ; then git clone https://github.com/flutter/flutter.git -b beta ; fi
+  - git clone https://github.com/flutter/flutter.git -b beta;
   - ./flutter/bin/flutter doctor
 
 cache:
   directories:
-    - flutter
     - $HOME/shared/.pub-cache
