@@ -5,24 +5,26 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 void main() => runApp(MyApp());
 
-class MyApp extends StatelessWidget {
+// class MyApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       title: 'Flutter Google Maps Demo',
+//       home: MapSample(),
+//     );
+//   }
+// }
+
+class MyApp extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Google Maps Demo',
-      home: MapSample(),
-    );
-  }
+  MapSampleState createState() => MapSampleState();
 }
 
-class MapSample extends StatefulWidget {
-  @override
-  State<MapSample> createState() => MapSampleState();
-}
+class MapSampleState extends State<MyApp> {
 
-class MapSampleState extends State<MapSample> {
-  Completer<GoogleMapController> _controller = Completer();
+  GoogleMapController mapController;
 
+<<<<<<< refs/remotes/origin/master
   static final CameraPosition _kGooglePlex = CameraPosition(
 <<<<<<< refs/remotes/origin/master
     target: LatLng(45.4973, -122.085749655962),
@@ -75,5 +77,31 @@ class MapSampleState extends State<MapSample> {
 =======
 
 
+=======
+  LatLng _center = LatLng(45.49739, -73.57874);
+
+  void _onMapCreated(GoogleMapController controller) {
+    mapController = controller;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Outdoor View'),
+          backgroundColor: Colors.green[700],
+        ),
+        body: GoogleMap(
+          onMapCreated: _onMapCreated,
+          initialCameraPosition: CameraPosition(
+            target: _center,
+            zoom: 15.0,
+          ),
+        ),
+      ),
+    );
+  }
+>>>>>>> Fixed zoom issue for maps
 }
 >>>>>>> Add GoogleMaps Flutter SDK to both Android and iOS (#49)
