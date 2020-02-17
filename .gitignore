@@ -30,6 +30,10 @@
 .pub/
 /build/
 
+#iOS related
+ios/Flutter/*.xcconfig
+ios/Podfile
+
 # Web related
 lib/generated_plugin_registrant.dart
 
