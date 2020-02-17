@@ -14,7 +14,6 @@ ConcordiaAround is a campus guide mobile application for Concordia University
 8. Divesh Patel, 40027989
 9. Mohammad Naimur Rashid, 40027867
 10. Chester Yu, 27769504
-11. Mehrdad Ahmadi, 40026720
 
 ## Getting Started
 
@@ -28,11 +27,3 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter, view our
 [online documentation](https://flutter.dev/docs), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
-
-## User Interface Design
-
-### Prototypes
-
-- Prototype designed by Garo Balouzian - [Link here](https://www.figma.com/file/XzHOtigWV0hs67zmfdpPtm/Concordia-Navigation-App?node-id=0%3A1)
-- Prototype designed by Seyedhoessein Noorbakhsh - [Link here](https://www.figma.com/file/WlTDgUjK4guinFq5b1VtfV/ConcordiAround?node-id=0%3A1)
-- Prototype designed by Chester Yu - [Link here](https://www.figma.com/file/p7wmZIPNqhUBFpw6sPbtKe/Mockup-v0.1?node-id=0%3A9)

@@ -1,5 +1,8 @@
+<<<<<<< refs/remotes/origin/master
 #include "Pods/Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"
 <<<<<<< refs/remotes/origin/master
+=======
+>>>>>>> Revert "Initial commit"
 #include "Generated.xcconfig"
 =======
 #include "Generated.xcconfig"
