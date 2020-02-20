@@ -96,13 +96,16 @@ List<LatLng> getPath(){
 
 points = points.toSet().toList();
 var distance = (a, b) {
-  return pow(a['x'] - b['x'], 2) + pow(a['y'] - b['y'], 2);
+  return sqrt(pow(a['x'] - b['x'], 2) + pow(a['y'] - b['y'], 2));
 };
 
 var tree = KDTree(points, distance, ['x', 'y']);
 
-var nearest = tree.nearest({'x': 45.49739,  'y':  -73.57914}, 2);
-var nearest2 = tree.nearest({'x': 45.4973,  'y':  -73.57877}, 2);
+var nearest = tree.nearest({'x': 45.49719,  'y':  -73.57933}, 3);
+// var nearest = tree.nearest({'x': 45.49739,  'y':  -73.57914}, 3);
+
+// var nearest2 = tree.nearest({'x': 45.49741,  'y':   -73.57868}, 3);
+var nearest2 = tree.nearest({'x': 45.49729,  'y':  -73.5788}, 2);
 
 
 
@@ -137,10 +140,10 @@ return pointsFromListMap(same);
     List<Map<String, double>> ret2 = [];
     List<double> equation = lineFromPoints(a, b);
 
-    double interval = ((b.latitude - a.latitude) / 4);
+    double interval = ((b.latitude - a.latitude) / 1);
 
     double begin = a.latitude;
-    for (int i = 0; i <= 4; i++) {
+    for (int i = 0; i <= 2; i++) {
       var lat = begin;
       var long = equation[0] * lat + equation[1];
       ret.add(LatLng(lat, long));
