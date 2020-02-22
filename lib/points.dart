@@ -13,61 +13,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 // void main() {
 
-
-// List<Map<String, double>> pointsAB = new Coords().getPoints(LatLng(45.49719, -73.57933), LatLng(45.49735, -73.57918));
-// List<Map<String, double>> pointsBC = new Coords().getPoints(LatLng(45.49735, -73.57918), LatLng(45.49755, -73.57899));
-// List<Map<String, double>> pointsCY = new Coords().getPoints(LatLng(45.49755, -73.57899), LatLng(45.49741, -73.57868));
-// List<Map<String, double>> pointsYX = new Coords().getPoints(LatLng(45.49741, -73.57868), LatLng(45.4972, -73.57887));
-
-
-
-// var points = pointsAB + pointsBC+ pointsCY + pointsYX;
-
-// var distance = (a, b) {
-//   return pow(a['x'] - b['x'], 2) + pow(a['y'] - b['y'], 2);
-// };
-
-// var tree = KDTree(points, distance, ['x', 'y']);
-
-// var nearest = tree.nearest({'x': 45.49739,  'y':  -73.57914}, 10);
-// var nearest2 = tree.nearest({'x': 45.49727,  'y':  -73.57926}, 10);
-
-
-// // print(nearest);
-// // print(nearest2);
-
-
-
-// Function eq = const MapEquality().equals;
-
-// var same = [];
-// for(int i = 0; i< nearest.length; i++){
-//   for(int j=0; j<nearest2.length; j++){
-//     if(eq(nearest[i][0],nearest2[j][0])){
-//       same.add(nearest[i]);
-//     }
-//   }
-// }
-
-// print(same);
-
-
-// ///get all points in straight line in between a and b
-//   List<LatLng> pointsFromListMap(List<dynamic> list) {
-//     List<LatLng> ret = [];
-    
-//     for (int i = 0; i <list.length; i++) {
-//       ret.add(LatLng(list[i][0]['x'], list[i][0]['y']));
-//     }
-
-//     return ret;
-//   }
-
- 
-
-
-
-
 //     List<LatLng> _products = pointsFromListMap(same);
 
 //   for (int i = 0; i < _products.length; i++) {
@@ -78,21 +23,58 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 //   // print(lol[1].toString());
 // }
 
+class Graph {
+  Map<Node, List<Node>> nodes;
+}
+class Node {
+  // Interesting data
+  String name;
+  LatLng point;
+
+  Node(name, point);
+}
+
 class Coords {
 
 
-// List<Map<String, double>> pointsAB = new Coords().getPoints(LatLng(45.49719, -73.57933), LatLng(45.49735, -73.57918));
-// List<Map<String, double>> pointsBC = new Coords().getPoints(LatLng(45.49735, -73.57918), LatLng(45.49755, -73.57899));
-// List<Map<String, double>> pointsCY = new Coords().getPoints(LatLng(45.49755, -73.57899), LatLng(45.49741, -73.57868));
-// List<Map<String, double>> pointsYX = new Coords().getPoints(LatLng(45.49741, -73.57868), LatLng(45.4972, -73.57887));
+
+
+Node a = Node("A", LatLng(45.49719, -73.57933));
+Node b = Node("B",LatLng(45.49735, -73.57918));
+Node c = Node("C",LatLng(45.49735, -73.57918));
+Node f = Node("F",LatLng(45.49698, -73.57888));
+
+void makeGraph(){
+  map =  {a : [b,f], b:[a,c] };
+  graph
+}
+
+Map<Node, List<Node>> map;
+
+Graph graph;
+
+
+
+
+
 
 
   List<LatLng> ac = [];
 
 
 List<LatLng> getPath(){
-  var points = new Coords().getPoints(LatLng(45.49719, -73.57933), LatLng(45.49735, -73.57918)) + new Coords().getPoints(LatLng(45.49735, -73.57918), LatLng(45.49755, -73.57899))+new Coords().getPoints(LatLng(45.49755, -73.57899), LatLng(45.49741, -73.57868))+new Coords().getPoints(LatLng(45.49741, -73.57868), LatLng(45.4972, -73.57887))
-  + new Coords().getPoints(LatLng(45.49735, -73.57918), LatLng(45.4972, -73.57887));
+  var points = 
+  new Coords().getPoints(LatLng(45.49719, -73.57933), LatLng(45.49735, -73.57918)) + //AB
+  new Coords().getPoints(LatLng(45.49719, -73.57933), LatLng(45.49698, -73.57888))+  //AF
+  new Coords().getPoints(LatLng(45.49735, -73.57918), LatLng(45.49755, -73.57899))+  //BC
+  new Coords().getPoints(LatLng(45.49735, -73.57918), LatLng(45.4972, -73.57887))  + //BX
+  new Coords().getPoints(LatLng(45.49755, -73.57899), LatLng(45.49741, -73.57868))+  //CY
+   new Coords().getPoints(LatLng(45.49741, -73.57868), LatLng(45.4972, -73.57887))+ //YX
+      new Coords().getPoints(LatLng(45.49741, -73.57868), LatLng(45.49734, -73.57855))+ //YD
+   new Coords().getPoints(LatLng(45.49734, -73.57855), LatLng(45.49714, -73.57875)) + // DE
+      new Coords().getPoints(LatLng(45.49714, -73.57875), LatLng(45.4972, -73.57887)) + // EX
+         new Coords().getPoints(LatLng(45.49714, -73.57875), LatLng(45.49698, -73.57888)); //EF
+
 
 points = points.toSet().toList();
 var distance = (a, b) {
