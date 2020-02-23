@@ -22,12 +22,15 @@ class MapSample extends StatefulWidget {
 
 class MapSampleState extends State<MapSample> {
   Completer<GoogleMapController> _controller = Completer();
-
+  Set<Marker> markers;
+  bool isTapped = false;
   // static LatLng _initialPosition;
 
-  // @override
-  // void initState() {
-  //   super.initState();
+  @override
+  void initState() {
+    super.initState();
+    markers = Set.from([]);
+  }
   //   _getUserLocation();
   // }
 
@@ -37,7 +40,15 @@ class MapSampleState extends State<MapSample> {
       body: GoogleMap(
         mapType: MapType.normal,
         indoorViewEnabled: true,
-        initialCameraPosition: CameraPosition(target: LatLng(45.497593, -73.578487)), 
+        compassEnabled: true,
+        initialCameraPosition: CameraPosition(target: LatLng(45.497593, -73.578487), zoom: 19.5), 
+        markers: markers,
+        onTap: (pos) {
+          Marker marker = Marker(markerId: MarkerId('marker'), position: pos);
+          setState(() {
+            markers.add(marker);
+          });
+        },
         //CameraPosition(target: _initialPosition, zoom:18.5), 
         //throws Failed assertion: line 22 of package google_maps_flutter/src/camera.dart
         onMapCreated: (GoogleMapController controller) {
@@ -63,13 +74,21 @@ class MapSampleState extends State<MapSample> {
     final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
 
     var currentLocation = await geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
+    LatLng currentCoordinates = LatLng(currentLocation.latitude, currentLocation.longitude);
 
     CameraPosition _currentPos = CameraPosition(
-      target: LatLng(currentLocation.latitude, currentLocation.longitude),
+      target: currentCoordinates,
       zoom: 18.5);  
 
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(_currentPos));
-  }
 
+    Marker marker = Marker(
+      markerId: MarkerId('marker'), 
+      position: currentCoordinates
+      );
+      setState(() {
+        markers.add(marker);
+      });
+  }
 }
