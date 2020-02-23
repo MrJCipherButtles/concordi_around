@@ -30,6 +30,9 @@ dependencies:
   # Allows location based functions
   geolocator: ^5.2.1
 
+# SVG plugin
+flutter_svg: 0.17.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
