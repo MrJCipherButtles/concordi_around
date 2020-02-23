@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
-class PositionedFloatingSearchBar extends StatelessWidget {
-  
+class PositionedFloatingSearchBar extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _PositionedFloatingSearchBarState();
+  }
+}
+
+class _PositionedFloatingSearchBarState
+    extends State<PositionedFloatingSearchBar> {
+  @override
   Widget build(BuildContext context) {
     return Positioned(
       top: MediaQuery.of(context).padding.top + 5.0,
@@ -13,10 +21,18 @@ class PositionedFloatingSearchBar extends StatelessWidget {
             borderRadius: BorderRadius.circular(20), color: Colors.white),
         child: Row(
           children: <Widget>[
-            IconButton(
-              splashColor: Colors.grey,
-              icon: Icon(Icons.menu),
-              onPressed: () => Scaffold.of(context).openDrawer(),
+            Container(
+              child: 3 == 3
+                  ? IconButton(
+                      splashColor: Colors.grey,
+                      icon: Icon(Icons.menu),
+                      onPressed: () => Scaffold.of(context).openDrawer(),
+                    )
+                  : IconButton(
+                      splashColor: Colors.grey,
+                      icon: Icon(Icons.arrow_back),
+                      onPressed: () => Scaffold.of(context).openDrawer(),
+                    ),
             ),
             Expanded(
               child: TextField(
