@@ -20,10 +20,15 @@ class Path {
   List<Vertex> nodes = new List<Vertex>();
   List<Edge> edges = new List<Edge>();
   Map<String, LatLng> pts = {
-    "A": LatLng(45.49719, -73.57933),
-    "B": LatLng(45.49735, -73.57918),
-    "C": LatLng(45.49755, -73.57899),
-    "F": LatLng(45.49698, -73.57888)
+    "a": LatLng(45.49719, -73.57933),
+    "b": LatLng(45.49735, -73.57918),
+    "c": LatLng(45.49755, -73.57899),
+    "y": LatLng(45.49741, -73.57868),
+    "d": LatLng(45.49734, -73.57855),
+    "e": LatLng(45.49714, -73.57875),
+    "x": LatLng(45.4972, -73.57887),
+    "f": LatLng(45.49698, -73.57888)
+
   };
 
  void addLane(String laneId, int sourceLocNo, int destLocNo,
@@ -54,9 +59,36 @@ class Path {
               
     }
 
-  List<LatLng> getPath(LatLng a, LatLng b) {
-    var start = a;
-    var end = b;
+    getJunctionAsVertex(String junction, Map<String, LatLng>  pts){
+      var count = 0;
+
+      var keys = pts.keys;
+
+      for(var key in keys){
+        if(key!= junction)
+        count++;
+        else
+        break;
+      }
+
+      return count;
+    }
+
+  List<LatLng> getPath(LatLng ast, LatLng bend) {
+    var start = ast;
+    var end = bend;
+
+
+    var a = getJunctionAsVertex("a", pts);
+    var b = getJunctionAsVertex("b", pts);
+    var c = getJunctionAsVertex("c", pts);
+    var d = getJunctionAsVertex("d", pts);
+    var e = getJunctionAsVertex("e", pts);
+    var f = getJunctionAsVertex("f", pts);
+    var x = getJunctionAsVertex("x", pts);
+    var y = getJunctionAsVertex("y", pts);
+
+
 
      pts.forEach((k,v) => (
           nodes.add(new Vertex(k, k.toString(), v)))); 
@@ -64,13 +96,16 @@ class Path {
    
         
 
-        addLane("Edge_0", 0, 1, 5);
-
-
-        addLane("Edge_1", 0, 3, 10);
-
-
-        addLane("Edge_0", 1, 2, 5);
+        addLane("Edge_0", a, b, 4);
+        addLane("Edge_1", a, f, 8);
+        addLane("Edge_0", b, c, 6);
+        addLane("Edge_0", b, x, 6);
+        addLane("Edge_0", c, y, 5);
+        addLane("Edge_0", y, x, 6);
+        addLane("Edge_0", y, d, 2);
+        addLane("Edge_0", d, e, 6);
+        addLane("Edge_0", e, x, 2);
+        addLane("Edge_0", e, f, 4);
 
        
      
