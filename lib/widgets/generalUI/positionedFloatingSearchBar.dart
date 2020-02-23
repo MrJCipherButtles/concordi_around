@@ -33,7 +33,7 @@ class PositionedFloatingSearchBar extends StatelessWidget {
               padding: const EdgeInsets.only(right: 8.0),
               child: CircleAvatar(
                 backgroundColor: Color.fromRGBO(147, 35, 57, 1),
-                child: Text('CU'),
+                child: Text('JD'),
               ),
             ),
           ],
