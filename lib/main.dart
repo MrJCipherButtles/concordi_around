@@ -42,8 +42,8 @@ class MapSampleState extends State<MapSample> {
           Container(
               child: GoogleMap(
             mapType: MapType.normal,
+            myLocationEnabled: true,
             indoorViewEnabled: true,
-            myLocationButtonEnabled: false, // must be false for ios
             initialCameraPosition:
                 CameraPosition(target: LatLng(45.497593, -73.578487)),
             //CameraPosition(target: _initialPosition, zoom:18.5),

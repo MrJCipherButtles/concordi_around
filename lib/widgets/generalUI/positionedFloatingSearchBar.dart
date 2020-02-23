@@ -10,6 +10,8 @@ class PositionedFloatingSearchBar extends StatefulWidget {
 
 class _PositionedFloatingSearchBarState
     extends State<PositionedFloatingSearchBar> {
+
+      bool isTyping = false;
   @override
   Widget build(BuildContext context) {
     return Positioned(
@@ -22,15 +24,16 @@ class _PositionedFloatingSearchBarState
         child: Row(
           children: <Widget>[
             Container(
-              child: 3 == 3
+              child: isTyping
                   ? IconButton(
                       splashColor: Colors.grey,
-                      icon: Icon(Icons.menu),
+                      icon: Icon(Icons.arrow_back),
                       onPressed: () => Scaffold.of(context).openDrawer(),
                     )
-                  : IconButton(
+                    :
+                    IconButton(
                       splashColor: Colors.grey,
-                      icon: Icon(Icons.arrow_back),
+                      icon: Icon(Icons.menu),
                       onPressed: () => Scaffold.of(context).openDrawer(),
                     ),
             ),
@@ -43,6 +46,11 @@ class _PositionedFloatingSearchBarState
                     border: InputBorder.none,
                     contentPadding: EdgeInsets.symmetric(horizontal: 15),
                     hintText: "Search..."),
+                onTap: (){
+                  setState(() {
+                    isTyping = true;
+                  });
+                },
               ),
             ),
             Padding(
