@@ -31,6 +31,7 @@ dependencies:
   geolocator: ^5.2.1
 
   xml: ^3.5.0
+  xml2json: ^4.1.1
 
 dev_dependencies:
   flutter_test:

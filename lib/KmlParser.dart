@@ -3,13 +3,22 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:xml/xml.dart' as xml;
+import 'package:xml/xml.dart';
+import 'package:xml2json/xml2json.dart';
 
 main() async {
   String filePath = "/Users/umer/workspace/concordi_around/assets/layers/Building_layer.kml";
   KmlParser kmlParser = new KmlParser();
-  String fileData = await kmlParser.getFileData(filePath);
-  xml.XmlDocument doc = kmlParser.parseFile(fileData);
-  print(doc.toString());
+
+  Map<String, dynamic> json = await kmlParser.getJsonFromXMLFile(filePath);
+
+  for(Map<String, dynamic> placemarker in json["kml"]["Document"]["Placemark"]) {
+    String id = placemarker["name"];
+    print(id);
+    var string = placemarker["Polygon"]["outerBoundaryIs"]["LinearRing"]["coordinates"];
+    var coordinates = string.split("\\n");
+  }
+
 }
 
 class KmlParser {
@@ -26,19 +35,17 @@ class KmlParser {
   //           strokeColor: Colors.yellow
   //       );
 
-  Future<String> getFileData(String path) async {
-    String contents;
-    var file = File(path);
+  getJsonFromXMLFile(path) async {
+    final Xml2Json xml2Json = Xml2Json();
 
-    if (await file.exists()) {
-    // Read file
-    contents = await file.readAsString();
+    try {
+      var content = await File(path).readAsString();
+      xml2Json.parse(content);
+
+      var jsonString = xml2Json.toParker();
+      return jsonDecode(jsonString);
+    } catch (e) {
+      print(e);
     }
-    return contents;
   }
-
-  xml.XmlDocument parseFile(String content) {
-    return xml.parse(content);
-  }
-
 }
