@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:concordi_around/widgets/generalUI/positionedFloatingSearchBar.dart';
 import 'package:concordi_around/widgets/generalUI/sidebarDrawer.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+//import 'package:flutter_svg/svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 
