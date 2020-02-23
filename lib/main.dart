@@ -94,8 +94,8 @@ final Set<Polyline>_polyline={};
 //add your lat and lng where you wants to draw polyline
 LatLng _lastMapPosition = _center;
 // List<LatLng> latlng = new Coords().pointsFromListMap(new Coords().getPoints(LatLng(45.49719, -73.57933), LatLng(45.49735, -73.57918)));
-var start = LatLng(45.49701, -73.57896);
-var end = LatLng(45.49755, -73.57899);
+var start = LatLng(45.49707, -73.57906);
+var end = LatLng(45.49748, -73.57905);
 List<LatLng> latlng = new Path().getPath(start, end);
 
 

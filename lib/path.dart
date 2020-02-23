@@ -8,24 +8,77 @@ import 'package:kdtree/kdtree.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 // import 'package:latlong/latlong.dart';
 
+// main(){
+// var start = LatLng(45.49707, -73.57906);
+// var end = LatLng(45.49748, -73.57905);
+// List<LatLng> latlng = new Path().getPath(start, end);
+
+// // latlng.forEach((element) => {print(element)});
+// }
+
 class Path {
   List<Vertex> nodes = new List<Vertex>();
   List<Edge> edges = new List<Edge>();
   Map<String, LatLng> pts = {
     "A": LatLng(45.49719, -73.57933),
     "B": LatLng(45.49735, -73.57918),
-    "C": LatLng(45.49735, -73.57918),
-    "D": LatLng(45.49698, -73.57888)
+    "C": LatLng(45.49755, -73.57899),
+    "F": LatLng(45.49698, -73.57888)
   };
+
+ void addLane(String laneId, int sourceLocNo, int destLocNo,
+            int duration) {
+        LatLng source = nodes[sourceLocNo].point;
+        LatLng dest = nodes[destLocNo].point;
+
+        List<LatLng> ptsinBetween = getPoints(source, dest);
+        var prevNode = nodes[sourceLocNo]; 
+        for(int i=0; i<ptsinBetween.length ; i++){
+          
+          if(i==ptsinBetween.length -1){
+          // nodes.add(new Vertex(nodes[sourceLocNo].getName()+"_"+nodes[destLocNo].getName(), nodes[sourceLocNo].getName()+"_"+nodes[destLocNo].getName(), ptsinBetween[i]));
+          edges.add(new Edge(laneId,prevNode, nodes[destLocNo], 1 ));
+          edges.add(new Edge(laneId,nodes[destLocNo], prevNode, 1 ));
+          break;
+          }
+          nodes.add(new Vertex(nodes[sourceLocNo].getName()+"_"+nodes[destLocNo].getName(), nodes[sourceLocNo].getName()+"_"+nodes[destLocNo].getName(), ptsinBetween[i]));
+          edges.add(new Edge(laneId,prevNode, nodes[nodes.length-1], 1 ));
+          edges.add(new Edge(laneId,nodes[nodes.length-1], prevNode, 1 ));
+          prevNode = nodes[nodes.length-1];
+
+        } 
+
+                
+
+
+              
+    }
 
   List<LatLng> getPath(LatLng a, LatLng b) {
     var start = a;
     var end = b;
 
+     pts.forEach((k,v) => (
+          nodes.add(new Vertex(k, k.toString(), v)))); 
+
+   
+        
+
+        addLane("Edge_0", 0, 1, 5);
+
+
+        addLane("Edge_1", 0, 3, 10);
+
+
+        addLane("Edge_0", 1, 2, 5);
+
+       
+     
+
     //find closest junction for start
 
     List<Map<String, double>> junctionPointsinKDFormat =
-        convertMapToKDFormat(pts);
+        convertListToKDFormat(nodes);
     var distance = (a, b) {
       return sqrt(pow(a['x'] - b['x'], 2) + pow(a['y'] - b['y'], 2));
     };
@@ -36,28 +89,6 @@ class Path {
         convertKDRetToOnePoint(tree.nearest({'x': start.latitude, 'y': start.longitude}, 1));
     var closestEndJunction =
         convertKDRetToOnePoint(tree.nearest({'x': end.latitude, 'y': end.longitude}, 1));
-
-    pts.forEach((k,v) => (
-          nodes.add(new Vertex(k, k.toString(), v)))); 
-
-    void addLane(String laneId, int sourceLocNo, int destLocNo,
-            int duration) {
-        Edge lane = new Edge(laneId,nodes[sourceLocNo], nodes[destLocNo], duration );
-        edges.add(lane);
-    }
-        addLane("Edge_0", 0, 1, 5);
-        addLane("Edge_1", 0, 3, 8);
-
-        addLane("Edge_0", 1, 0, 5);
-        addLane("Edge_0", 1, 2, 5);
-        addLane("Edge_2", 2, 1, 4);
-
-        addLane("Edge_2", 3, 0, 4);
-
-
-    
-
-    
       
 
         // Lets check from location Loc_1 to Loc_10
@@ -82,13 +113,16 @@ class Path {
         dijkstra.execute(nodes[startNode]);
         LinkedList<Vertex> path = dijkstra.getPath(nodes[endNode]);
         var lst = path.toList().reversed;
+
+        // lst.forEach((element) => {print(element)});
+
         List<LatLng> ret = [];
         for(var item in lst){
           ret.add(item.point);
         }
 
-        ret[0] = start;
-        ret[ret.length-1] = end;
+        // ret[0] = start;
+        // ret[ret.length-1] = end;
         return ret;
         
   }
@@ -96,6 +130,13 @@ class Path {
   List<Map<String, double>> convertMapToKDFormat(Map<String, LatLng> map) {
     List<Map<String, double>> ret = [];
     map.forEach((k, v) => (ret.add({'x': v.latitude, 'y': v.longitude})));
+
+    return ret;
+  }
+
+  List<Map<String, double>> convertListToKDFormat(List<Vertex> lst){
+    List<Map<String, double>> ret = [];
+    lst.forEach((element) => (ret.add({'x': element.point.latitude, 'y': element.point.longitude})));
 
     return ret;
   }
