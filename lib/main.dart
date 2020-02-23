@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:concordi_around/widgets/generalUI/positionedFloatingSearchBar.dart';
 import 'package:concordi_around/widgets/generalUI/sidebarDrawer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -25,16 +26,9 @@ class MapSample extends StatefulWidget {
 class MapSampleState extends State<MapSample> {
   Completer<GoogleMapController> _controller = Completer();
 
-  // static LatLng _initialPosition;
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _getUserLocation();
-  // }
-
   @override
   Widget build(BuildContext context) {
+    
     return new Scaffold(
       body: Stack(
         children: <Widget>[
@@ -43,7 +37,7 @@ class MapSampleState extends State<MapSample> {
               child: GoogleMap(
             mapType: MapType.normal,
             myLocationEnabled: true,
-            indoorViewEnabled: true,
+            indoorViewEnabled: false,
             initialCameraPosition:
                 CameraPosition(target: LatLng(45.497593, -73.578487)),
             //CameraPosition(target: _initialPosition, zoom:18.5),
@@ -52,12 +46,12 @@ class MapSampleState extends State<MapSample> {
               _controller.complete(controller);
             },
           )),
-          PositionedFloatingSearchBar()
+          PositionedFloatingSearchBar(),
         ],
       ),
       drawer: SidebarDrawer(),
       floatingActionButton: FloatingActionButton(
-        onPressed: _goToCurrent,
+        onPressed: _goToHall8th,
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
         tooltip: 'Get Location',
@@ -66,12 +60,13 @@ class MapSampleState extends State<MapSample> {
     );
   }
 
-  // void _getUserLocation() async {
-  //   Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-  //   setState(() {
-  //     _initialPosition = LatLng(position.latitude, position.longitude);
-  //   });
-  // }
+  Future<void> _goToHall8th() async {
+
+    CameraPosition _currentPos = CameraPosition(bearing: 123.31752014160156, target: LatLng(45.49726709926478, -73.57894677668811), tilt: 0.0, zoom: 19.03557586669922);
+
+    final GoogleMapController controller = await _controller.future;
+    controller.animateCamera(CameraUpdate.newCameraPosition(_currentPos));
+  }
 
   Future<void> _goToCurrent() async {
     final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
