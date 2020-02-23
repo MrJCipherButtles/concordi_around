@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 class PositionedFloatingSearchBar extends StatelessWidget {
+  
   Widget build(BuildContext context) {
     return Positioned(
       top: MediaQuery.of(context).padding.top + 5.0,
@@ -15,7 +16,7 @@ class PositionedFloatingSearchBar extends StatelessWidget {
             IconButton(
               splashColor: Colors.grey,
               icon: Icon(Icons.menu),
-              onPressed: () {},
+              onPressed: () => Scaffold.of(context).openDrawer(),
             ),
             Expanded(
               child: TextField(
