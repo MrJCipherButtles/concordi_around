@@ -56,4 +56,22 @@ class Floor {
     // Mark the current coordinate unvisited
     visitedList.remove(s);
   }
+
+  // It may be better to return a stack of floors with
+  // the shortest path or disability path for each floor
+  void shortestPath(Coordinate s, Coordinate d) {
+    assert (s.floorLevel == _floorLevel && d.floorLevel == _floorLevel);
+    _path = _findShortestPath(_getAllPathsFromSourceToDestination(s, d));
+  }
+
+  // Returns the shortest path
+  static Path _findShortestPath(List<Path> pathList) {
+    var shortestPath = pathList[0];
+    for (var path in pathList) {
+      if (path.length() < shortestPath.length()) {
+        shortestPath = path;
+      }
+    }
+    return shortestPath;
+  }
 }
