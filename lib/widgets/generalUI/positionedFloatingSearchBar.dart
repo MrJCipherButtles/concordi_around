@@ -16,6 +16,7 @@ class _PositionedFloatingSearchBarState
 
       GoogleMapsPlaces _places = GoogleMapsPlaces(apiKey: "AIzaSyAzsZ2URCqgDm9aJcduUyXVot5TEIANu6w");
       bool isTyping = false;
+      String campus = "SGW";
 
   @override
   Widget build(BuildContext context) {
@@ -51,14 +52,7 @@ class _PositionedFloatingSearchBarState
                     border: InputBorder.none,
                     contentPadding: EdgeInsets.symmetric(horizontal: 15),
                     hintText: "Search..."),
-                onTap: ()async {
-                  Prediction p = await PlacesAutocomplete.show(
-                    context: context, 
-                    apiKey: "AIzaSyAzsZ2URCqgDm9aJcduUyXVot5TEIANu6w",
-                    mode: Mode.overlay, // Mode.fullscreen
-                    language: "en",
-                    components: [new Component(Component.country, "en")]);
-                    displayPrediction(p);
+                onTap: (){
                   
                   // setState(() {
                   //   isTyping = true;
@@ -68,10 +62,20 @@ class _PositionedFloatingSearchBarState
             ),
             Padding(
               padding: const EdgeInsets.only(right: 8.0),
-              child: CircleAvatar(
-                foregroundColor: Colors.white,
-                backgroundColor: Color.fromRGBO(147, 35, 57, 1),
-                child: Text('SGW'),
+              child: 
+                RaisedButton(
+                  child: Text(campus),
+                  textColor: Colors.white,
+                  color: Color.fromRGBO(147, 35, 57, 1),
+                  shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(50)),
+                  onPressed: (){
+                    setState(() {
+                      if(campus == "SGW")
+                      campus = "LOY";
+                      else 
+                      campus = "SGW";
+                    });
+                  },
               ),
             ),
           ],
@@ -80,6 +84,7 @@ class _PositionedFloatingSearchBarState
     );
   }
 
+  //Method for google prediction which we most likely wont use
   Future<Null> displayPrediction(Prediction p) async {
     if (p != null) {
       PlacesDetailsResponse detail =

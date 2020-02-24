@@ -37,7 +37,8 @@ class MapSampleState extends State<MapSample> {
           Container(
               child: GoogleMap(
             mapType: MapType.normal,
-            myLocationEnabled: true,
+            myLocationEnabled: false,
+            compassEnabled: false,
             indoorViewEnabled: false,
             initialCameraPosition:
                 CameraPosition(target: LatLng(45.497593, -73.578487)),
