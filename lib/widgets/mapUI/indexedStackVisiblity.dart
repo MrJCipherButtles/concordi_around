@@ -19,13 +19,18 @@ class _IndexedStackVisibilityState extends State<IndexedStackVisibility> {
   Widget build(BuildContext context) {
     return 
     Visibility(
-      child: IndexedStack(
+      child: AnimatedOpacity(
+  opacity: globals.showMap ? 1.0 : 0.0,
+  curve: Curves.easeInToLinear,
+  duration: Duration(milliseconds: 500),
+  child: IndexedStack(
         index: showFloor,
         children: <Widget>[
           SvgPicture.asset("assets/floorplans/Hall-8.svg"),
           SvgPicture.asset("assets/floorplans/Hall-9.svg"),
         ],
-      ),
+      )
+),
       maintainSize: true,
       maintainAnimation: true,
       maintainState: true,
