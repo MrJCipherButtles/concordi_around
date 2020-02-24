@@ -30,6 +30,14 @@ class Path {
     return true;
   }
 
+  double length() {
+    var length = 0.0;
+    for(var segment in _segments) {
+      length += segment.length();
+    }
+    return length;
+  }
+
   @override
   String toString(){
     var buffer = StringBuffer();
