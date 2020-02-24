@@ -15,7 +15,7 @@ class IndexedStackVisibility extends StatelessWidget {
       maintainSize: true,
       maintainAnimation: true,
       maintainState: true,
-      visible: false,
+      visible: true,
     );
   }
 }
