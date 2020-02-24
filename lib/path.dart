@@ -187,10 +187,10 @@ class Path {
     List<LatLng> ret = [];
     List<double> equation = lineFromPoints(a, b);
 
-    double interval = ((b.latitude - a.latitude) / 10);
+    double interval = ((b.latitude - a.latitude) / 200);
 
     double begin = a.latitude;
-    for (int i = 0; i <= 10; i++) {
+    for (int i = 0; i <= 200; i++) {
       var lat = begin;
       var long = equation[0] * lat + equation[1];
       ret.add(LatLng(lat, long));
