@@ -33,7 +33,8 @@ class MapSampleState extends State<MapSample> {
   @override
   Widget build(BuildContext context) {
     
-    return new Scaffold(
+    return MaterialApp(
+      home :Scaffold(
       body: Stack(
         children: <Widget>[
           // Replace this container with your Map widget
@@ -73,6 +74,7 @@ class MapSampleState extends State<MapSample> {
         tooltip: 'Get Location',
         child: Icon(Icons.my_location),
       ),
+    )
     );
   }
 
