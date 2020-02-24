@@ -21,6 +21,15 @@ class Path {
     return ls;
   }
 
+  bool isDisabilityFriendly(){
+    for(var segment in _segments) {
+      if(!segment.isDisabilityFriendly()) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   @override
   String toString(){
     var buffer = StringBuffer();
