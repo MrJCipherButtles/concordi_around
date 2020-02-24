@@ -1,3 +1,4 @@
+import 'package:concordi_around/building_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -28,7 +29,11 @@ class _PositionedFloatingSearchBarState
                   ? IconButton(
                       splashColor: Colors.grey,
                       icon: Icon(Icons.arrow_back),
-                      onPressed: () => Scaffold.of(context).openDrawer(),
+                      //onPressed: () => Scaffold.of(context).openDrawer(),
+                      onPressed: () {
+                        FocusScope.of(context).unfocus();
+                        setState(() { isTyping = false;});
+                      }  ,
                     )
                     :
                     IconButton(
