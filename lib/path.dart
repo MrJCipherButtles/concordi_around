@@ -110,7 +110,7 @@ class Path {
        
      
 
-    //find closest junction for start
+    //find closest point for start
 
     List<Map<String, double>> junctionPointsinKDFormat =
         convertListToKDFormat(nodes);
@@ -187,10 +187,10 @@ class Path {
     List<LatLng> ret = [];
     List<double> equation = lineFromPoints(a, b);
 
-    double interval = ((b.latitude - a.latitude) / 6);
+    double interval = ((b.latitude - a.latitude) / 10);
 
     double begin = a.latitude;
-    for (int i = 0; i <= 6; i++) {
+    for (int i = 0; i <= 10; i++) {
       var lat = begin;
       var long = equation[0] * lat + equation[1];
       ret.add(LatLng(lat, long));

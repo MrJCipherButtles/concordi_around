@@ -85,7 +85,7 @@ class MapSampleState extends State<MapSample> {
 
 
   void fuckthis(){
-    const LatLng _center = const LatLng(45.49719, -73.57884);
+    const LatLng _center = const LatLng(45.49763, -73.57882);
         const LatLng _end = const LatLng(45.49745, -73.57879);
 
 final Set<Marker> _markers = {};
@@ -94,8 +94,8 @@ final Set<Polyline>_polyline={};
 //add your lat and lng where you wants to draw polyline
 LatLng _lastMapPosition = _center;
 // List<LatLng> latlng = new Coords().pointsFromListMap(new Coords().getPoints(LatLng(45.49719, -73.57933), LatLng(45.49735, -73.57918)));
-var start = LatLng(45.49704, -73.57902);
-var end = LatLng(45.49748, -73.57905);
+var start = LatLng(45.49749, -73.57893);
+var end = LatLng(45.49748, -73.57911);
 List<LatLng> latlng = new Path().getPath(start, end);
 
 
