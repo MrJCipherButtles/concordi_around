@@ -1,46 +1,21 @@
-
 import 'dart:convert';
-import 'dart:io';
-
-import 'package:xml/xml.dart' as xml;
-import 'package:xml/xml.dart';
 import 'package:xml2json/xml2json.dart';
 
-main() async {
-  String filePath = "/Users/umer/workspace/concordi_around/assets/layers/Building_layer.kml";
-  KmlParser kmlParser = new KmlParser();
 
-  Map<String, dynamic> json = await kmlParser.getJsonFromXMLFile(filePath);
-
-  for(Map<String, dynamic> placemarker in json["kml"]["Document"]["Placemark"]) {
-    String id = placemarker["name"];
-    print(id);
-    var string = placemarker["Polygon"]["outerBoundaryIs"]["LinearRing"]["coordinates"];
-    var coordinates = string.split("\\n");
-  }
-
-}
+//main() {
+//  BuildingLatLngCollector buildingLatLngCollector = new BuildingLatLngCollector();
+//  List<Building> buildings = buildingLatLngCollector.getLatLngConfigString(BuildingLayer.xml);
+//  for(Building building in buildings) {
+//    print(building.boundary.toString());
+//  }
+//}
 
 class KmlParser {
-  // Set<Polygon> polygons;
-  // static List<LatLng> polyPoints;
-  // String path = "assets/layers/Building_layer.kml";
-
-  // Polygon poly = Polygon(
-  //           polygonId: PolygonId("1"),
-  //           visible: true,
-  //           //latlng is List<LatLng>
-  //           points: polyPoints,
-  //           fillColor: Colors.yellow,
-  //           strokeColor: Colors.yellow
-  //       );
-
-  getJsonFromXMLFile(path) async {
+  getJsonFromKMLString(String kmlString) {
     final Xml2Json xml2Json = Xml2Json();
 
     try {
-      var content = await File(path).readAsString();
-      xml2Json.parse(content);
+      xml2Json.parse(kmlString);
 
       var jsonString = xml2Json.toParker();
       return jsonDecode(jsonString);
@@ -49,3 +24,4 @@ class KmlParser {
     }
   }
 }
+
