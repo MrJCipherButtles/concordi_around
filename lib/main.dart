@@ -3,9 +3,9 @@ import 'package:concordi_around/widgets/generalUI/positionedFloatingSearchBar.da
 import 'package:concordi_around/widgets/generalUI/sidebarDrawer.dart';
 import 'package:concordi_around/widgets/mapUI/indexedStackVisiblity.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:concordi_around/globals' as globals;
 
 void main() => runApp(MyApp());
 
@@ -25,7 +25,9 @@ class MapSample extends StatefulWidget {
 }
 
 class MapSampleState extends State<MapSample> {
+
   Completer<GoogleMapController> _controller = Completer();
+  bool enableGestures = true;
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +42,10 @@ class MapSampleState extends State<MapSample> {
             myLocationEnabled: false,
             compassEnabled: false,
             indoorViewEnabled: false,
+            scrollGesturesEnabled: enableGestures,
+            rotateGesturesEnabled: enableGestures,
+            tiltGesturesEnabled: enableGestures,
+            zoomGesturesEnabled: enableGestures,
             initialCameraPosition:
                 CameraPosition(target: LatLng(45.497593, -73.578487)),
             //CameraPosition(target: _initialPosition, zoom:18.5),
@@ -47,11 +53,17 @@ class MapSampleState extends State<MapSample> {
             onMapCreated: (GoogleMapController controller) {
               _controller.complete(controller);
             },
+            onCameraMove: (CameraPosition cameraPosition){
+              if(IsWithinHall(cameraPosition.target) && cameraPosition.zoom > 18.5){
+                _goToHall8th();
+              }
+            },
           )),
+          IndexedStackVisibility(),
           PositionedFloatingSearchBar()
         ],
       ),
-      drawer: SidebarDrawer(),
+      drawer: SidebarDrawer(), 
       floatingActionButton: FloatingActionButton(
         onPressed: _goToCurrent,
         backgroundColor: Colors.white,
@@ -63,6 +75,7 @@ class MapSampleState extends State<MapSample> {
   }
 
   Future<void> _goToCurrent() async {
+    if(enableGestures){
     final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
 
     var currentLocation = await geolocator.getCurrentPosition(
@@ -74,13 +87,24 @@ class MapSampleState extends State<MapSample> {
 
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(_currentPos));
+    }
   }
 
-   // Future<void> _goToHall8th() async {
+   Future<void> _goToHall8th() async {
+     globals.showMap = true;
+     setState(() {
+                  enableGestures = false;
+                });
 
-  //   CameraPosition _currentPos = CameraPosition(bearing: 123.31752014160156, target: LatLng(45.49726709926478, -73.57894677668811), tilt: 0.0, zoom: 19.03557586669922);
+    CameraPosition _currentPos = CameraPosition(bearing: 123.31752014160156, target: LatLng(45.49726709926478, -73.57894677668811), tilt: 0.0, zoom: 19.03557586669922);
 
-  //   final GoogleMapController controller = await _controller.future;
-  //   controller.animateCamera(CameraUpdate.newCameraPosition(_currentPos));
-  // }
+    final GoogleMapController controller = await _controller.future;
+    controller.animateCamera(CameraUpdate.newLatLng(LatLng(45.49726709926478, -73.57894677668811)));
+    controller.moveCamera(CameraUpdate.newLatLng(LatLng(45.49726709926478, -73.57894677668811)));
+    controller.animateCamera(CameraUpdate.newCameraPosition(_currentPos));
+  }
+
+  bool IsWithinHall(LatLng latLng){
+    return LatLngBounds(southwest: LatLng(45.4967, -73.57885), northeast: LatLng(45.49789, -73.57907)).contains(latLng);
+  }
 }

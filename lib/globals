@@ -1,0 +1,4 @@
+library concordiAround.globals;
+
+bool isLoggedIn = false;
+bool showMap = false;

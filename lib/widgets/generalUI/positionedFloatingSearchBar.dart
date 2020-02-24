@@ -70,10 +70,11 @@ class _PositionedFloatingSearchBarState
                   shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(50)),
                   onPressed: (){
                     setState(() {
-                      if(campus == "SGW")
-                      campus = "LOY";
-                      else 
-                      campus = "SGW";
+                      // Use this at toggle text between SGW and Loyola
+                      // if(campus == "SGW")
+                      // campus = "LOY";
+                      // else 
+                      // campus = "SGW";
                     });
                   },
               ),
