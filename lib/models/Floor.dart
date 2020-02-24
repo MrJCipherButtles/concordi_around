@@ -74,4 +74,8 @@ class Floor {
     }
     return shortestPath;
   }
+
+  void clearPath() {
+    _path = null;
+  }
 }
