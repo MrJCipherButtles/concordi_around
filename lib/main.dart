@@ -53,7 +53,7 @@ class MapSampleState extends State<MapSample> {
       ),
       drawer: SidebarDrawer(),
       floatingActionButton: FloatingActionButton(
-        onPressed: _goToHall8th,
+        onPressed: _goToCurrent,
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
         tooltip: 'Get Location',
@@ -62,13 +62,13 @@ class MapSampleState extends State<MapSample> {
     );
   }
 
-  Future<void> _goToHall8th() async {
+  // Future<void> _goToHall8th() async {
 
-    CameraPosition _currentPos = CameraPosition(bearing: 123.31752014160156, target: LatLng(45.49726709926478, -73.57894677668811), tilt: 0.0, zoom: 19.03557586669922);
+  //   CameraPosition _currentPos = CameraPosition(bearing: 123.31752014160156, target: LatLng(45.49726709926478, -73.57894677668811), tilt: 0.0, zoom: 19.03557586669922);
 
-    final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(_currentPos));
-  }
+  //   final GoogleMapController controller = await _controller.future;
+  //   controller.animateCamera(CameraUpdate.newCameraPosition(_currentPos));
+  // }
 
   Future<void> _goToCurrent() async {
     final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
