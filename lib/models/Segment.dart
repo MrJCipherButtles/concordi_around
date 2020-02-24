@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'Coordinate.dart';
 import 'PortalCoordinate.dart';
 
@@ -22,6 +24,17 @@ class Segment {
     //else one coordinate must not be a portal; therefore, true by default
     return true;
   }
+
+  //Distance between the _source to _destination in meters
+  double length(){
+    var phi1 = _rad(_source.lat);
+    var phi2 = _rad(_destination.lat);
+    var lam1 = _rad(_source.lng);
+    var lam2 = _rad(_destination.lng);
+    return 6371010 * acos( sin(phi1) * sin(phi2) + cos(phi1) * cos(phi2) * cos(lam2 - lam1));
+  }
+
+  static double _rad(double deg) => deg * pi/180;
 
   @override
   String toString() => _source.toString() + '->' + _destination.toString();
