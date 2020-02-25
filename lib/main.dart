@@ -58,7 +58,6 @@ class MapSampleState extends State<MapSample> {
             onCameraMove: (CameraPosition cameraPosition){
               if(IsWithinHall(cameraPosition.target) && cameraPosition.zoom > 16){
                 setState(() {
-                  FloorSelector().createState();
                   showFloorSelector = true;
                   print("Inside hall $showFloorSelector");
                 });
