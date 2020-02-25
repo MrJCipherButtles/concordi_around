@@ -14,18 +14,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Google Maps Demo',
-      home: MapSample(0, 0),
+      home: MapSample(),
     );
   }
 }
 
 class MapSample extends StatefulWidget {
-  double lat;
-  double lng;
-  MapSample(double lat, double lng) {
-    this.lat = lat;
-    this.lng = lng;
-  }
+ 
 
   @override
   State<MapSample> createState() => MapSampleState();
@@ -44,7 +39,7 @@ class MapSampleState extends State<MapSample> {
           Container(
               child: GoogleMap(
             mapType: MapType.normal,
-            myLocationEnabled: true,
+            myLocationEnabled: false, //to remove current location icon from Google maps API
             compassEnabled: true,
             indoorViewEnabled: true,
             scrollGesturesEnabled: enableGestures,
@@ -53,9 +48,7 @@ class MapSampleState extends State<MapSample> {
             zoomGesturesEnabled: enableGestures,
             initialCameraPosition:
                 CameraPosition(target: LatLng(49.497593, -55.578487), zoom: 19.03557586669922),
-            //CameraPosition(target: _initialPosition, zoom:18.5),
-            //throws Failed assertion: line 22 of package google_maps_flutter/src/camera.dart
-            onMapCreated: (GoogleMapController controller) {
+           onMapCreated: (GoogleMapController controller) {
               _controller.complete(controller);
             },
             onCameraMove: (CameraPosition cameraPosition) {
@@ -67,8 +60,6 @@ class MapSampleState extends State<MapSample> {
           )),
           IndexedStackVisibility(),
           Container(
-            //height: 80,
-            //width: double.infinity,
             child: SearchBar(),
           ),
         ],
@@ -77,7 +68,7 @@ class MapSampleState extends State<MapSample> {
       floatingActionButton: FloatingActionButton(
         onPressed: _goToCurrent,
         backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
+        foregroundColor: Color.fromRGBO(147, 0, 47, 1),
         tooltip: 'Get Location',
         child: Icon(Icons.my_location),
       ),
@@ -99,25 +90,6 @@ class MapSampleState extends State<MapSample> {
       controller.animateCamera(CameraUpdate.newCameraPosition(_currentPos));
     }
   }
-
-  Future<void> goToCoordinate(double lat, double long) async {
-    if (enableGestures) {
-      final Geolocator geolocator = Geolocator()
-        ..placemarkFromCoordinates(lat, long);
-
-      // var currentLocation = await geolocator.getCurrentPosition(
-      //     desiredAccuracy: LocationAccuracy.best);
-
-      CameraPosition _pointPos =
-          CameraPosition(target: LatLng(lat, long), zoom: 19.03557586669922);
-
-      final GoogleMapController controller = await _controller.future;
-      controller.animateCamera(CameraUpdate.newCameraPosition(_pointPos));
-      //final GoogleMapController controller = await _controller.future;
-      controller.animateCamera(CameraUpdate.newCameraPosition(_pointPos));
-    }
-  }
-  ////
 
   Future<void> _goToHall8th() async {
     globals.showMap = true;

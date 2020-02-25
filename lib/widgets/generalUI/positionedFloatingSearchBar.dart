@@ -1,16 +1,10 @@
-//import 'dart:html';
-
-import 'package:concordi_around/main.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_google_places/flutter_google_places.dart';
-import 'package:geocoder/geocoder.dart';
-import 'package:google_maps_webservice/places.dart';
 import "package:concordi_around/database/database.dart";
 
 bool isTyping = true;
 String campus = "SGW";
+
 class SearchBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -27,9 +21,9 @@ class SearchBar extends StatelessWidget {
               child: isTyping
                   ? IconButton(
                       splashColor: Colors.grey,
-                     icon: Icon(Icons.menu),
-                      onPressed: () =>Scaffold.of(context).openDrawer(),
-                      )
+                      icon: Icon(Icons.menu),
+                      onPressed: () => Scaffold.of(context).openDrawer(),
+                    )
                   : IconButton(
                       splashColor: Colors.grey,
                       icon: Icon(Icons.menu),
@@ -52,28 +46,18 @@ class SearchBar extends StatelessWidget {
                 },
               ),
             ),
-           Padding(
+            Padding(
               padding: const EdgeInsets.only(right: 8.0),
-               child:
-                RaisedButton(
-                  child: Text(campus),
-                  textColor: Colors.white,
-                  color: Color.fromRGBO(147, 35, 57, 1),
-                  shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(50)),
-                  onPressed: (){
-                  //   setState(() {
-                  //    //Use this at toggle text between SGW and Loyola
-                  //    if(campus == "SGW")
-                  //    campus = "LOY";
-                  //    else
-                  //    campus = "SGW";
-                  //   },
-                  //   );
-                  },
+              child: RaisedButton(
+                child: Text(campus),
+                textColor: Colors.white,
+                color: Color.fromRGBO(147, 35, 57, 1),
+                shape: RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(50)),
+                onPressed: () {},
               ),
             ),
           ],
-          //drawer: Drawer(),
         ),
       ),
     );
@@ -120,17 +104,9 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
         onTap: () {
           //print(suggestionList[index].getTitke());
           Coordinate selected = (suggestionList[index]);
-          //var ms = new MapSampleState();
-          //ms.goToCoordinate(selected.getLatitude(), selected.getLongitude());
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) =>
-                  MapSample(selected.getLatitude(), selected.getLongitude()),
-            ),
-          );
+          Navigator.pop(context);
         },
-        leading: Icon(Icons.location_city),
+        leading: Icon(Icons.place),
         title: Text(suggestionList[index].getTitle()),
       ),
       itemCount: suggestionList.length,
