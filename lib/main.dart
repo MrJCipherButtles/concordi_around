@@ -25,25 +25,7 @@ void main() async {
 
   final bean = PostBean(_adapter);
 
-  sb.write('Creating table ...');
-  await bean.createTable(ifNotExists: true);
-  sb.writeln(' successful!');
-  sb.writeln('--------------');
-
-  // Insert some posts
-  sb.writeln('Inserting sample rows ...');
-  int id1 = await bean
-      .update(new Post.make(3, 'Coffee?', 4.5, false, DateTime.now()));
-  sb.writeln('Inserted successfully row with id: $id1!');
-  int id2 =
-  await bean.update(new Post.make(4, 'Sure!', 5.0, true, DateTime.now()));
-  sb.writeln('Inserted successfully row with id: $id2!');
-  /*
-  int id3 =
-      await bean.insert(new Post.make(3, null, 5.0, true, DateTime.now()));
-  sb.writeln('Inserted successfully row with id: $id3!');
-  */
-  sb.writeln('--------------');
+  int id1 = 3;
 
   // Find one post
   sb.writeln('Reading row with id $id1 ...');
@@ -63,15 +45,6 @@ void main() async {
   sb.writeln(' successful!');
   sb.writeln('--------------');
 
-  // Find one post
-  sb.writeln('Reading row with $id1 to check the update ...');
-  post1 = await bean.find(id1);
-  sb.writeln(post1);
-  sb.writeln('--------------');
-
-  sb.writeln('Removing row with id $id1 ...');
-  await bean.remove(id1);
-  sb.writeln('--------------');
 
   // Find all posts
   sb.writeln('Reading all rows ...');

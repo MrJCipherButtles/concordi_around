@@ -34,6 +34,7 @@ dependencies:
   sqflite:
   jaguar_orm: ^2.2.7
   jaguar_query_sqflite: ^2.2.11
+  path_provider:
 
 dev_dependencies:
   flutter_test:
@@ -48,6 +49,8 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
+  assets:
+    - assets/naima.db
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
