@@ -44,15 +44,15 @@ class MapSampleState extends State<MapSample> {
           Container(
               child: GoogleMap(
             mapType: MapType.normal,
-            myLocationEnabled: false,
-            compassEnabled: false,
-            indoorViewEnabled: false,
+            myLocationEnabled: true,
+            compassEnabled: true,
+            indoorViewEnabled: true,
             scrollGesturesEnabled: enableGestures,
             rotateGesturesEnabled: enableGestures,
             tiltGesturesEnabled: enableGestures,
             zoomGesturesEnabled: enableGestures,
             initialCameraPosition:
-                CameraPosition(target: LatLng(45.49715, -73.57878), zoom: 18),
+                CameraPosition(target: LatLng(49.497593, -55.578487), zoom: 19.03557586669922),
             //CameraPosition(target: _initialPosition, zoom:18.5),
             //throws Failed assertion: line 22 of package google_maps_flutter/src/camera.dart
             onMapCreated: (GoogleMapController controller) {
@@ -60,15 +60,15 @@ class MapSampleState extends State<MapSample> {
             },
             onCameraMove: (CameraPosition cameraPosition) {
               if (IsWithinHall(cameraPosition.target) &&
-                  cameraPosition.zoom > 18.5) {
+                  cameraPosition.zoom > 25) {
                 _goToHall8th();
               }
             },
           )),
           IndexedStackVisibility(),
           Container(
-            height: 80,
-            width: double.infinity,
+            //height: 80,
+            //width: double.infinity,
             child: SearchBar(),
           ),
         ],
@@ -109,7 +109,7 @@ class MapSampleState extends State<MapSample> {
       //     desiredAccuracy: LocationAccuracy.best);
 
       CameraPosition _pointPos =
-          CameraPosition(target: LatLng(lat, long), zoom: 19.0);
+          CameraPosition(target: LatLng(lat, long), zoom: 19.03557586669922);
 
       final GoogleMapController controller = await _controller.future;
       controller.animateCamera(CameraUpdate.newCameraPosition(_pointPos));
