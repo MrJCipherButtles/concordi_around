@@ -59,9 +59,4 @@ class DisplayBuildingList extends State<DisplayBuildingListManager> {
     _myBuildingList.add(new Building(
         "Engineering and Video", "EV", "none", "1495-1505", "Guy"));
   }
-
-  List<Building> getBuildingList() {
-    print(_myBuildingList[0].toString());
-    return _myBuildingList;
-  }
 }

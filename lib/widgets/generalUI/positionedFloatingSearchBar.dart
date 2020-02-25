@@ -19,6 +19,7 @@ class _PositionedFloatingSearchBarState
       children: <Widget>[
       Container(
         margin: new EdgeInsets.only(left: 15.0, top: 25.0, right: 15.0),
+        padding: EdgeInsets.only(bottom: 10),
         // top: MediaQuery.of(context).padding.top + 5.0,
         // right: 15,
         // left: 15,
@@ -74,8 +75,8 @@ class _PositionedFloatingSearchBarState
           ),
         ),
       ),
+      
       isTyping ? SearchMenuListOption() : Container(),
-      isTyping ? DisplayBuildingListManager(): Container(),
     ]);
   }
 }
