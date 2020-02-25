@@ -6,24 +6,21 @@ import 'Path.dart';
 import 'PortalCoordinate.dart';
 
 class Floor {
-  final String _floorLevel;
-  Set<Set<Coordinate>> _floorPolygons = <Set<Coordinate>>{};
+  final String _floor;
+  Set<Set<Coordinate>> _polygons = <Set<Coordinate>>{};
   Set<Coordinate> _coordinates = HashSet<Coordinate>();
-  Path _path;
 
-  Floor(this._floorLevel, {coordinates, floorPolygons}) {
+  Floor(this._floor, {coordinates, polygons}) {
     _coordinates = coordinates;
-    _floorPolygons = floorPolygons;
+    _polygons = polygons;
   }
 
-  String get floorLevel => _floorLevel;
-  Set<Set<Coordinate>> get floorPolygons => _floorPolygons;
+  String get floor => _floor;
+  Set<Set<Coordinate>> get polygons => _polygons;
   Set<Coordinate> get coordinates => _coordinates;
-  Path get path => _path;
 
-  set floorPolygons(Set<Set<Coordinate>> floorPolygons) => _floorPolygons = floorPolygons;
+  set polygons(Set<Set<Coordinate>> polygons) => _polygons = polygons;
   set coordinates(Set<Coordinate> coordinates) => _coordinates = coordinates;
-  set path(Path path) => _path = path;
 
   //returns a customized list of coordinates based on the types wanted
   List<Coordinate> coordinatesByGivenTypes(Iterable<String> types) {
@@ -47,8 +44,8 @@ class Floor {
       //We care only about portal coordinates
       if (coordinate is PortalCoordinate) {
         //that can get us to the destination floor.
-        for (var validExit in coordinate.adjCoordinates) {
-          if (validExit.floorLevel == nextFloor) {
+        for (var adjacentExitCoordinate in coordinate.adjCoordinates) {
+          if (adjacentExitCoordinate.floor == nextFloor) {
             //If disability is true
             if (isDisabilityFriendly) {
               //Add the exits that are disability-friendly
@@ -69,7 +66,7 @@ class Floor {
   }
 
   //...Should we add more specialized filter methods such as the 2 above,
-  //...Should we provide singular add methods for _floorPolygons and _coordinates?
+  //...Should we provide singular add methods for _polygons and _coordinates?
 
   // Returns list of all paths from 's' to 'd'
   static List<Path> _getAllPathsFromSourceToDestination(Coordinate s, Coordinate d) {
@@ -118,9 +115,11 @@ class Floor {
 
   //returns the shortest path
   Path shortestPath(Coordinate s, Coordinate d) {
-    assert (s.floorLevel == _floorLevel && d.floorLevel == _floorLevel && s != d);
-    _path = _findShortestPath(_getAllPathsFromSourceToDestination(s, d));
-    return _path;
+    assert (s != null && d != null && s.floor == _floor && d.floor == _floor);
+    if (s == d) {
+      return Path(<Coordinate>[s, d]);
+    }
+    return _findShortestPath(_getAllPathsFromSourceToDestination(s, d));
   }
 
   //finds the shortest path
@@ -132,9 +131,5 @@ class Floor {
       }
     }
     return shortestPath;
-  }
-
-  void clearPath() {
-    _path = null;
   }
 }

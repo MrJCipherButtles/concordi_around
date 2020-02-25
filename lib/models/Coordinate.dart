@@ -3,20 +3,20 @@ import 'dart:collection';
 abstract class Coordinate {
   final double _lat;
   final double _lng;
-  final String _floorLevel;
+  final String _floor;
   final String _building;
   final String _campus;
   String _type;
   Set<Coordinate> _adjCoordinates = HashSet<Coordinate>();
 
-  Coordinate(this._lat, this._lng, this._floorLevel, this._building, this._campus, {type, adjCoordinates}) {
+  Coordinate(this._lat, this._lng, this._floor, this._building, this._campus, {type, adjCoordinates}) {
     _type = type;
     _adjCoordinates = adjCoordinates;
   }
 
   double get lat => _lat;
   double get lng => _lng;
-  String get floorLevel => _floorLevel;
+  String get floor => _floor;
   String get building => _building;
   String get campus => _campus;
   String get type => _type;

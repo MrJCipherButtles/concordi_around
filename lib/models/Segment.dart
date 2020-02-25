@@ -18,7 +18,7 @@ class Segment {
     //A segment is only false when source and destination are both not disability friendly
     //e.g. top floor to bottom floor returns false, but stairs to classroom on the same floor returns true
     //There is only a concern for disability when traversing different floors
-    if (_source is PortalCoordinate && _destination is PortalCoordinate && _source.floorLevel != _destination.floorLevel) {
+    if (_source is PortalCoordinate && _destination is PortalCoordinate && _source.floor != _destination.floor) {
       return ((_source as PortalCoordinate).isDisabilityFriendly && (_destination as PortalCoordinate).isDisabilityFriendly);
     }
     //else one coordinate must not be a portal; therefore, true by default
