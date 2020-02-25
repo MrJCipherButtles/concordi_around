@@ -46,10 +46,19 @@ class DisplayBuildingList extends State<DisplayBuildingListManager> {
         flex: 8,
         child: Container(
             color: Colors.white,
-            child: ListView(children: <Widget>[
-              Text(_myBuildingList[0].toString()),
-              Text("Item 2")
-            ])));
+            child: ListView.separated(
+              itemCount: _myBuildingList.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(_myBuildingList[index].toString(),),
+                  onTap: () {},
+                );
+              },
+              separatorBuilder: (context, index) {
+                return Divider();
+              },
+              )
+            ));
   }
 
   void _createBuildingList() {
@@ -58,5 +67,7 @@ class DisplayBuildingList extends State<DisplayBuildingListManager> {
         .add(new Building("Henry F. Hall", "H", "none", "1455", "Maisonneuve"));
     _myBuildingList.add(new Building(
         "Engineering and Video", "EV", "none", "1495-1505", "Guy"));
+    _myBuildingList.add(new Building(
+        "John Molson School of Business", "MB", "none", "1495-1505", "Guy"));
   }
 }

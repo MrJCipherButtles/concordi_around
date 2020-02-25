@@ -11,6 +11,7 @@ class SearchMenuListOption extends StatelessWidget {
         children: <Widget>[
           Row(children: <Widget>[
         Expanded(flex: 1, child: BuildingManager(),),
+        Expanded(flex: 1, child: BuildingManager(),),
         Expanded(flex: 1, child: BuildingManager(),)
       ]),
       SizedBox(height: 5),
