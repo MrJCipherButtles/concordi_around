@@ -1,9 +1,8 @@
 
 import 'dart:collection';
 
-import 'Coordinate.dart';
-import 'Path.dart';
-import 'PortalCoordinate.dart';
+import 'coordinate.dart';
+import 'path.dart';
 
 class Floor {
   final String _floor;

@@ -1,6 +1,6 @@
 
-import 'Coordinate.dart';
-import 'Segment.dart';
+import 'coordinate.dart';
+import 'segment.dart';
 
 class Path {
   final List<Segment> _segments = <Segment>[];

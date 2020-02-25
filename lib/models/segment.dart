@@ -1,7 +1,6 @@
 import 'dart:math';
 
-import 'Coordinate.dart';
-import 'PortalCoordinate.dart';
+import 'coordinate.dart';
 
 class Segment {
 

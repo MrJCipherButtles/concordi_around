@@ -1,8 +1,8 @@
 import 'dart:collection';
 
-import 'Coordinate.dart';
-import 'Floor.dart';
-import 'Path.dart';
+import 'coordinate.dart';
+import 'floor.dart';
+import 'path.dart';
 
 class Building {
   Set<Coordinate> _polygon;

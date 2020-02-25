@@ -48,3 +48,30 @@ abstract class Coordinate {
   @override
   String toString() => _type;
 }
+
+class PortalCoordinate extends Coordinate {
+
+  bool _isDisabilityFriendly;
+
+  PortalCoordinate(lat, lng, floorLevel, building, campus, {type, adjCoordinates, isDisabilityFriendly = false}) :
+        super(lat, lng, floorLevel, building, campus, type:type, adjCoordinates:adjCoordinates) {
+    _isDisabilityFriendly = isDisabilityFriendly;
+  }
+
+  bool get isDisabilityFriendly => _isDisabilityFriendly;
+
+  set isDisabilityFriendly(bool isDisabilityFriendly) => _isDisabilityFriendly = isDisabilityFriendly;
+}
+
+class RoomCoordinate extends Coordinate {
+  String _roomId;
+
+  RoomCoordinate(lat, lng, floorLevel, building, campus, {type, adjCoordinates, roomId}) :
+        super(lat, lng, floorLevel, building, campus, type:type, adjCoordinates:adjCoordinates) {
+    _roomId = roomId;
+  }
+
+  String get roomId => _roomId;
+
+  set roomId(String roomId) => _roomId = roomId;
+}
