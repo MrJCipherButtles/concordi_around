@@ -4,7 +4,6 @@ import 'package:concordi_around/widgets/generalUI/sidebarDrawer.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:concordi_around/globals' as globals;
 import 'widgets/mapUI/FloorSelector.dart';
 
 void main() => runApp(MyApp());
@@ -20,19 +19,20 @@ class MyApp extends StatelessWidget {
 }
 
 class MapSample extends StatefulWidget {
+ 
+
   @override
   State<MapSample> createState() => MapSampleState();
 }
 
 class MapSampleState extends State<MapSample> {
-
   Completer<GoogleMapController> _controller = Completer();
   bool enableGestures = true;
 
   @override
   Widget build(BuildContext context) {
 
-    bool showFloorSelector = false;
+    bool showFloorSelector = true;
     
     return MaterialApp(
       home :Scaffold(
@@ -50,10 +50,8 @@ class MapSampleState extends State<MapSample> {
             tiltGesturesEnabled: true,
             zoomGesturesEnabled: true,
             initialCameraPosition:
-                CameraPosition(target: LatLng(45.497593, -73.578487)),
-            //CameraPosition(target: _initialPosition, zoom:18.5),
-            //throws Failed assertion: line 22 of package google_maps_flutter/src/camera.dart
-            onMapCreated: (GoogleMapController controller) {
+                CameraPosition(target: LatLng(49.497593, -55.578487), zoom: 19.03557586669922),
+           onMapCreated: (GoogleMapController controller) {
               _controller.complete(controller);
               _goToCurrent();
             },
@@ -67,18 +65,18 @@ class MapSampleState extends State<MapSample> {
               }
             },
           )),
-          PositionedFloatingSearchBar(),
+          SearchBar(),
           FloorSelector(
             showFloorSelector: showFloorSelector,
             selectedFloor: (int val) => print("Clicked on index $val"),
           ),
         ],
       ),
-      drawer: SidebarDrawer(), 
+      drawer: SidebarDrawer(),
       floatingActionButton: FloatingActionButton(
         onPressed: _goToCurrent,
         backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
+        foregroundColor: Color.fromRGBO(147, 0, 47, 1),
         tooltip: 'Get Location',
         child: Icon(Icons.my_location),
       ),
@@ -87,18 +85,18 @@ class MapSampleState extends State<MapSample> {
   }
 
   Future<void> _goToCurrent() async {
-    if(enableGestures){
-    final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
+    if (enableGestures) {
+      final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
 
-    var currentLocation = await geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.best);
+      var currentLocation = await geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.best);
 
-    CameraPosition _currentPos = CameraPosition(
-        target: LatLng(currentLocation.latitude, currentLocation.longitude),
-        zoom: 18.5);
+      CameraPosition _currentPos = CameraPosition(
+          target: LatLng(currentLocation.latitude, currentLocation.longitude),
+          zoom: 18.5);
 
-    final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(_currentPos));
+      final GoogleMapController controller = await _controller.future;
+      controller.animateCamera(CameraUpdate.newCameraPosition(_currentPos));
     }
   }
 
