@@ -207,13 +207,13 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
         onTap: () {
           //print(suggestionList[index].getName());
           Room selected = (suggestionList[index]);
-          // var ms = new MapSampleState();
+           var ms = new MapSampleState();
           
-          // ms.goToCoordinate(selected.getLatitude(), selected.getLongitude());
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => MapSample())
-          );
+           ms.goToCoordinate(selected.getLatitude(), selected.getLongitude());
+           Navigator.push(
+             context,
+             MaterialPageRoute(builder: (context) => MapSample(45.49715, -73.57878))
+           );
           
           
         },

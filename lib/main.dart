@@ -14,33 +14,26 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Google Maps Demo',
-      home: MapSample(),
+      home: MapSample(0, 0),
     );
   }
 }
 
 class MapSample extends StatefulWidget {
-   double lat = 45.497593;
-   double lng =-73.578487;
-   MapSampleState (double lat, double lng){
-this.lat= lat;
-this.lng= lng;
+  double lat;
+  double lng;
+  MapSample(double lat, double lng) {
+    this.lat = lat;
+    this.lng = lng;
   }
 
   @override
-  State<MapSample> createState() => MapSampleState(lat, lng);
+  State<MapSample> createState() => MapSampleState();
 }
 
 class MapSampleState extends State<MapSample> {
-   double lat = 45.497593;
-   double lng =-73.578487;
-  MapSampleState (double lat, double lng){
-this.lat= lat;
-this.lng= lng;
-  }
   Completer<GoogleMapController> _controller = Completer();
   bool enableGestures = true;
-
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +52,7 @@ this.lng= lng;
             tiltGesturesEnabled: enableGestures,
             zoomGesturesEnabled: enableGestures,
             initialCameraPosition:
-                CameraPosition(target: LatLng(lat, lng)),
+                CameraPosition(target: LatLng(45.49715, -73.57878), zoom: 18),
             //CameraPosition(target: _initialPosition, zoom:18.5),
             //throws Failed assertion: line 22 of package google_maps_flutter/src/camera.dart
             onMapCreated: (GoogleMapController controller) {
