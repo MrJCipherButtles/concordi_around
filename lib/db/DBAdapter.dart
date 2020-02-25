@@ -3,7 +3,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' as path;
 
 class DBAdapter {
-  static final int _version = 1;
+  static final int _version = 2;
   SqfliteAdapter _adapter;
 
 

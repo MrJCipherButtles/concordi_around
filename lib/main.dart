@@ -26,17 +26,17 @@ void main() async {
   final bean = PostBean(_adapter);
 
   sb.write('Creating table ...');
-  await bean.createTable();
+  await bean.createTable(ifNotExists: true);
   sb.writeln(' successful!');
   sb.writeln('--------------');
 
   // Insert some posts
   sb.writeln('Inserting sample rows ...');
   int id1 = await bean
-      .insert(new Post.make(3, 'Coffee?', 4.5, false, DateTime.now()));
+      .update(new Post.make(3, 'Coffee?', 4.5, false, DateTime.now()));
   sb.writeln('Inserted successfully row with id: $id1!');
   int id2 =
-  await bean.insert(new Post.make(4, 'Sure!', 5.0, true, DateTime.now()));
+  await bean.update(new Post.make(4, 'Sure!', 5.0, true, DateTime.now()));
   sb.writeln('Inserted successfully row with id: $id2!');
   /*
   int id3 =
