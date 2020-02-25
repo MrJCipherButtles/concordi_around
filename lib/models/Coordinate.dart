@@ -25,7 +25,24 @@ abstract class Coordinate {
   set type(String type) => _type = type;
   set adjCoordinates(Set<Coordinate> adjCoordinates) => _adjCoordinates = adjCoordinates;
 
+  //if I am your neighbor, then you must be my neighbor
   bool addAdjCoordinate(Coordinate coordinate) => _adjCoordinates.add(coordinate) && coordinate._adjCoordinates.add(this);
+
+  bool isAdjacent(Coordinate anotherCoordinate) {
+    //A coordinate is adjacent to itself
+    if (this == anotherCoordinate) {
+      return true;
+    }
+    //Check adjacency list
+    for (var adjCoordinate in _adjCoordinates) {
+      if (adjCoordinate == anotherCoordinate) {
+        //In adjacency list
+        return true;
+      }
+    }
+    //Not in adjacency list
+    return false;
+  }
 
   // Might want to define a better toString...
   @override
