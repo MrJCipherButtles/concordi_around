@@ -8,9 +8,8 @@ class Segment {
   final Coordinate _source;
   final Coordinate _destination;
 
-  Segment(this._source, this._destination){
-    assert (_source != _destination);
-  }
+  //Although trivial, a segment from one point to the same should be possible
+  Segment(this._source, this._destination);
 
   Coordinate get source => _source;
   Coordinate get destination => _destination;
@@ -18,8 +17,9 @@ class Segment {
   bool isDisabilityFriendly(){
     //A segment is only false when source and destination are both not disability friendly
     //e.g. top floor to bottom floor returns false, but stairs to classroom on the same floor returns true
-    if (_source is PortalCoordinate && _destination is PortalCoordinate) {
-      return (_source as PortalCoordinate).isDisabilityFriendly || (_destination as PortalCoordinate).isDisabilityFriendly;
+    //There is only a concern for disability when traversing different floors
+    if (_source is PortalCoordinate && _destination is PortalCoordinate && _source.floorLevel != _destination.floorLevel) {
+      return ((_source as PortalCoordinate).isDisabilityFriendly && (_destination as PortalCoordinate).isDisabilityFriendly);
     }
     //else one coordinate must not be a portal; therefore, true by default
     return true;
