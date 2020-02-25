@@ -1,3 +1,4 @@
+import 'package:concordi_around/searchMenu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import "package:concordi_around/database/database.dart";
@@ -5,32 +6,47 @@ import "package:concordi_around/database/database.dart";
 bool isTyping = true;
 String campus = "SGW";
 
-class SearchBar extends StatelessWidget {
+class SearchBar extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _SearchBarState();
+  }
+}
+
+class _SearchBarState extends State<SearchBar> {
+
+  bool isTyping = false;
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      top: MediaQuery.of(context).padding.top + 5.0,
-      right: 15,
-      left: 15,
-      child: Container(
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20), color: Colors.white),
-        child: Row(
-          children: <Widget>[
-            Container(
-              child: isTyping
-                  ? IconButton(
-                      splashColor: Colors.grey,
-                      icon: Icon(Icons.menu),
-                      onPressed: () => Scaffold.of(context).openDrawer(),
-                    )
-                  : IconButton(
-                      splashColor: Colors.grey,
-                      icon: Icon(Icons.menu),
-                      onPressed: () => Scaffold.of(context).openDrawer(),
-                    ),
-            ),
-            Expanded(
+    return Column(
+      children: <Widget>[
+      Container(
+        margin: new EdgeInsets.only(left: 15.0, top: MediaQuery.of(context).padding.top + 5.0, right: 15.0),
+        padding: EdgeInsets.only(bottom: 10),
+        child: Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20), color: Colors.white),
+          child: Row(
+            children: <Widget>[
+              Container(
+                child: isTyping
+                    ? IconButton(
+                        splashColor: Colors.grey,
+                        icon: Icon(Icons.arrow_back),
+                        onPressed: () {
+                          FocusScope.of(context).unfocus();
+                          setState(() {
+                            isTyping = false;
+                          });
+                        },
+                      )
+                    : IconButton(
+                        splashColor: Colors.grey,
+                        icon: Icon(Icons.menu),
+                        onPressed: () => Scaffold.of(context).openDrawer(),
+                      ),
+              ),
+              Expanded(
               child: TextField(
                 cursorColor: Colors.black,
                 keyboardType: TextInputType.text,
@@ -39,16 +55,24 @@ class SearchBar extends StatelessWidget {
                     border: InputBorder.none,
                     contentPadding: EdgeInsets.symmetric(horizontal: 15),
                     hintText: "Search..."),
-                onTap: () {
-                  showSearch(
-                      context: context,
-                      delegate: PositionedFloatingSearchBar());
+                onChanged: (String text) {
+                  setState(() {
+                    isTyping = false;
+                  });
+                  // showSearch(
+                  //     context: context,
+                  //     delegate: PositionedFloatingSearchBar());
+                },
+                onTap: (){
+                  setState(() {
+                    isTyping= true;
+                  });
                 },
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(right: 8.0),
-              child: RaisedButton(
+              Padding(
+                padding: const EdgeInsets.only(right: 8.0),
+                child: RaisedButton(
                 child: Text(campus),
                 textColor: Colors.white,
                 color: Color.fromRGBO(147, 35, 57, 1),
@@ -56,11 +80,12 @@ class SearchBar extends StatelessWidget {
                     borderRadius: new BorderRadius.circular(50)),
                 onPressed: () {},
               ),
-            ),
-          ],
+              )],
+          ),
         ),
       ),
-    );
+      isTyping ? SearchMenuListOption() : Container(),
+    ]);
   }
 }
 
@@ -90,9 +115,6 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
   }
 
   @override
-  Widget buildResults(BuildContext context) {}
-
-  @override
   Widget buildSuggestions(BuildContext context) {
     final suggestionList = query.isEmpty
         ? recentSearchedRooms
@@ -111,5 +133,11 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
       ),
       itemCount: suggestionList.length,
     );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    // TODO: implement buildResults
+    return null;
   }
 }

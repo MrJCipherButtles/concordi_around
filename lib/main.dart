@@ -32,7 +32,7 @@ class MapSampleState extends State<MapSample> {
   @override
   Widget build(BuildContext context) {
 
-    bool showFloorSelector = true;
+    bool showFloorSelector = false;
     
     return MaterialApp(
       home :Scaffold(
