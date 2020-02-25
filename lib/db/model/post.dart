@@ -1,11 +1,9 @@
 import 'dart:async';
 import 'package:jaguar_query/jaguar_query.dart';
 import 'package:jaguar_orm/jaguar_orm.dart';
-// import 'package:jaguar_query_sqflite/jaguar_query_sqflite.dart';
 
 part 'post.jorm.dart';
 
-// The model
 class Post {
   Post();
 

@@ -7,7 +7,8 @@ import 'package:jaguar_query_sqflite/jaguar_query_sqflite.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' as path;
 
-import 'db/post.dart';
+import 'db/model/coordinate.dart';
+import 'db/model/post.dart';
 
 SqfliteAdapter _adapter;
 
@@ -23,32 +24,47 @@ void main() async {
   sb.writeln(' successful!');
   sb.writeln('--------------');
 
-  final bean = PostBean(_adapter);
+  final postBean = PostBean(_adapter);
+  final coordinateBean = CoordinateBean(_adapter);
 
   int id1 = 3;
 
+  // Create a coordinate table
+  sb.writeln('Creating coordinate table ....');
+  await coordinateBean.createTable(ifNotExists: true);
+  sb.writeln('Created coordinate table ....');
+
+
+  // Insert some coordinates
+  //  sb.writeln('Inserting sample rows ...');
+  //  int cid1 = await coordinateBean
+  //      .insert(new Coordinate.make(1, 40.5, 50.9));
+  //  sb.writeln('Inserted successfully row with id: $cid1!');
+
+
+
   // Find one post
   sb.writeln('Reading row with id $id1 ...');
-  Post post1 = await bean.find(id1);
+  Post post1 = await postBean.find(id1);
   sb.writeln(post1);
   sb.writeln('--------------');
 
   // Find all posts
   sb.writeln('Reading all rows ...');
-  List<Post> posts = await bean.getAll();
+  List<Post> posts = await postBean.getAll();
   posts.forEach((p) => sb.writeln(p));
   sb.writeln('--------------');
 
   // Update a post
   sb.write('Updating a column in row with id $id1 ...');
-  await bean.updateReadField(id1, true);
+  await postBean.updateReadField(id1, true);
   sb.writeln(' successful!');
   sb.writeln('--------------');
 
 
   // Find all posts
   sb.writeln('Reading all rows ...');
-  posts = await bean.getAll();
+  posts = await postBean.getAll();
   posts.forEach((p) => sb.writeln(p));
   sb.writeln('--------------');
 
