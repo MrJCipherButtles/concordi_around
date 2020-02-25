@@ -27,14 +27,9 @@ class SearchBar extends StatelessWidget {
               child: isTyping
                   ? IconButton(
                       splashColor: Colors.grey,
-                      icon: Icon(Icons.arrow_back),
-                      onPressed: () {
-                        showSearch(
-                            context: context,
-                            delegate: PositionedFloatingSearchBar());
-                        // }=> Scaffold.of(context).openDrawer(),
-                      },
-                    )
+                     icon: Icon(Icons.menu),
+                      onPressed: () =>Scaffold.of(context).openDrawer(),
+                      )
                   : IconButton(
                       splashColor: Colors.grey,
                       icon: Icon(Icons.menu),
