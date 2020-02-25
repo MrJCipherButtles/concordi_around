@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:concordi_around/globals' as globals;
 
 class PositionedFloorSelectorAndBack extends StatefulWidget {
+  Function(int) floorIndex;
+
+
+
   @override
   State<StatefulWidget> createState() {
     return _PositionedFloorSelectorAndBackState();
@@ -11,6 +15,9 @@ class PositionedFloorSelectorAndBack extends StatefulWidget {
 
 class _PositionedFloorSelectorAndBackState
     extends State<PositionedFloorSelectorAndBack> {
+
+  List<bool> selectedFloor = [false, true]; // 8th floor selected
+
   Widget build(BuildContext context) {
         return Visibility(
           maintainSize: true,
@@ -28,6 +35,7 @@ class _PositionedFloorSelectorAndBackState
             child: RotatedBox(
               quarterTurns: 1,
               child: ToggleButtons(
+                selectedColor: Colors.white,
                 color: Colors.black,
                 fillColor: Colors.grey,
                 borderColor: Colors.grey,
@@ -35,10 +43,11 @@ class _PositionedFloorSelectorAndBackState
                   RotatedBox(quarterTurns: 3, child: Text("9")),
                   RotatedBox(quarterTurns: 3, child: Text("8")),
                 ],
-                isSelected: [false, true],
+                isSelected: selectedFloor,
                 onPressed: (int index) {
                   setState(() {
-                    // set bool here
+                    selectedFloor[0] = !selectedFloor[0];
+                    selectedFloor[1] = !selectedFloor[1];
                   });
                 },
               ),
