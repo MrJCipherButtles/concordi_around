@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_google_places/flutter_google_places.dart';
-import 'package:geocoder/geocoder.dart';
-import 'package:google_maps_webservice/places.dart';
 
 class PositionedFloatingSearchBar extends StatefulWidget {
   @override
@@ -14,7 +11,6 @@ class PositionedFloatingSearchBar extends StatefulWidget {
 class _PositionedFloatingSearchBarState
     extends State<PositionedFloatingSearchBar> {
 
-      GoogleMapsPlaces _places = GoogleMapsPlaces(apiKey: "AIzaSyAzsZ2URCqgDm9aJcduUyXVot5TEIANu6w");
       bool isTyping = false;
       String campus = "SGW";
 
@@ -83,20 +79,6 @@ class _PositionedFloatingSearchBarState
         ),
       ),
     );
-  }
-
-  //Method for google prediction which we most likely wont use
-  Future<Null> displayPrediction(Prediction p) async {
-    if (p != null) {
-      PlacesDetailsResponse detail =
-          await _places.getDetailsByPlaceId(p.placeId);
-      var placeId = p.placeId;
-      double lat = detail.result.geometry.location.lat;
-      double lng = detail.result.geometry.location.lng;
-      var address = await Geocoder.local.findAddressesFromQuery(p.description);
-      print(lat);
-      print(lng);
-    }
   }
 }
 

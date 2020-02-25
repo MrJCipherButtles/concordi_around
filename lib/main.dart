@@ -1,12 +1,11 @@
 import 'dart:async';
 import 'package:concordi_around/widgets/generalUI/positionedFloatingSearchBar.dart';
 import 'package:concordi_around/widgets/generalUI/sidebarDrawer.dart';
-import 'package:concordi_around/widgets/mapUI/floorplanIndexedStackVisibility.dart';
-import 'package:concordi_around/widgets/mapUI/positionedFloorSelectorAndBack.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:concordi_around/globals' as globals;
+import 'widgets/mapUI/FloorSelector.dart';
 
 void main() => runApp(MyApp());
 
@@ -32,6 +31,8 @@ class MapSampleState extends State<MapSample> {
 
   @override
   Widget build(BuildContext context) {
+
+    bool showFloorSelector = false;
     
     return MaterialApp(
       home :Scaffold(
@@ -44,26 +45,33 @@ class MapSampleState extends State<MapSample> {
             myLocationEnabled: false,
             compassEnabled: false,
             indoorViewEnabled: false,
-            scrollGesturesEnabled: enableGestures,
-            rotateGesturesEnabled: enableGestures,
-            tiltGesturesEnabled: enableGestures,
-            zoomGesturesEnabled: enableGestures,
+            scrollGesturesEnabled: true,
+            rotateGesturesEnabled: true,
+            tiltGesturesEnabled: true,
+            zoomGesturesEnabled: true,
             initialCameraPosition:
                 CameraPosition(target: LatLng(45.497593, -73.578487)),
             //CameraPosition(target: _initialPosition, zoom:18.5),
             //throws Failed assertion: line 22 of package google_maps_flutter/src/camera.dart
             onMapCreated: (GoogleMapController controller) {
               _controller.complete(controller);
+              _goToCurrent();
             },
             onCameraMove: (CameraPosition cameraPosition){
-              if(IsWithinHall(cameraPosition.target) && cameraPosition.zoom > 18.5){
-                _goToHall8th();
+              if(IsWithinHall(cameraPosition.target) && cameraPosition.zoom > 16){
+                setState(() {
+                  FloorSelector().createState();
+                  showFloorSelector = true;
+                  print("Inside hall $showFloorSelector");
+                });
               }
             },
           )),
-          FloorplanIndexedStackVisibility(),
           PositionedFloatingSearchBar(),
-          PositionedFloorSelectorAndBack(),
+          FloorSelector(
+            showFloorSelector: showFloorSelector,
+            selectedFloor: (int val) => print("Clicked on index $val"),
+          ),
         ],
       ),
       drawer: SidebarDrawer(), 
@@ -94,21 +102,7 @@ class MapSampleState extends State<MapSample> {
     }
   }
 
-   Future<void> _goToHall8th() async {
-     globals.showMap = true;
-     setState(() {
-                  enableGestures = false;
-                });
-
-    CameraPosition _currentPos = CameraPosition(bearing: 123.31752014160156, target: LatLng(45.49726709926478, -73.57894677668811), tilt: 0.0, zoom: 19.03557586669922);
-
-    final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newLatLng(LatLng(45.49726709926478, -73.57894677668811)));
-    controller.moveCamera(CameraUpdate.newLatLng(LatLng(45.49726709926478, -73.57894677668811)));
-    controller.animateCamera(CameraUpdate.newCameraPosition(_currentPos));
-  }
-
   bool IsWithinHall(LatLng latLng){
-    return LatLngBounds(southwest: LatLng(45.4967, -73.57885), northeast: LatLng(45.49789, -73.57907)).contains(latLng);
+    return LatLngBounds(southwest: LatLng(45.49607, -73.57869), northeast: LatLng(45.49894, -73.57934)).contains(latLng);
   }
 }
