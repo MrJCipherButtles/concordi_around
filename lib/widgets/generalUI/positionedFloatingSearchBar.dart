@@ -1,9 +1,9 @@
 import 'package:concordi_around/searchMenu.dart';
+import 'package:concordi_around/searchMenuSuggestions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import "package:concordi_around/database/database.dart";
 
-bool isTyping = true;
 String campus = "SGW";
 
 class SearchBar extends StatefulWidget {
@@ -15,7 +15,15 @@ class SearchBar extends StatefulWidget {
 
 class _SearchBarState extends State<SearchBar> {
 
-  bool isTyping = false;
+  bool isTyping = false, hasTyped = false;
+  final myController = TextEditingController();
+
+  @override
+  void dispose(){
+    myController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -37,6 +45,7 @@ class _SearchBarState extends State<SearchBar> {
                           FocusScope.of(context).unfocus();
                           setState(() {
                             isTyping = false;
+                            hasTyped = false;
                           });
                         },
                       )
@@ -48,6 +57,7 @@ class _SearchBarState extends State<SearchBar> {
               ),
               Expanded(
               child: TextField(
+                controller: myController,
                 cursorColor: Colors.black,
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.go,
@@ -57,7 +67,14 @@ class _SearchBarState extends State<SearchBar> {
                     hintText: "Search..."),
                 onChanged: (String text) {
                   setState(() {
-                    isTyping = false;
+                    if(myController.text == ''){
+                      isTyping = true;
+                      hasTyped = false;     
+                    }
+                    else{
+                      isTyping = false;
+                      hasTyped = true;
+                    }
                   });
                   // showSearch(
                   //     context: context,
@@ -85,6 +102,7 @@ class _SearchBarState extends State<SearchBar> {
         ),
       ),
       isTyping ? SearchMenuListOption() : Container(),
+      hasTyped ? SearchMenuSuggestionsManager() : Container(),
     ]);
   }
 }
