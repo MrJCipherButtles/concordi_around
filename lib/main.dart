@@ -9,6 +9,8 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' as path;
 
 import 'models/coordinate.dart';
+import 'models/polygon.dart' as uma;
+
 
 SqfliteAdapter _adapter;
 
@@ -26,11 +28,11 @@ void main() async {
 
   final floorBean = FloorBean(_adapter);
   final coordinateBean = CoordinateBean(_adapter);
-
-  int id1 = 3;
+  final polygonBean = new uma.PolygonBean(_adapter);
 
   await coordinateBean.drop();
   await floorBean.drop();
+  await polygonBean.drop();
   // Create a coordinate table
   sb.writeln('Creating coordinate table ....');
   await coordinateBean.createTable(ifNotExists: true);
@@ -41,31 +43,23 @@ void main() async {
   await floorBean.createTable(ifNotExists: true);
   sb.writeln('Created coordinate table ....');
 
-  // Insert some coordinates
-  //  sb.writeln('Inserting sample rows ...');
-  //  int cid1 = await coordinateBean
-  //      .insert(new Coordinate.make(1, 40.5, 50.9));
-  //  sb.writeln('Inserted successfully row with id: $cid1!');
+  await polygonBean.createTable(ifNotExists: true);
 
+  Coordinate coordinate = new Coordinate(lat: 1.0, lng: 1.0, parentId: 4, adjCoordinates: [new Coordinate(lat: 2.0, lng: 2.0), new Coordinate(lat: 3.0, lng: 3.0), new Coordinate(lat: 4.0, lng: 4.0)]);
 
-  List<Coordinate> coordinates;
-  Coordinate coordinate = new Coordinate(id:1, lat: 1.0, lng: 1.0, parentId: 4, adjCoordinates: [new Coordinate(id:7, lat: 2.0, lng: 2.0), new Coordinate(id:8, lat: 3.0, lng: 3.0), new Coordinate(id:11, lat: 4.0, lng: 4.0)]);
-
-  // Floor floor = new Floor(floor:"h831", coordinates: [new Coordinate(id:7, lat: 10.5, lng: 69.0, parentId: 4), new Coordinate(id:8, lat: 42.5, lng: 69.0, parentId: 4), new Coordinate(id:11, lat: 83.5, lng: 49.0, parentId: 5)]);
-  // Floor floor = new Floor(floor:"h831", coordinates: coordinates);
+   Floor floor = new Floor(floor:"h831", coordinates: [new Coordinate(lat: 10.5, lng: 69.0, parentId: 4)],
+   polygons: [new uma.Polygon(boundary:[new Coordinate(lat: 10.5, lng: 69.0, parentId: 4), new Coordinate(lat: 20.5, lng: 69.0, parentId: 4), new Coordinate(lat: 10.5, lng: 19.0, parentId: 4)] )]);
   sb.write('Before Insertion we got Floors');
 
-  coordinates = coordinate.adjCoordinates;
-  print(coordinate);
-
-  // int id5 = await floorBean.insert(floor, cascade: true);
-int id5 = await coordinateBean.insert(coordinate, cascade: true);
+  await floorBean.insert(floor, cascade: true);
 
 
-  sb.write('Inserted Floor with ID $id5');
+//  var cord = await coordinateBean.find(1, preload: true);
+//  print(cord);
+//  sb.write('-----------------------------------');
 
-  var floors = await coordinateBean.find(1.0, 1.0, preload: true);
-  print(floors);
+  var flo = await floorBean.find(1, preload: true);
+  print(flo);
   sb.write('-----------------------------------');
 
   sb.write('Closing the connection ...');

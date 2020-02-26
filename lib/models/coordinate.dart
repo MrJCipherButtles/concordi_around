@@ -1,6 +1,8 @@
 import 'package:concordi_around/models/floor.dart';
+import 'package:concordi_around/models/polygon.dart';
 import 'package:jaguar_query/jaguar_query.dart';
 import 'package:jaguar_orm/jaguar_orm.dart';
+
 part 'coordinate.jorm.dart';
 
 class Coordinate {
@@ -25,6 +27,9 @@ class Coordinate {
 
   @BelongsTo(FloorBean, refCol: 'id', isNullable: true)
   int floor;
+
+  @BelongsTo(PolygonBean, refCol: 'id', isNullable: true)
+  int polygon;
 
   Coordinate(
       {this.id,
@@ -91,10 +96,12 @@ class CoordinateBean extends Bean<Coordinate> with _CoordinateBean {
   String get tableName => 'coordinate';
   CoordinateBean _coordinateBean;
   FloorBean _floorBean;
+  PolygonBean _polygonBean;
 
   CoordinateBean(Adapter adapter) : super(adapter);
 
   FloorBean get floorBean => _floorBean ??= new FloorBean(adapter);
   CoordinateBean get coordinateBean => _coordinateBean ??= new CoordinateBean(adapter);
+  PolygonBean get polygonBean => _polygonBean ??= new PolygonBean(adapter);
 
 }
