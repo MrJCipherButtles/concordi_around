@@ -5,14 +5,14 @@ import 'floor.dart';
 import 'path.dart';
 
 class Building {
-  Set<Coordinate> _polygon;
+  List<Coordinate> _polygon; //A polygon includes a duplicated point for google maps
   Map<String, Floor> _floors = HashMap<String, Floor>();
 
   Building({polygon}){
     _polygon = polygon;
   }
 
-  Set<Coordinate> get polygon => _polygon;
+  List<Coordinate> get polygon => _polygon;
   Map<String,Floor> get floors => _floors;
 
   set floors(Map<String, Floor> floors) => _floors = floors;

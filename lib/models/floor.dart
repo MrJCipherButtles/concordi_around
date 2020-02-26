@@ -6,7 +6,7 @@ import 'path.dart';
 
 class Floor {
   final String _floor;
-  Set<Set<Coordinate>> _polygons = <Set<Coordinate>>{};
+  Set<List<Coordinate>> _polygons = <List<Coordinate>>{}; //A polygon includes a duplicated point for google maps
   Set<Coordinate> _coordinates = HashSet<Coordinate>();
 
   Floor(this._floor, {coordinates, polygons}) {
@@ -15,10 +15,10 @@ class Floor {
   }
 
   String get floor => _floor;
-  Set<Set<Coordinate>> get polygons => _polygons;
+  Set<List<Coordinate>> get polygons => _polygons;
   Set<Coordinate> get coordinates => _coordinates;
 
-  set polygons(Set<Set<Coordinate>> polygons) => _polygons = polygons;
+  set polygons(Set<List<Coordinate>> polygons) => _polygons = polygons;
   set coordinates(Set<Coordinate> coordinates) => _coordinates = coordinates;
 
   //returns a customized list of coordinates based on the types wanted
