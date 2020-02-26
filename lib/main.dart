@@ -49,7 +49,7 @@ void main() async {
 
 
   List<Coordinate> coordinates = new List<Coordinate>();
-  Coordinate coordinate = new Coordinate(id:1, lat: 40.5, lng: 69.0);
+  Coordinate coordinate = new Coordinate(id:1, lat: 40.5, lng: 69.0, parentId: 4);
   coordinates.add(coordinate);
 
   Floor floor = new Floor(floor:"10010", coordinates: coordinates);
