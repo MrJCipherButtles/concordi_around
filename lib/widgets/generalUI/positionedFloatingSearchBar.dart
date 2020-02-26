@@ -101,7 +101,7 @@ class _SearchBarState extends State<SearchBar> {
           ),
         ),
       ),
-      isTyping ? SearchMenuListOption() : Container(),
+      isTyping ? SearchMenuListOption(name: (String building) => {print("$building")}) : Container(),
       hasTyped ? SearchMenuSuggestionsManager() : Container(),
     ]);
   }

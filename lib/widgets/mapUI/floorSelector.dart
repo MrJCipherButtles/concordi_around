@@ -10,7 +10,7 @@ class FloorSelector extends StatefulWidget {
   FloorSelector({this.selectedFloor});
 
   @override
-  State<StatefulWidget> createState([bool showFloorSelector]) {
+  State<StatefulWidget> createState() {
     return _FloorSelectorState();
   }
 }

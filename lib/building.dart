@@ -22,4 +22,8 @@ class Building{
   String toString(){
     return (_buildingCode + " : " + _buildingName);
   }
+
+  String getbuildingName() {
+    return _buildingName;
+  }
 }
