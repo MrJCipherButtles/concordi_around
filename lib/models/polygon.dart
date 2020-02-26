@@ -19,6 +19,8 @@ class Polygon {
     _boundary = boundary;
   }
 
+  List<Coordinate> get boundary => _boundary;
+
   @override
   String toString() {
     return 'Polygon{id: $id, _boundary: $_boundary, floor: $floor}';

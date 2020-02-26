@@ -31,7 +31,9 @@ class Floor {
     return 'Floor{id: $id, _floor: $_floor, _polygons: $_polygons, _coordinates: $_coordinates}';
   }
 
+  String get floor => _floor;
   List<Coordinate> get coordinates => _coordinates;
+  List<Polygon> get polygons => _polygons;
 
 //  String get floor => _floor;
 //  Set<List<Coordinate>> get polygons => _polygons;

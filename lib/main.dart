@@ -53,6 +53,8 @@ void main() async {
 
   await floorBean.insert(floor, cascade: true);
 
+  uma.Polygon poly = new uma.Polygon(boundary:[new Coordinate(lat: 10.5, lng: 69.0, parentId: 4), new Coordinate(lat: 20.5, lng: 69.0, parentId: 4), new Coordinate(lat: 10.5, lng: 19.0, parentId: 4)]);
+  await polygonBean.insert(poly);
 
 //  var cord = await coordinateBean.find(1, preload: true);
 //  print(cord);
@@ -60,6 +62,10 @@ void main() async {
 
   var flo = await floorBean.find(1, preload: true);
   print(flo);
+  sb.write('-----------------------------------');
+
+  var pol = await polygonBean.find(1, preload: true);
+  print(pol);
   sb.write('-----------------------------------');
 
   sb.write('Closing the connection ...');
