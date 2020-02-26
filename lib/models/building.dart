@@ -1,33 +1,18 @@
 import 'dart:collection';
 
-import 'package:jaguar_orm/jaguar_orm.dart';
-
 import 'coordinate.dart';
 import 'floor.dart';
 import 'path.dart';
-import 'package:jaguar_query/jaguar_query.dart';
-
-
-part 'building.jorm.dart';
 
 class Building {
-  
-
   List<Coordinate> _polygon; //A polygon includes a duplicated point for google maps
-  @PrimaryKey()
-  String _building;
   Map<String, Floor> _floors = HashMap<String, Floor>();
 
-
-  Building({building, polygon}){
-    _building = building;
+  Building({polygon}){
     _polygon = polygon;
   }
 
-  @HasMany(CoordinateBean)
   List<Coordinate> get polygon => _polygon;
-
-  @HasMany(FloorBean)
   Map<String,Floor> get floors => _floors;
 
   set floors(Map<String, Floor> floors) => _floors = floors;
@@ -79,12 +64,4 @@ class Building {
     indoorNavigationMap[d.floor] = dFloor.shortestPath(dEntry, d);
     return indoorNavigationMap;
   }
-}
-
-@GenBean()
-class BuildingBean extends Bean<Building> with _BuildingBean {
-  //CampusBean
-
-  final String tableName = 'buildings';
-  BuildingBean(Adapter adapter) : super(adapter);
 }

@@ -38,4 +38,4 @@ lib/generated_plugin_registrant.dart
 android/local.properties
 
 #DB Related
-/lib/db/model/*.jorm.dart
+/lib/models/*.jorm.dart
