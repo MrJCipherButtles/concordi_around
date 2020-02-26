@@ -15,7 +15,7 @@ class Coordinate {
    String _floor;
    String _building;
    String _campus;
-  String _type;
+   String _type;
 
 
   
@@ -47,9 +47,27 @@ class Coordinate {
   String get type => _type;
   List<Coordinate> get adjCoordinates => _adjCoordinates;
 
-  set type(String type) => _type = type;
-//   set adjCoordinates(List<Coordinate> adjCoordinates) => _adjCoordinates = adjCoordinates;
+  //if I am your neighbor, then you must be my neighbor
+  void addAdjCoordinate(Coordinate coordinate) {
+    _adjCoordinates.add(coordinate); 
+    coordinate._adjCoordinates.add(this);
+  } 
 
+   bool isAdjacent(Coordinate anotherCoordinate) {
+    //A coordinate is adjacent to itself
+    if (this == anotherCoordinate) {
+      return true;
+    }
+    //Check adjacency list
+    for (var adjCoordinate in _adjCoordinates) {
+      if (adjCoordinate == anotherCoordinate) {
+        //In adjacency list
+        return true;
+      }
+    }
+    //Not in adjacency list
+    return false;
+  }
 
   
   String toString() => this.id.toString();
@@ -76,7 +94,6 @@ class CoordinateBean extends Bean<Coordinate> with _CoordinateBean {
   String get tableName => 'coordinate';
 
   @override
-  // TODO: implement coordinateBean
   CoordinateBean get coordinateBean {
     _coordinateBean ??= new CoordinateBean(adapter);
     return _coordinateBean;
