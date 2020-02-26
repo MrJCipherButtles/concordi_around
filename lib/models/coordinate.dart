@@ -8,7 +8,7 @@ class Coordinate {
   int id;
 
   @PrimaryKey()
-   double lat;
+   double _lat;
 
   @PrimaryKey()
    double _lng;
@@ -27,13 +27,28 @@ class Coordinate {
 
 
 
-  Coordinate({this.id, parentId, this.lat, lng, floor, building, campus, type, adjCoordinates}) {
+  Coordinate({this.id, this.parentId, lat, lng, floor, building, campus, type, adjCoordinates}) {
     _type = type;
     _adjCoordinates = adjCoordinates;
+    _lat = lat;
+    _lng=lng;
+    _floor = floor;
+    _building = building;
+    _campus= campus;
+
+    
   }
-  
-  
-  
+
+  double get lat => _lat;
+  double get lng => _lng;
+  String get floor => _floor;
+  String get building => _building;
+  String get campus => _campus;
+  String get type => _type;
+  List<Coordinate> get adjCoordinates => _adjCoordinates;
+
+  set type(String type) => _type = type;
+//   set adjCoordinates(List<Coordinate> adjCoordinates) => _adjCoordinates = adjCoordinates;
 
 
   
