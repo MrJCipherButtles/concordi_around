@@ -80,6 +80,7 @@ class MapSampleState extends State<MapSample> {
         ],
       ),
       drawer: SidebarDrawer(),
+      resizeToAvoidBottomInset: false,
       floatingActionButton: FloatingActionButton(
         onPressed: _goToCurrent,
         backgroundColor: Colors.white,

@@ -7,7 +7,6 @@ import 'package:concordi_around/widgets/generalUI/positionedFloatingSearchBar.da
 import './building.dart';
 
 class DisplayBuildingListManager extends StatefulWidget {
-
   final Function(String) name;
 
   DisplayBuildingListManager({this.name});
@@ -33,10 +32,7 @@ class _BuildingManagerState extends State<BuildingManager> {
     return SizedBox(
         height: 70,
         child: RaisedButton(
-            child: Text("Building"),
-            color: Colors.white,
-            onPressed: () {
-            }));
+            child: Text("Building"), color: Colors.white, onPressed: () {}));
   }
 }
 
@@ -54,18 +50,19 @@ class DisplayBuildingList extends State<DisplayBuildingListManager> {
               itemCount: _myBuildingList.length,
               itemBuilder: (context, index) {
                 return ListTile(
-                  title: Text(_myBuildingList[index].toString(),),
+                  title: Text(
+                    _myBuildingList[index].toString(),
+                  ),
                   onTap: () {
+                    Navigator.pop(context);
                     widget.name(_myBuildingList[index].getbuildingName());
-                                        
-                    },  
+                  },
                 );
               },
               separatorBuilder: (context, index) {
                 return Divider();
               },
-              )
-            ));
+            )));
   }
 
   void _createBuildingList() {
