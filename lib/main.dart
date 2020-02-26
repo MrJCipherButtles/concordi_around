@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:concordi_around/db/DBAdapter.dart';
-import 'package:concordi_around/db/model/floor.dart';
+import 'package:concordi_around/models/floor.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
@@ -8,9 +8,7 @@ import 'package:jaguar_query_sqflite/jaguar_query_sqflite.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' as path;
 
-import 'db/model/coordinate.dart';
-import 'db/model/poi.dart';
-import 'db/model/post.dart';
+import 'models/coordinate.dart';
 
 SqfliteAdapter _adapter;
 
@@ -26,13 +24,13 @@ void main() async {
   sb.writeln(' successful!');
   sb.writeln('--------------');
 
-  final postBean = PostBean(_adapter);
-  final coordinateBean = CoordinateBean(_adapter);
   final floorBean = FloorBean(_adapter);
-  final poiBean = PoiBean(_adapter);
+  final coordinateBean = CoordinateBean(_adapter);
 
   int id1 = 3;
 
+  await coordinateBean.drop();
+  await floorBean.drop();
   // Create a coordinate table
   sb.writeln('Creating coordinate table ....');
   await coordinateBean.createTable(ifNotExists: true);
@@ -43,52 +41,25 @@ void main() async {
   await floorBean.createTable(ifNotExists: true);
   sb.writeln('Created coordinate table ....');
 
-  // Create a coordinate table
-  sb.writeln('Creating coordinate table ....');
-  await poiBean.createTable(ifNotExists: true);
-  sb.writeln('Created coordinate table ....');
-
   // Insert some coordinates
   //  sb.writeln('Inserting sample rows ...');
   //  int cid1 = await coordinateBean
   //      .insert(new Coordinate.make(1, 40.5, 50.9));
   //  sb.writeln('Inserted successfully row with id: $cid1!');
 
-    sb.writeln('Inserting sample floor ...');
-    int fid1 = await coordinateBean
-        .insert(new Floor.make(1, 40.5, 50.9));
-    sb.writeln('Inserted successfully row with id: $cid1!');
 
-    sb.writeln('Inserting sample poi ...');
-    int pid1 = await coordinateBean
-        .insert(new Coordinate.make(1, 40.5, 50.9));
-    sb.writeln('Inserted successfully row with id: $cid1!');
+  List<Coordinate> coordinates = new List<Coordinate>();
+  Coordinate coordinate = new Coordinate(id:1, lat: 40.5, lng: 69.0);
+  coordinates.add(coordinate);
 
-  // Find one post
-  sb.writeln('Reading row with id $id1 ...');
-  Post post1 = await postBean.find(id1);
-  sb.writeln(post1);
-  sb.writeln('--------------');
+  Floor floor = new Floor(floor:"10010", coordinates: coordinates);
+  int id5 = await floorBean.insert(floor, cascade: true);
 
-  // Find all posts
-  sb.writeln('Reading all rows ...');
-  List<Post> posts = await postBean.getAll();
-  posts.forEach((p) => sb.writeln(p));
-  sb.writeln('--------------');
+  sb.write('Inserted Floor with ID $id5');
 
-  // Update a post
-  sb.write('Updating a column in row with id $id1 ...');
-  await postBean.updateReadField(id1, true);
-  sb.writeln(' successful!');
-  sb.writeln('--------------');
-
-
-  // Find all posts
-  sb.writeln('Reading all rows ...');
-  posts = await postBean.getAll();
-  posts.forEach((p) => sb.writeln(p));
-  sb.writeln('--------------');
-
+  var floors = await floorBean.getAll();
+  floors.forEach((f) => print(f.toString));
+  sb.write('-----------------------------------');
 
   sb.write('Closing the connection ...');
   await _adapter.close();
