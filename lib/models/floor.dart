@@ -1,12 +1,24 @@
 
 import 'dart:collection';
 
+import 'package:concordi_around/models/building.dart';
+import 'package:jaguar_orm/jaguar_orm.dart';
+
 import 'coordinate.dart';
 import 'path.dart';
 
 class Floor {
+  @PrimaryKey()
   final String _floor;
+
+  
+  @BelongsTo(BuildingBean)
+   String building;
+
+  @HasMany(CoordinateBean)
   Set<List<Coordinate>> _polygons = <List<Coordinate>>{}; //A polygon includes a duplicated point for google maps
+
+
   Set<Coordinate> _coordinates = HashSet<Coordinate>();
 
   Floor(this._floor, {coordinates, polygons}) {
@@ -131,4 +143,19 @@ class Floor {
     }
     return shortestPath;
   }
+}
+
+
+class FloorBean extends Bean<Floor> with _FloorBean {
+  //FloorBean
+
+  BuildingBean _buildingBean;
+
+  BuildingBean get buildingBean {
+    _buildingBean ??= new BuildingBean(adapter);
+    return _buildingBean;
+  }
+
+  final String tableName = 'floors';
+  FloorBean(Adapter adapter) : super(adapter);
 }
