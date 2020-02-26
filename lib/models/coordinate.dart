@@ -23,8 +23,8 @@ class Coordinate {
   @BelongsTo.many(CoordinateBean, refCol: 'id', isNullable: true)
   int parentId;
 
-  @BelongsTo(FloorBean, refCol: 'floor', isNullable: true)
-  String floor;
+  @BelongsTo(FloorBean, refCol: 'id', isNullable: true)
+  int floor;
 
   Coordinate(
       {this.id,
@@ -52,6 +52,7 @@ class Coordinate {
   String get building => _building;
   String get campus => _campus;
   String get type => _type;
+  bool get isDisabilityFriendly => _isDisabilityFriendly;
   List<Coordinate> get adjCoordinates => _adjCoordinates;
 
 
