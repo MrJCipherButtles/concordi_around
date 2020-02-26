@@ -48,26 +48,33 @@ void main() async {
   //  sb.writeln('Inserted successfully row with id: $cid1!');
 
 
-  List<Coordinate> coordinates = new List<Coordinate>();
-  Coordinate coordinate = new Coordinate(id:1, lat: 40.5, lng: 69.0, parentId: 4);
-  coordinates.add(coordinate);
+  List<Coordinate> coordinates;
+  Coordinate coordinate = new Coordinate(id:1, lat: 1.0, lng: 1.0, parentId: 4, adjCoordinates: [new Coordinate(id:7, lat: 2.0, lng: 2.0), new Coordinate(id:8, lat: 3.0, lng: 3.0), new Coordinate(id:11, lat: 4.0, lng: 4.0)]);
 
-  Floor floor = new Floor(floor:"10010", coordinates: coordinates);
-  int id5 = await floorBean.insert(floor, cascade: true);
+  // Floor floor = new Floor(floor:"h831", coordinates: [new Coordinate(id:7, lat: 10.5, lng: 69.0, parentId: 4), new Coordinate(id:8, lat: 42.5, lng: 69.0, parentId: 4), new Coordinate(id:11, lat: 83.5, lng: 49.0, parentId: 5)]);
+  // Floor floor = new Floor(floor:"h831", coordinates: coordinates);
+  sb.write('Before Insertion we got Floors');
+
+  coordinates = coordinate.adjCoordinates;
+  print(coordinate);
+
+  // int id5 = await floorBean.insert(floor, cascade: true);
+int id5 = await coordinateBean.insert(coordinate, cascade: true);
+
 
   sb.write('Inserted Floor with ID $id5');
 
-  var floors = await floorBean.getAll();
-  floors.forEach((f) => print(f.toString));
+  var floors = await coordinateBean.find(1.0, 1.0, preload: true);
+  print(floors);
   sb.write('-----------------------------------');
 
   sb.write('Closing the connection ...');
   await _adapter.close();
-  sb.writeln(' successful!');
-  sb.writeln('--------------');
+  // sb.writeln(' successful!');
+  // sb.writeln('--------------');
 
-  print(sb.toString());
-  print(_adapter.version);
+  // print(sb.toString());
+  // print(_adapter.version);
 }
 
 class MyApp extends StatelessWidget {

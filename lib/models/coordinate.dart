@@ -25,10 +25,10 @@ class Coordinate {
   @HasMany(CoordinateBean)
   List<Coordinate> _adjCoordinates;
 
-  @BelongsTo.many(CoordinateBean)
+  @BelongsTo.many(CoordinateBean, refCol: "id", isNullable: true)
   int parentId;
 
-  @BelongsTo(FloorBean, refCol: 'floor')
+  @BelongsTo(FloorBean, refCol: 'floor', isNullable: true)
   String floor;
 
   Coordinate(
@@ -81,7 +81,12 @@ class Coordinate {
     return false;
   }
 
-  String toString() => this.id.toString();
+  @override
+  String toString() {
+    return 'Coordinate{_lat: $_lat, _lng: $_lng, _adjCoordinates: $_adjCoordinates}';
+  }
+
+  
 }
 
 

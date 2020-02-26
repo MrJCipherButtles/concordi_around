@@ -1,4 +1,3 @@
-
 import 'dart:collection';
 
 import 'package:jaguar_orm/jaguar_orm.dart';
