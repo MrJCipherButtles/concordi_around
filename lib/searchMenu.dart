@@ -10,8 +10,8 @@ class SearchMenuListOption extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      flex: 2,
+    return Container(
+      //flex: 2,
       child: Column(
         children: <Widget>[
           Row(children: <Widget>[

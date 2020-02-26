@@ -7,6 +7,7 @@ import "package:concordi_around/database/database.dart";
 String campus = "SGW";
 
 class SearchBar extends StatefulWidget {
+
   @override
   State<StatefulWidget> createState() {
     return _SearchBarState();
@@ -15,8 +16,13 @@ class SearchBar extends StatefulWidget {
 
 class _SearchBarState extends State<SearchBar> {
 
-  bool isTyping = false, hasTyped = false;
+  bool _isTyping = false, _hasTyped = false;
   final myController = TextEditingController();
+
+  bool get isTyping => _isTyping;
+  set isTyping(bool isTextFocus) => _isTyping;
+  bool get hasTyped => _hasTyped;
+  set hasTyped(bool hasTypedSomething) => _hasTyped;
 
   @override
   void dispose(){
@@ -37,16 +43,16 @@ class _SearchBarState extends State<SearchBar> {
           child: Row(
             children: <Widget>[
               Container(
-                child: isTyping
+                child: (_isTyping) //|| _hasTyped)
                     ? IconButton(
                         splashColor: Colors.grey,
                         icon: Icon(Icons.arrow_back),
                         onPressed: () {
                           FocusScope.of(context).unfocus();
-                          setState(() {
-                            isTyping = false;
-                            hasTyped = false;
-                          });
+                          // setState(() {
+                          //   _isTyping = false;
+                          //   _hasTyped = false;
+                          // });
                         },
                       )
                     : IconButton(
@@ -64,26 +70,13 @@ class _SearchBarState extends State<SearchBar> {
                 decoration: InputDecoration(
                     border: InputBorder.none,
                     contentPadding: EdgeInsets.symmetric(horizontal: 15),
-                    hintText: "Search..."),
-                onChanged: (String text) {
-                  setState(() {
-                    if(myController.text == ''){
-                      isTyping = true;
-                      hasTyped = false;     
-                    }
-                    else{
-                      isTyping = false;
-                      hasTyped = true;
-                    }
-                  });
-                  // showSearch(
-                  //     context: context,
-                  //     delegate: PositionedFloatingSearchBar());
-                },
+                    hintText: "Search"),
+                
                 onTap: (){
-                  setState(() {
-                    isTyping= true;
-                  });
+                  showSearch(
+                      context: context,
+                      delegate: PositionedFloatingSearchBar());
+                  
                 },
               ),
             ),
@@ -95,14 +88,16 @@ class _SearchBarState extends State<SearchBar> {
                 color: Color.fromRGBO(147, 35, 57, 1),
                 shape: RoundedRectangleBorder(
                     borderRadius: new BorderRadius.circular(50)),
-                onPressed: () {},
+                onPressed: () {
+                  setState(() {
+                    (campus == 'SGW') ? (campus = 'LOY') : (campus = 'SGW');
+                  });
+                },
               ),
               )],
           ),
         ),
       ),
-      isTyping ? SearchMenuListOption(name: (String building) => {print("$building")}) : Container(),
-      hasTyped ? SearchMenuSuggestionsManager() : Container(),
     ]);
   }
 }
@@ -134,12 +129,12 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    final suggestionList = query.isEmpty
+    final suggestionList = query.isNotEmpty
         ? recentSearchedRooms
         : rooms
             .where((p) => p.getTitle().startsWith(query.toUpperCase()))
             .toList();
-    return ListView.builder(
+    return query.isEmpty ? SearchMenuListOption() : ListView.builder(
       itemBuilder: (context, index) => ListTile(
         onTap: () {
           //print(suggestionList[index].getTitke());

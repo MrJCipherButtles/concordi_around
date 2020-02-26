@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import 'package:concordi_around/widgets/generalUI/positionedFloatingSearchBar.dart';
 import './building.dart';
 
 class DisplayBuildingListManager extends StatefulWidget {
@@ -25,7 +26,7 @@ class BuildingManager extends StatefulWidget {
 }
 
 class _BuildingManagerState extends State<BuildingManager> {
-  bool _listVisible = false;
+  //bool _listVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -35,9 +36,6 @@ class _BuildingManagerState extends State<BuildingManager> {
             child: Text("Building"),
             color: Colors.white,
             onPressed: () {
-              setState(() {
-                _listVisible = (_listVisible ? false : true);
-              });
             }));
   }
 }
@@ -58,7 +56,9 @@ class DisplayBuildingList extends State<DisplayBuildingListManager> {
                 return ListTile(
                   title: Text(_myBuildingList[index].toString(),),
                   onTap: () {
-                    widget.name(_myBuildingList[index].getbuildingName());},
+                    widget.name(_myBuildingList[index].getbuildingName());
+                                        
+                    },  
                 );
               },
               separatorBuilder: (context, index) {
