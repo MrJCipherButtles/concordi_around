@@ -1,29 +1,44 @@
-//import 'dart:collection';
-//
-//import 'coordinate.dart';
-//import 'floor.dart';
-//import 'path.dart';
-//
-//class Building {
-//  List<Coordinate> _polygon; //A polygon includes a duplicated point for google maps
-//  Map<String, Floor> _floors = HashMap<String, Floor>();
-//
-//  Building({polygon}){
-//    _polygon = polygon;
-//  }
-//
-//  List<Coordinate> get polygon => _polygon;
+import 'dart:collection';
+
+import 'package:concordi_around/models/polygon.dart';
+import 'package:jaguar_orm/jaguar_orm.dart';
+
+import 'coordinate.dart';
+import 'floor.dart';
+import 'path.dart';
+
+import 'polygon.dart';
+
+part 'building.jorm.dart';
+
+class Building {
+  @PrimaryKey(auto: true)
+  int id;
+
+  String _building;
+
+  @HasOne(PolygonBean)
+  Polygon _polygon; //A polygon includes a duplicated point for google maps
+  //  Map<String, Floor> _floors = HashMap<String, Floor>();
+
+  Building({building, polygon}){
+    _building = building;
+    _polygon = polygon;
+  }
+
+  Polygon get polygon => _polygon;
+  String get building => _building;
 //  Map<String,Floor> get floors => _floors;
-//
+
 //  set floors(Map<String, Floor> floors) => _floors = floors;
-//
+
 //  void addFloor(Floor floor) {
 //    _floors[floor.floor] = floor;
 //  }
-//
-//  //Would template method apply here to improve extensibility?
-//  //May set disability to true using optional named parameter
-//  //spans at most 2 floors per building
+
+  //Would template method apply here to improve extensibility?
+  //May set disability to true using optional named parameter
+  //spans at most 2 floors per building
 //  Map<String, Path> shortestPath(Coordinate s, Coordinate d, {bool isDisabilityFriendly = false}) {
 //    assert (s != null && d != null);
 //    var indoorNavigationMap = LinkedHashMap<String, Path>();
@@ -64,4 +79,14 @@
 //    indoorNavigationMap[d.floor] = dFloor.shortestPath(dEntry, d);
 //    return indoorNavigationMap;
 //  }
-//}
+}
+
+@GenBean()
+class BuildingBean extends Bean<Building> with _BuildingBean {
+  String get tableName => 'building';
+  final PolygonBean polygonBean;
+
+  BuildingBean(Adapter adapter)
+      : polygonBean = PolygonBean(adapter),
+        super(adapter);
+}

@@ -42,9 +42,6 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  jaguar_orm_gen: ^2.2.30
-  build_runner: ^1.7.4
-
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
