@@ -9,7 +9,7 @@ class Coordinate {
 
   Coordinate.make(this.id, this.lat, this.lng);
 
-  @PrimaryKey()
+  @PrimaryKey(auto: true)
   int id;
 
   @Column(isNullable: true)

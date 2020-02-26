@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:concordi_around/db/DBAdapter.dart';
+import 'package:concordi_around/db/model/floor.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
@@ -8,6 +9,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' as path;
 
 import 'db/model/coordinate.dart';
+import 'db/model/poi.dart';
 import 'db/model/post.dart';
 
 SqfliteAdapter _adapter;
@@ -26,6 +28,8 @@ void main() async {
 
   final postBean = PostBean(_adapter);
   final coordinateBean = CoordinateBean(_adapter);
+  final floorBean = FloorBean(_adapter);
+  final poiBean = PoiBean(_adapter);
 
   int id1 = 3;
 
@@ -34,6 +38,15 @@ void main() async {
   await coordinateBean.createTable(ifNotExists: true);
   sb.writeln('Created coordinate table ....');
 
+  // Create a coordinate table
+  sb.writeln('Creating coordinate table ....');
+  await floorBean.createTable(ifNotExists: true);
+  sb.writeln('Created coordinate table ....');
+
+  // Create a coordinate table
+  sb.writeln('Creating coordinate table ....');
+  await poiBean.createTable(ifNotExists: true);
+  sb.writeln('Created coordinate table ....');
 
   // Insert some coordinates
   //  sb.writeln('Inserting sample rows ...');
@@ -41,7 +54,15 @@ void main() async {
   //      .insert(new Coordinate.make(1, 40.5, 50.9));
   //  sb.writeln('Inserted successfully row with id: $cid1!');
 
+    sb.writeln('Inserting sample floor ...');
+    int fid1 = await coordinateBean
+        .insert(new Floor.make(1, 40.5, 50.9));
+    sb.writeln('Inserted successfully row with id: $cid1!');
 
+    sb.writeln('Inserting sample poi ...');
+    int pid1 = await coordinateBean
+        .insert(new Coordinate.make(1, 40.5, 50.9));
+    sb.writeln('Inserted successfully row with id: $cid1!');
 
   // Find one post
   sb.writeln('Reading row with id $id1 ...');
