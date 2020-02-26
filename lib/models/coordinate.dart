@@ -1,77 +1,69 @@
 import 'dart:collection';
 
-abstract class Coordinate {
-  final double _lat;
-  final double _lng;
-  final String _floor;
-  final String _building;
-  final String _campus;
-  String _type;
-  Set<Coordinate> _adjCoordinates = HashSet<Coordinate>();
+import 'package:jaguar_query/jaguar_query.dart';
+import 'package:jaguar_orm/jaguar_orm.dart';
+part 'coordinate.jorm.dart';
 
-  Coordinate(this._lat, this._lng, this._floor, this._building, this._campus, {type, adjCoordinates}) {
+class Coordinate {
+  int id;
+
+  @PrimaryKey()
+   double lat;
+
+  @PrimaryKey()
+   double _lng;
+   String _floor;
+   String _building;
+   String _campus;
+  String _type;
+
+
+  
+  @HasMany(CoordinateBean)
+  List<Coordinate> _adjCoordinates;
+
+  @BelongsTo.many(CoordinateBean)
+  int parentId;
+
+
+
+  Coordinate({this.id, parentId, this.lat, lng, floor, building, campus, type, adjCoordinates}) {
     _type = type;
     _adjCoordinates = adjCoordinates;
   }
+  
+  
+  
 
-  double get lat => _lat;
-  double get lng => _lng;
-  String get floor => _floor;
-  String get building => _building;
-  String get campus => _campus;
-  String get type => _type;
-  Set<Coordinate> get adjCoordinates => _adjCoordinates;
 
-  set type(String type) => _type = type;
-  set adjCoordinates(Set<Coordinate> adjCoordinates) => _adjCoordinates = adjCoordinates;
-
-  //if I am your neighbor, then you must be my neighbor
-  bool addAdjCoordinate(Coordinate coordinate) => _adjCoordinates.add(coordinate) && coordinate._adjCoordinates.add(this);
-
-  bool isAdjacent(Coordinate anotherCoordinate) {
-    //A coordinate is adjacent to itself
-    if (this == anotherCoordinate) {
-      return true;
-    }
-    //Check adjacency list
-    for (var adjCoordinate in _adjCoordinates) {
-      if (adjCoordinate == anotherCoordinate) {
-        //In adjacency list
-        return true;
-      }
-    }
-    //Not in adjacency list
-    return false;
-  }
-
-  // Might want to define a better toString...
-  @override
-  String toString() => _type;
+  
+  String toString() => this.id.toString();
 }
 
 class PortalCoordinate extends Coordinate {
 
-  bool _isDisabilityFriendly;
-
-  PortalCoordinate(lat, lng, floorLevel, building, campus, {type, adjCoordinates, isDisabilityFriendly = false}) :
-        super(lat, lng, floorLevel, building, campus, type:type, adjCoordinates:adjCoordinates) {
-    _isDisabilityFriendly = isDisabilityFriendly;
-  }
-
-  bool get isDisabilityFriendly => _isDisabilityFriendly;
-
-  set isDisabilityFriendly(bool isDisabilityFriendly) => _isDisabilityFriendly = isDisabilityFriendly;
+  
 }
 
 class RoomCoordinate extends Coordinate {
-  String _roomId;
+ 
+}
 
-  RoomCoordinate(lat, lng, floorLevel, building, campus, {type, adjCoordinates, roomId}) :
-        super(lat, lng, floorLevel, building, campus, type:type, adjCoordinates:adjCoordinates) {
-    _roomId = roomId;
+
+
+@GenBean()
+class CoordinateBean extends Bean<Coordinate> with _CoordinateBean {
+  CoordinateBean _coordinateBean;
+
+
+  CoordinateBean(Adapter adapter) : super(adapter);
+
+  String get tableName => 'coordinate';
+
+  @override
+  // TODO: implement coordinateBean
+  CoordinateBean get coordinateBean {
+    _coordinateBean ??= new CoordinateBean(adapter);
+    return _coordinateBean;
   }
-
-  String get roomId => _roomId;
-
-  set roomId(String roomId) => _roomId = roomId;
 }
