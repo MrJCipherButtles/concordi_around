@@ -1,17 +1,12 @@
-import 'dart:collection';
-
 import 'package:concordi_around/models/floor.dart';
 import 'package:jaguar_query/jaguar_query.dart';
 import 'package:jaguar_orm/jaguar_orm.dart';
 part 'coordinate.jorm.dart';
 
 class Coordinate {
+  @PrimaryKey(auto: true)
   int id;
-
-  @PrimaryKey()
   double _lat;
-
-  @PrimaryKey()
   double _lng;
   @Column(isNullable: true)
   String _building;
@@ -25,7 +20,7 @@ class Coordinate {
   @HasMany(CoordinateBean)
   List<Coordinate> _adjCoordinates;
 
-  @BelongsTo.many(CoordinateBean, refCol: "id", isNullable: true)
+  @BelongsTo.many(CoordinateBean, refCol: 'id', isNullable: true)
   int parentId;
 
   @BelongsTo(FloorBean, refCol: 'floor', isNullable: true)
@@ -59,6 +54,8 @@ class Coordinate {
   String get type => _type;
   List<Coordinate> get adjCoordinates => _adjCoordinates;
 
+
+
   //if I am your neighbor, then you must be my neighbor
   void addAdjCoordinate(Coordinate coordinate) {
     _adjCoordinates.add(coordinate);
@@ -83,27 +80,20 @@ class Coordinate {
 
   @override
   String toString() {
-    return 'Coordinate{_lat: $_lat, _lng: $_lng, _adjCoordinates: $_adjCoordinates}';
+    return 'Coordinate{id: $id, _lat: $_lat, _lng: $_lng, _building: $_building, _campus: $_campus, _type: $_type, _isDisabilityFriendly: $_isDisabilityFriendly, _adjCoordinates: $_adjCoordinates, parentId: $parentId, floor: $floor}';
   }
-
-  
 }
 
 
 @GenBean()
 class CoordinateBean extends Bean<Coordinate> with _CoordinateBean {
+  String get tableName => 'coordinate';
   CoordinateBean _coordinateBean;
   FloorBean _floorBean;
 
   CoordinateBean(Adapter adapter) : super(adapter);
 
-  String get tableName => 'coordinate';
-
   FloorBean get floorBean => _floorBean ??= new FloorBean(adapter);
+  CoordinateBean get coordinateBean => _coordinateBean ??= new CoordinateBean(adapter);
 
-  @override
-  CoordinateBean get coordinateBean {
-    _coordinateBean ??= new CoordinateBean(adapter);
-    return _coordinateBean;
-  }
 }
