@@ -8,35 +8,44 @@ class Coordinate {
   int id;
 
   @PrimaryKey()
-   double _lat;
+  double _lat;
 
   @PrimaryKey()
-   double _lng;
-   String _floor;
-   String _building;
-   String _campus;
-   String _type;
+  double _lng;
+  String _floor;
+  String _building;
+  String _campus;
+  String _type;
+  bool _isDisabilityFriendly;
 
 
-  
+
+
   @HasMany(CoordinateBean)
   List<Coordinate> _adjCoordinates;
 
   @BelongsTo.many(CoordinateBean)
   int parentId;
 
-
-
-  Coordinate({this.id, this.parentId, lat, lng, floor, building, campus, type, adjCoordinates}) {
+  Coordinate(
+      {this.id,
+      this.parentId,
+      lat,
+      lng,
+      floor,
+      building,
+      campus,
+      type,
+      adjCoordinates,
+      isDisabilityFriendly}) {
     _type = type;
     _adjCoordinates = adjCoordinates;
     _lat = lat;
-    _lng=lng;
+    _lng = lng;
     _floor = floor;
     _building = building;
-    _campus= campus;
-
-    
+    _campus = campus;
+    _isDisabilityFriendly = _isDisabilityFriendly;
   }
 
   double get lat => _lat;
@@ -49,11 +58,11 @@ class Coordinate {
 
   //if I am your neighbor, then you must be my neighbor
   void addAdjCoordinate(Coordinate coordinate) {
-    _adjCoordinates.add(coordinate); 
+    _adjCoordinates.add(coordinate);
     coordinate._adjCoordinates.add(this);
-  } 
+  }
 
-   bool isAdjacent(Coordinate anotherCoordinate) {
+  bool isAdjacent(Coordinate anotherCoordinate) {
     //A coordinate is adjacent to itself
     if (this == anotherCoordinate) {
       return true;
@@ -69,25 +78,13 @@ class Coordinate {
     return false;
   }
 
-  
   String toString() => this.id.toString();
 }
-
-class PortalCoordinate extends Coordinate {
-
-  
-}
-
-class RoomCoordinate extends Coordinate {
- 
-}
-
 
 
 @GenBean()
 class CoordinateBean extends Bean<Coordinate> with _CoordinateBean {
   CoordinateBean _coordinateBean;
-
 
   CoordinateBean(Adapter adapter) : super(adapter);
 
