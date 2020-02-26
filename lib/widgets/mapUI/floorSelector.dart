@@ -1,33 +1,33 @@
+import 'package:concordi_around/mapNotifier.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class FloorSelector extends StatefulWidget {
 
-  final bool showFloorSelector;
   final Function(int) selectedFloor;
 
-  FloorSelector({this.showFloorSelector,this.selectedFloor});
+  FloorSelector({this.selectedFloor});
 
   @override
   State<StatefulWidget> createState([bool showFloorSelector]) {
-    return _FloorSelectorState(showFloorSelector);
+    return _FloorSelectorState();
   }
 }
 
 class _FloorSelectorState
     extends State<FloorSelector> { 
        
-  bool showFloorSelector;
   List<bool> selectedFloor = [false, true]; // 8th floor selected
 
-  _FloorSelectorState(this.showFloorSelector);
-
   Widget build(BuildContext context) {
+      MapNotifier mapNotifier = Provider.of<MapNotifier>(context);
+
         return Visibility(
           maintainSize: true,
           maintainAnimation: true,
           maintainState: true,
-          visible: widget.showFloorSelector,
+          visible: mapNotifier.showFloorSelector,
       child: Padding(
       padding: EdgeInsets.fromLTRB(16, 0, 0, 16),
       child: Column(

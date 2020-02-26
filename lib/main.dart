@@ -1,12 +1,16 @@
 import 'dart:async';
+import 'package:concordi_around/mapNotifier.dart';
 import 'package:concordi_around/widgets/generalUI/positionedFloatingSearchBar.dart';
 import 'package:concordi_around/widgets/generalUI/sidebarDrawer.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:provider/provider.dart';
 import 'widgets/mapUI/FloorSelector.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(ChangeNotifierProvider(
+  builder: (context) => MapNotifier(),
+  child: MyApp()));
 
 class MyApp extends StatelessWidget {
   @override
@@ -33,6 +37,8 @@ class MapSampleState extends State<MapSample> {
   Widget build(BuildContext context) {
 
     bool showFloorSelector = false;
+    MapNotifier mapNotifier = Provider.of<MapNotifier>(context);
+
     
     return MaterialApp(
       home :Scaffold(
@@ -56,17 +62,19 @@ class MapSampleState extends State<MapSample> {
               _goToCurrent();
             },
             onCameraMove: (CameraPosition cameraPosition){
-              if(IsWithinHall(cameraPosition.target) && cameraPosition.zoom > 16){
+              if(IsWithinHall(cameraPosition.target) && cameraPosition.zoom > 17){
                 setState(() {
-                  showFloorSelector = true;
+                  mapNotifier.setFloorSelectorVisibility(true);
                   print("Inside hall $showFloorSelector");
                 });
+              }
+              else {
+                mapNotifier.setFloorSelectorVisibility(false);
               }
             },
           )),
           SearchBar(),
           FloorSelector(
-            showFloorSelector: showFloorSelector,
             selectedFloor: (int val) => print("Clicked on index $val"),
           ),
         ],
