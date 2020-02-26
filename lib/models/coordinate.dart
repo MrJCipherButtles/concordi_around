@@ -1,8 +1,14 @@
 import 'dart:collection';
 import 'package:concordi_around/models/building.dart';
 import 'package:jaguar_orm/jaguar_orm.dart';
+import 'package:jaguar_query/jaguar_query.dart';
 
 import 'floor.dart';
+
+part 'coordinate.jorm.dart';
+part 'roomcoordinate.jorm.dart';
+part 'portalcoordinate.jorm.dart';
+
 
 
 abstract class Coordinate {
@@ -68,6 +74,7 @@ abstract class Coordinate {
 
 class PortalCoordinate extends Coordinate {
 
+
   bool _isDisabilityFriendly;
 
   PortalCoordinate(lat, lng, floorLevel, building, campus, {type, adjCoordinates, isDisabilityFriendly = false}) :
@@ -93,10 +100,9 @@ class RoomCoordinate extends Coordinate {
   set roomId(String roomId) => _roomId = roomId;
 }
 
-
+@GenBean()
 class CoordinateBean extends Bean<Coordinate> with _CoordinateBean {
   //FloorBean
-
   BuildingBean _buildingBean;
 
   BuildingBean get buildingBean {
@@ -116,4 +122,54 @@ class CoordinateBean extends Bean<Coordinate> with _CoordinateBean {
 
   final String tableName = 'coordinates';
   CoordinateBean(Adapter adapter) : super(adapter);
+}
+
+
+
+class PortalCoordinateBean extends Bean<PortalCoordinate> with _PortalCoordinateBean {
+  //FloorBean
+
+  // BuildingBean _buildingBean;
+
+  // BuildingBean get buildingBean {
+  //   _buildingBean ??= new BuildingBean(adapter);
+  //   return _buildingBean;
+  // }
+
+  
+  // FloorBean _floorBean;
+
+  // FloorBean get floorBean {
+  //   _floorBean ??= new FloorBean(adapter);
+  //   return _floorBean;
+  // }
+
+
+
+  final String tableName = 'portalcoordinates';
+  PortalCoordinateBean(Adapter adapter) : super(adapter);
+}
+
+class RoomCoordinateBean extends Bean<RoomCoordinate> with _RoomCoordinateBean {
+  //FloorBean
+
+  // BuildingBean _buildingBean;
+
+  // BuildingBean get buildingBean {
+  //   _buildingBean ??= new BuildingBean(adapter);
+  //   return _buildingBean;
+  // }
+
+  
+  // FloorBean _floorBean;
+
+  // FloorBean get floorBean {
+  //   _floorBean ??= new FloorBean(adapter);
+  //   return _floorBean;
+  // }
+
+
+
+  final String tableName = 'roomcoordinates';
+  RoomCoordinateBean(Adapter adapter) : super(adapter);
 }

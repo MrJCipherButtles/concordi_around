@@ -5,14 +5,22 @@ import 'package:jaguar_orm/jaguar_orm.dart';
 import 'coordinate.dart';
 import 'floor.dart';
 import 'path.dart';
+import 'package:jaguar_query/jaguar_query.dart';
+
+
+part 'building.jorm.dart';
 
 class Building {
+  
+
   List<Coordinate> _polygon; //A polygon includes a duplicated point for google maps
   @PrimaryKey()
-  String name;
+  String _building;
   Map<String, Floor> _floors = HashMap<String, Floor>();
 
-  Building({polygon}){
+
+  Building({building, polygon}){
+    _building = building;
     _polygon = polygon;
   }
 
@@ -73,6 +81,7 @@ class Building {
   }
 }
 
+@GenBean()
 class BuildingBean extends Bean<Building> with _BuildingBean {
   //CampusBean
 

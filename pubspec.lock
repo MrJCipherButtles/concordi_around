@@ -65,7 +65,7 @@ packages:
     source: hosted
     version: "1.2.1"
   build_runner:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: build_runner
       url: "https://pub.dartlang.org"
@@ -264,7 +264,7 @@ packages:
     source: hosted
     version: "2.2.7"
   jaguar_orm_gen:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: jaguar_orm_gen
       url: "https://pub.dartlang.org"
@@ -519,7 +519,7 @@ packages:
       name: test_api
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.11"
+    version: "0.2.14"
   timing:
     dependency: transitive
     description:

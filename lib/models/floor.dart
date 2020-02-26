@@ -3,9 +3,13 @@ import 'dart:collection';
 
 import 'package:concordi_around/models/building.dart';
 import 'package:jaguar_orm/jaguar_orm.dart';
+import 'package:jaguar_query/jaguar_query.dart';
+
 
 import 'coordinate.dart';
 import 'path.dart';
+
+part 'floor.jorm.dart';
 
 class Floor {
   @PrimaryKey()
@@ -146,6 +150,7 @@ class Floor {
 }
 
 
+@GenBean()
 class FloorBean extends Bean<Floor> with _FloorBean {
   //FloorBean
 
