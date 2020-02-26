@@ -4,16 +4,8 @@ import 'dart:collection';
 import 'coordinate.dart';
 import 'path.dart';
 
-import 'package:jaguar_query/jaguar_query.dart';
-import 'package:jaguar_orm/jaguar_orm.dart';
-
-part 'floor.jorm.dart';
-
 class Floor {
-
-  @PrimaryKey()
   final String _floor;
-
   Set<Set<Coordinate>> _polygons = <Set<Coordinate>>{};
   Set<Coordinate> _coordinates = HashSet<Coordinate>();
 
