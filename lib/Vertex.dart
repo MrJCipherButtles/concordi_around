@@ -43,8 +43,14 @@ class Vertex  extends LinkedListEntry<Vertex>{
 
 @GenBean()
 class VertexBean extends Bean<Vertex> with _VertexBean {
-  VertexBean(Adapter adapter ) : super(adapter);
+  String get tableName => 'vertex';
+  final CoordinateBean coordinateBean;
+  EdgeBean _edgeBean;
 
+  VertexBean(Adapter adapter )
+      : coordinateBean = CoordinateBean(adapter),
+        super(adapter);
 
-  String get tableName => 'oto_simple_user';
+  @override
+  EdgeBean get edgeBean => _edgeBean ??= new EdgeBean(adapter);
 }

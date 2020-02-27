@@ -39,8 +39,10 @@ class Edge  {
 
 @GenBean()
 class EdgeBean extends Bean<Edge> with _EdgeBean {
-  EdgeBean(Adapter adapter ) : super(adapter);
-
-
   String get tableName => 'edge';
+  final VertexBean vertexBean;
+
+  EdgeBean(Adapter adapter )
+      : vertexBean = VertexBean(adapter),
+        super(adapter);
 }
