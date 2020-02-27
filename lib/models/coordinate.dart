@@ -1,6 +1,6 @@
 import 'dart:collection';
 
-abstract class Coordinate {
+class Coordinate {
   final double _lat;
   final double _lng;
   final String _floor;
