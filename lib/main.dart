@@ -73,7 +73,6 @@ class MapSampleState extends State<MapSample> {
               ],
             ),
             drawer: SidebarDrawer(),
-            resizeToAvoidBottomInset: false,
             floatingActionButton: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.end,
