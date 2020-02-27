@@ -113,7 +113,6 @@ class MapSampleState extends State<MapSample> {
                         cameraPosition.zoom > 18) {
                       setState(() {
                         mapNotifier.setFloorSelectorVisibility(true);
-                        //_goToHall8th();
                       });
                     } else {
                       mapNotifier.setFloorSelectorVisibility(false);
@@ -122,6 +121,10 @@ class MapSampleState extends State<MapSample> {
                 )),
                 SearchBar(name: (String building) => {_goToSelectedBuilding("$building")}),
                 SVGFloorPlans(),
+                FloorSelector(
+                      selectedFloor: (int floor) => {
+                          mapNotifier.setSelectedFloor(floor)}
+                    ),
               ],
             ),
             drawer: SidebarDrawer(),
@@ -130,13 +133,6 @@ class MapSampleState extends State<MapSample> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
-                  Expanded(
-                    child: FloorSelector(
-                      selectedFloor: (int floor) => {
-                          print("Clicked on floor $floor"),
-                          mapNotifier.setSelectedFloor(floor)}
-                    ),
-                  ),
                   FloatingActionButton(
                     heroTag: 'unique1',
                     onPressed: _goToCurrent,
@@ -168,10 +164,7 @@ class MapSampleState extends State<MapSample> {
   bool IsWithinHall(LatLng latLng) {
     
     List<LatLng> coordsList = [
-      LatLng(45.49781, -73.57906),
-      LatLng(45.49718, -73.57968),
-      LatLng(45.49675, -73.57878),
-      LatLng(45.49741, -73.57819)];
+      LatLng(45.49726709926478, -73.57894677668811)];
 
     return boundsFromLatLngList(coordsList)
         .contains(latLng);
@@ -235,9 +228,6 @@ class MapSampleState extends State<MapSample> {
   }
 
   Future<void> _goToHall8th() async {
-     setState(() {
-                  enableGestures = false;
-                });
 
     CameraPosition _currentPos = CameraPosition(bearing: 123.31752014160156, target: LatLng(45.49726709926478, -73.57894677668811), tilt: 0.0, zoom: 19.03557586669922);
 
