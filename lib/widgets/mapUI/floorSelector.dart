@@ -52,7 +52,7 @@ class _FloorSelectorState
                   ],
                   isSelected: selectedFloor,
                   onPressed: (int index) {
-                    widget.selectedFloor(index);
+                    widget.selectedFloor(index == 0 ? 9 : 8);
                     setState(() {
                       selectedFloor = [false, false];
                       selectedFloor[index] = true;
