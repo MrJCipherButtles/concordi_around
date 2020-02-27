@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:concordi_around/database/database.dart';
 import 'package:concordi_around/mapNotifier.dart';
 import 'package:concordi_around/widgets/generalUI/positionedFloatingSearchBar.dart';
 import 'package:concordi_around/widgets/generalUI/sidebarDrawer.dart';
@@ -69,7 +70,7 @@ class MapSampleState extends State<MapSample> {
                     }
                   },
                 )),
-                SearchBar(name: (String building) => {print("HIIIIIIIIIIIII")}),
+                SearchBar(name: (String building) => {_goToSelectedBuilding("$building")}),
               ],
             ),
             drawer: SidebarDrawer(),
@@ -129,11 +130,40 @@ class MapSampleState extends State<MapSample> {
 
   Future<void> _goToSelectedBuilding(String name) async {
     final GoogleMapController controller = await _controller.future;
-    print("INNNNSDIDISISDDFBSHFG GOT TOSELECTED BUILDINNHHHH");
-    if (name.contains("hall")) {
+    if (name.contains("Hall")) {
       CameraPosition _currentPos = CameraPosition(
           target: LatLng(45.49726, -73.57895),
           zoom: 18.5);
+      controller.animateCamera(CameraUpdate.newCameraPosition(_currentPos));
+    }
+    else if (name.contains("Video")) {
+      CameraPosition _currentPos = CameraPosition(
+          target: LatLng(45.49683, -73.57793),
+          zoom: 18.5);
+      controller.animateCamera(CameraUpdate.newCameraPosition(_currentPos));
+    }
+    else if (name.contains("John")) {
+      CameraPosition _currentPos = CameraPosition(
+          target: LatLng(45.49531, -73.57901),
+          zoom: 18.5);
+      controller.animateCamera(CameraUpdate.newCameraPosition(_currentPos));
+    }
+    else if (name.contains("H806")) {
+      CameraPosition _currentPos = CameraPosition(
+          target: LatLng(45.49715, -73.57878),
+          zoom: 21);
+      controller.animateCamera(CameraUpdate.newCameraPosition(_currentPos));
+    }
+    else if (name.contains("H832")) {
+      CameraPosition _currentPos = CameraPosition(
+          target: LatLng(45.49728, -73.57924),
+          zoom: 21);
+      controller.animateCamera(CameraUpdate.newCameraPosition(_currentPos));
+    }
+    else if (name.contains("H860")) {
+      CameraPosition _currentPos = CameraPosition(
+          target: LatLng(45.49744, -73.57875),
+          zoom: 21);
       controller.animateCamera(CameraUpdate.newCameraPosition(_currentPos));
     }
   }

@@ -9,6 +9,7 @@ String campus = "SGW";
 class SearchBar extends StatefulWidget {
 
   final Function(String) name;
+
   SearchBar({this.name});
 
   @override
@@ -52,7 +53,7 @@ class _SearchBarState extends State<SearchBar> {
                 onTap: (){
                   showSearch(
                       context: context,
-                      delegate: PositionedFloatingSearchBar(name: (String building) => {widget.name}));
+                      delegate: PositionedFloatingSearchBar(name: (String building) => {widget.name(building)}));
                   
                 },
               ),
@@ -125,6 +126,7 @@ PositionedFloatingSearchBar({this.name});
           
           Coordinate selected = (suggestionList[index]);
           Navigator.pop(context);
+          name(selected.getTitle());
         },
         leading: Icon(Icons.place),
         title: Text(suggestionList[index].getTitle()),

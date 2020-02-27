@@ -60,32 +60,32 @@ class Coordinate {
 //List of Coordinates
 List<Coordinate> rooms = [
   //Rooms for H8:
-  Coordinate("H806", "rm", 45.49715, -73.57878, 8, "H", "sgw"),
-  Coordinate("H832", "rm", 45.49728, -73.57924, 8, "H", "sgw"),
-  Coordinate("H860", "rm", 45.49744, -73.57875, 8, "H", "sgw"),
+  Coordinate("H806", "rm", 45.49715, -73.57878, 8, "Hall", "sgw"),
+  Coordinate("H832", "rm", 45.49728, -73.57924, 8, "Hall", "sgw"),
+  Coordinate("H860", "rm", 45.49744, -73.57875, 8, "Hall", "sgw"),
 
   //Path points for H8:
-  Coordinate("H8-P-LL", "pth", 45.49698, -73.57889, 8, "H", "sgw"),
-  Coordinate("H8-P-LM", "pth", 45.49713, -73.57874, 8, "H", "sgw"),
-  Coordinate("H8-P-MR", "pth", 45.49741, -73.57868, 8, "H", "sgw"),
-  Coordinate("H8-P-UR", "pth", 45.49755, -73.57899, 8, "H", "sgw"),
-  Coordinate("H8-P-UM", "pth", 45.49735, -73.57918, 8, "H", "sgw"),
-  Coordinate("H8-P-UL", "pth", 45.49719, -73.57933, 8, "H", "sgw"),
+  Coordinate("H8-P-LL", "pth", 45.49698, -73.57889, 8, "Hall", "sgw"),
+  Coordinate("H8-P-LM", "pth", 45.49713, -73.57874, 8, "Hall", "sgw"),
+  Coordinate("H8-P-MR", "pth", 45.49741, -73.57868, 8, "Hall", "sgw"),
+  Coordinate("H8-P-UR", "pth", 45.49755, -73.57899, 8, "Hall", "sgw"),
+  Coordinate("H8-P-UM", "pth", 45.49735, -73.57918, 8, "Hall", "sgw"),
+  Coordinate("H8-P-UL", "pth", 45.49719, -73.57933, 8, "Hall", "sgw"),
 
   //Escalators for H8:
-  Coordinate("H8-ESC-U", "pth", 45.49725, -73.57886, 8, "H", "sgw"),
-  Coordinate("H8-ESC-D", "pth", 45.49733, -73.57902, 8, "H", "sgw"),
+  Coordinate("H8-ESC-U", "pth", 45.49725, -73.57886, 8, "Hall", "sgw"),
+  Coordinate("H8-ESC-D", "pth", 45.49733, -73.57902, 8, "Hall", "sgw"),
 
   //Elevator for H8  <should be considered for disabled persona>:
-  Coordinate("H8-ELEV", "pth", 45.49731, 73.57875, 8, "H", "sgw"),
+  Coordinate("H8-ELEV", "pth", 45.49731, 73.57875, 8, "Hall", "sgw"),
 
   //Washrooms for H8:
-  Coordinate("H8-MEN1", "am", 45.4971, -73.57877, 8, "H", "sgw"),
-  Coordinate("H8-WOMEN1", "am", 45.49723, -73.5786, 8, "H", "sgw"),
+  Coordinate("H8-MEN1", "am", 45.4971, -73.57877, 8, "Hall", "sgw"),
+  Coordinate("H8-WOMEN1", "am", 45.49723, -73.5786, 8, "Hall", "sgw"),
 ];
 //Will be used towards showing recent places the user searched on the search suggestion list
 final recentSearchedRooms = [
-  Coordinate("H806", "rm", 45.49715, -73.57878, 8, "H", "sgw"),
-  Coordinate("H832", "rm", 45.49728, -73.57924, 8, "H", "sgw"),
-  Coordinate("H860", "rm", 45.49744, -73.57875, 8, "H", "sgw"),
+  Coordinate("H806", "rm", 45.49715, -73.57878, 8, "Hall", "sgw"),
+  Coordinate("H832", "rm", 45.49728, -73.57924, 8, "Hall", "sgw"),
+  Coordinate("H860", "rm", 45.49744, -73.57875, 8, "Hall", "sgw"),
 ];
