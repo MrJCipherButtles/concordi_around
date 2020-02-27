@@ -10,14 +10,14 @@ part 'Coordinate.jorm.dart';
 
 
 class Coordinate {
-  @PrimaryKey()
-  String id;
+  @PrimaryKey(auto: true)
+  int id;
 
   double lat;
   double long;
 
   @BelongsTo(VertexBean, refCol: 'id')
-  String vertexId;
+  int vertexId;
 
   Coordinate({this.id, this.lat, this.long, this.vertexId});
 

@@ -14,8 +14,8 @@ part 'Vertex.jorm.dart';
 
 class Vertex  extends LinkedListEntry<Vertex>{
 
-  @PrimaryKey()
-  String id;
+  @PrimaryKey(auto: true)
+  int id;
 
   String name;
 
