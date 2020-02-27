@@ -1,5 +1,6 @@
 import 'dart:collection';
 //  import 'package:latlong/latlong.dart';
+import 'package:concordi_around/Edge.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 
@@ -21,6 +22,9 @@ class Vertex  extends LinkedListEntry<Vertex>{
 
   @HasOne(CoordinateBean)
   Coordinate point;
+
+  @BelongsTo(EdgeBean, refCol: 'id')
+  int edge;
 
   Vertex({this.id, this.name, this.point});
 
