@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:html';
 import 'package:jaguar_query/jaguar_query.dart';
 import 'package:jaguar_orm/jaguar_orm.dart';
 

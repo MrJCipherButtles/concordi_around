@@ -18,5 +18,7 @@ public final class GeneratedPluginRegistrant {
       com.baseflow.googleapiavailability.GoogleApiAvailabilityPlugin.registerWith(shimPluginRegistry.registrarFor("com.baseflow.googleapiavailability.GoogleApiAvailabilityPlugin"));
       io.flutter.plugins.googlemaps.GoogleMapsPlugin.registerWith(shimPluginRegistry.registrarFor("io.flutter.plugins.googlemaps.GoogleMapsPlugin"));
       com.baseflow.location_permissions.LocationPermissionsPlugin.registerWith(shimPluginRegistry.registrarFor("com.baseflow.location_permissions.LocationPermissionsPlugin"));
+    flutterEngine.getPlugins().add(new io.flutter.plugins.pathprovider.PathProviderPlugin());
+    flutterEngine.getPlugins().add(new com.tekartik.sqflite.SqflitePlugin());
   }
 }

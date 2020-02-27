@@ -1,3 +1,4 @@
+import 'package:concordi_around/Graph.dart';
 import 'package:concordi_around/Vertex.dart';
 import 'package:flutter/material.dart';
 import 'package:jaguar_orm/jaguar_orm.dart';
@@ -14,6 +15,9 @@ class Edge  {
 
   @HasOne(VertexBean)
   Vertex destination;
+
+  @BelongsTo.many(GraphBean, refCol: 'id')
+  int graph;
 
   int weight;
 
@@ -41,8 +45,12 @@ class Edge  {
 class EdgeBean extends Bean<Edge> with _EdgeBean {
   String get tableName => 'edge';
   final VertexBean vertexBean;
+  GraphBean _graphBean;
 
   EdgeBean(Adapter adapter )
       : vertexBean = VertexBean(adapter),
         super(adapter);
+
+  @override
+  GraphBean get graphBean => _graphBean ??= new GraphBean(adapter);
 }

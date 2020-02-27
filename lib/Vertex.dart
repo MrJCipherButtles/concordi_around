@@ -9,6 +9,7 @@ import 'package:jaguar_query/jaguar_query.dart';
 import 'package:jaguar_orm/jaguar_orm.dart';
 
 import 'Coordinate.dart';
+import 'Graph.dart';
 
 part 'Vertex.jorm.dart';
 
@@ -25,6 +26,9 @@ class Vertex  extends LinkedListEntry<Vertex>{
 
   @BelongsTo(EdgeBean, refCol: 'id')
   int edge;
+
+  @BelongsTo.many(GraphBean, refCol: 'id')
+  int graph;
 
   Vertex({this.id, this.name, this.point});
 
@@ -46,6 +50,7 @@ class VertexBean extends Bean<Vertex> with _VertexBean {
   String get tableName => 'vertex';
   final CoordinateBean coordinateBean;
   EdgeBean _edgeBean;
+  GraphBean _graphBean;
 
   VertexBean(Adapter adapter )
       : coordinateBean = CoordinateBean(adapter),
@@ -53,4 +58,7 @@ class VertexBean extends Bean<Vertex> with _VertexBean {
 
   @override
   EdgeBean get edgeBean => _edgeBean ??= new EdgeBean(adapter);
+
+  @override
+  GraphBean get graphBean => _graphBean ??= new GraphBean(adapter);
 }
