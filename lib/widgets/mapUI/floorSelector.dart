@@ -28,8 +28,6 @@ class _FloorSelectorState
           maintainAnimation: true,
           maintainState: true,
           visible: mapNotifier.showFloorSelector,
-      child: Padding(
-      padding: EdgeInsets.fromLTRB(16, 0, 0, 16),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -65,7 +63,6 @@ class _FloorSelectorState
             ),
           ),
         ],
-      ),
-    ));
+      ));
   }
 }
