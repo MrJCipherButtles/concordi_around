@@ -115,7 +115,11 @@ class Floor {
   //returns the shortest path
   Path shortestPath(Coordinate s, Coordinate d) {
     assert (s != null && d != null && s.floor == _floor && d.floor == _floor);
-    if (s == d) {
+    //if s and d share the same adjacency coordinates then
+    //they must be the same coordinate, or
+    //they must be on the same segment
+    //A room coordinate must have 2 and only 2 portal coordinates.
+    if (s.adjCoordinates == d.adjCoordinates) {
       return Path(<Coordinate>[s, d]);
     }
     return _findShortestPath(_getAllPathsFromSourceToDestination(s, d));
