@@ -8,6 +8,9 @@ String campus = "SGW";
 
 class SearchBar extends StatefulWidget {
 
+  final Function(String) name;
+  SearchBar({this.name});
+
   @override
   State<StatefulWidget> createState() {
     return _SearchBarState();
@@ -49,7 +52,7 @@ class _SearchBarState extends State<SearchBar> {
                 onTap: (){
                   showSearch(
                       context: context,
-                      delegate: PositionedFloatingSearchBar());
+                      delegate: PositionedFloatingSearchBar(name: (String building) => {widget.name}));
                   
                 },
               ),
@@ -77,6 +80,10 @@ class _SearchBarState extends State<SearchBar> {
 }
 
 class PositionedFloatingSearchBar extends SearchDelegate<String> {
+
+final Function(String) name;
+PositionedFloatingSearchBar({this.name});
+
   @override
   List<Widget> buildActions(BuildContext context) {
     return [
@@ -91,6 +98,7 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
 
   @override
   Widget buildLeading(BuildContext context) {
+    
     return IconButton(
         icon: AnimatedIcon(
           icon: AnimatedIcons.menu_arrow,
@@ -108,10 +116,13 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
         : rooms
             .where((p) => p.getTitle().startsWith(query.toUpperCase()))
             .toList();
-    return query.isEmpty ? SearchMenuListOption() : ListView.builder(
+    return query.isEmpty ? SearchMenuListOption(
+      name: (String building) => {
+        name(building),
+      },) : ListView.builder(
       itemBuilder: (context, index) => ListTile(
         onTap: () {
-          //print(suggestionList[index].getTitke());
+          
           Coordinate selected = (suggestionList[index]);
           Navigator.pop(context);
         },

@@ -1,9 +1,6 @@
 // Displays a list of all the buildings
 
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-
-import 'package:concordi_around/widgets/generalUI/positionedFloatingSearchBar.dart';
 import './building.dart';
 
 class DisplayBuildingListManager extends StatefulWidget {

@@ -32,6 +32,7 @@ class MapSampleState extends State<MapSample> {
 
   @override
   Widget build(BuildContext context) {
+
     bool showFloorSelector = false;
     MapNotifier mapNotifier = Provider.of<MapNotifier>(context);
 
@@ -62,17 +63,17 @@ class MapSampleState extends State<MapSample> {
                         cameraPosition.zoom > 17) {
                       setState(() {
                         mapNotifier.setFloorSelectorVisibility(true);
-                        print("Inside hall $showFloorSelector");
                       });
                     } else {
                       mapNotifier.setFloorSelectorVisibility(false);
                     }
                   },
                 )),
-                SearchBar(),
+                SearchBar(name: (String building) => {print("HIIIIIIIIIIIII")}),
               ],
             ),
             drawer: SidebarDrawer(),
+            resizeToAvoidBottomInset: false,
             floatingActionButton: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -124,5 +125,16 @@ class MapSampleState extends State<MapSample> {
             southwest: LatLng(45.49607, -73.57869),
             northeast: LatLng(45.49894, -73.57934))
         .contains(latLng);
+  }
+
+  Future<void> _goToSelectedBuilding(String name) async {
+    final GoogleMapController controller = await _controller.future;
+    print("INNNNSDIDISISDDFBSHFG GOT TOSELECTED BUILDINNHHHH");
+    if (name.contains("hall")) {
+      CameraPosition _currentPos = CameraPosition(
+          target: LatLng(45.49726, -73.57895),
+          zoom: 18.5);
+      controller.animateCamera(CameraUpdate.newCameraPosition(_currentPos));
+    }
   }
 }
