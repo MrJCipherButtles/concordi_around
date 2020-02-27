@@ -1,5 +1,6 @@
 import 'dart:collection';
 //  import 'package:latlong/latlong.dart';
+import 'package:concordi_around/Edge.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 
@@ -22,6 +23,9 @@ class Vertex  extends LinkedListEntry<Vertex>{
   @HasOne(CoordinateBean)
   Coordinate point;
 
+  @BelongsTo(EdgeBean, refCol: 'id')
+  int edge;
+
   Vertex({this.id, this.name, this.point});
 
   String toString() => "User($id, $name, $point)";
@@ -39,8 +43,14 @@ class Vertex  extends LinkedListEntry<Vertex>{
 
 @GenBean()
 class VertexBean extends Bean<Vertex> with _VertexBean {
-  VertexBean(Adapter adapter ) : super(adapter);
+  String get tableName => 'vertex';
+  final CoordinateBean coordinateBean;
+  EdgeBean _edgeBean;
 
+  VertexBean(Adapter adapter )
+      : coordinateBean = CoordinateBean(adapter),
+        super(adapter);
 
-  String get tableName => 'oto_simple_user';
+  @override
+  EdgeBean get edgeBean => _edgeBean ??= new EdgeBean(adapter);
 }

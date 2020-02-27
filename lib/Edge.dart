@@ -1,32 +1,48 @@
- import 'package:concordi_around/Vertex.dart';
+import 'package:concordi_around/Vertex.dart';
+import 'package:flutter/material.dart';
+import 'package:jaguar_orm/jaguar_orm.dart';
+
+part 'Edge.jorm.dart';
 
 class Edge  {
-     final String id;
-     final Vertex source;
-     final Vertex destination;
-     final int weight;
 
-     Edge(this.id, this.source, this.destination, this.weight);
-        
-    
+  @PrimaryKey(auto: true)
+  int id;
 
-     String getId() {
-        return id;
-    }
-     Vertex getDestination() {
-        return destination;
-    }
+  @HasOne(VertexBean)
+  Vertex source;
 
-     Vertex getSource() {
-        return source;
-    }
-     int getWeight() {
-        return weight;
-    }
+  @HasOne(VertexBean)
+  Vertex destination;
 
-     String toString() {
-        return source.toString() + " " + destination.toString();
-    }
+  int weight;
+
+  Edge({this.id, this.source, this.destination, this.weight});
 
 
+  Vertex getDestination() {
+    return destination;
+  }
+
+  Vertex getSource() {
+    return source;
+  }
+  int getWeight() {
+    return weight;
+  }
+
+  String toString() {
+    return source.toString() + " " + destination.toString();
+  }
+
+}
+
+@GenBean()
+class EdgeBean extends Bean<Edge> with _EdgeBean {
+  String get tableName => 'edge';
+  final VertexBean vertexBean;
+
+  EdgeBean(Adapter adapter )
+      : vertexBean = VertexBean(adapter),
+        super(adapter);
 }

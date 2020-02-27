@@ -35,8 +35,13 @@ class Coordinate {
 
 @GenBean()
 class CoordinateBean extends Bean<Coordinate> with _CoordinateBean {
+  String get tableName => 'coordinate';
+  VertexBean _vertexBean;
+
+
   CoordinateBean(Adapter adapter) : super(adapter);
 
+  @override
+  VertexBean get vertexBean => _vertexBean ??= new VertexBean(adapter);
 
-  String get tableName => 'oto_simple_address';
 }
