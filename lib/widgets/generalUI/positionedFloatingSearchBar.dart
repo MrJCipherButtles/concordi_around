@@ -16,20 +16,6 @@ class SearchBar extends StatefulWidget {
 
 class _SearchBarState extends State<SearchBar> {
 
-  bool _isTyping = false, _hasTyped = false;
-  final myController = TextEditingController();
-
-  bool get isTyping => _isTyping;
-  set isTyping(bool isTextFocus) => _isTyping;
-  bool get hasTyped => _hasTyped;
-  set hasTyped(bool hasTypedSomething) => _hasTyped;
-
-  @override
-  void dispose(){
-    myController.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -43,19 +29,7 @@ class _SearchBarState extends State<SearchBar> {
           child: Row(
             children: <Widget>[
               Container(
-                child: (_isTyping) //|| _hasTyped)
-                    ? IconButton(
-                        splashColor: Colors.grey,
-                        icon: Icon(Icons.arrow_back),
-                        onPressed: () {
-                          FocusScope.of(context).unfocus();
-                          // setState(() {
-                          //   _isTyping = false;
-                          //   _hasTyped = false;
-                          // });
-                        },
-                      )
-                    : IconButton(
+                child: IconButton(
                         splashColor: Colors.grey,
                         icon: Icon(Icons.menu),
                         onPressed: () => Scaffold.of(context).openDrawer(),
@@ -63,7 +37,7 @@ class _SearchBarState extends State<SearchBar> {
               ),
               Expanded(
               child: TextField(
-                controller: myController,
+                readOnly: true,
                 cursorColor: Colors.black,
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.go,
