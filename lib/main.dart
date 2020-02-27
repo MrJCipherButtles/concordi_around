@@ -40,7 +40,7 @@ class MapSampleState extends State<MapSample> {
   void initState() {
     super.initState();
     _geolocator = Geolocator()..forceAndroidLocationManager;
-    LocationOptions locationOptions = LocationOptions(accuracy: LocationAccuracy.high, distanceFilter: 1);
+    LocationOptions locationOptions = LocationOptions(accuracy: LocationAccuracy.best, distanceFilter: 1);
     updateLocation();
     _positionStream = _geolocator.getPositionStream(locationOptions).listen(
         (Position pos) {
@@ -64,7 +64,7 @@ class MapSampleState extends State<MapSample> {
   void updateLocation() async {
     try {
       final GoogleMapController controller = await _controller.future;
-      Position position = await _geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+      Position position = await _geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
           .timeout(new Duration(seconds: 5));
       setState(() {
         _position = position;
@@ -98,6 +98,7 @@ class MapSampleState extends State<MapSample> {
                     child: GoogleMap(
                   mapType: MapType.normal,
                   myLocationEnabled: true,
+                  myLocationButtonEnabled: false,
                   compassEnabled: false,
                   indoorViewEnabled: false,
                   scrollGesturesEnabled: true,
