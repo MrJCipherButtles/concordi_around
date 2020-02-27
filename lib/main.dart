@@ -9,8 +9,8 @@ import 'package:provider/provider.dart';
 import 'widgets/mapUI/FloorSelector.dart';
 
 void main() => runApp(ChangeNotifierProvider(
-  builder: (context) => MapNotifier(),
-  child: MyApp()));
+    builder: (context) => MapNotifier(),
+    child: MyApp()));
 
 class MyApp extends StatelessWidget {
   @override
@@ -23,8 +23,6 @@ class MyApp extends StatelessWidget {
 }
 
 class MapSample extends StatefulWidget {
- 
-
   @override
   State<MapSample> createState() => MapSampleState();
 }
@@ -39,56 +37,56 @@ class MapSampleState extends State<MapSample> {
     bool showFloorSelector = false;
     MapNotifier mapNotifier = Provider.of<MapNotifier>(context);
 
-    
+
     return MaterialApp(
-      home :Scaffold(
-      body: Stack(
-        children: <Widget>[
-          // Replace this container with your Map widget
-          Container(
-              child: GoogleMap(
-            mapType: MapType.normal,
-            myLocationEnabled: false,
-            compassEnabled: false,
-            indoorViewEnabled: false,
-            scrollGesturesEnabled: true,
-            rotateGesturesEnabled: true,
-            tiltGesturesEnabled: true,
-            zoomGesturesEnabled: true,
-            initialCameraPosition:
-                CameraPosition(target: LatLng(49.497593, -55.578487), zoom: 19.03557586669922),
-           onMapCreated: (GoogleMapController controller) {
-              _controller.complete(controller);
-              _goToCurrent();
-            },
-            onCameraMove: (CameraPosition cameraPosition){
-              if(IsWithinHall(cameraPosition.target) && cameraPosition.zoom > 17){
-                setState(() {
-                  mapNotifier.setFloorSelectorVisibility(true);
-                  print("Inside hall $showFloorSelector");
-                });
-              }
-              else {
-                mapNotifier.setFloorSelectorVisibility(false);
-              }
-            },
-          )),
-          SearchBar(),
-          FloorSelector(
-            selectedFloor: (int val) => print("Clicked on index $val"),
+        home :Scaffold(
+          body: Stack(
+            children: <Widget>[
+              // Replace this container with your Map widget
+              Container(
+                  child: GoogleMap(
+                    mapType: MapType.normal,
+                    myLocationEnabled: false,
+                    compassEnabled: false,
+                    indoorViewEnabled: false,
+                    scrollGesturesEnabled: true,
+                    rotateGesturesEnabled: true,
+                    tiltGesturesEnabled: true,
+                    zoomGesturesEnabled: true,
+                    initialCameraPosition:
+                    CameraPosition(target: LatLng(49.497593, -55.578487), zoom: 19.03557586669922),
+                    onMapCreated: (GoogleMapController controller) {
+                      _controller.complete(controller);
+                      _goToCurrent();
+                    },
+                    onCameraMove: (CameraPosition cameraPosition){
+                      if(IsWithinHall(cameraPosition.target) && cameraPosition.zoom > 17){
+                        setState(() {
+                          mapNotifier.setFloorSelectorVisibility(true);
+                          print("Inside hall $showFloorSelector");
+                        });
+                      }
+                      else {
+                        mapNotifier.setFloorSelectorVisibility(false);
+                      }
+                    },
+                  )),
+              SearchBar(),
+              FloorSelector(
+                selectedFloor: (int val) => print("Clicked on index $val"),
+              ),
+            ],
           ),
-        ],
-      ),
-      drawer: SidebarDrawer(),
-      resizeToAvoidBottomInset: false,
-      floatingActionButton: FloatingActionButton(
-        onPressed: _goToCurrent,
-        backgroundColor: Colors.white,
-        foregroundColor: Color.fromRGBO(147, 0, 47, 1),
-        tooltip: 'Get Location',
-        child: Icon(Icons.my_location),
-      ),
-    )
+          drawer: SidebarDrawer(),
+          resizeToAvoidBottomInset: false,
+          floatingActionButton: FloatingActionButton(
+            onPressed: _goToCurrent,
+            backgroundColor: Colors.white,
+            foregroundColor: Color.fromRGBO(147, 0, 47, 1),
+            tooltip: 'Get Location',
+            child: Icon(Icons.my_location),
+          ),
+        )
     );
   }
 
@@ -111,4 +109,5 @@ class MapSampleState extends State<MapSample> {
   bool IsWithinHall(LatLng latLng){
     return LatLngBounds(southwest: LatLng(45.49607, -73.57869), northeast: LatLng(45.49894, -73.57934)).contains(latLng);
   }
+
 }
