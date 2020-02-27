@@ -50,8 +50,8 @@ class DijkstraAlgorithm {
 
      int getDistance(Vertex node, Vertex target) {
         for (Edge edge in edges) {
-            if (edge.getSource().equals(node)
-                    && edge.getDestination().equals(target)) {
+            if (edge.getSource()==(node)
+                    && edge.getDestination()==(target)) {
                 return edge.getWeight();
             }
         }
@@ -61,7 +61,7 @@ class DijkstraAlgorithm {
      List<Vertex> getNeighbors(Vertex node) {
         List<Vertex> neighbors = new List<Vertex>();
         for (Edge edge in edges) {
-            if (edge.getSource().equals(node)
+            if (edge.getSource()==(node)
                     && !isSettled(edge.getDestination())) {
                 neighbors.add(edge.getDestination());
             }

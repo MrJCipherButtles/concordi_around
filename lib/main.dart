@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:concordi_around/Coordinate.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
@@ -94,9 +95,12 @@ final Set<Polyline>_polyline={};
 //add your lat and lng where you wants to draw polyline
 LatLng _lastMapPosition = _center;
 // List<LatLng> latlng = new Coords().pointsFromListMap(new Coords().getPoints(LatLng(45.49719, -73.57933), LatLng(45.49735, -73.57918)));
-var start = LatLng(45.49705, -73.57883);
-var end = LatLng(45.49749, -73.57906);
-List<LatLng> latlng = new Path().getPath(start, end);
+var start = Coordinate(lat: 45.49705, long: -73.57883);
+var end = Coordinate(lat: 45.49749,long: -73.57906);
+List<Coordinate> latlngC = new Path().getPath(start, end);
+List<LatLng> latlng = [];
+
+latlngC.forEach((element) {latlng.add(new LatLng(element.lat, element.long));});
 
 
 // List<LatLng> pointsAB = new Coords().getPoints(LatLng(45.49719, -73.57933), LatLng(45.49735, -73.57918));

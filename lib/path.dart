@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'package:concordi_around/Coordinate.dart';
 import 'package:concordi_around/Edge.dart';
 import 'package:concordi_around/Vertex.dart';
 import 'package:concordi_around/Graph.dart';
@@ -9,46 +10,47 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 // import 'package:latlong/latlong.dart';
 
 // main(){
-// var start = LatLng(45.49707, -73.57906);
-// var end = LatLng(45.49748, -73.57905);
-// List<LatLng> latlng = new Path().getPath(start, end);
+// var start = Coordinate(lat: 45.49707, long:-73.57906);
+// var end = Coordinate(lat: 45.49748, long: -73.57905);
+// List<Coordinate> latlng = new Path().getPath(start, end);
 
 // // latlng.forEach((element) => {print(element)});
 // }
 
+
 class Path {
   List<Vertex> nodes = new List<Vertex>();
   List<Edge> edges = new List<Edge>();
-  Map<String, LatLng> pts = {
-    "a": LatLng(45.49719, -73.57933),
-    "b": LatLng(45.49735, -73.57918),
-    "c": LatLng(45.49755, -73.57899),
-    "y": LatLng(45.49741, -73.57868),
-    "d": LatLng(45.49734, -73.57855),
-    "e": LatLng(45.49714, -73.57875),
-    "x": LatLng(45.4972, -73.57887),
-    "f": LatLng(45.49698, -73.57888)
+  Map<String, Coordinate> pts = {
+    "a": Coordinate(lat:45.49719, long: -73.57933),
+    "b": Coordinate(lat:45.49735, long:-73.57918),
+    "c": Coordinate(lat:45.49755, long:-73.57899),
+    "y": Coordinate(lat:45.49741, long:-73.57868),
+    "d": Coordinate(lat:45.49734,long: -73.57855),
+    "e": Coordinate(lat:45.49714,long: -73.57875),
+    "x": Coordinate(lat:45.4972, long:-73.57887),
+    "f": Coordinate(lat:45.49698, long:-73.57888)
 
   };
 
  void addLane(String laneId, int sourceLocNo, int destLocNo,
             int duration) {
-        LatLng source = nodes[sourceLocNo].point;
-        LatLng dest = nodes[destLocNo].point;
+        Coordinate source = nodes[sourceLocNo].point;
+        Coordinate dest = nodes[destLocNo].point;
 
-        List<LatLng> ptsinBetween = getPoints(source, dest);
+        List<Coordinate> ptsinBetween = getPoints(source, dest);
         var prevNode = nodes[sourceLocNo]; 
         for(int i=0; i<ptsinBetween.length ; i++){
           
           if(i==ptsinBetween.length -1){
           // nodes.add(new Vertex(nodes[sourceLocNo].getName()+"_"+nodes[destLocNo].getName(), nodes[sourceLocNo].getName()+"_"+nodes[destLocNo].getName(), ptsinBetween[i]));
-          edges.add(new Edge(laneId,prevNode, nodes[destLocNo], 1 ));
-          edges.add(new Edge(laneId,nodes[destLocNo], prevNode, 1 ));
+          edges.add(new Edge( source: prevNode, destination: nodes[destLocNo], weight: 1 ));
+          edges.add(new Edge(source: nodes[destLocNo], destination: prevNode, weight:1 ));
           break;
           }
-          nodes.add(new Vertex(nodes[sourceLocNo].getName()+"_"+nodes[destLocNo].getName(), nodes[sourceLocNo].getName()+"_"+nodes[destLocNo].getName(), ptsinBetween[i]));
-          edges.add(new Edge(laneId,prevNode, nodes[nodes.length-1], 1 ));
-          edges.add(new Edge(laneId,nodes[nodes.length-1], prevNode, 1 ));
+          nodes.add(new Vertex(name: nodes[sourceLocNo].name+"_"+nodes[destLocNo].name, point: ptsinBetween[i]));
+          edges.add(new Edge(source: prevNode, destination: nodes[nodes.length-1], weight: 1 ));
+          edges.add(new Edge(source: nodes[nodes.length-1], destination: prevNode, weight: 1 ));
           prevNode = nodes[nodes.length-1];
 
         } 
@@ -59,7 +61,7 @@ class Path {
               
     }
 
-    getJunctionAsVertex(String junction, Map<String, LatLng>  pts){
+    getJunctionAsVertex(String junction, Map<String, Coordinate>  pts){
       var count = 0;
 
       var keys = pts.keys;
@@ -74,7 +76,7 @@ class Path {
       return count;
     }
 
-  List<LatLng> getPath(LatLng ast, LatLng bend) {
+  List<Coordinate> getPath(Coordinate ast, Coordinate bend) {
     var start = ast;
     var end = bend;
 
@@ -91,7 +93,7 @@ class Path {
 
 
      pts.forEach((k,v) => (
-          nodes.add(new Vertex(id: k, k.toString(), v))));
+          nodes.add(new Vertex(name:k.toString(), point: v))));
 
    
         
@@ -121,13 +123,13 @@ class Path {
     var tree = KDTree(junctionPointsinKDFormat, distance, ['x', 'y']);
 
     var closestStartJunction =
-        convertKDRetToOnePoint(tree.nearest({'x': start.latitude, 'y': start.longitude}, 1));
+        convertKDRetToOnePoint(tree.nearest({'x': start.lat, 'y': start.long}, 1));
     var closestEndJunction =
-        convertKDRetToOnePoint(tree.nearest({'x': end.latitude, 'y': end.longitude}, 1));
+        convertKDRetToOnePoint(tree.nearest({'x': end.lat, 'y': end.long}, 1));
       
 
         // Lets check from location Loc_1 to Loc_10
-        Graph graph = new Graph(nodes, edges);
+        Graph graph = new Graph(vertexes: nodes, edges: edges);
         DijkstraAlgorithm dijkstra = new DijkstraAlgorithm(graph);
         var startNode;
         var endNode;
@@ -151,7 +153,7 @@ class Path {
 
         // lst.forEach((element) => {print(element)});
 
-        List<LatLng> ret = [];
+        List<Coordinate> ret = [];
         for(var item in lst){
           ret.add(item.point);
         }
@@ -162,38 +164,38 @@ class Path {
         
   }
 
-  List<Map<String, double>> convertMapToKDFormat(Map<String, LatLng> map) {
+  List<Map<String, double>> convertMapToKDFormat(Map<String, Coordinate> map) {
     List<Map<String, double>> ret = [];
-    map.forEach((k, v) => (ret.add({'x': v.latitude, 'y': v.longitude})));
+    map.forEach((k, v) => (ret.add({'x': v.lat, 'y': v.long})));
 
     return ret;
   }
 
   List<Map<String, double>> convertListToKDFormat(List<Vertex> lst){
     List<Map<String, double>> ret = [];
-    lst.forEach((element) => (ret.add({'x': element.point.latitude, 'y': element.point.longitude})));
+    lst.forEach((element) => (ret.add({'x': element.point.lat, 'y': element.point.long})));
 
     return ret;
   }
 
-  LatLng convertKDRetToOnePoint(List<dynamic> kdRet) {
+  Coordinate convertKDRetToOnePoint(List<dynamic> kdRet) {
     var point = kdRet[0][0];
-    var ret = new LatLng(point['x'], point['y']);
+    var ret = new Coordinate(lat: point['x'], long: point['y']);
     return ret;
   }
 
   //get all points in straight line in between a and b  in normal format
-  List<LatLng> getPoints(LatLng a, LatLng b) {
-    List<LatLng> ret = [];
+  List<Coordinate> getPoints(Coordinate a, Coordinate b) {
+    List<Coordinate> ret = [];
     List<double> equation = lineFromPoints(a, b);
 
-    double interval = ((b.latitude - a.latitude) / 200);
+    double interval = ((b.lat - a.lat) / 20);
 
-    double begin = a.latitude;
-    for (int i = 0; i <= 200; i++) {
+    double begin = a.lat;
+    for (int i = 0; i <= 20; i++) {
       var lat = begin;
       var long = equation[0] * lat + equation[1];
-      ret.add(LatLng(lat, long));
+      ret.add(Coordinate(lat: lat, long: long));
       begin += interval;
     }
 
@@ -201,18 +203,18 @@ class Path {
   }
 
   //get all points in straight line in between a and b  in kdtree format
-  List<Map<String, double>> getPointsKD(LatLng a, LatLng b) {
-    List<LatLng> ret = [];
+  List<Map<String, double>> getPointsKD(Coordinate a, Coordinate b) {
+    List<Coordinate> ret = [];
     List<Map<String, double>> ret2 = [];
     List<double> equation = lineFromPoints(a, b);
 
-    double interval = ((b.latitude - a.latitude) / 6);
+    double interval = ((b.lat - a.lat) / 6);
 
-    double begin = a.latitude;
+    double begin = a.lat;
     for (int i = 0; i <= 6; i++) {
       var lat = begin;
       var long = equation[0] * lat + equation[1];
-      ret.add(LatLng(lat, long));
+      ret.add(Coordinate(lat: lat, long: long));
       ret2.add({'x': lat, 'y': long});
       begin += interval;
     }
@@ -221,23 +223,23 @@ class Path {
   }
 
 //y = mx + b from two points and returns list containing m and b
-  List<double> lineFromPoints(LatLng p1, LatLng p2) {
+  List<double> lineFromPoints(Coordinate p1, Coordinate p2) {
     List<double> equation = [];
-    double deltaY = p2.longitude - p1.longitude;
-    double deltaX = p2.latitude - p1.latitude;
+    double deltaY = p2.long - p1.long;
+    double deltaX = p2.lat - p1.lat;
     double m = deltaY / deltaX;
-    double b = p1.longitude - (m * p1.latitude);
+    double b = p1.long - (m * p1.lat);
 
     equation.add(m);
     equation.add(b);
     return equation;
   }
 
-  List<LatLng> pointsFromListMap(List<dynamic> list) {
-    List<LatLng> ret = [];
+  List<Coordinate> pointsFromListMap(List<dynamic> list) {
+    List<Coordinate> ret = [];
 
     for (int i = 0; i < list.length; i++) {
-      ret.add(LatLng(list[i][0]['x'], list[i][0]['y']));
+      ret.add(Coordinate(lat: list[i][0]['x'], long: list[i][0]['y']));
     }
 
     return ret;
