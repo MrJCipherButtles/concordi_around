@@ -1,63 +1,46 @@
- import 'dart:collection';
+import 'dart:collection';
 //  import 'package:latlong/latlong.dart';
- import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+
+import 'dart:async';
+import 'package:jaguar_query/jaguar_query.dart';
+import 'package:jaguar_orm/jaguar_orm.dart';
+
+import 'Coordinate.dart';
+
+part 'Vertex.jorm.dart';
 
 
 class Vertex  extends LinkedListEntry<Vertex>{
 
-    String id;
-    String name;
-    LatLng point;
+  @PrimaryKey()
+  String id;
 
+  String name;
 
+  @HasOne(CoordinateBean)
+  Coordinate point;
 
-    Vertex(this.id, this.name, this.point) {
-        this.id = id;
-        this.name = name;
-        this.point = point;
-    }
-   getId() {
-        return id;
-    }
+  Vertex({this.id, this.name, this.point});
 
-    getName() {
-        return name;
-    }
+  String toString() => "User($id, $name, $point)";
 
-    //   @override
-
-    //  int hashCode() {
-    //     final int prime = 31;
-    //     int result = 1;
-    //     result = prime * result + ((id == null) ? 0 : id.hashCode);
-    //     return result;
-    // }
-
-     bool equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-       
-        Vertex other = obj as Vertex;
-        if (id == null) {
-            if (other.id != null)
-                return false;
-        } else if (id != (other.id))
-            return false;
-        return true;
-    }
-
-    
-     String toString() {
-        return name;
-    }
-
-  @override
-  bool operator ==(other) {
-    // TODO: implement ==
-    return super == other;
+  bool operator ==(final other) {
+    if (other is Vertex)
+      return id == other.id && name == other.name && point == other.point;
+    return false;
   }
 
+  @override
+  int get hashCode => super.hashCode;
+
+}
+
+@GenBean()
+class VertexBean extends Bean<Vertex> with _VertexBean {
+  VertexBean(Adapter adapter ) : super(adapter);
+
+
+  String get tableName => 'oto_simple_user';
 }
