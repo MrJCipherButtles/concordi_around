@@ -91,7 +91,7 @@ class Path {
 
 
      pts.forEach((k,v) => (
-          nodes.add(new Vertex(k, k.toString(), v)))); 
+          nodes.add(new Vertex(id: k, k.toString(), v))));
 
    
         

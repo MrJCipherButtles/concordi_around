@@ -1,22 +1,38 @@
 import 'package:concordi_around/Edge.dart';
 import 'package:concordi_around/Vertex.dart';
+import 'package:jaguar_orm/jaguar_orm.dart';
+
+part 'Graph.jorm.dart';
 
 class Graph {
-     final List<Vertex> vertexes;
-     final List<Edge> edges;
+  @PrimaryKey(auto: true)
+  int id;
 
-     Graph(this.vertexes, this.edges) {
-       
-    }
+  @HasMany(VertexBean)
+  List<Vertex> vertexes;
 
-     List<Vertex> getVertexes() {
-        return vertexes;
-    }
+  @HasMany(EdgeBean)
+  List<Edge> edges;
 
-     List<Edge> getEdges() {
-        return edges;
-    }
+  Graph({this.vertexes, this.edges});
 
+  List<Vertex> getVertexes() {
+    return vertexes;
+  }
 
+  List<Edge> getEdges() {
+    return edges;
+  }
+}
 
+@GenBean()
+class GraphBean extends Bean<Graph> with _GraphBean {
+  String get tableName => 'edge';
+  final VertexBean vertexBean;
+  final EdgeBean edgeBean;
+
+  GraphBean(Adapter adapter )
+      : vertexBean = VertexBean(adapter),
+        edgeBean = EdgeBean(adapter),
+        super(adapter);
 }
