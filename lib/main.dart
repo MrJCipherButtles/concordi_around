@@ -29,12 +29,64 @@ class MapSample extends StatefulWidget {
 class MapSampleState extends State<MapSample> {
   Completer<GoogleMapController> _controller = Completer();
   bool enableGestures = true;
+  Geolocator _geolocator;
+  Position _position;
+  CameraPosition _cameraPosition;
+  StreamSubscription _positionStream;
+
+  @override
+  void initState() {
+    super.initState();
+    _geolocator = Geolocator()..forceAndroidLocationManager;
+    LocationOptions locationOptions = LocationOptions(accuracy: LocationAccuracy.high, distanceFilter: 1);
+    updateLocation();
+    _positionStream = _geolocator.getPositionStream(locationOptions).listen(
+        (Position pos) {
+          setState(() {
+            _position = pos;
+            _cameraPosition = CameraPosition(
+                target: LatLng(_position.latitude, _position.longitude),
+                zoom: 19.03);
+          });
+        });
+  }
+
+  @override
+  void dispose() {
+    if (_positionStream != null) {
+      _positionStream.cancel();
+    }
+    super.dispose();
+  }
+
+  void updateLocation() async {
+    try {
+      final GoogleMapController controller = await _controller.future;
+      Position position = await _geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+          .timeout(new Duration(seconds: 5));
+      setState(() {
+        _position = position;
+        _cameraPosition = CameraPosition(
+            target: LatLng(_position.latitude, _position.longitude),
+            zoom: 19.03);
+      });
+      controller.animateCamera(CameraUpdate.newCameraPosition(_cameraPosition));
+    } catch (e) {
+      print('Error in updateLocation: ${e.toString()}');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
 
     bool showFloorSelector = false;
     MapNotifier mapNotifier = Provider.of<MapNotifier>(context);
+
+    if(_cameraPosition == null) {
+      _cameraPosition = CameraPosition(
+          target: LatLng(0, 0)
+      );
+    }
 
     return MaterialApp(
         home: Scaffold(
@@ -44,19 +96,16 @@ class MapSampleState extends State<MapSample> {
                 Container(
                     child: GoogleMap(
                   mapType: MapType.normal,
-                  myLocationEnabled: false,
+                  myLocationEnabled: true,
                   compassEnabled: false,
                   indoorViewEnabled: false,
                   scrollGesturesEnabled: true,
                   rotateGesturesEnabled: true,
                   tiltGesturesEnabled: true,
                   zoomGesturesEnabled: true,
-                  initialCameraPosition: CameraPosition(
-                      target: LatLng(49.497593, -55.578487),
-                      zoom: 19.03557586669922),
+                  initialCameraPosition: _cameraPosition,
                   onMapCreated: (GoogleMapController controller) {
                     _controller.complete(controller);
-                    _goToCurrent();
                   },
                   onCameraMove: (CameraPosition cameraPosition) {
                     if (IsWithinHall(cameraPosition.target) &&
@@ -105,19 +154,11 @@ class MapSampleState extends State<MapSample> {
   }
 
   Future<void> _goToCurrent() async {
-    if (enableGestures) {
-      final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
-
-      var currentLocation = await geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.best);
-
-      CameraPosition _currentPos = CameraPosition(
-          target: LatLng(currentLocation.latitude, currentLocation.longitude),
-          zoom: 18.5);
-
-      final GoogleMapController controller = await _controller.future;
-      controller.animateCamera(CameraUpdate.newCameraPosition(_currentPos));
-    }
+    final GoogleMapController controller = await _controller.future;
+    _cameraPosition = CameraPosition(
+        target: LatLng(_position.latitude, _position.longitude),
+        zoom: 19.03);
+    controller.animateCamera(CameraUpdate.newCameraPosition(_cameraPosition));
   }
 
   bool IsWithinHall(LatLng latLng) {
