@@ -1,5 +1,5 @@
 library concordiAround.globals;
 
 bool isLoggedIn = false;
-bool showMap = true;
+bool showBuildingThroughZoom = true;
 bool isDisabilityEnabled = false;
