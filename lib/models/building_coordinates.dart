@@ -14,15 +14,15 @@ class BuildingSingleton {
   BuildingSingleton._internal() {
 
     PortalCoordinate a = PortalCoordinate(
-        45.49719, -73.57933, '8', 'Hall', 'SGW',
+        45.49719, -73.57933, '9', 'Hall', 'SGW',
         adjCoordinates: <Coordinate>{});
 
     PortalCoordinate b = PortalCoordinate(
-        45.49734, -73.57918, '8', 'Hall', 'SGW',
+        45.49734, -73.57918, '9', 'Hall', 'SGW',
         adjCoordinates: <Coordinate>{});
 
     RoomCoordinate start = RoomCoordinate(
-        45.49713, -73.57919, '8', 'Hall', 'SGW',
+        45.49713, -73.57919, '9', 'Hall', 'SGW',
         adjCoordinates: <Coordinate>{});
 
     RoomCoordinate end = RoomCoordinate(45.49749, -73.57905, '8', 'Hall', 'SGW',
