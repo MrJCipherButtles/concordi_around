@@ -3,22 +3,22 @@ import 'coordinate.dart';
 import 'floor.dart';
 
 class BuildingSingleton {
-  static final BuildingSingleton _instance = BuildingSingleton._internal();
+  //static final BuildingSingleton _instance = BuildingSingleton._internal();
 
   Building _building;
 
-  factory BuildingSingleton() {
-    return _instance;
-  }
+//  factory BuildingSingleton() {
+//    return _instance;
+//  }
 
-  BuildingSingleton._internal() {
+  BuildingSingleton() {
 
     PortalCoordinate j9F1 = PortalCoordinate(
-        45.497222, -73.579358, '9', 'Hall', 'SGW',
+        45.497223, -73.579356, '9', 'Hall', 'SGW', type: "JUNCTION",
         adjCoordinates: <Coordinate>{});
 
     PortalCoordinate j9F2 = PortalCoordinate(
-        45.497282, -73.579296, '9', 'Hall', 'SGW',
+        45.497282, -73.579296, '9', 'Hall', 'SGW', type: "JUNCTION",
         adjCoordinates: <Coordinate>{});
 
     PortalCoordinate j9F3 = PortalCoordinate(
@@ -166,9 +166,9 @@ class BuildingSingleton {
     j9F1.adjCoordinates = {j9F2, j9F4};
     j9F2.adjCoordinates = {j9F3, j9F1};
     j9F3.adjCoordinates = {j9F2, j9F5};
-    j9F4.adjCoordinates = {j9F5, j9F1};
-    j9F5.adjCoordinates = {j9F6, j9F4};
-    j9F6.adjCoordinates = {j9F7, j9F5};
+    j9F4.adjCoordinates = {j9F28, j9F1};
+    j9F5.adjCoordinates = {j9F6, j9F4, j9F3};
+    j9F6.adjCoordinates = {j9F7, j9F5, j9F26};
     j9F7.adjCoordinates = {j9F8, j9F6};
     j9F8.adjCoordinates = {j9F7, j9F31, j9F30};
     j9F9.adjCoordinates = {j9F31, j9F10};
@@ -177,7 +177,7 @@ class BuildingSingleton {
     j9F12.adjCoordinates = {j9F11, j9F13};
     j9F13.adjCoordinates = {j9F12, j9F14, j9F30};
     j9F14.adjCoordinates = {j9F13};
-    j9F15.adjCoordinates = {j9F15, j9F4};
+    j9F15.adjCoordinates = {j9F32, j9F4};
     j9F16.adjCoordinates = {j9F33};
     j9F17.adjCoordinates = {j9F18};
     j9F18.adjCoordinates = {j9F29, j9F34, j9F17};
@@ -196,7 +196,7 @@ class BuildingSingleton {
     j9F31.adjCoordinates = {j9F8, j9F9};
     j9F32.adjCoordinates = {j9F33, j9F15};
     j9F33.adjCoordinates = {j9F32, j9F16, j9F34};
-    j9F34.adjCoordinates = {j9F34, j9F18};
+    j9F34.adjCoordinates = {j9F33, j9F18};
     j9F35.adjCoordinates = {j9F19, j9F20};
     j9F36.adjCoordinates = {j9F37, j9F24};
     j9F37.adjCoordinates = {j9F23, j9F36};
@@ -204,12 +204,60 @@ class BuildingSingleton {
 //    RoomCoordinate end = RoomCoordinate(45.49749, -73.57905, '8', 'Hall', 'SGW',
 //        adjCoordinates: <Coordinate>{});
 
-    RoomCoordinate end = RoomCoordinate(45.49749, -73.57905, '8', 'Hall', 'SGW',
+    RoomCoordinate start = RoomCoordinate(45.497180, -73.579271, '9', 'Hall', 'SGW', type: "ROOM",
           adjCoordinates: <Coordinate>{});
 
-    // Floor eigth_floor = Floor('8', coordinates: {a, b, start, end});
+    start.adjCoordinates = {j9F1, j9F4};
 
-    _building = Building('Hall', floors: {'8': eigth_floor});
+    RoomCoordinate end = RoomCoordinate(45.497086, -73.578787, '9', 'Hall', 'SGW', type: "ROOM",
+        adjCoordinates: <Coordinate>{});
+
+    end.adjCoordinates = {j9F19, j9F29};
+
+
+    Floor ninth_floor = Floor('9', coordinates: {
+      start,
+      end,
+      j9F1,
+      j9F2,
+      j9F3,
+      j9F4,
+      j9F5,
+      j9F6,
+      j9F7,
+      j9F8,
+      j9F9,
+      j9F10,
+      j9F11,
+      j9F12,
+      j9F13,
+      j9F14,
+      j9F15,
+      j9F16,
+      j9F17,
+      j9F18,
+      j9F19,
+      j9F20,
+      j9F21,
+      j9F22,
+      j9F23,
+      j9F24,
+      j9F25,
+      j9F26,
+      j9F27,
+      j9F28,
+      j9F29,
+      j9F30,
+      j9F31,
+      j9F32,
+      j9F33,
+      j9F34,
+      j9F35,
+      j9F36,
+      j9F37
+    });
+
+    _building = Building('Hall', floors: {'9': ninth_floor});
   }
 
   Building get building => _building;

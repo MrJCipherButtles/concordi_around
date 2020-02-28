@@ -15,6 +15,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 
+import 'models/building_coordinates.dart';
+
 void main() => runApp(ChangeNotifierProvider(
     builder: (context) => MapNotifier(), child: MyApp()));
 
@@ -45,23 +47,17 @@ class MapSampleState extends State<MapSample> {
 
 
   void fun() {
+    BuildingSingleton buildingSingleton = new BuildingSingleton();
+    model.Building building = buildingSingleton.building;
 
-    PortalCoordinate a = PortalCoordinate(45.49719, -73.57933, '8', 'Hall', 'SGW', adjCoordinates: <Coordinate>{});
-    PortalCoordinate b = PortalCoordinate(45.49734, -73.57918, '8', 'Hall', 'SGW', adjCoordinates: <Coordinate>{});
+    Map<String, Floor> floors = building.floors;
+    Floor ninth = floors['9'];
+    List<Coordinate> rooms = ninth.coordinatesByGivenTypes(["ROOM"]);
+    Coordinate start = rooms[0];
+    Coordinate end = rooms[1];
 
-    RoomCoordinate start = RoomCoordinate(45.49713, -73.57919, '8', 'Hall', 'SGW', adjCoordinates: <Coordinate>{});
-    RoomCoordinate end = RoomCoordinate(45.49749, -73.57905, '8', 'Hall', 'SGW', adjCoordinates: <Coordinate>{});
-
-    a.addAdjCoordinate(start);
-    a.addAdjCoordinate(b);
-    b.addAdjCoordinate(end);
-
-    Floor eigth_floor = Floor('8', coordinates: {a,b, start, end});
-
-    model.Building hall = model.Building('Hall', floors: {'8': eigth_floor});
-
-    Map<String, Path> shortestPath = hall.shortestPath(start, end);
-    Path path = shortestPath['8'];
+    Map<String, Path> shortestPath = building.shortestPath(start, end);
+    Path path = shortestPath['9'];
     print(path);
     direction = {path.toPolyline()};
   }

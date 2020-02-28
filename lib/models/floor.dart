@@ -88,6 +88,9 @@ class Floor {
       List<Coordinate> visitedList,
       List<Coordinate> coordinateList,
       List<Path> pathList) {
+    print("$pathList ***");
+    print("$s ***");
+    print("$d ***");
     visitedList.add(s); // Mark the current coordinate visited
     if (s == d) {
       pathList.add(Path(coordinateList));

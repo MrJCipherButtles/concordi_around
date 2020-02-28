@@ -61,6 +61,7 @@ class Path {
         polylineId: PolylineId(coordinates.toString()),
         points: points,
         visible: true,
+        width: 5,
         jointType: JointType.bevel,
         patterns: [PatternItem.dot],
         color: Color.fromRGBO(147, 0, 47, 1)
