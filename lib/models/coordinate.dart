@@ -51,7 +51,7 @@ class Coordinate {
 
   // Might want to define a better toString...
   @override
-  String toString() => _type;
+  String toString() => '$_lat,$_lng,$_floor';
 }
 
 class PortalCoordinate extends Coordinate {
