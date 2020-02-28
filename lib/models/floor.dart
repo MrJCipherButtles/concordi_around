@@ -119,7 +119,7 @@ class Floor {
     //they must be the same coordinate, or
     //they must be on the same segment
     //A room coordinate must have 2 and only 2 portal coordinates.
-    if (s.adjCoordinates == d.adjCoordinates) {
+    if (s.adjCoordinates.containsAll(d.adjCoordinates)) {
       return Path(<Coordinate>[s, d]);
     }
     return _findShortestPath(_getAllPathsFromSourceToDestination(s, d));
