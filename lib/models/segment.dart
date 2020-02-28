@@ -1,5 +1,8 @@
 import 'dart:math';
 
+import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 import 'coordinate.dart';
 
 class Segment {
@@ -34,6 +37,17 @@ class Segment {
   }
 
   static double _rad(double deg) => deg * pi/180;
+
+//  Polyline toPolyline() {
+//    return Polyline(
+//      polylineId: PolylineId(_source.toString()),
+//      points: [_source.toLatLng(), _destination.toLatLng()],
+//      visible: true,
+//      jointType: JointType.bevel,
+//      patterns: [PatternItem.dot],
+//      color: Color.fromRGBO(147, 0, 47, 1)
+//    );
+//  }
 
   @override
   String toString() => _source.toString() + '->' + _destination.toString();

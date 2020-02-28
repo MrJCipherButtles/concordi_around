@@ -1,4 +1,9 @@
 
+import 'dart:collection';
+
+import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 import 'coordinate.dart';
 import 'segment.dart';
 
@@ -44,6 +49,22 @@ class Path {
       length += segment.length();
     }
     return length;
+  }
+
+  Polyline toPolyline() {
+    var coordinates = getCoordinatesInOrder();
+    var points = <LatLng>[];
+    for (var coordinate in coordinates) {
+      points.add(coordinate.toLatLng());
+    }
+    return Polyline(
+        polylineId: PolylineId(coordinates.toString()),
+        points: points,
+        visible: true,
+        jointType: JointType.bevel,
+        patterns: [PatternItem.dot],
+        color: Color.fromRGBO(147, 0, 47, 1)
+    );
   }
 
   @override

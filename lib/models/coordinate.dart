@@ -1,5 +1,7 @@
 import 'dart:collection';
 
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 class Coordinate {
   final double _lat;
   final double _lng;
@@ -44,9 +46,15 @@ class Coordinate {
     return false;
   }
 
+  LatLng toLatLng() {
+    return LatLng(_lat, _lng);
+  }
+
   // Might want to define a better toString...
   @override
-  String toString() => _type;
+  String toString() {
+    return 'Coordinate{_lat: $_lat, _lng: $_lng \n}';
+  }
 }
 
 class PortalCoordinate extends Coordinate {

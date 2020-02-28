@@ -1,5 +1,11 @@
 import 'dart:async';
 import 'package:concordi_around/mapNotifier.dart';
+
+import 'package:concordi_around/models/building.dart' as model;
+import 'package:concordi_around/models/floor.dart';
+import 'package:concordi_around/models/coordinate.dart';
+import 'package:concordi_around/models/path.dart';
+
 import 'package:concordi_around/widgets/generalUI/positionedFloatingSearchBar.dart';
 import 'package:concordi_around/widgets/generalUI/sidebarDrawer.dart';
 import 'package:concordi_around/widgets/mapUI/svgFloorPlans.dart';
@@ -36,9 +42,35 @@ class MapSampleState extends State<MapSample> {
   CameraPosition _cameraPosition;
   StreamSubscription _positionStream;
 
+  Set<Polyline> direction;
+
+
+  void fun() {
+
+    PortalCoordinate a = PortalCoordinate(45.49719, -73.57933, '8', 'Hall', 'SGW', adjCoordinates: <Coordinate>{});
+    PortalCoordinate b = PortalCoordinate(45.49734, -73.57918, '8', 'Hall', 'SGW', adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate start = RoomCoordinate(45.49713, -73.57919, '8', 'Hall', 'SGW', adjCoordinates: <Coordinate>{});
+    RoomCoordinate end = RoomCoordinate(45.49749, -73.57905, '8', 'Hall', 'SGW', adjCoordinates: <Coordinate>{});
+
+    a.addAdjCoordinate(start);
+    a.addAdjCoordinate(b);
+    b.addAdjCoordinate(end);
+
+    Floor eigth_floor = Floor('8', coordinates: {a,b, start, end});
+
+    model.Building hall = model.Building('Hall', floors: {'8': eigth_floor});
+
+    Map<String, Path> shortestPath = hall.shortestPath(start, end);
+    Path path = shortestPath['8'];
+    print(path);
+    direction = {path.toPolyline()};
+  }
+
   @override
   void initState() {
     super.initState();
+    fun();
     _geolocator = Geolocator()..forceAndroidLocationManager;
     LocationOptions locationOptions = LocationOptions(accuracy: LocationAccuracy.best, distanceFilter: 1);
     updateLocation();
@@ -106,6 +138,7 @@ class MapSampleState extends State<MapSample> {
                   tiltGesturesEnabled: true,
                   zoomGesturesEnabled: true,
                   initialCameraPosition: _cameraPosition,
+                  polylines: direction,
                   onMapCreated: (GoogleMapController controller) {
                     _controller.complete(controller);
                   },
