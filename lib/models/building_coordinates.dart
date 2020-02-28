@@ -167,7 +167,7 @@ class BuildingSingleton {
     j9F2.adjCoordinates = {j9F3, j9F1};
     j9F3.adjCoordinates = {j9F2, j9F5};
     j9F4.adjCoordinates = {j9F28, j9F1};
-    j9F5.adjCoordinates = {j9F6, j9F4, j9F3};
+    j9F5.adjCoordinates = {j9F6, j9F28, j9F3};
     j9F6.adjCoordinates = {j9F7, j9F5, j9F26};
     j9F7.adjCoordinates = {j9F8, j9F6};
     j9F8.adjCoordinates = {j9F7, j9F31, j9F30};
@@ -187,7 +187,7 @@ class BuildingSingleton {
     j9F22.adjCoordinates = {j9F23};
     j9F23.adjCoordinates = {j9F20, j9F22, j9F37};
     j9F24.adjCoordinates = {j9F36, j9F25};
-    j9F25.adjCoordinates = {j9F24, j9F26};
+    j9F25.adjCoordinates = {j9F24, j9F26, j9F19};
     j9F26.adjCoordinates = {j9F27, j9F25, j9F6};
     j9F27.adjCoordinates = {j9F26};
     j9F28.adjCoordinates = {j9F5, j9F4};
@@ -204,16 +204,11 @@ class BuildingSingleton {
 //    RoomCoordinate end = RoomCoordinate(45.49749, -73.57905, '8', 'Hall', 'SGW',
 //        adjCoordinates: <Coordinate>{});
 
-    RoomCoordinate start = RoomCoordinate(45.497180, -73.579271, '9', 'Hall', 'SGW', type: "ROOM",
-          adjCoordinates: <Coordinate>{});
+    RoomCoordinate start = RoomCoordinate(45.497205, -73.579329, '9', 'Hall', 'SGW', type: "ROOM",
+          adjCoordinates: {j9F1, j9F4});
 
-    start.adjCoordinates = {j9F1, j9F4};
-
-    RoomCoordinate end = RoomCoordinate(45.497086, -73.578787, '9', 'Hall', 'SGW', type: "ROOM",
-        adjCoordinates: <Coordinate>{});
-
-    end.adjCoordinates = {j9F19, j9F29};
-
+    RoomCoordinate end = RoomCoordinate(45.497380, -73.578606, '9', 'Hall', 'SGW', type: "ROOM",
+        adjCoordinates: {j9F20, j9F23});
 
     Floor ninth_floor = Floor('9', coordinates: {
       start,

@@ -13,7 +13,12 @@ class Coordinate {
 
   Coordinate(this._lat, this._lng, this._floor, this._building, this._campus, {type, adjCoordinates}) {
     _type = type;
-    _adjCoordinates = adjCoordinates;
+    if(adjCoordinates != null) {
+      _adjCoordinates = adjCoordinates;
+      for (var adjCoordinate in _adjCoordinates) {
+        adjCoordinate.addAdjCoordinate(this);
+      }
+    }
   }
 
   double get lat => _lat;
