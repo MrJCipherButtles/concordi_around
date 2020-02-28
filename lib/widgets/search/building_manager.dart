@@ -1,7 +1,7 @@
 // Displays a list of all the buildings
 
 import 'package:flutter/material.dart';
-import './building.dart';
+import 'package:concordi_around/models/building.dart';
 
 class DisplayBuildingListManager extends StatefulWidget {
   final Function(String) name;

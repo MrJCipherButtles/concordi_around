@@ -1,5 +1,5 @@
+import 'package:concordi_around/models/room.dart';
 import 'package:flutter/material.dart';
-import './room.dart';
 
 class SearchMenuSuggestionsManager extends StatefulWidget {
   @override

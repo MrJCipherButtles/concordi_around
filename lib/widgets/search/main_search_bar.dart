@@ -1,8 +1,7 @@
-import 'package:concordi_around/searchMenu.dart';
-import 'package:concordi_around/searchMenuSuggestions.dart';
+import 'package:concordi_around/models/database.dart';
+import 'package:concordi_around/widgets/search/search_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import "package:concordi_around/database/database.dart";
 
 String campus = "SGW";
 

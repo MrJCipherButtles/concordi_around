@@ -1,5 +1,5 @@
+import 'package:concordi_around/models/building.dart';
 import 'package:flutter_test/flutter_test.dart';
-import '../lib/building.dart';
 
 void main() {
   test('Building instantiate with the right value', () {

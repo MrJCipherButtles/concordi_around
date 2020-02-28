@@ -41,9 +41,22 @@ dependencies:
   # Provider
   provider: ^3.1.0
 
+  #Search Suggestions (Flutter TypeAhead)
+  flutter_typeahead: ^1.8.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  #App Luncher Icon dependency 
+  flutter_launcher_icons: ^0.7.4
+flutter_icons:
+  ios: true
+  android: true
+  image_path_ios: "assets/LuncherIcons/icon.png"
+  image_path_android: "assets/LuncherIcons/icon.png"
+  adaptive_icon_background: "assets/LuncherIcons/background.png"
+  adaptive_icon_foreground: "assets/LuncherIcons/foreground.png"
 
 
 # For information on the generic Dart part of this file, see the
@@ -61,6 +74,8 @@ flutter:
   assets:
    - assets/floorplans/Hall-8.svg
    - assets/floorplans/Hall-9.svg
+   - assets/map_style.json
+   - assets/map_style_reset.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
