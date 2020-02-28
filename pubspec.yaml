@@ -48,6 +48,16 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+  #App Luncher Icon dependency 
+  flutter_launcher_icons: ^0.7.4
+flutter_icons:
+  ios: true
+  android: true
+  image_path_ios: "assets/LuncherIcons/icon.png"
+  image_path_android: "assets/LuncherIcons/icon.png"
+  adaptive_icon_background: "assets/LuncherIcons/background.png"
+  adaptive_icon_foreground: "assets/LuncherIcons/foreground.png"
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

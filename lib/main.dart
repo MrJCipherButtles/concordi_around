@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:concordi_around/provider/mapNotifier.dart';
-import 'package:concordi_around/widgets/GoToPage.dart';
+import 'package:concordi_around/views/go_to_page.dart';
 import 'package:concordi_around/widgets/floor_selector_enter_building_column.dart';
 import 'package:concordi_around/widgets/generalUI/sidebarDrawer.dart';
 import 'package:concordi_around/widgets/search/main_search_bar.dart';
