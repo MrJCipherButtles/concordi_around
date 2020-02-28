@@ -41,6 +41,9 @@ dependencies:
   # Provider
   provider: ^3.1.0
 
+  #Search Suggestions (Flutter TypeAhead)
+  flutter_typeahead: ^1.8.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
