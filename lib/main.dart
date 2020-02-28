@@ -108,12 +108,15 @@ class MapSampleState extends State<MapSample> {
                   onMapCreated: (GoogleMapController controller) {
                     _controller.complete(controller);
                   },
-                  onCameraMove: (CameraPosition cameraPosition) {
+                  onCameraMove: (CameraPosition cameraPosition) async {
+                    GoogleMapController _mapController = await _controller.future;
                     if (IsWithinHallStrictBound(cameraPosition.target) &&
                         cameraPosition.zoom > 18) {
                       mapNotifier.setFloorPlanVisibility(true);
+                      _setStyle(_mapController);
                     } else {
                       mapNotifier.setFloorPlanVisibility(false);
+                      _resetStyle(_mapController);
                     }
                     if (IsWithinHall(cameraPosition.target)) {
                       mapNotifier.setEnterBuildingVisibility(true);
@@ -250,5 +253,18 @@ class MapSampleState extends State<MapSample> {
     controller.moveCamera(
         CameraUpdate.newLatLng(LatLng(45.49726709926478, -73.57894677668811)));
     controller.animateCamera(CameraUpdate.newCameraPosition(_currentPos));
+  }
+
+  void _setStyle(GoogleMapController controller) async {
+    print("Setting map style");
+    String value = await DefaultAssetBundle.of(context)
+        .loadString('assets/map_style.json');
+    controller.setMapStyle(value);
+  }
+
+  void _resetStyle(GoogleMapController controller) async {
+    print("Reseting");
+    String value = await DefaultAssetBundle.of(context).loadString('assets/map_style_reset.json');
+    controller.setMapStyle(value);
   }
 }
