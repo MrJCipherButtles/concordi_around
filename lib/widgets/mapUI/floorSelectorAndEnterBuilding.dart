@@ -35,7 +35,7 @@ class _FloorSelectorAndEnterBuildingState
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               EnterBuildingButton(isPressed: ()=> {widget.enterBuildingPressed()}),
-              SizedBox(height: 16, width: 16,),
+              SizedBox(height: 16, width: 16),
               Visibility(
                 maintainSize: true,
             maintainAnimation: true,
