@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
+import 'widgets/mapUI/FloorSelector.dart';
+import 'widgets/generalUI/sidebarDrawer.dart';
 
 void main() => runApp(ChangeNotifierProvider(
     builder: (context) => MapNotifier(), child: MyApp()));
@@ -16,10 +18,12 @@ void main() => runApp(ChangeNotifierProvider(
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return ChangeNotifierProvider<DisabilityModeInfo>(
+              create: (_) => DisabilityModeInfo(),
+              child: MaterialApp(
       title: 'Flutter Google Maps Demo',
       home: MapSample(),
-    );
+    ));
   }
 }
 
