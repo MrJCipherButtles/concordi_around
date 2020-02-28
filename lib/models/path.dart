@@ -14,8 +14,8 @@ class Path {
 
   List<Segment> get segments => _segments;
 
-  Set<Coordinate> getCoordinatesInOrder() {
-    var ls = <Coordinate>{};
+  List<Coordinate> coordinatesInOrder() {
+    var ls = <Coordinate>[];
     //add the source coordinate of the first segment
     ls.add(_segments[0].source);
     for(var segment in _segments) {
@@ -49,7 +49,7 @@ class Path {
   @override
   String toString(){
     var buffer = StringBuffer();
-    for(var coordinate in getCoordinatesInOrder()) {
+    for(var coordinate in coordinatesInOrder()) {
       buffer.write(coordinate.toString());
     }
     return buffer.toString();
