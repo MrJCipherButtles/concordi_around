@@ -35,7 +35,7 @@ void main() {
       expect(floor.shortestPath(f, e).toString(), Path([f, a, b, c, y, d, e]).toString());
     });
     test('shortest path from a to a', () {
-      expect(floor.shortestPath(a, a).length(), 0);
+      expect(floor.shortestPath(a, a).length(), closeTo(0, 0.1));
     });
     test('shortest path from z to zz', () {
       expect(floor.shortestPath(z, zz).toString(), Path([z, zz]).toString());
