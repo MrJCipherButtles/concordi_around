@@ -1,27 +1,26 @@
-import 'package:concordi_around/enterbuilding.dart';
-import 'package:concordi_around/main.dart';
-import 'package:concordi_around/mapNotifier.dart';
+import 'package:concordi_around/provider/mapNotifier.dart';
+import 'package:concordi_around/widgets/enter_building_action_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class FloorSelectorAndEnterBuilding extends StatefulWidget {
+class FloorSelectorEnterBuilding extends StatefulWidget {
 
   final Function(int) selectedFloor;
   final VoidCallback enterBuildingPressed;
 
-  FloorSelectorAndEnterBuilding({this.selectedFloor, this.enterBuildingPressed});
+  FloorSelectorEnterBuilding({this.selectedFloor, this.enterBuildingPressed});
 
   
 
   @override
   State<StatefulWidget> createState() {
-    return _FloorSelectorAndEnterBuildingState();
+    return _FloorSelectorEnterBuildingState();
   }
 }
 
-class _FloorSelectorAndEnterBuildingState
-    extends State<FloorSelectorAndEnterBuilding> { 
+class _FloorSelectorEnterBuildingState
+    extends State<FloorSelectorEnterBuilding> { 
        
   List<bool> selectedFloor = [false, true]; // 8th floor selected
 

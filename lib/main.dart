@@ -1,10 +1,10 @@
 import 'dart:async';
-import 'package:concordi_around/mapNotifier.dart';
+import 'package:concordi_around/provider/mapNotifier.dart';
 import 'package:concordi_around/widgets/GoToPage.dart';
-import 'package:concordi_around/widgets/generalUI/positionedFloatingSearchBar.dart';
+import 'package:concordi_around/widgets/floor_selector_enter_building_column.dart';
 import 'package:concordi_around/widgets/generalUI/sidebarDrawer.dart';
-import 'package:concordi_around/widgets/mapUI/floorSelectorAndEnterBuilding.dart';
-import 'package:concordi_around/widgets/mapUI/svgFloorPlans.dart';
+import 'package:concordi_around/widgets/search/main_search_bar.dart';
+import 'package:concordi_around/widgets/svg_floor_plans.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
@@ -129,7 +129,7 @@ class MapSampleState extends State<MapSample> {
                     name: (String building) =>
                         {_goToSelectedBuilding("$building")}),
                 SVGFloorPlans(),
-                FloorSelectorAndEnterBuilding(
+                FloorSelectorEnterBuilding(
                   selectedFloor: (int floor) =>
                       {mapNotifier.setSelectedFloor(floor)},
                   enterBuildingPressed: () => _goToHall8th(),
@@ -247,10 +247,6 @@ class MapSampleState extends State<MapSample> {
         zoom: 19.03557586669922);
 
     final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(
-        CameraUpdate.newLatLng(LatLng(45.49726709926478, -73.57894677668811)));
-    controller.moveCamera(
-        CameraUpdate.newLatLng(LatLng(45.49726709926478, -73.57894677668811)));
     controller.animateCamera(CameraUpdate.newCameraPosition(_currentPos));
   }
 

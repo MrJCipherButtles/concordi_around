@@ -1,7 +1,7 @@
+import 'package:concordi_around/models/database.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import "package:concordi_around/database/database.dart";
 
 class GoToPage extends StatefulWidget {
   

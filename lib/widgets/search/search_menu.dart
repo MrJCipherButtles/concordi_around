@@ -1,6 +1,5 @@
+import 'package:concordi_around/widgets/search/building_manager.dart';
 import 'package:flutter/material.dart';
-
-import './buildingManager.dart';
 
 class SearchMenuListOption extends StatelessWidget {
 

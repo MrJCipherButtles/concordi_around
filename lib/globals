@@ -1,5 +1,0 @@
-library concordiAround.globals;
-
-bool isLoggedIn = false;
-bool showBuildingThroughZoom = true;
-bool isDisabilityEnabled = false;
