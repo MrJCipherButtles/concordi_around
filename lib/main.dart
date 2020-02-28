@@ -156,10 +156,9 @@ class MapSampleState extends State<MapSample> {
                   FloatingActionButton(
                     heroTag: 'unique2',
                     onPressed: () {
-                      print("TESTTTTTTTTTTTTTTTTT");
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => GoToPage(),
+                        MaterialPageRoute(builder: (context) => GoToPage(route: (List<String> temp) => {print("HIIIIIIIIIIIIIIIIIII"+ temp[0] + " " + temp[1])},),
                         ),
                       );
                     },

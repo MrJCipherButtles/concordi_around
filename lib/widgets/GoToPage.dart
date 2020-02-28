@@ -4,7 +4,10 @@ import 'package:flutter/rendering.dart';
 import "package:concordi_around/database/database.dart";
 
 class GoToPage extends StatefulWidget {
-  GoToPage();
+  
+  final Function(List<String>) route;
+  GoToPage({this.route});
+
   @override
   _GoToPageState createState() => new _GoToPageState();
   final originField = TextField(
@@ -20,8 +23,12 @@ class _GoToPageState extends State<GoToPage> {
       TextEditingController();
   final TextEditingController _destinTypeAheadController =
       TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+
+    List<String> originDestination = [];
+
     return Container(
       child: Material(
         child: Container(
@@ -48,6 +55,7 @@ class _GoToPageState extends State<GoToPage> {
                     flex: 10,
                     child: TypeAheadField(
                       textFieldConfiguration: TextFieldConfiguration(
+                        autofocus: true,
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w400,
@@ -84,6 +92,7 @@ class _GoToPageState extends State<GoToPage> {
                       },
                       onSuggestionSelected: (suggestion) {
                         this._originTypeAheadController.text = suggestion;
+                        originDestination.add("$suggestion");
                       },
                     ),
                   ),
@@ -133,7 +142,10 @@ class _GoToPageState extends State<GoToPage> {
                         );
                       },
                       onSuggestionSelected: (suggestion) {
+                        //Navigator.pop(context);
                         this._destinTypeAheadController.text = suggestion;
+                        originDestination.add("$suggestion");
+                        widget.route(originDestination);
                       },
                     ),
                   ),
