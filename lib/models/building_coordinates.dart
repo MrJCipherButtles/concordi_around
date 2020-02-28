@@ -163,9 +163,49 @@ class BuildingSingleton {
         45.497364, -73.578729, '9', 'Hall', 'SGW', type: "STAIRS",
         adjCoordinates: <Coordinate>{});
 
+    j9F1.adjCoordinates = {j9F2, j9F4};
+    j9F2.adjCoordinates = {j9F3, j9F1};
+    j9F3.adjCoordinates = {j9F2, j9F5};
+    j9F4.adjCoordinates = {j9F5, j9F1};
+    j9F5.adjCoordinates = {j9F6, j9F4};
+    j9F6.adjCoordinates = {j9F7, j9F5};
+    j9F7.adjCoordinates = {j9F8, j9F6};
+    j9F8.adjCoordinates = {j9F7, j9F31, j9F30};
+    j9F9.adjCoordinates = {j9F31, j9F10};
+    j9F10.adjCoordinates = {j9F9, j9F11};
+    j9F11.adjCoordinates = {j9F10, j9F12};
+    j9F12.adjCoordinates = {j9F11, j9F13};
+    j9F13.adjCoordinates = {j9F12, j9F14, j9F30};
+    j9F14.adjCoordinates = {j9F13};
+    j9F15.adjCoordinates = {j9F15, j9F4};
+    j9F16.adjCoordinates = {j9F33};
+    j9F17.adjCoordinates = {j9F18};
+    j9F18.adjCoordinates = {j9F29, j9F34, j9F17};
+    j9F19.adjCoordinates = {j9F35, j9F25, j9F29};
+    j9F20.adjCoordinates = {j9F21, j9F23, j9F35};
+    j9F21.adjCoordinates = {j9F20};
+    j9F22.adjCoordinates = {j9F23};
+    j9F23.adjCoordinates = {j9F20, j9F22, j9F37};
+    j9F24.adjCoordinates = {j9F36, j9F25};
+    j9F25.adjCoordinates = {j9F24, j9F26};
+    j9F26.adjCoordinates = {j9F27, j9F25, j9F6};
+    j9F27.adjCoordinates = {j9F26};
+    j9F28.adjCoordinates = {j9F5, j9F4};
+    j9F29.adjCoordinates = {j9F19, j9F18};
+    j9F30.adjCoordinates = {j9F13, j9F8};
+    j9F31.adjCoordinates = {j9F8, j9F9};
+    j9F32.adjCoordinates = {j9F33, j9F15};
+    j9F33.adjCoordinates = {j9F32, j9F16, j9F34};
+    j9F34.adjCoordinates = {j9F34, j9F18};
+    j9F35.adjCoordinates = {j9F19, j9F20};
+    j9F36.adjCoordinates = {j9F37, j9F24};
+    j9F37.adjCoordinates = {j9F23, j9F36};
+
+//    RoomCoordinate end = RoomCoordinate(45.49749, -73.57905, '8', 'Hall', 'SGW',
+//        adjCoordinates: <Coordinate>{});
 
     RoomCoordinate end = RoomCoordinate(45.49749, -73.57905, '8', 'Hall', 'SGW',
-        adjCoordinates: <Coordinate>{});
+          adjCoordinates: <Coordinate>{});
 
     // Floor eigth_floor = Floor('8', coordinates: {a, b, start, end});
 
