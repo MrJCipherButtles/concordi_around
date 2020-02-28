@@ -12,14 +12,348 @@ class BuildingSingleton {
 //  }
 
   BuildingSingleton() {
+    //first letter: l=lower, m=middle, u=upper
+    //second letter: l=left, m=middle, r=right
+    //pov from maisonneuve
+
+    //path intersections
+    PortalCoordinate h8_ll = PortalCoordinate(
+        45.496985, -73.558899, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    PortalCoordinate h8_mm = PortalCoordinate(
+        45.497210, -73.548889, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    PortalCoordinate h8_lm = PortalCoordinate(
+        45.497137, -73.578743, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    PortalCoordinate h8_lr = PortalCoordinate(
+        45.497344, -73.578554, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    PortalCoordinate h8_ur = PortalCoordinate(
+        45.497554, -73.578986, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    PortalCoordinate h8_um = PortalCoordinate(
+        45.497352, -73.579189, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    PortalCoordinate h8_ul = PortalCoordinate(
+        45.497196, -73.579331, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    PortalCoordinate h8_mr = PortalCoordinate(
+        45.497410, -73.578689, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    PortalCoordinate h8_stairs_ll = PortalCoordinate(
+        45.497045, -73.578830, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{}, type: "STAIRS");
+
+    PortalCoordinate h8_stairs_ul = PortalCoordinate(
+        45.497260, -73.579272, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{}, type: "STAIRS");
+
+    PortalCoordinate h8_stairs_lr = PortalCoordinate(
+        45.497361, -73.578732, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{}, type: "STAIRS");
+
+    PortalCoordinate h8_stairs_ur = PortalCoordinate(
+        45.497526, -73.579021, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{}, type: "STAIRS");
+
+    PortalCoordinate h8_escalator_down = PortalCoordinate(
+        45.497246, -73.578858, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{}, type: "ESCALATOR-DOWN");
+
+    PortalCoordinate h8_escalator_up = PortalCoordinate(
+        45.497328, -73.579028, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{}, type: "ESCALATOR-UP");
+
+    PortalCoordinate h8_elevator = PortalCoordinate(
+        45.497320, -73.578767, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{},
+        type: "ELEVATOR",
+        isDisabilityFriendly: true);
+
+    RoomCoordinate h8_bathroom_m = RoomCoordinate(
+        45.497103, -73.578778, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{}, type: "BATHROOM-M");
+
+    RoomCoordinate h8_bathroom_f = RoomCoordinate(
+        45.497220, -73.578666, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{}, type: "BATHROOM-F");
+
+    RoomCoordinate h817 = RoomCoordinate(
+        45.496986, -73.558899, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h815 = RoomCoordinate(
+        45.496987, -73.558899, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h819 = RoomCoordinate(
+        45.496988, -73.578908, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h813 = RoomCoordinate(
+        45.497040, -73.578832, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h811 = RoomCoordinate(
+        45.497090, -73.578784, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h807 = RoomCoordinate(
+        45.497179, -73.578698, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h805_01 = RoomCoordinate(
+        45.497229, -73.578656, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h805_02 = RoomCoordinate(
+        45.497229, -73.578656, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h805_03 = RoomCoordinate(
+        45.497229, -73.578656, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h803 = RoomCoordinate(
+        45.497280, -73.578605, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h801 = RoomCoordinate(
+        45.497333, -73.578558, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h867 = RoomCoordinate(
+        45.497345, -73.578554, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h865 = RoomCoordinate(
+        45.497346, -73.578554, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h863 = RoomCoordinate(
+        45.497347, -73.578554, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h861 = RoomCoordinate(
+        45.497391, -73.578632, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h859 = RoomCoordinate(
+        45.497424, -73.578706, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h857 = RoomCoordinate(
+        45.497458, -73.578769, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h855 = RoomCoordinate(
+        45.497492, -73.578838, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h853 = RoomCoordinate(
+        45.497524, -73.578916, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h851_01 = RoomCoordinate(
+        45.497550, -73.578967, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h851_02 = RoomCoordinate(
+        45.497551, -73.578967, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h851_03 = RoomCoordinate(
+        45.497552, -73.578967, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h849 = RoomCoordinate(
+        45.497553, -73.578986, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h847 = RoomCoordinate(
+        45.497555, -73.578986, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h845 = RoomCoordinate(
+        45.497501, -73.579048, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h843 = RoomCoordinate(
+        45.497448, -73.579099, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h841 = RoomCoordinate(
+        45.497399, -73.579144, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+        
+    RoomCoordinate h837 = RoomCoordinate(
+        45.497304, -73.579233, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+        
+    RoomCoordinate h835 = RoomCoordinate(
+        45.497251, -73.579284, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+        
+    RoomCoordinate h833 = RoomCoordinate(
+        45.497193, -73.579331, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+        
+    RoomCoordinate h831 = RoomCoordinate(
+        45.497195, -73.579331, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+        
+    RoomCoordinate h899_51 = RoomCoordinate(
+        45.497194, -73.579331, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h829 = RoomCoordinate(
+        45.497155, -73.579263, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h827 = RoomCoordinate(
+        45.497119, -73.579185, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h825 = RoomCoordinate(
+        45.497085, -73.579116, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h823 = RoomCoordinate(
+        45.497054, -73.579047, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h821 = RoomCoordinate(
+        45.497019, -73.578975, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h802_01 = RoomCoordinate(
+        45.497220, -73.578667, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h806_01 = RoomCoordinate(
+        45.497162, -73.578785, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h806_02 = RoomCoordinate(
+        45.497175, -73.578814, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h806_03 = RoomCoordinate(
+        45.497190, -73.578848, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h832_06 = RoomCoordinate(
+        45.497304, -73.579231, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h832_02 = RoomCoordinate(
+        45.497305, -73.579231, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h832_05 = RoomCoordinate(
+        45.497305, -73.579232, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h832_01 = RoomCoordinate(
+        45.497306, -73.579232, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h832_03 = RoomCoordinate(
+        45.497307, -73.579232, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h832_04 = RoomCoordinate(
+        45.497305, -73.579233, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h820_01 = RoomCoordinate(
+        45.497070, -73.579076, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h820_02 = RoomCoordinate(
+        45.497071, -73.579076, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h820_03 = RoomCoordinate(
+        45.497070, -73.579077, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h820_04 = RoomCoordinate(
+        45.497072, -73.579076, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h822 = RoomCoordinate(
+        45.497127, -73.579190, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h886 = RoomCoordinate(
+        45.497036, -73.579001, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h860_01 = RoomCoordinate(
+        45.497360, -73.578732, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h860_03 = RoomCoordinate(
+        45.497360, -73.578733, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h860_04 = RoomCoordinate(
+        45.497360, -73.578734, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h860_05 = RoomCoordinate(
+        45.497361, -73.578732, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h860_06 = RoomCoordinate(
+        45.497362, -73.578732, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h862 = RoomCoordinate(
+        45.497307, -73.578789, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h840 = RoomCoordinate(
+        45.497270, -73.578822, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h838_01 = RoomCoordinate(
+        45.497316, -73.579104, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h838 = RoomCoordinate(
+        45.497384, -73.579157, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h881 = RoomCoordinate(
+        45.497459, -73.579086, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h852 = RoomCoordinate(
+        45.497507, -73.578887, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
+
+    RoomCoordinate h854 = RoomCoordinate(
+        45.497485, -73.578837, '8', 'Hall', 'SGW',
+        adjCoordinates: <Coordinate>{});
 
     PortalCoordinate j9F1 = PortalCoordinate(
-        45.497223, -73.579356, '9', 'Hall', 'SGW', type: "JUNCTION",
-        adjCoordinates: <Coordinate>{});
+        45.497223, -73.579356, '9', 'Hall', 'SGW',
+        type: "JUNCTION", adjCoordinates: <Coordinate>{});
 
     PortalCoordinate j9F2 = PortalCoordinate(
-        45.497282, -73.579296, '9', 'Hall', 'SGW', type: "JUNCTION",
-        adjCoordinates: <Coordinate>{});
+        45.497282, -73.579296, '9', 'Hall', 'SGW',
+        type: "JUNCTION", adjCoordinates: <Coordinate>{});
 
     PortalCoordinate j9F3 = PortalCoordinate(
         45.497279, -73.579218, '9', 'Hall', 'SGW',
@@ -106,8 +440,8 @@ class BuildingSingleton {
         adjCoordinates: <Coordinate>{});
 
     PortalCoordinate j9F24 = PortalCoordinate(
-        45.497246, -73.578840, '9', 'Hall', 'SGW', type: "ESCALATOR-DOWN",
-        adjCoordinates: <Coordinate>{});
+        45.497246, -73.578840, '9', 'Hall', 'SGW',
+        type: "ESCALATOR-DOWN", adjCoordinates: <Coordinate>{});
 
     PortalCoordinate j9F25 = PortalCoordinate(
         45.497218, -73.578863, '9', 'Hall', 'SGW',
@@ -118,23 +452,25 @@ class BuildingSingleton {
         adjCoordinates: <Coordinate>{});
 
     PortalCoordinate j9F27 = PortalCoordinate(
-        45.497300, -73.579003, '9', 'Hall', 'SGW', type: "ESCALATOR-UP",
-        adjCoordinates: <Coordinate>{});
+        45.497300, -73.579003, '9', 'Hall', 'SGW',
+        type: "ESCALATOR-UP", adjCoordinates: <Coordinate>{});
 
     PortalCoordinate j9F28 = PortalCoordinate(
-        45.497191, -73.579165, '9', 'Hall', 'SGW', type: "STAIRS",
-        adjCoordinates: <Coordinate>{});
+        45.497191, -73.579165, '9', 'Hall', 'SGW',
+        type: "STAIRS", adjCoordinates: <Coordinate>{});
 
     PortalCoordinate j9F29 = PortalCoordinate(
-        45.497047, -73.578826, '9', 'Hall', 'SGW', type: "STAIRS",
-        adjCoordinates: <Coordinate>{});
+        45.497047, -73.578826, '9', 'Hall', 'SGW',
+        type: "STAIRS", adjCoordinates: <Coordinate>{});
 
     PortalCoordinate j9F30 = PortalCoordinate(
-        45.497442, -73.578995, '9', 'Hall', 'SGW', type: "STAIRS",
-        adjCoordinates: <Coordinate>{});
+        45.497442, -73.578995, '9', 'Hall', 'SGW',
+        type: "STAIRS", adjCoordinates: <Coordinate>{});
 
     PortalCoordinate j9F31 = PortalCoordinate(
-        45.497408, -73.579041, '9', 'Hall', 'SGW', type: "ELEVATOR", isDisabilityFriendly: true,
+        45.497408, -73.579041, '9', 'Hall', 'SGW',
+        type: "ELEVATOR",
+        isDisabilityFriendly: true,
         adjCoordinates: <Coordinate>{});
 
     PortalCoordinate j9F32 = PortalCoordinate(
@@ -153,15 +489,31 @@ class BuildingSingleton {
         45.497207, -73.578683, '9', 'Hall', 'SGW',
         adjCoordinates: <Coordinate>{});
 
-
     PortalCoordinate j9F36 = PortalCoordinate(
-        45.497319, -73.578772, '9', 'Hall', 'SGW', type: "ELEVATOR", isDisabilityFriendly: true,
+        45.497319, -73.578772, '9', 'Hall', 'SGW',
+        type: "ELEVATOR",
+        isDisabilityFriendly: true,
         adjCoordinates: <Coordinate>{});
-
 
     PortalCoordinate j9F37 = PortalCoordinate(
-        45.497364, -73.578729, '9', 'Hall', 'SGW', type: "STAIRS",
-        adjCoordinates: <Coordinate>{});
+        45.497364, -73.578729, '9', 'Hall', 'SGW',
+        type: "STAIRS", adjCoordinates: <Coordinate>{});
+
+    h8_ll.adjCoordinates = {h8_stairs_ll, h8_ul};
+    h8_lr.adjCoordinates = {h8_lm, h8_mr};
+    h8_lm.adjCoordinates = {h8_stairs_ll, h8_lr, h8_escalator_down};
+    h8_ul.adjCoordinates = {h8_stairs_ul, h8_ll};
+    h8_um.adjCoordinates = {h8_stairs_ul, h8_stairs_ur, h8_escalator_up};
+    h8_ur.adjCoordinates = {h8_stairs_ur, h8_mr};
+    h8_mm.adjCoordinates = {h8_escalator_up, h8_lm, h8_escalator_down};
+    h8_mr.adjCoordinates = {h8_stairs_lr, h8_lr, h8_ur};
+    h8_stairs_ll.adjCoordinates = {h8_ll, h8_lm};
+    h8_stairs_lr.adjCoordinates = {h8_mr, h8_escalator_up};
+    h8_stairs_ul.adjCoordinates = {h8_um, h8_ul};
+    h8_stairs_ur.adjCoordinates = {h8_ur, h8_um};
+    h8_escalator_down.adjCoordinates = {h8_um, h8_mm};
+    h8_escalator_up.adjCoordinates = {h8_mm, h8_elevator};
+    h8_elevator.adjCoordinates = {h8_stairs_lr, h8_escalator_up};
 
     j9F1.adjCoordinates = {j9F2, j9F4};
     j9F2.adjCoordinates = {j9F3, j9F1};
@@ -204,11 +556,13 @@ class BuildingSingleton {
 //    RoomCoordinate end = RoomCoordinate(45.49749, -73.57905, '8', 'Hall', 'SGW',
 //        adjCoordinates: <Coordinate>{});
 
-    RoomCoordinate start = RoomCoordinate(45.497205, -73.579329, '9', 'Hall', 'SGW', type: "ROOM",
-          adjCoordinates: {j9F1, j9F4});
+    RoomCoordinate start = RoomCoordinate(
+        45.497205, -73.579329, '9', 'Hall', 'SGW',
+        type: "ROOM", adjCoordinates: {j9F1, j9F4});
 
-    RoomCoordinate end = RoomCoordinate(45.497380, -73.578606, '9', 'Hall', 'SGW', type: "ROOM",
-        adjCoordinates: {j9F20, j9F23});
+    RoomCoordinate end = RoomCoordinate(
+        45.497380, -73.578606, '9', 'Hall', 'SGW',
+        type: "ROOM", adjCoordinates: {j9F20, j9F23});
 
     Floor ninth_floor = Floor('9', coordinates: {
       start,
