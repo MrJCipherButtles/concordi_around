@@ -2,7 +2,6 @@ import 'package:concordi_around/fadeIndexedStack.dart';
 import 'package:concordi_around/mapNotifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:concordi_around/globals' as globals;
 import 'package:provider/provider.dart';
 
 class SVGFloorPlans extends StatefulWidget {
@@ -21,7 +20,7 @@ class _FloorplanIndexedStackVisibility
     
     return Visibility(
       child: AnimatedOpacity(
-          opacity: mapNotifier.showFloorSelector ? 1.0 : 0.0,
+          opacity: mapNotifier.showFloorPlan ? 1.0 : 0.0,
           curve: Curves.easeInToLinear,
           duration: Duration(milliseconds: 1500),
           child: FadeIndexedStack(
@@ -34,7 +33,7 @@ class _FloorplanIndexedStackVisibility
       maintainSize: true,
       maintainAnimation: true,
       maintainState: true,
-      visible: mapNotifier.showFloorSelector,
+      visible: mapNotifier.showFloorPlan,
     );
   }
 }
