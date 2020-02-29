@@ -52,7 +52,7 @@ class MapSampleState extends State<MapSample> {
     // String floor = "8";
 
     //9th floor confirmed working
-    LatLng start = LatLng(45.497549, -73.579110);
+    LatLng start = LatLng(45.497574, -73.579090);
     LatLng end = LatLng(45.497015, -73.578969);
     String floor = "9";
 
@@ -106,7 +106,7 @@ class MapSampleState extends State<MapSample> {
   @override
   void initState() {
     super.initState();
-    fun();
+    // fun();
     _geolocator = Geolocator()..forceAndroidLocationManager;
     LocationOptions locationOptions =
         LocationOptions(accuracy: LocationAccuracy.best, distanceFilter: 1);
@@ -221,7 +221,7 @@ class MapSampleState extends State<MapSample> {
                   ),
                   FloatingActionButton(
                     heroTag: 'unique2',
-                    onPressed: () {},
+                    onPressed: fun,
                     backgroundColor: Color.fromRGBO(147, 0, 47, 1),
                     foregroundColor: Colors.white,
                     child: Icon(Icons.directions),
