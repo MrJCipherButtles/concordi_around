@@ -33,7 +33,6 @@ class _GoToPageState extends State<GoToPage> {
     return Container(
       child: Material(
         child: Container(
-          //color: Color.fromRGBO(147, 0, 44, 1),
           padding: EdgeInsets.only(
             top: 10,
             right: 35,
@@ -70,8 +69,12 @@ class _GoToPageState extends State<GoToPage> {
                           contentPadding:
                               EdgeInsets.fromLTRB(15.0, 12.0, 20.0, 15.0),
                           hintText: "origin...",
+                          hintStyle: TextStyle(
+                              color: Color.fromRGBO(147, 0, 44, 0.65)),
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
+                            borderRadius: BorderRadius.circular(
+                              10.0,
+                            ),
                           ),
                         ),
                         controller: this._originTypeAheadController,
@@ -129,6 +132,8 @@ class _GoToPageState extends State<GoToPage> {
                           contentPadding:
                               EdgeInsets.fromLTRB(15.0, 12.0, 10.0, 12.0),
                           hintText: "destination...",
+                          hintStyle: TextStyle(
+                              color: Color.fromRGBO(147, 0, 44, 0.65)),
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0)),
                         ),
@@ -168,34 +173,62 @@ class _GoToPageState extends State<GoToPage> {
                 ],
               ),
               SizedBox(height: 20.0),
-              Container(
-                
-                width: 70.0,
-                height: 70.0,
-                decoration: new BoxDecoration(
-                  color: Color.fromRGBO(147, 0, 47, 1),
-                  shape: BoxShape.circle,
-                  boxShadow: [BoxShadow(color: Colors.black)],
+              Center(
+                child: FloatingActionButton(
+                  child: Icon(
+                    Icons.navigation,
+                    color: Colors.white,
+                    size: 40.0,
+                  ),
+                  backgroundColor: Color.fromRGBO(147, 0, 47, 1),
+                  elevation: 2,
+                  onPressed: () {
+                    print("Start navigation button pressed");
+                  },
                 ),
-                alignment: Alignment.center,
-                child: Column(
-                  children: <Widget>[
-                   Expanded(flex: 2, child: Icon(Icons.navigation, color: Colors.white, size: 49.0,),),
-                   // Expanded(flex: 10, child: Text("Start Navigation"),),
-                   
-                   GestureDetector(
-                      onTap: () {
-                        print("Start navigation button pressed");
-                        //Navigator.pop(context);
-                      },
-                      ),
-                  ],
-                 
-                ),
-              
               ),
+              Text(
+                "Go",
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 25,
+                  color: Color.fromRGBO(147, 0, 47, 1),
+                ),
+                textAlign: TextAlign.justify,
+              ),
+              Container(
+                height: 60,
+                margin: EdgeInsets.fromLTRB(0, 15, 0, 15),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(flex: 1, child: Text('')),
+                    Expanded(
+                      flex: 10,
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                            side: BorderSide(
+                                width: 1,
+                                color: Color.fromRGBO(147, 0, 47, 1))),
+                        elevation: 2,
+                        child: Align(
+                          child: Text(
+                            "ETA (min) + Distance (m/km)",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 18,
+                              color: Color.fromRGBO(147, 0, 47, 1),
+                            ),
+                            textAlign: TextAlign.justify,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              //TODO adding the recent places list
             ],
-            //   TODO add a list by creating a BuildingManager widget here,
           ),
         ),
       ),
