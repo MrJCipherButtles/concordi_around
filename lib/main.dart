@@ -1,29 +1,26 @@
 import 'dart:async';
-import 'package:concordi_around/provider/mapNotifier.dart';
+import 'package:concordi_around/provider/map_notifier.dart';
 import 'package:concordi_around/views/go_to_page.dart';
 import 'package:concordi_around/widgets/floor_selector_enter_building_column.dart';
-import 'package:concordi_around/widgets/generalUI/sidebarDrawer.dart';
 import 'package:concordi_around/widgets/search/main_search_bar.dart';
+import 'package:concordi_around/widgets/sidebar_drawer.dart';
 import 'package:concordi_around/widgets/svg_floor_plans.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
-import 'widgets/mapUI/FloorSelector.dart';
-import 'widgets/generalUI/sidebarDrawer.dart';
 
-void main() => runApp(ChangeNotifierProvider(
-    builder: (context) => MapNotifier(), child: MyApp()));
+void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<DisabilityModeInfo>(
-              create: (_) => DisabilityModeInfo(),
-              child: MaterialApp(
+    return MaterialApp(
       title: 'Flutter Google Maps Demo',
-      home: MapSample(),
-    ));
+      home: ChangeNotifierProvider(
+        child: MapSample(),
+        builder: (context) => MapNotifier())
+    );
   }
 }
 

@@ -1,4 +1,4 @@
-import 'package:concordi_around/provider/mapNotifier.dart';
+import 'package:concordi_around/provider/map_notifier.dart';
 import 'package:concordi_around/widgets/enter_building_action_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +25,7 @@ class _FloorSelectorEnterBuildingState
   List<bool> selectedFloor = [false, true]; // 8th floor selected
 
   Widget build(BuildContext context) {
+    
       MapNotifier mapNotifier = Provider.of<MapNotifier>(context);
 
         return Padding(
