@@ -1,6 +1,9 @@
+import 'dart:math';
+
 import 'building.dart';
 import 'coordinate.dart';
 import 'floor.dart';
+import 'package:kdtree/kdtree.dart';
 
 class BuildingSingleton {
   //static final BuildingSingleton _instance = BuildingSingleton._internal();
@@ -194,23 +197,23 @@ class BuildingSingleton {
     RoomCoordinate h841 = RoomCoordinate(
         45.497399, -73.579144, '8', 'Hall', 'SGW',
         adjCoordinates: <Coordinate>{});
-        
+
     RoomCoordinate h837 = RoomCoordinate(
         45.497304, -73.579233, '8', 'Hall', 'SGW',
         adjCoordinates: <Coordinate>{});
-        
+
     RoomCoordinate h835 = RoomCoordinate(
         45.497251, -73.579284, '8', 'Hall', 'SGW',
         adjCoordinates: <Coordinate>{});
-        
+
     RoomCoordinate h833 = RoomCoordinate(
         45.497193, -73.579331, '8', 'Hall', 'SGW',
         adjCoordinates: <Coordinate>{});
-        
+
     RoomCoordinate h831 = RoomCoordinate(
         45.497195, -73.579331, '8', 'Hall', 'SGW',
         adjCoordinates: <Coordinate>{});
-        
+
     RoomCoordinate h899_51 = RoomCoordinate(
         45.497194, -73.579331, '8', 'Hall', 'SGW',
         adjCoordinates: <Coordinate>{});
@@ -518,7 +521,7 @@ class BuildingSingleton {
     j9F1.adjCoordinates = {j9F2, j9F4};
     j9F2.adjCoordinates = {j9F3, j9F1};
     j9F3.adjCoordinates = {j9F2, j9F5};
-    j9F4.adjCoordinates = {j9F28, j9F1};
+    j9F4.adjCoordinates = {j9F28, j9F1, j9F15};
     j9F5.adjCoordinates = {j9F6, j9F28, j9F3};
     j9F6.adjCoordinates = {j9F7, j9F5, j9F26};
     j9F7.adjCoordinates = {j9F8, j9F6};
@@ -556,17 +559,15 @@ class BuildingSingleton {
 //    RoomCoordinate end = RoomCoordinate(45.49749, -73.57905, '8', 'Hall', 'SGW',
 //        adjCoordinates: <Coordinate>{});
 
-    RoomCoordinate start = RoomCoordinate(
-        45.497205, -73.579329, '9', 'Hall', 'SGW',
-        type: "ROOM", adjCoordinates: {j9F1, j9F4});
+    // RoomCoordinate start = RoomCoordinate(
+    //     45.497205, -73.579329, '9', 'Hall', 'SGW',
+    //     type: "ROOM", adjCoordinates: {j9F1, j9F4});
 
-    RoomCoordinate end = RoomCoordinate(
-        45.497380, -73.578606, '9', 'Hall', 'SGW',
-        type: "ROOM", adjCoordinates: {j9F20, j9F23});
+    // RoomCoordinate end = RoomCoordinate(
+    //     45.497380, -73.578606, '9', 'Hall', 'SGW',
+    //     type: "ROOM", adjCoordinates: {j9F20, j9F23});
 
-    Floor ninth_floor = Floor('9', coordinates: {
-      start,
-      end,
+    List<Coordinate> portals = [
       j9F1,
       j9F2,
       j9F3,
@@ -604,10 +605,138 @@ class BuildingSingleton {
       j9F35,
       j9F36,
       j9F37
+    ];
+
+    List<Map<String, double>> junctionPointsinKDFormat =
+        convertListToKDFormat(portals);
+    // var distance = (a, b) {
+    //   return sqrt(pow(a['x'] - b['x'], 2) + pow(a['y'] - b['y'], 2));
+    // };
+
+    var distance = (location1, location2) {
+      var lat1 = location1['x'],
+          lon1 = location1['y'],
+          lat2 = location2['x'],
+          lon2 = location2['y'];
+      var rad = pi / 180;
+      var dLat = (lat2 - lat1) * rad;
+      var dLon = (lon2 - lon1) * rad;
+      lat1 = lat1 * rad;
+      lat2 = lat2 * rad;
+      var x = sin(dLat / 2);
+      var y = sin(dLon / 2);
+      var a = x * x + y * y * cos(lat1) * cos(lat2);
+      return atan2(sqrt(a), sqrt(1 - a));
+    };
+
+    var tree = KDTree(junctionPointsinKDFormat, distance, ['x', 'y']);
+
+    var closestStartJunction =
+        (tree.nearest({'x': 45.497549, 'y': -73.579110}, 1));
+    var closestEndJunction =
+        (tree.nearest({'x': 45.497226, 'y': -73.578653}, 1));
+
+    var cp1 = convertKDRetToTwoP(closestStartJunction);
+    var cp2 = convertKDRetToTwoP(closestEndJunction);
+
+    print(cp1);
+        print(cp2);
+
+
+    RoomCoordinate start1 = RoomCoordinate(
+        45.497549, -73.579110, '9', 'Hall', 'SGW',
+        type: "SROOM");
+
+    RoomCoordinate start2 = RoomCoordinate(
+        45.497549, -73.579110, '9', 'Hall', 'SGW',
+        type: "SROOM");
+    RoomCoordinate start3 = RoomCoordinate(
+        45.497549, -73.579110, '9', 'Hall', 'SGW',
+        type: "SROOM");
+    RoomCoordinate end1 = RoomCoordinate(
+        45.497226, -73.578653, '9', 'Hall', 'SGW',
+        type: "EROOM");
+    RoomCoordinate end2 = RoomCoordinate(
+        45.497226, -73.578653, '9', 'Hall', 'SGW',
+        type: "EROOM");
+
+    RoomCoordinate end3 = RoomCoordinate(
+        45.497226, -73.578653, '9', 'Hall', 'SGW',
+        type: "EROOM");
+
+    var startHas3Portals = false;
+    var endHas3Portals = false;
+
+    portals.forEach((element) {
+      if (element.lat == cp1[0]['x'] && element.lng == cp1[0]['y']) {
+        start1.addAdjCoordinate(element);
+        start1.addAdjCoordinate(element.adjCoordinates.toList()[0]);
+
+        print("start 1 adj coords: " +
+            element.adjCoordinates.toList()[0].toString());
+
+        start2.addAdjCoordinate(element);
+        start2.addAdjCoordinate(element.adjCoordinates.toList()[1]);
+        print("start 2 adj coords: " +
+            element.adjCoordinates.toList()[1].toString());
+
+        if (element.adjCoordinates.toList().length > 4) {
+          start3.addAdjCoordinate(element);
+          start3.addAdjCoordinate(element.adjCoordinates.toList()[2]);
+          startHas3Portals = true;
+          print("start 3 adj coords: " +
+              element.adjCoordinates.toList()[2].toString());
+        }
+      }
+
+      if (element.lat == cp2[0]['x']&& element.lng == cp2[0]['y']) {
+        end1.addAdjCoordinate(element);
+        end1.addAdjCoordinate(element.adjCoordinates.toList()[0]);
+        print("end 1 adj coords: " +
+            element.adjCoordinates.toList()[0].toString());
+
+        end2.addAdjCoordinate(element);
+        end2.addAdjCoordinate(element.adjCoordinates.toList()[1]);
+        print("end 2 adj coords: " +
+            element.adjCoordinates.toList()[1].toString());
+
+        if (element.adjCoordinates.toList().length > 4) {
+          end3.addAdjCoordinate(element);
+          end3.addAdjCoordinate(element.adjCoordinates.toList()[2]);
+          endHas3Portals = true;
+          print("end 3 adj coords: " +
+              element.adjCoordinates.toList()[2].toString());
+        }
+      }
     });
+
+    portals.add(start1);
+    portals.add(start2);
+    if (startHas3Portals) portals.add(start3);
+
+    portals.add(end1);
+    portals.add(end2);
+    if (endHas3Portals) portals.add(end3);
+
+    Floor ninth_floor = Floor('9', coordinates: portals.toSet());
 
     _building = Building('Hall', floors: {'9': ninth_floor});
   }
 
   Building get building => _building;
+}
+
+List<Map<String, double>> convertListToKDFormat(List<Coordinate> lst) {
+  List<Map<String, double>> ret = [];
+  lst.forEach((element) => (ret.add({'x': element.lat, 'y': element.lng})));
+
+  return ret;
+}
+
+List<dynamic> convertKDRetToTwoP(List<dynamic> kdRet) {
+  var p1 = kdRet[0][0];
+
+  var lst = [p1];
+
+  return lst;
 }

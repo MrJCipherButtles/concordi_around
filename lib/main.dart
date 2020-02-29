@@ -52,14 +52,55 @@ class MapSampleState extends State<MapSample> {
 
     Map<String, Floor> floors = building.floors;
     Floor ninth = floors['9'];
-    List<Coordinate> rooms = ninth.coordinatesByGivenTypes(["ROOM"]);
-    Coordinate start = rooms[0];
-    Coordinate end = rooms[1];
+    List<Coordinate> sRooms = ninth.coordinatesByGivenTypes(["SROOM"]);
+    List<Coordinate> eRooms = ninth.coordinatesByGivenTypes(["EROOM"]);
+    var sRoomsLength = sRooms.length;
+    var eRoomsLength = eRooms.length;
+    print("sRoomsLength " + sRoomsLength.toString());
+    print("eRoomsLength " + eRoomsLength.toString());
 
-    Map<String, Path> shortestPath = building.shortestPath(start, end);
-    Path path = shortestPath['9'];
-    print(path);
+     Map<String, Path> shortestPath;
+
+      Path path;
+      var max = 9999.9;
+      
+     
+      for (int i = 0; i < sRoomsLength-1; i++) {
+        for (int j =0 ; j < eRoomsLength-1; j++) {
+          Coordinate start = sRooms[i];
+          Coordinate end = eRooms[j];
+                  // print("in");
+
+
+        
+
+          print("start");
+          print(start.adjCoordinates);
+          print("end");
+          print(end.adjCoordinates);
+          print("---------------------");
+
+          
+
+
+          shortestPath = building.shortestPath(start, end);
+
+          print(shortestPath['9'].length());
+          if (shortestPath['9'].length() <= max) {
+            max = shortestPath['9'].length();
+            print(max);
+            path = shortestPath['9'];
+          }
+        }
+                  print("---------------------");
+
+          print("---------------------");
+
+      }
+    
+
     direction = {path.toPolyline()};
+
   }
 
   @override
@@ -127,7 +168,7 @@ class MapSampleState extends State<MapSample> {
                   myLocationEnabled: true,
                   myLocationButtonEnabled: false,
                   compassEnabled: false,
-                  indoorViewEnabled: false,
+                  indoorViewEnabled: true,
                   scrollGesturesEnabled: true,
                   rotateGesturesEnabled: true,
                   tiltGesturesEnabled: true,

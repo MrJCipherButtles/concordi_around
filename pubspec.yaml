@@ -38,6 +38,9 @@ dependencies:
   google_maps_webservice: ^0.0.16
   geocoder: ^0.2.1
 
+  #KDTree
+  kdtree: ^0.0.2
+
   # Provider
   provider: ^3.1.0
 
