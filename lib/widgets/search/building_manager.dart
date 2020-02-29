@@ -33,11 +33,10 @@ class _BuildingManagerState extends State<BuildingManager> {
 }
 
 class DisplayBuildingList extends State<DisplayBuildingListManager> {
-  final List<Building> _myBuildingList = new List<Building>();
+  final List<Building> _myBuildingList = buildingList;
 
   @override
   Widget build(BuildContext context) {
-    _createBuildingList();
     return Expanded(
         flex: 8,
         child: Container(
@@ -47,11 +46,11 @@ class DisplayBuildingList extends State<DisplayBuildingListManager> {
               itemBuilder: (context, index) {
                 return ListTile(
                   title: Text(
-                    _myBuildingList[index].toString(),
+                    _myBuildingList[index].getName(),
                   ),
                   onTap: () {
                     Navigator.pop(context);
-                    widget.name(_myBuildingList[index].getbuildingName());
+                    widget.name(_myBuildingList[index].getShortName());
                   },
                 );
               },
@@ -59,15 +58,5 @@ class DisplayBuildingList extends State<DisplayBuildingListManager> {
                 return Divider();
               },
             )));
-  }
-
-  void _createBuildingList() {
-    _myBuildingList.clear();
-    _myBuildingList
-        .add(new Building("Henry F. Hall", "H", "none", "1455", "Maisonneuve"));
-    _myBuildingList.add(new Building(
-        "Engineering and Video", "EV", "none", "1495-1505", "Guy"));
-    _myBuildingList.add(new Building(
-        "John Molson School of Business", "MB", "none", "1495-1505", "Guy"));
   }
 }

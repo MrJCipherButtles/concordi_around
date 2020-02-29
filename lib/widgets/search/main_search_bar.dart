@@ -1,4 +1,5 @@
 import 'package:concordi_around/models/database.dart';
+import 'package:concordi_around/models/room.dart';
 import 'package:concordi_around/widgets/search/search_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -112,9 +113,9 @@ PositionedFloatingSearchBar({this.name});
   @override
   Widget buildSuggestions(BuildContext context) {
     final suggestionList = query.isNotEmpty
-        ? recentSearchedRooms
-        : rooms
-            .where((p) => p.getTitle().startsWith(query.toUpperCase()))
+        ? recentRoomsList
+        : roomsList
+            .where((p) => p.getRoomNumber().startsWith(query.toUpperCase()))
             .toList();
     return query.isEmpty ? SearchMenuListOption(
       name: (String building) => {
@@ -123,12 +124,12 @@ PositionedFloatingSearchBar({this.name});
       itemBuilder: (context, index) => ListTile(
         onTap: () {
           
-          Coordinate selected = (suggestionList[index]);
+          Room selected = (suggestionList[index]);
           Navigator.pop(context);
-          name(selected.getTitle());
+          name(selected.getRoomNumber());
         },
         leading: Icon(Icons.place),
-        title: Text(suggestionList[index].getTitle()),
+        title: Text(suggestionList[index].getRoomNumber()),
       ),
       itemCount: suggestionList.length,
     );

@@ -9,10 +9,9 @@ class SearchMenuSuggestionsManager extends StatefulWidget {
 }
 
 class _SearchMenuSuggestions extends State<SearchMenuSuggestionsManager> {
-  final List<Room> _myRoomList = new List<Room>();
+  final List<Room> _myRoomList = roomsList;
   @override
   Widget build(BuildContext context) {
-     _createRoomList();
     return Expanded(
         flex: 8,
         child: Container(
@@ -21,7 +20,7 @@ class _SearchMenuSuggestions extends State<SearchMenuSuggestionsManager> {
               itemCount: _myRoomList.length,
               itemBuilder: (context, index) {
                 return ListTile(
-                  title: Text(_myRoomList[index].toString(),),
+                  title: Text(_myRoomList[index].getRoomNumber()),
                   onTap: () {},
                 );
               },
@@ -30,12 +29,5 @@ class _SearchMenuSuggestions extends State<SearchMenuSuggestionsManager> {
               },
               )
             ));
-  }
-  void _createRoomList() {
-    _myRoomList.clear();
-    _myRoomList.add(new Room("H-830"));
-    _myRoomList.add(new Room("H-820"));
-    _myRoomList.add(new Room("H-835"));
-  }
-  
+  }  
 }
