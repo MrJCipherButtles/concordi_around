@@ -407,7 +407,7 @@ class BuildingSingleton {
         adjCoordinates: <Coordinate>{});
 
     PortalCoordinate j9F15 = PortalCoordinate(
-        45.497111, -73.57118, '9', 'Hall', 'SGW',
+        45.497098, -73.579102, '9', 'Hall', 'SGW',
         adjCoordinates: <Coordinate>{});
 
     PortalCoordinate j9F16 = PortalCoordinate(
@@ -467,7 +467,7 @@ class BuildingSingleton {
         type: "STAIRS", adjCoordinates: <Coordinate>{});
 
     PortalCoordinate j9F30 = PortalCoordinate(
-        45.497442, -73.578995, '9', 'Hall', 'SGW',
+        45.497444, -73.578953, '9', 'Hall', 'SGW',
         type: "STAIRS", adjCoordinates: <Coordinate>{});
 
     PortalCoordinate j9F31 = PortalCoordinate(
@@ -631,38 +631,35 @@ class BuildingSingleton {
 
     var tree = KDTree(junctionPointsinKDFormat, distance, ['x', 'y']);
 
-    var closestStartJunction =
-        (tree.nearest({'x': 45.497323, 'y': -73.578569}, 1));
-    var closestEndJunction =
-        (tree.nearest({'x': 45.497174, 'y': -73.579189}, 1));
+    var sLat = 45.497506;
+    var sLng = -73.578722;
+
+    var eLat = 45.496984;
+    var eLng = -73.578912;
+
+    var closestStartJunction = (tree.nearest({'x': sLat, 'y': sLng}, 1));
+    var closestEndJunction = (tree.nearest({'x': eLat, 'y': eLng}, 1));
 
     var cp1 = convertKDRetToTwoP(closestStartJunction);
     var cp2 = convertKDRetToTwoP(closestEndJunction);
 
     print(cp1);
-        print(cp2);
+    print(cp2);
 
+    RoomCoordinate start1 =
+        RoomCoordinate(sLat, sLng, '9', 'Hall', 'SGW', type: "SROOM");
 
-    RoomCoordinate start1 = RoomCoordinate(
-        45.497323, -73.578569, '9', 'Hall', 'SGW',
-        type: "SROOM");
+    RoomCoordinate start2 =
+        RoomCoordinate(sLat, sLng, '9', 'Hall', 'SGW', type: "SROOM");
+    RoomCoordinate start3 =
+        RoomCoordinate(sLat, sLng, '9', 'Hall', 'SGW', type: "SROOM");
+    RoomCoordinate end1 =
+        RoomCoordinate(eLat, eLng, '9', 'Hall', 'SGW', type: "EROOM");
+    RoomCoordinate end2 =
+        RoomCoordinate(eLat, eLng, '9', 'Hall', 'SGW', type: "EROOM");
 
-    RoomCoordinate start2 = RoomCoordinate(
-        45.497323, -73.578569, '9', 'Hall', 'SGW',
-        type: "SROOM");
-    RoomCoordinate start3 = RoomCoordinate(
-       45.497323, -73.578569, '9', 'Hall', 'SGW',
-        type: "SROOM");
-    RoomCoordinate end1 = RoomCoordinate(
-        45.497174, -73.579189, '9', 'Hall', 'SGW',
-        type: "EROOM");
-    RoomCoordinate end2 = RoomCoordinate(
-        45.497174, -73.579189, '9', 'Hall', 'SGW',
-        type: "EROOM");
-
-    RoomCoordinate end3 = RoomCoordinate(
-        45.497174, -73.579189, '9', 'Hall', 'SGW',
-        type: "EROOM");
+    RoomCoordinate end3 =
+        RoomCoordinate(eLat, eLng, '9', 'Hall', 'SGW', type: "EROOM");
 
     var startHas3Portals = false;
     var endHas3Portals = false;
@@ -689,7 +686,7 @@ class BuildingSingleton {
         }
       }
 
-      if (element.lat == cp2[0]['x']&& element.lng == cp2[0]['y']) {
+      if (element.lat == cp2[0]['x'] && element.lng == cp2[0]['y']) {
         end1.addAdjCoordinate(element);
         end1.addAdjCoordinate(element.adjCoordinates.toList()[0]);
         print("end 1 adj coords: " +
@@ -710,8 +707,8 @@ class BuildingSingleton {
       }
     });
 
-      var sRoomsList = [];
-      var eRoomsList = [];
+    var sRoomsList = [];
+    var eRoomsList = [];
 
     portals.add(start1);
     portals.add(start2);
@@ -722,14 +719,9 @@ class BuildingSingleton {
     if (endHas3Portals) portals.add(end3);
 
     Floor ninth_floor = Floor('9', coordinates: portals.toSet());
-    
 
     _building = Building('Hall', floors: {'9': ninth_floor});
   }
-
-
-
-
 
   Building get building => _building;
 }
