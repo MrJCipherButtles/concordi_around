@@ -1,7 +1,5 @@
 import 'dart:ui';
-import 'package:concordi_around/provider/disability_notifier.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class SidebarDrawer extends StatefulWidget {
   @override
@@ -16,11 +14,7 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
       borderRadius: BorderRadius.only(
           topRight: Radius.circular(20), bottomRight: Radius.circular(20)),
       child: Drawer(
-        // Add a ListView to the drawer. This ensures the user can scroll
-        // through the options in the drawer if there isn't enough vertical
-        // space to fit everything.
         child: ListView(
-          // Important: Remove any padding from the ListView.
           padding: EdgeInsets.zero,
           children: <Widget>[
             UserAccountsDrawerHeader(

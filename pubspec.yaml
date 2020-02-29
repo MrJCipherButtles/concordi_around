@@ -44,6 +44,8 @@ dependencies:
   #Search Suggestions (Flutter TypeAhead)
   flutter_typeahead: ^1.8.0
 
+  map_overlay: 
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
