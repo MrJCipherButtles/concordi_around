@@ -2,6 +2,8 @@ import 'package:concordi_around/models/database.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:concordi_around/widgets/search/building_manager.dart';
+import 'package:concordi_around/widgets/search/search_menu.dart';
 
 class GoToPage extends StatefulWidget {
   final Function(List<String>) route;
@@ -26,10 +28,12 @@ class _GoToPageState extends State<GoToPage> {
   @override
   Widget build(BuildContext context) {
     List<String> originDestination = [];
-FocusNode destinationTextField = new FocusNode(); // this focus node will be used for the second text field (destination)
+    FocusNode destinationTextField =
+        new FocusNode(); // this focus node will be used for the second text field (destination)
     return Container(
       child: Material(
         child: Container(
+          //color: Color.fromRGBO(147, 0, 44, 1),
           padding: EdgeInsets.only(
             top: 10,
             right: 35,
@@ -46,14 +50,17 @@ FocusNode destinationTextField = new FocusNode(); // this focus node will be use
                       onTap: () {
                         Navigator.pop(context);
                       },
-                      child: Icon(Icons.arrow_back),
+                      child: Icon(
+                        Icons.arrow_back,
+                        color: Color.fromRGBO(147, 0, 47, 1),
+                        size: 25,
+                      ),
                     ),
                   ),
                   Expanded(
                     flex: 10,
                     child: TypeAheadField(
                       textFieldConfiguration: TextFieldConfiguration(
-                       // autofocus: true,
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w400,
@@ -64,7 +71,8 @@ FocusNode destinationTextField = new FocusNode(); // this focus node will be use
                               EdgeInsets.fromLTRB(15.0, 12.0, 20.0, 15.0),
                           hintText: "origin...",
                           border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0)),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
                         ),
                         controller: this._originTypeAheadController,
                       ),
@@ -81,17 +89,22 @@ FocusNode destinationTextField = new FocusNode(); // this focus node will be use
                         return roomTitles; //await BackendService.getSuggestions(pattern);
                       },
                       itemBuilder: (context, suggestion) {
-                        return ListTile(
-                          leading: Icon(Icons.place,
-                              color: Color.fromRGBO(147, 0, 47, 1)),
-                          title: Text(suggestion),
-                          //subtitle: Text('\$${suggestion['price']}'),
+                        return Card(
+                          elevation: 2,
+                          child: ListTile(
+                            leading: Icon(Icons.place,
+                                color: Color.fromRGBO(147, 0, 47, 1)),
+                            title: Text(suggestion),
+
+                            //subtitle: Text('\$${suggestion['price']}'),
+                          ),
                         );
                       },
                       onSuggestionSelected: (suggestion) {
                         this._originTypeAheadController.text = suggestion;
                         originDestination.add("$suggestion");
-                        FocusScope.of(context).requestFocus(destinationTextField); // to change the focus of the textfield to the second textfield
+                        FocusScope.of(context).requestFocus(
+                            destinationTextField); // to change the focus of the textfield to the second textfield
                       },
                     ),
                   ),
@@ -105,7 +118,8 @@ FocusNode destinationTextField = new FocusNode(); // this focus node will be use
                     flex: 10,
                     child: TypeAheadField(
                       textFieldConfiguration: TextFieldConfiguration(
-                        focusNode: destinationTextField, //set the focus to the variable defined in definition of class
+                        focusNode:
+                            destinationTextField, //set the focus to the variable defined in definition of class
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w400,
@@ -133,16 +147,18 @@ FocusNode destinationTextField = new FocusNode(); // this focus node will be use
                         return roomTitles; //await BackendService.getSuggestions(pattern);
                       },
                       itemBuilder: (context, suggestion) {
-                        return ListTile(
-                          leading: Icon(Icons.place,
-                              color: Color.fromRGBO(147, 0, 47, 1)),
+                        return Card(
+                          elevation: 2,
+                          child: ListTile(
+                            leading: Icon(Icons.place,
+                                color: Color.fromRGBO(147, 0, 47, 1)),
 
-                          title: Text(suggestion),
-                          //subtitle: Text('\$${suggestion['price']}'),
+                            title: Text(suggestion),
+                            //subtitle: Text('\$${suggestion['price']}'),
+                          ),
                         );
                       },
                       onSuggestionSelected: (suggestion) {
-                        //Navigator.pop(context);
                         this._destinTypeAheadController.text = suggestion;
                         originDestination.add("$suggestion");
                         widget.route(originDestination);
@@ -151,7 +167,35 @@ FocusNode destinationTextField = new FocusNode(); // this focus node will be use
                   ),
                 ],
               ),
+              SizedBox(height: 20.0),
+              Container(
+                
+                width: 70.0,
+                height: 70.0,
+                decoration: new BoxDecoration(
+                  color: Color.fromRGBO(147, 0, 47, 1),
+                  shape: BoxShape.circle,
+                  boxShadow: [BoxShadow(color: Colors.black)],
+                ),
+                alignment: Alignment.center,
+                child: Column(
+                  children: <Widget>[
+                   Expanded(flex: 2, child: Icon(Icons.navigation, color: Colors.white, size: 49.0,),),
+                   // Expanded(flex: 10, child: Text("Start Navigation"),),
+                   
+                   GestureDetector(
+                      onTap: () {
+                        print("Start navigation button pressed");
+                        //Navigator.pop(context);
+                      },
+                      ),
+                  ],
+                 
+                ),
+              
+              ),
             ],
+            //   TODO add a list by creating a BuildingManager widget here,
           ),
         ),
       ),
