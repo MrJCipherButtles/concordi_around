@@ -22,11 +22,12 @@ class BuildingSingleton {
 
     //path intersections
     PortalCoordinate h8_ll = PortalCoordinate(
-        45.496985, -73.558899, '8', 'Hall', 'SGW',
+        45.496981, -73.578891, '8', 'Hall', 'SGW',
         adjCoordinates: <Coordinate>{});
 
     PortalCoordinate h8_mm = PortalCoordinate(
-        45.497210, -73.548889, '8', 'Hall', 'SGW',
+       45.497211, -73.578889
+      '8', 'Hall', 'SGW',
         adjCoordinates: <Coordinate>{});
 
     PortalCoordinate h8_lm = PortalCoordinate(
@@ -92,11 +93,11 @@ class BuildingSingleton {
         adjCoordinates: <Coordinate>{}, type: "BATHROOM-F");
 
     RoomCoordinate h817 = RoomCoordinate(
-        45.496986, -73.558899, '8', 'Hall', 'SGW',
+        45.496986, -73.578885, '8', 'Hall', 'SGW',
         adjCoordinates: <Coordinate>{});
 
     RoomCoordinate h815 = RoomCoordinate(
-        45.496987, -73.558899, '8', 'Hall', 'SGW',
+        45.496996, -73.578872, '8', 'Hall', 'SGW',
         adjCoordinates: <Coordinate>{});
 
     RoomCoordinate h819 = RoomCoordinate(
