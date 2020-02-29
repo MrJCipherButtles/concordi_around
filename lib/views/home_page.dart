@@ -188,15 +188,19 @@ class _HomePageState extends State<HomePage> {
       CameraPosition _currentPos =
           CameraPosition(target: LatLng(45.49726, -73.57895), zoom: 18.5);
       goToHall8th();
-    } else if (name.contains("Video")) {
+    } else if (name.contains("EV")) {
       CameraPosition _currentPos =
           CameraPosition(target: LatLng(45.49683, -73.57793), zoom: 18.5);
       controller.animateCamera(CameraUpdate.newCameraPosition(_currentPos));
-    } else if (name.contains("John")) {
+    } else if (name.contains("JMSB")) {
       CameraPosition _currentPos =
           CameraPosition(target: LatLng(45.49531, -73.57901), zoom: 18.5);
       controller.animateCamera(CameraUpdate.newCameraPosition(_currentPos));
-    } else if (name.contains("H806")) {
+    } else if (name.contains("GM")) {
+      CameraPosition _currentPos =
+          CameraPosition(target: LatLng(45.49589, -73.5785), zoom: 18.5);
+      controller.animateCamera(CameraUpdate.newCameraPosition(_currentPos));
+    }else if (name.contains("H806")) {
       CameraPosition _currentPos =
           CameraPosition(target: LatLng(45.49715, -73.57878), zoom: 21);
       goToHall8th();
@@ -211,14 +215,14 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  Future<void> goToCurrent() async {
+  void goToCurrent() async {
     final GoogleMapController controller = await _controller.future;
     _cameraPosition = CameraPosition(
         target: LatLng(_position.latitude, _position.longitude), zoom: 19.03);
     controller.animateCamera(CameraUpdate.newCameraPosition(_cameraPosition));
   }
 
-  Future<void> goToHall8th() async {
+    void goToHall8th() async {
     CameraPosition _currentPos = CameraPosition(
         bearing: 123.31752014160156,
         target: LatLng(45.49726709926478, -73.57894677668811),
