@@ -75,7 +75,7 @@ class _HomePageState extends State<HomePage> {
                 )),
                 SearchBar(
                     latlng: (LatLng latlng) =>
-                        {goToSelectedBuilding("$latlng"),
+                        {goToSpecifiedLatLng(latlng),
                         print("THE cooridssss is " + latlng.toString())}),
                 SVGFloorPlans(),
                 FloorSelectorEnterBuilding(
@@ -183,37 +183,15 @@ class _HomePageState extends State<HomePage> {
     controller.setMapStyle(value);
   }
 
-  Future<void> goToSelectedBuilding(String name) async {
+  Future<void> goToSpecifiedLatLng(LatLng latLng) async {
     final GoogleMapController controller = await _controller.future;
-    if (name.contains("Hall")) {
-      CameraPosition _currentPos =
-          CameraPosition(target: LatLng(45.49726, -73.57895), zoom: 18.5);
-      goToHall8th();
-    } else if (name.contains("EV")) {
-      CameraPosition _currentPos =
-          CameraPosition(target: LatLng(45.49683, -73.57793), zoom: 18.5);
-      controller.animateCamera(CameraUpdate.newCameraPosition(_currentPos));
-    } else if (name.contains("JMSB")) {
-      CameraPosition _currentPos =
-          CameraPosition(target: LatLng(45.49531, -73.57901), zoom: 18.5);
-      controller.animateCamera(CameraUpdate.newCameraPosition(_currentPos));
-    } else if (name.contains("GM")) {
-      CameraPosition _currentPos =
-          CameraPosition(target: LatLng(45.49589, -73.5785), zoom: 18.5);
-      controller.animateCamera(CameraUpdate.newCameraPosition(_currentPos));
-    }else if (name.contains("H806")) {
-      CameraPosition _currentPos =
-          CameraPosition(target: LatLng(45.49715, -73.57878), zoom: 21);
-      goToHall8th();
-    } else if (name.contains("H832")) {
-      CameraPosition _currentPos =
-          CameraPosition(target: LatLng(45.49728, -73.57924), zoom: 21);
-      goToHall8th();
-    } else if (name.contains("H860")) {
-      CameraPosition _currentPos =
-          CameraPosition(target: LatLng(45.49744, -73.57875), zoom: 21);
-      goToHall8th();
+    if(latLng != null) {
+      CameraPosition _newPosition =
+          CameraPosition(target: latLng, zoom: 18.5);
+      controller.animateCamera(CameraUpdate.newCameraPosition(_newPosition));
     }
+    else 
+    goToHall8th();
   }
 
   void goToCurrent() async {
