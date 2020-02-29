@@ -25,7 +25,7 @@ class _FloorSelectorEnterBuildingState
   List<bool> selectedFloor = [false, true]; // 8th floor selected
 
   Widget build(BuildContext context) {
-    
+
       MapNotifier mapNotifier = Provider.of<MapNotifier>(context);
 
         return Padding(
@@ -34,8 +34,6 @@ class _FloorSelectorEnterBuildingState
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              EnterBuildingButton(isPressed: ()=> {widget.enterBuildingPressed()}),
-              SizedBox(height: 16, width: 16),
               Visibility(
                 maintainSize: true,
             maintainAnimation: true,
@@ -71,6 +69,8 @@ class _FloorSelectorEnterBuildingState
                   ),
                 ),
               ),
+              SizedBox(height: 16, width: 16),
+              EnterBuildingButton(isPressed: ()=> {widget.enterBuildingPressed()}),
             ],
           ),
         );

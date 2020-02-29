@@ -119,7 +119,7 @@ class MapSampleState extends State<MapSample> {
                       mapNotifier.setFloorPlanVisibility(false);
                       _resetStyle(_mapController);
                     }
-                    if (IsWithinHall(cameraPosition.target)) {
+                    if (IsWithinHall(cameraPosition.target) && mapNotifier.showFloorPlan == false) {
                       mapNotifier.setEnterBuildingVisibility(true);
                     } else {
                       mapNotifier.setEnterBuildingVisibility(false);
