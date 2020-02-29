@@ -4,6 +4,7 @@ import 'building.dart';
 import 'coordinate.dart';
 import 'floor.dart';
 import 'package:kdtree/kdtree.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class BuildingSingleton {
   //static final BuildingSingleton _instance = BuildingSingleton._internal();
@@ -14,7 +15,7 @@ class BuildingSingleton {
 //    return _instance;
 //  }
 
-  BuildingSingleton() {
+  BuildingSingleton(LatLng start, LatLng end, int floor) {
     //first letter: l=lower, m=middle, u=upper
     //second letter: l=left, m=middle, r=right
     //pov from maisonneuve
@@ -518,6 +519,24 @@ class BuildingSingleton {
     h8_escalator_up.adjCoordinates = {h8_mm, h8_elevator};
     h8_elevator.adjCoordinates = {h8_stairs_lr, h8_escalator_up};
 
+    List<Coordinate> portals8 = [
+      h8_ll,
+      h8_lr,
+      h8_lm,
+      h8_ul,
+      h8_um,
+      h8_ur,
+      h8_mm,
+      h8_mr,
+      h8_stairs_ll,
+      h8_stairs_lr,
+      h8_stairs_ul,
+      h8_stairs_ur,
+      h8_escalator_down,
+      h8_escalator_up,
+      h8_elevator
+    ];
+
     j9F1.adjCoordinates = {j9F2, j9F4};
     j9F2.adjCoordinates = {j9F3, j9F1};
     j9F3.adjCoordinates = {j9F2, j9F5};
@@ -556,18 +575,7 @@ class BuildingSingleton {
     j9F36.adjCoordinates = {j9F37, j9F24};
     j9F37.adjCoordinates = {j9F23, j9F36};
 
-//    RoomCoordinate end = RoomCoordinate(45.49749, -73.57905, '8', 'Hall', 'SGW',
-//        adjCoordinates: <Coordinate>{});
-
-    // RoomCoordinate start = RoomCoordinate(
-    //     45.497205, -73.579329, '9', 'Hall', 'SGW',
-    //     type: "ROOM", adjCoordinates: {j9F1, j9F4});
-
-    // RoomCoordinate end = RoomCoordinate(
-    //     45.497380, -73.578606, '9', 'Hall', 'SGW',
-    //     type: "ROOM", adjCoordinates: {j9F20, j9F23});
-
-    List<Coordinate> portals = [
+    List<Coordinate> portals9 = [
       j9F1,
       j9F2,
       j9F3,
@@ -607,11 +615,22 @@ class BuildingSingleton {
       j9F37
     ];
 
-    List<Map<String, double>> junctionPointsinKDFormat =
-        convertListToKDFormat(portals);
-    // var distance = (a, b) {
-    //   return sqrt(pow(a['x'] - b['x'], 2) + pow(a['y'] - b['y'], 2));
-    // };
+    List<Map<String, double>> junctionPointsinKDFormat;
+    List<Coordinate> portals;
+
+    switch (floor) {
+      case 0:
+        // do something
+        break;
+      case 8:
+        junctionPointsinKDFormat = convertListToKDFormat(portals8);
+        portals = portals8;
+        break;
+      case 9:
+        junctionPointsinKDFormat = convertListToKDFormat(portals9);
+        portals = portals9;
+        break;
+    }
 
     var distance = (location1, location2) {
       var lat1 = location1['x'],
@@ -631,11 +650,13 @@ class BuildingSingleton {
 
     var tree = KDTree(junctionPointsinKDFormat, distance, ['x', 'y']);
 
-    var sLat = 45.497506;
-    var sLng = -73.578722;
+    var sLat = start.latitude;
 
-    var eLat = 45.496984;
-    var eLng = -73.578912;
+    var sLng = start.longitude;
+
+    var eLat = end.latitude;
+
+    var eLng = end.longitude;
 
     var closestStartJunction = (tree.nearest({'x': sLat, 'y': sLng}, 1));
     var closestEndJunction = (tree.nearest({'x': eLat, 'y': eLng}, 1));
@@ -646,20 +667,26 @@ class BuildingSingleton {
     print(cp1);
     print(cp2);
 
-    RoomCoordinate start1 =
-        RoomCoordinate(sLat, sLng, '9', 'Hall', 'SGW', type: "SROOM");
+    RoomCoordinate start1 = RoomCoordinate(
+        sLat, sLng, floor.toString(), 'Hall', 'SGW',
+        type: "SROOM");
 
-    RoomCoordinate start2 =
-        RoomCoordinate(sLat, sLng, '9', 'Hall', 'SGW', type: "SROOM");
-    RoomCoordinate start3 =
-        RoomCoordinate(sLat, sLng, '9', 'Hall', 'SGW', type: "SROOM");
-    RoomCoordinate end1 =
-        RoomCoordinate(eLat, eLng, '9', 'Hall', 'SGW', type: "EROOM");
-    RoomCoordinate end2 =
-        RoomCoordinate(eLat, eLng, '9', 'Hall', 'SGW', type: "EROOM");
+    RoomCoordinate start2 = RoomCoordinate(
+        sLat, sLng, floor.toString(), 'Hall', 'SGW',
+        type: "SROOM");
+    RoomCoordinate start3 = RoomCoordinate(
+        sLat, sLng, floor.toString(), 'Hall', 'SGW',
+        type: "SROOM");
+    RoomCoordinate end1 = RoomCoordinate(
+        eLat, eLng, floor.toString(), 'Hall', 'SGW',
+        type: "EROOM");
+    RoomCoordinate end2 = RoomCoordinate(
+        eLat, eLng, floor.toString(), 'Hall', 'SGW',
+        type: "EROOM");
 
-    RoomCoordinate end3 =
-        RoomCoordinate(eLat, eLng, '9', 'Hall', 'SGW', type: "EROOM");
+    RoomCoordinate end3 = RoomCoordinate(
+        eLat, eLng, floor.toString(), 'Hall', 'SGW',
+        type: "EROOM");
 
     var startHas3Portals = false;
     var endHas3Portals = false;
@@ -718,9 +745,9 @@ class BuildingSingleton {
     portals.add(end2);
     if (endHas3Portals) portals.add(end3);
 
-    Floor ninth_floor = Floor('9', coordinates: portals.toSet());
+    Floor ninth_floor = Floor(floor.toString(), coordinates: portals.toSet());
 
-    _building = Building('Hall', floors: {'9': ninth_floor});
+    _building = Building('Hall', floors: {floor.toString(): ninth_floor});
   }
 
   Building get building => _building;

@@ -46,11 +46,22 @@ class MapSampleState extends State<MapSample> {
   Set<Polyline> direction;
 
   void fun() {
-    BuildingSingleton buildingSingleton = new BuildingSingleton();
+    // 8th floor working if junctions are correct
+    // LatLng start = LatLng(45.497242, -73.578960);
+    // LatLng end = LatLng(45.497139, -73.578729);
+    // String floor = "8";
+
+    //9th floor confirmed working
+    LatLng start = LatLng(45.497549, -73.579110);
+    LatLng end = LatLng(45.497015, -73.578969);
+    String floor = "9";
+
+    BuildingSingleton buildingSingleton =
+        new BuildingSingleton(start, end, int.parse(floor));
     model.Building building = buildingSingleton.building;
 
     Map<String, Floor> floors = building.floors;
-    Floor ninth = floors['9'];
+    Floor ninth = floors[floor];
     List<Coordinate> sRooms = ninth.coordinatesByGivenTypes(["SROOM"]);
     List<Coordinate> eRooms = ninth.coordinatesByGivenTypes(["EROOM"]);
     var sRoomsLength = sRooms.length;
@@ -75,13 +86,13 @@ class MapSampleState extends State<MapSample> {
         print(end.adjCoordinates);
         print("---------------------");
 
-        shortestPath = building.shortestPath(end, start);
+        shortestPath = building.shortestPath(start, end);
 
-        print(shortestPath['9'].length());
-        if (shortestPath['9'].length() <= max) {
-          max = shortestPath['9'].length();
+        print(shortestPath[floor].length());
+        if (shortestPath[floor].length() <= max) {
+          max = shortestPath[floor].length();
           print(max);
-          path = shortestPath['9'];
+          path = shortestPath[floor];
         }
       }
       print("---------------------");
