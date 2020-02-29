@@ -1,11 +1,12 @@
 import 'package:concordi_around/widgets/search/building_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class SearchMenuListOption extends StatelessWidget {
 
-  final Function(String) name;
+  final Function(LatLng) latlng;
 
-  SearchMenuListOption({this.name});
+  SearchMenuListOption({this.latlng});
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +21,8 @@ class SearchMenuListOption extends StatelessWidget {
       ]),
       SizedBox(height: 5),
       DisplayBuildingListManager(
-        name: (String building) => {
-          name(building)},
+        latlng: (LatLng building) => {
+          latlng(building)},
       ),
         ]));
   }

@@ -3,14 +3,15 @@ import 'package:concordi_around/models/room.dart';
 import 'package:concordi_around/widgets/search/search_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 String campus = "SGW";
 
 class SearchBar extends StatefulWidget {
 
-  final Function(String) name;
+  final Function(LatLng) latlng;
 
-  SearchBar({this.name});
+  SearchBar({this.latlng});
 
   @override
   State<StatefulWidget> createState() {
@@ -53,7 +54,7 @@ class _SearchBarState extends State<SearchBar> {
                 onTap: (){
                   showSearch(
                       context: context,
-                      delegate: PositionedFloatingSearchBar(name: (String building) => {widget.name(building)}));
+                      delegate: PositionedFloatingSearchBar(latlng: (LatLng latlng) => {widget.latlng(latlng)}));
                   
                 },
               ),
@@ -82,8 +83,8 @@ class _SearchBarState extends State<SearchBar> {
 
 class PositionedFloatingSearchBar extends SearchDelegate<String> {
 
-final Function(String) name;
-PositionedFloatingSearchBar({this.name});
+final Function(LatLng) latlng;
+PositionedFloatingSearchBar({this.latlng});
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -118,15 +119,15 @@ PositionedFloatingSearchBar({this.name});
             .where((p) => p.getRoomNumber().startsWith(query.toUpperCase()))
             .toList();
     return query.isEmpty ? SearchMenuListOption(
-      name: (String building) => {
-        name(building),
+      latlng: (LatLng latlng) => {
+        this.latlng(latlng),
       },) : ListView.builder(
       itemBuilder: (context, index) => ListTile(
         onTap: () {
           
           Room selected = (suggestionList[index]);
           Navigator.pop(context);
-          name(selected.getRoomNumber());
+          this.latlng(selected.getLatLng());
         },
         leading: Icon(Icons.place),
         title: Text(suggestionList[index].getRoomNumber()),

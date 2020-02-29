@@ -2,11 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:concordi_around/models/building.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class DisplayBuildingListManager extends StatefulWidget {
-  final Function(String) name;
+  final Function(LatLng) latlng;
 
-  DisplayBuildingListManager({this.name});
+  DisplayBuildingListManager({this.latlng});
 
   @override
   State<StatefulWidget> createState() {
@@ -50,7 +51,7 @@ class DisplayBuildingList extends State<DisplayBuildingListManager> {
                   ),
                   onTap: () {
                     Navigator.pop(context);
-                    widget.name(_myBuildingList[index].getShortName());
+                    widget.latlng(_myBuildingList[index].getLatLng());
                   },
                 );
               },

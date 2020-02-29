@@ -74,8 +74,9 @@ class _HomePageState extends State<HomePage> {
                   },
                 )),
                 SearchBar(
-                    name: (String building) =>
-                        {goToSelectedBuilding("$building")}),
+                    latlng: (LatLng latlng) =>
+                        {goToSelectedBuilding("$latlng"),
+                        print("THE cooridssss is " + latlng.toString())}),
                 SVGFloorPlans(),
                 FloorSelectorEnterBuilding(
                   selectedFloor: (int floor) =>
