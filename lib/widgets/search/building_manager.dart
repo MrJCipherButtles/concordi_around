@@ -1,7 +1,7 @@
 // Displays a list of all the buildings
 
-import 'package:flutter/material.dart';
 import 'package:concordi_around/models/building.dart';
+import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class DisplayBuildingListManager extends StatefulWidget {
@@ -34,7 +34,7 @@ class _BuildingManagerState extends State<BuildingManager> {
 }
 
 class DisplayBuildingList extends State<DisplayBuildingListManager> {
-  final List<Building> _myBuildingList = buildingList;
+  //final List<Building> _myBuildingList = buildingList;
 
   @override
   Widget build(BuildContext context) {
@@ -43,15 +43,16 @@ class DisplayBuildingList extends State<DisplayBuildingListManager> {
         child: Container(
             color: Colors.white,
             child: ListView.separated(
-              itemCount: _myBuildingList.length,
+              itemCount: 0,//_myBuildingList.length,
               itemBuilder: (context, index) {
                 return ListTile(
                   title: Text(
-                    _myBuildingList[index].getName(),
+                    //_myBuildingList[index].getName(),
+                    ''
                   ),
                   onTap: () {
                     Navigator.pop(context);
-                    widget.latlng(_myBuildingList[index].getLatLng());
+                    //widget.latlng(_myBuildingList[index].getLatLng());
                   },
                 );
               },
