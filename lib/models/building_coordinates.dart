@@ -632,9 +632,9 @@ class BuildingSingleton {
     var tree = KDTree(junctionPointsinKDFormat, distance, ['x', 'y']);
 
     var closestStartJunction =
-        (tree.nearest({'x': 45.497549, 'y': -73.579110}, 1));
+        (tree.nearest({'x': 45.497323, 'y': -73.578569}, 1));
     var closestEndJunction =
-        (tree.nearest({'x': 45.497226, 'y': -73.578653}, 1));
+        (tree.nearest({'x': 45.497174, 'y': -73.579189}, 1));
 
     var cp1 = convertKDRetToTwoP(closestStartJunction);
     var cp2 = convertKDRetToTwoP(closestEndJunction);
@@ -644,24 +644,24 @@ class BuildingSingleton {
 
 
     RoomCoordinate start1 = RoomCoordinate(
-        45.497549, -73.579110, '9', 'Hall', 'SGW',
+        45.497323, -73.578569, '9', 'Hall', 'SGW',
         type: "SROOM");
 
     RoomCoordinate start2 = RoomCoordinate(
-        45.497549, -73.579110, '9', 'Hall', 'SGW',
+        45.497323, -73.578569, '9', 'Hall', 'SGW',
         type: "SROOM");
     RoomCoordinate start3 = RoomCoordinate(
-        45.497549, -73.579110, '9', 'Hall', 'SGW',
+       45.497323, -73.578569, '9', 'Hall', 'SGW',
         type: "SROOM");
     RoomCoordinate end1 = RoomCoordinate(
-        45.497226, -73.578653, '9', 'Hall', 'SGW',
+        45.497174, -73.579189, '9', 'Hall', 'SGW',
         type: "EROOM");
     RoomCoordinate end2 = RoomCoordinate(
-        45.497226, -73.578653, '9', 'Hall', 'SGW',
+        45.497174, -73.579189, '9', 'Hall', 'SGW',
         type: "EROOM");
 
     RoomCoordinate end3 = RoomCoordinate(
-        45.497226, -73.578653, '9', 'Hall', 'SGW',
+        45.497174, -73.579189, '9', 'Hall', 'SGW',
         type: "EROOM");
 
     var startHas3Portals = false;
@@ -710,6 +710,9 @@ class BuildingSingleton {
       }
     });
 
+      var sRoomsList = [];
+      var eRoomsList = [];
+
     portals.add(start1);
     portals.add(start2);
     if (startHas3Portals) portals.add(start3);
@@ -719,9 +722,14 @@ class BuildingSingleton {
     if (endHas3Portals) portals.add(end3);
 
     Floor ninth_floor = Floor('9', coordinates: portals.toSet());
+    
 
     _building = Building('Hall', floors: {'9': ninth_floor});
   }
+
+
+
+
 
   Building get building => _building;
 }

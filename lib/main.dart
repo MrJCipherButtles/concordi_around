@@ -83,7 +83,7 @@ class MapSampleState extends State<MapSample> {
           
 
 
-          shortestPath = building.shortestPath(start, end);
+          shortestPath = building.shortestPath(end, start);
 
           print(shortestPath['9'].length());
           if (shortestPath['9'].length() <= max) {
