@@ -22,8 +22,7 @@ class BuildingManager extends StatefulWidget {
 }
 
 class _BuildingManagerState extends State<BuildingManager> {
-  //bool _listVisible = false;
-
+  
   @override
   Widget build(BuildContext context) {
     return SizedBox(
