@@ -1,4 +1,4 @@
-import 'package:concordi_around/provider/mapNotifier.dart';
+import 'package:concordi_around/provider/map_notifier.dart';
 import 'package:concordi_around/widgets/enter_building_action_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +25,7 @@ class _FloorSelectorEnterBuildingState
   List<bool> selectedFloor = [false, true]; // 8th floor selected
 
   Widget build(BuildContext context) {
+
       MapNotifier mapNotifier = Provider.of<MapNotifier>(context);
 
         return Padding(
@@ -33,8 +34,6 @@ class _FloorSelectorEnterBuildingState
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              EnterBuildingButton(isPressed: ()=> {widget.enterBuildingPressed()}),
-              SizedBox(height: 16, width: 16),
               Visibility(
                 maintainSize: true,
             maintainAnimation: true,
@@ -70,6 +69,8 @@ class _FloorSelectorEnterBuildingState
                   ),
                 ),
               ),
+              SizedBox(height: 16, width: 16),
+              EnterBuildingButton(isPressed: ()=> {widget.enterBuildingPressed()}),
             ],
           ),
         );

@@ -1,4 +1,4 @@
-import 'package:concordi_around/provider/mapNotifier.dart';
+import 'package:concordi_around/provider/map_notifier.dart';
 import 'package:concordi_around/widgets/custom/custom_fade_indexed_stack.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
