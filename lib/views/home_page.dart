@@ -1,17 +1,12 @@
 import 'dart:async';
 
-import 'package:concordi_around/provider/map_notifier.dart';
-import 'package:concordi_around/services/map_helper.dart';
 import 'package:concordi_around/views/go_to_page.dart';
 import 'package:concordi_around/widgets/drawer.dart';
-import 'package:concordi_around/widgets/floor_selector_enter_building_column.dart';
 import 'package:concordi_around/widgets/search/main_search_bar.dart';
-import 'package:concordi_around/widgets/svg_floor_plans.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -30,8 +25,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-
-  MapNotifier mapNotifier = Provider.of<MapNotifier>(context);
 
   if (_cameraPosition == null) {
       _cameraPosition = CameraPosition(target: LatLng(0, 0));
@@ -57,32 +50,9 @@ class _HomePageState extends State<HomePage> {
                     _controller.complete(controller);
                   },
                   onCameraMove: (CameraPosition cameraPosition) async {
-                    GoogleMapController _mapController = await _controller.future;
-                    if (MapHelper.isWithinHallStrictBound(cameraPosition.target) &&
-                        cameraPosition.zoom > 18) {
-                      mapNotifier.setFloorPlanVisibility(true);
-                      _setStyle(_mapController);
-                    } else {
-                      mapNotifier.setFloorPlanVisibility(false);
-                      _resetStyle(_mapController);
-                    }
-                    if (MapHelper.isWithinHall(cameraPosition.target) && mapNotifier.showFloorPlan == false) {
-                      mapNotifier.setEnterBuildingVisibility(true);
-                    } else {
-                      mapNotifier.setEnterBuildingVisibility(false);
-                    }
                   },
                 )),
-                SearchBar(
-                    latlng: (LatLng latlng) =>
-                        {goToSpecifiedLatLng(latlng),
-                        print("THE cooridssss is " + latlng.toString())}),
-                SVGFloorPlans(),
-                FloorSelectorEnterBuilding(
-                  selectedFloor: (int floor) =>
-                      {mapNotifier.setSelectedFloor(floor)},
-                  enterBuildingPressed: () => goToHall8th(),
-                ),
+                SearchBar(),
               ],
             ),
         drawer: SidebarDrawer(),
@@ -92,7 +62,7 @@ class _HomePageState extends State<HomePage> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
               FloatingActionButton(
-                heroTag: 'unique1',
+                heroTag: 'location',
                 onPressed: (){
                   goToCurrent();
                 },
@@ -105,15 +75,13 @@ class _HomePageState extends State<HomePage> {
                 height: 16,
               ),
               FloatingActionButton(
-                heroTag: 'unique2',
+                heroTag: 'direction',
                 onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => GoToPage(
                         route: (List<String> temp) => {
-                          print(
-                              "HIIIIIIIIIIIIIIIIIII" + temp[0] + " " + temp[1])
                         },
                       ),
                     ),
@@ -131,7 +99,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     _geolocator = Geolocator()..forceAndroidLocationManager;
     LocationOptions locationOptions =
-        LocationOptions(accuracy: LocationAccuracy.best, distanceFilter: 1);
+        LocationOptions(accuracy: LocationAccuracy.bestForNavigation, distanceFilter: 1);
     updateLocation();
     _positionStream =
         _geolocator.getPositionStream(locationOptions).listen((Position pos) {
@@ -169,46 +137,11 @@ class _HomePageState extends State<HomePage> {
       print('Error in updateLocation: ${e.toString()}');
     }
   }
-  
-  void _setStyle(GoogleMapController controller) async {
-    print("Setting map style");
-    String value = await DefaultAssetBundle.of(context)
-        .loadString('assets/map_style.json');
-    controller.setMapStyle(value);
-  }
-
-  void _resetStyle(GoogleMapController controller) async {
-    print("Reseting");
-    String value = await DefaultAssetBundle.of(context).loadString('assets/map_style_reset.json');
-    controller.setMapStyle(value);
-  }
-
-  Future<void> goToSpecifiedLatLng(LatLng latLng) async {
-    final GoogleMapController controller = await _controller.future;
-    if(latLng != null) {
-      CameraPosition _newPosition =
-          CameraPosition(target: latLng, zoom: 18.5);
-      controller.animateCamera(CameraUpdate.newCameraPosition(_newPosition));
-    }
-    else 
-    goToHall8th();
-  }
 
   void goToCurrent() async {
     final GoogleMapController controller = await _controller.future;
     _cameraPosition = CameraPosition(
         target: LatLng(_position.latitude, _position.longitude), zoom: 19.03);
     controller.animateCamera(CameraUpdate.newCameraPosition(_cameraPosition));
-  }
-
-    void goToHall8th() async {
-    CameraPosition _currentPos = CameraPosition(
-        bearing: 123.31752014160156,
-        target: LatLng(45.49726709926478, -73.57894677668811),
-        tilt: 0.0,
-        zoom: 19.03557586669922);
-
-    final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(_currentPos));
   }
 }

@@ -1,4 +1,4 @@
-import 'package:concordi_around/models/room.dart';
+import 'package:concordi_around/models/coordinate.dart';
 import 'package:flutter/material.dart';
 
 class SearchMenuSuggestionsManager extends StatefulWidget {
@@ -9,7 +9,8 @@ class SearchMenuSuggestionsManager extends StatefulWidget {
 }
 
 class _SearchMenuSuggestions extends State<SearchMenuSuggestionsManager> {
-  final List<Room> _myRoomList = roomsList;
+  //TODO: get room list
+  final List<RoomCoordinate> _myRoomList = [];
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -20,7 +21,7 @@ class _SearchMenuSuggestions extends State<SearchMenuSuggestionsManager> {
               itemCount: _myRoomList.length,
               itemBuilder: (context, index) {
                 return ListTile(
-                  title: Text(_myRoomList[index].getRoomNumber()),
+                  title: Text(_myRoomList[index].roomId),
                   onTap: () {},
                 );
               },

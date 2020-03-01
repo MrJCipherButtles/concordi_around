@@ -1,17 +1,11 @@
-import 'package:concordi_around/models/database.dart';
-import 'package:concordi_around/models/room.dart';
 import 'package:concordi_around/widgets/search/search_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-String campus = "SGW";
+String campus = 'SGW';
 
 class SearchBar extends StatefulWidget {
-
-  final Function(LatLng) latlng;
-
-  SearchBar({this.latlng});
 
   @override
   State<StatefulWidget> createState() {
@@ -50,12 +44,10 @@ class _SearchBarState extends State<SearchBar> {
                     border: InputBorder.none,
                     contentPadding: EdgeInsets.symmetric(horizontal: 15),
                     hintText: "Search"),
-                
                 onTap: (){
                   showSearch(
                       context: context,
-                      delegate: PositionedFloatingSearchBar(latlng: (LatLng latlng) => {widget.latlng(latlng)}));
-                  
+                      delegate: PositionedFloatingSearchBar());
                 },
               ),
             ),
@@ -100,7 +92,7 @@ PositionedFloatingSearchBar({this.latlng});
 
   @override
   Widget buildLeading(BuildContext context) {
-    
+
     return IconButton(
         icon: AnimatedIcon(
           icon: AnimatedIcons.menu_arrow,
@@ -114,20 +106,13 @@ PositionedFloatingSearchBar({this.latlng});
   @override
   Widget buildSuggestions(BuildContext context) {
     final suggestionList = query.isNotEmpty
-        ? recentRoomsList
-        : roomsList
+        ? []
+        : []
             .where((p) => p.getRoomNumber().startsWith(query.toUpperCase()))
             .toList();
-    return query.isEmpty ? SearchMenuListOption(
-      latlng: (LatLng latlng) => {
-        this.latlng(latlng),
-      },) : ListView.builder(
+    return query.isEmpty ? SearchMenuListOption() : ListView.builder(
       itemBuilder: (context, index) => ListTile(
         onTap: () {
-          
-          Room selected = (suggestionList[index]);
-          Navigator.pop(context);
-          this.latlng(selected.getLatLng());
         },
         leading: Icon(Icons.place),
         title: Text(suggestionList[index].getRoomNumber()),

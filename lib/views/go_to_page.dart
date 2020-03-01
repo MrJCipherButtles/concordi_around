@@ -1,9 +1,6 @@
-import 'package:concordi_around/models/database.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:concordi_around/widgets/search/building_manager.dart';
-import 'package:concordi_around/widgets/search/search_menu.dart';
 
 class GoToPage extends StatefulWidget {
   final Function(List<String>) route;
@@ -29,10 +26,11 @@ class _GoToPageState extends State<GoToPage> {
   Widget build(BuildContext context) {
     List<String> originDestination = [];
     FocusNode destinationTextField =
-        new FocusNode(); // this focus node will be used for the second text field (destination)
+    new FocusNode(); // this focus node will be used for the second text field (destination)
     return Container(
       child: Material(
         child: Container(
+          margin: new EdgeInsets.only(left: 15.0, top: MediaQuery.of(context).padding.top + 5.0, right: 15.0),
           //color: Color.fromRGBO(147, 0, 44, 1),
           padding: EdgeInsets.only(
             top: 10,
@@ -41,7 +39,6 @@ class _GoToPageState extends State<GoToPage> {
           ),
           child: Column(
             children: <Widget>[
-              SizedBox(height: 50.0),
               Row(
                 children: <Widget>[
                   Expanded(
@@ -78,7 +75,8 @@ class _GoToPageState extends State<GoToPage> {
                       ),
                       suggestionsCallback: (pattern) async {
                         var roomTitles = new List<String>();
-                        for (var room in rooms) {
+                        //TODO: add room list here
+                        for (var room in []) {
                           if (room
                               .getTitle()
                               .toUpperCase()
@@ -136,7 +134,7 @@ class _GoToPageState extends State<GoToPage> {
                       ),
                       suggestionsCallback: (pattern) async {
                         var roomTitles = new List<String>();
-                        for (var room in rooms) {
+                        for (var room in []) {
                           if (room
                               .getTitle()
                               .toUpperCase()
@@ -167,35 +165,7 @@ class _GoToPageState extends State<GoToPage> {
                   ),
                 ],
               ),
-              SizedBox(height: 20.0),
-              Container(
-                
-                width: 70.0,
-                height: 70.0,
-                decoration: new BoxDecoration(
-                  color: Color.fromRGBO(147, 0, 47, 1),
-                  shape: BoxShape.circle,
-                  boxShadow: [BoxShadow(color: Colors.black)],
-                ),
-                alignment: Alignment.center,
-                child: Column(
-                  children: <Widget>[
-                   Expanded(flex: 2, child: Icon(Icons.navigation, color: Colors.white, size: 49.0,),),
-                   // Expanded(flex: 10, child: Text("Start Navigation"),),
-                   
-                   GestureDetector(
-                      onTap: () {
-                        print("Start navigation button pressed");
-                        //Navigator.pop(context);
-                      },
-                      ),
-                  ],
-                 
-                ),
-              
-              ),
             ],
-            //   TODO add a list by creating a BuildingManager widget here,
           ),
         ),
       ),

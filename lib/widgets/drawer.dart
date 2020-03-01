@@ -18,6 +18,7 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
           padding: EdgeInsets.zero,
           children: <Widget>[
             UserAccountsDrawerHeader(
+              //TODO: remove hard-coded info
               accountName: Text("John Doe"),
               accountEmail: Text("40022345"),
               decoration: BoxDecoration(
@@ -27,6 +28,7 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
               currentAccountPicture: CircleAvatar(
                 backgroundColor: Colors.white,
                 foregroundColor: Colors.black,
+                //TODO: remove hard-coded info
                 child: Text(
                   "JD",
                   style: TextStyle(fontSize: 40.0),
