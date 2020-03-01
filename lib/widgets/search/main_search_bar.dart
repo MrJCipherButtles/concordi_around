@@ -1,8 +1,12 @@
+import 'package:concordi_around/data/building_singleton.dart';
 import 'package:concordi_around/models/coordinate.dart';
 import 'package:concordi_around/widgets/search/search_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+import '../../models/building.dart';
+import '../../models/coordinate.dart';
 
 String campus = 'SGW';
 
@@ -110,16 +114,27 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
+    BuildingSingleton buildingSingleton = BuildingSingleton();
+    List<RoomCoordinate> roomList = <RoomCoordinate>[];
+    for (Building building in buildingSingleton.buildings) {
+      building.floors.forEach((floorName, floor) => floor
+          .coordinatesByGivenTypes({"ROOM"}).forEach(
+              (room) => roomList.add(room)));
+    }
     List<RoomCoordinate> suggestionList = query.isNotEmpty
-        ? <RoomCoordinate>[]
-        : <RoomCoordinate>[]
+        ? roomList
             .where((p) => p.roomId.startsWith(query.toUpperCase()))
-            .toList();
+            .toList()
+        : <RoomCoordinate>[];
     return query.isEmpty
         ? SearchMenuListOption(latlng: (LatLng latlng) => {this.latlng(latlng)})
         : ListView.builder(
             itemBuilder: (context, index) => ListTile(
-              onTap: () {},
+              onTap: () {
+                RoomCoordinate selected = (suggestionList[index]);
+                Navigator.pop(context);
+                this.latlng(selected.toLatLng());
+              },
               leading: Icon(Icons.place),
               title: Text(suggestionList[index].roomId),
             ),
