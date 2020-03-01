@@ -118,7 +118,9 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
             .toList()
         : <RoomCoordinate>[];
     return query.isEmpty
-        ? SearchMenuListOption(coordinate: (Coordinate coordinate) => {this.coordinate(coordinate)})
+        ? SearchMenuListOption(
+            coordinate: (Coordinate coordinate) =>
+                {this.coordinate(coordinate)})
         : ListView.builder(
             itemBuilder: (context, index) => ListTile(
               onTap: () {
