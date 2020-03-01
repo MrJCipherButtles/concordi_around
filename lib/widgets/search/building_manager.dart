@@ -1,12 +1,12 @@
 import 'package:concordi_around/models/building.dart';
 import 'package:concordi_around/data/building_singleton.dart';
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import '../../models/coordinate.dart';
 
 class DisplayBuildingListManager extends StatefulWidget {
-  final Function(LatLng) latlng;
+  final Function(Coordinate) coordinate;
 
-  DisplayBuildingListManager({this.latlng});
+  DisplayBuildingListManager({this.coordinate});
 
   @override
   State<StatefulWidget> createState() {
@@ -49,7 +49,7 @@ class DisplayBuildingList extends State<DisplayBuildingListManager> {
                   ),
                   onTap: () {
                     Navigator.pop(context);
-                    widget.latlng(_myBuildingList[index].coordinate.toLatLng());
+                    widget.coordinate(_myBuildingList[index].coordinate);
                   },
                 );
               },

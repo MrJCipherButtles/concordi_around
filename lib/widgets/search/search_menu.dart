@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import '../../models/coordinate.dart';
 import 'building_manager.dart';
 
 class SearchMenuListOption extends StatelessWidget {
-  final Function(LatLng) latlng;
+  final Function(Coordinate) coordinate;
 
-  SearchMenuListOption({this.latlng});
+  SearchMenuListOption({this.coordinate});
 
   @override
   Widget build(BuildContext context) {
     return Container(
         child: Column(children: <Widget>[
       DisplayBuildingListManager(
-        latlng: (LatLng latlng) => {this.latlng(latlng)},
+        coordinate: (Coordinate coordinate) => {this.coordinate(coordinate)},
       ),
     ]));
   }
