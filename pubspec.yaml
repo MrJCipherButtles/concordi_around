@@ -30,10 +30,6 @@ dependencies:
   # Allows location based functions
   geolocator: ^5.2.1
 
-  # Autocomplete
-  flutter_google_places: ^0.2.4
-  geocoder: ^0.2.1
-
   # Search Suggestions (Flutter TypeAhead)
   flutter_typeahead: ^1.8.0
 
