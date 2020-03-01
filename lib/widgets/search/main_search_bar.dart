@@ -7,6 +7,10 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 String campus = 'SGW';
 
 class SearchBar extends StatefulWidget {
+
+  final Function(LatLng) latlng;
+  SearchBar({this.latlng});
+
   @override
   State<StatefulWidget> createState() {
     return _SearchBarState();
@@ -48,7 +52,7 @@ class _SearchBarState extends State<SearchBar> {
                   onTap: () {
                     showSearch(
                         context: context,
-                        delegate: PositionedFloatingSearchBar());
+                        delegate: PositionedFloatingSearchBar(latlng: (LatLng latlng) => {widget.latlng(latlng)}));
                   },
                 ),
               ),
@@ -76,6 +80,10 @@ class _SearchBarState extends State<SearchBar> {
 }
 
 class PositionedFloatingSearchBar extends SearchDelegate<String> {
+
+final Function(LatLng) latlng;
+PositionedFloatingSearchBar({this.latlng});
+
   @override
   List<Widget> buildActions(BuildContext context) {
     return [
@@ -108,7 +116,7 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
             .where((p) => p.roomId.startsWith(query.toUpperCase()))
             .toList();
     return query.isEmpty
-        ? SearchMenuListOption()
+        ? SearchMenuListOption(latlng: (LatLng latlng) => {this.latlng(latlng)})
         : ListView.builder(
             itemBuilder: (context, index) => ListTile(
               onTap: () {},
@@ -122,6 +130,6 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
   @override
   Widget buildResults(BuildContext context) {
     // TODO: implement buildResults
-    throw UnimplementedError();
+    return null;
   }
 }
