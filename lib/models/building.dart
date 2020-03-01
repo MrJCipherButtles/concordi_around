@@ -17,6 +17,7 @@ class Building {
   }
 
   String get building => _building;
+  Coordinate get coordinate => _coordinate;
   List<Coordinate> get polygon => _polygon;
   Map<String, Floor> get floors => _floors;
 
