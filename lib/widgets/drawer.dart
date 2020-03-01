@@ -118,19 +118,17 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
     scaffold.removeCurrentSnackBar();
     scaffold.showSnackBar(
       SnackBar(
-        //elevation: 6.0,
-        //shape: null,
-        
-        //shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15))),
-         behavior: SnackBarBehavior.floating,
-        backgroundColor: Color.fromRGBO(147, 35, 57, 1),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(15), topRight: Radius.circular(15))),
+        backgroundColor:
+            globals.disabilityMode ? Color.fromRGBO(147, 35, 57, 1) : null,
         content: globals.disabilityMode
             ? Text('Disability Mode turned ON')
             : Text('Disability Mode turned OFF'),
         action: SnackBarAction(
             label: 'UNDO',
             onPressed: () {
-              //scaffold.hideCurrentSnackBar;
               globals.disabilityMode = globals.disabilityMode ? false : true;
               _showToast(context);
             }),
