@@ -1,6 +1,5 @@
 import '../models/building.dart';
 import '../models/coordinate.dart';
-import '../models/coordinate.dart';
 import '../models/floor.dart';
 
 class BuildingSingleton {
