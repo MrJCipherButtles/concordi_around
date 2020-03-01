@@ -31,10 +31,6 @@ class _GoToPageState extends State<GoToPage> {
     return Container(
       child: Material(
         child: Container(
-          margin: new EdgeInsets.only(
-              left: 15.0,
-              top: MediaQuery.of(context).padding.top + 5.0,
-              right: 15.0),
           padding: EdgeInsets.only(
             top: 10,
             right: 35,
@@ -42,6 +38,7 @@ class _GoToPageState extends State<GoToPage> {
           ),
           child: Column(
             children: <Widget>[
+              SizedBox(height: 50.0),
               Row(
                 children: <Widget>[
                   Expanded(
@@ -70,8 +67,12 @@ class _GoToPageState extends State<GoToPage> {
                           contentPadding:
                               EdgeInsets.fromLTRB(15.0, 12.0, 20.0, 15.0),
                           hintText: "origin...",
+                          hintStyle: TextStyle(
+                              color: Color.fromRGBO(147, 0, 44, 0.65)),
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
+                            borderRadius: BorderRadius.circular(
+                              10.0,
+                            ),
                           ),
                         ),
                         controller: this._originTypeAheadController,
@@ -81,6 +82,7 @@ class _GoToPageState extends State<GoToPage> {
                         //TODO: add room list here
                         for (var room in roomTitles) {
                           //TODO: fix this for loop
+
                         }
                         return roomTitles; //await BackendService.getSuggestions(pattern);
                       },
@@ -123,6 +125,8 @@ class _GoToPageState extends State<GoToPage> {
                           contentPadding:
                               EdgeInsets.fromLTRB(15.0, 12.0, 10.0, 12.0),
                           hintText: "destination...",
+                          hintStyle: TextStyle(
+                              color: Color.fromRGBO(147, 0, 44, 0.65)),
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0)),
                         ),
@@ -131,8 +135,9 @@ class _GoToPageState extends State<GoToPage> {
                       suggestionsCallback: (pattern) async {
                         //TODO: add room list here
                         var roomTitles = new List<RoomCoordinate>();
-                        for (var room in roomTitles) {
+                        for (var roomID in roomTitles) {
                           //TODO: fix this for loop
+
                         }
                         return roomTitles;
                       },
@@ -155,6 +160,62 @@ class _GoToPageState extends State<GoToPage> {
                   ),
                 ],
               ),
+              SizedBox(height: 20.0),
+              Center(
+                child: FloatingActionButton(
+                  child: Icon(
+                    Icons.navigation,
+                    color: Colors.white,
+                    size: 40.0,
+                  ),
+                  backgroundColor: Color.fromRGBO(147, 0, 47, 1),
+                  elevation: 2,
+                  onPressed: () {
+                    print("Start navigation button pressed");
+                  },
+                ),
+              ),
+              Text(
+                "Go",
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 25,
+                  color: Color.fromRGBO(147, 0, 47, 1),
+                ),
+                textAlign: TextAlign.justify,
+              ),
+              Container(
+                height: 60,
+                margin: EdgeInsets.fromLTRB(0, 15, 0, 15),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(flex: 1, child: Text('')),
+                    Expanded(
+                      flex: 10,
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                            side: BorderSide(
+                                width: 1,
+                                color: Color.fromRGBO(147, 0, 47, 1))),
+                        elevation: 2,
+                        child: Align(
+                          child: Text(
+                            "ETA (min) + Distance (m/km)",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 18,
+                              color: Color.fromRGBO(147, 0, 47, 1),
+                            ),
+                            textAlign: TextAlign.justify,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              //TODO adding the recent places list
             ],
           ),
         ),
