@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.com/MrJCipherButtles/concordi_around.svg?branch=master)](https://travis-ci.com/MrJCipherButtles/concordi_around)
+[![codecov](https://codecov.io/gh/MrJCipherButtles/concordi_around/branch/master/graph/badge.svg)](https://codecov.io/gh/MrJCipherButtles/concordi_around)
+
 # ConcordiAround
 
 ConcordiaAround is a campus guide mobile application for Concordia University
