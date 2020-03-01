@@ -9,7 +9,8 @@ class Coordinate {
   String _type;
   Set<Coordinate> _adjCoordinates = HashSet<Coordinate>();
 
-  Coordinate(this._lat, this._lng, this._floor, this._building, this._campus, {type, adjCoordinates}) {
+  Coordinate(this._lat, this._lng, this._floor, this._building, this._campus,
+      {type, adjCoordinates}) {
     _type = type;
     if (adjCoordinates != null) {
       _adjCoordinates = adjCoordinates;
@@ -28,10 +29,12 @@ class Coordinate {
   Set<Coordinate> get adjCoordinates => _adjCoordinates;
 
   set type(String type) => _type = type;
-  set adjCoordinates(Set<Coordinate> adjCoordinates) => _adjCoordinates = adjCoordinates;
+  set adjCoordinates(Set<Coordinate> adjCoordinates) =>
+      _adjCoordinates = adjCoordinates;
 
   //if I am your neighbor, then you must be my neighbor
-  bool addAdjCoordinate(Coordinate coordinate) => _adjCoordinates.add(coordinate) && coordinate._adjCoordinates.add(this);
+  bool addAdjCoordinate(Coordinate coordinate) =>
+      _adjCoordinates.add(coordinate) && coordinate._adjCoordinates.add(this);
 
   bool isAdjacent(Coordinate anotherCoordinate) {
     //A coordinate is adjacent to itself
@@ -55,24 +58,28 @@ class Coordinate {
 }
 
 class PortalCoordinate extends Coordinate {
-
   bool _isDisabilityFriendly;
 
-  PortalCoordinate(lat, lng, floorLevel, building, campus, {type, adjCoordinates, isDisabilityFriendly = false}) :
-        super(lat, lng, floorLevel, building, campus, type:type, adjCoordinates:adjCoordinates) {
+  PortalCoordinate(lat, lng, floorLevel, building, campus,
+      {type, adjCoordinates, isDisabilityFriendly = false})
+      : super(lat, lng, floorLevel, building, campus,
+            type: type, adjCoordinates: adjCoordinates) {
     _isDisabilityFriendly = isDisabilityFriendly;
   }
 
   bool get isDisabilityFriendly => _isDisabilityFriendly;
 
-  set isDisabilityFriendly(bool isDisabilityFriendly) => _isDisabilityFriendly = isDisabilityFriendly;
+  set isDisabilityFriendly(bool isDisabilityFriendly) =>
+      _isDisabilityFriendly = isDisabilityFriendly;
 }
 
 class RoomCoordinate extends Coordinate {
   String _roomId;
 
-  RoomCoordinate(lat, lng, floorLevel, building, campus, {type, adjCoordinates, roomId}) :
-        super(lat, lng, floorLevel, building, campus, type:type, adjCoordinates:adjCoordinates) {
+  RoomCoordinate(lat, lng, floorLevel, building, campus,
+      {type, adjCoordinates, roomId})
+      : super(lat, lng, floorLevel, building, campus,
+            type: type, adjCoordinates: adjCoordinates) {
     _roomId = roomId;
   }
 
