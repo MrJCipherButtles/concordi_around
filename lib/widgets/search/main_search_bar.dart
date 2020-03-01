@@ -1,14 +1,15 @@
+import 'package:concordi_around/data/building_singleton.dart';
 import 'package:concordi_around/models/coordinate.dart';
 import 'package:concordi_around/widgets/search/search_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import '../../models/coordinate.dart';
 
 String campus = 'SGW';
 
 class SearchBar extends StatefulWidget {
-  final Function(LatLng) latlng;
-  SearchBar({this.latlng});
+  final Function(Coordinate) coordinate;
+  SearchBar({this.coordinate});
 
   @override
   State<StatefulWidget> createState() {
@@ -52,8 +53,8 @@ class _SearchBarState extends State<SearchBar> {
                     showSearch(
                         context: context,
                         delegate: PositionedFloatingSearchBar(
-                            latlng: (LatLng latlng) =>
-                                {widget.latlng(latlng)}));
+                            coordinate: (Coordinate coordinate) =>
+                                {widget.coordinate(coordinate)}));
                   },
                 ),
               ),
@@ -81,8 +82,8 @@ class _SearchBarState extends State<SearchBar> {
 }
 
 class PositionedFloatingSearchBar extends SearchDelegate<String> {
-  final Function(LatLng) latlng;
-  PositionedFloatingSearchBar({this.latlng});
+  final Function(Coordinate) coordinate;
+  PositionedFloatingSearchBar({this.coordinate});
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -110,16 +111,21 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
+    List<RoomCoordinate> roomList = BuildingSingleton().getAllRooms();
     List<RoomCoordinate> suggestionList = query.isNotEmpty
-        ? <RoomCoordinate>[]
-        : <RoomCoordinate>[]
+        ? roomList
             .where((p) => p.roomId.startsWith(query.toUpperCase()))
-            .toList();
+            .toList()
+        : <RoomCoordinate>[];
     return query.isEmpty
-        ? SearchMenuListOption(latlng: (LatLng latlng) => {this.latlng(latlng)})
+        ? SearchMenuListOption(coordinate: (Coordinate coordinate) => {this.coordinate(coordinate)})
         : ListView.builder(
             itemBuilder: (context, index) => ListTile(
-              onTap: () {},
+              onTap: () {
+                RoomCoordinate selected = (suggestionList[index]);
+                Navigator.pop(context);
+                this.coordinate(selected);
+              },
               leading: Icon(Icons.place),
               title: Text(suggestionList[index].roomId),
             ),
