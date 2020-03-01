@@ -1,13 +1,10 @@
-import 'package:concordi_around/main.dart';
-import 'package:concordi_around/widgets/generalUI/positionedFloatingSearchBar.dart';
-import 'package:concordi_around/widgets/generalUI/sidebarDrawer.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
-import 'package:concordi_around/widgets/generalUI/positionedFloatingSearchBar.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:concordi_around/widgets/drawer.dart';
 
 void main() {
+  //need this since we need a mediaQuery ancestor since
   Widget makeTestableWidget({Widget child}) {
     return MaterialApp(
       home: child,
@@ -15,21 +12,21 @@ void main() {
   }
 
   testWidgets('Testing the SideBar widget', (WidgetTester tester) async {
-    //building the application and opening the sidebar
-    // await tester.pumpWidget(SidebarDrawer());
-    // await tester.pump();
-
-    // await tester.pumpWidget(makeTestableWidget(child: SidebarDrawer()));
-    // await tester.pump();
-
-    await tester.pumpWidget(MyApp());
-
-    await tester.tap(find.byType(IconButton));
+    //building the sidebar
+    //SidebarDrawer is created inside of a scaffold so we need to 
+    await tester.pumpWidget(makeTestableWidget(child: SidebarDrawer()));
     await tester.pump();
-    expect(find.byType(SidebarDrawer), findsOneWidget);
 
+    //making sure that the side bar exists and everything we need is there
+    expect(find.byType(SidebarDrawer), findsOneWidget);
     expect(find.byType(UserAccountsDrawerHeader), findsOneWidget);
     expect(find.byType(CircleAvatar), findsOneWidget);
-    expect(find.byType(ListTile), findsNWidgets(2));
+    expect(find.byType(ListTile), findsNWidgets(4));
+
+    //making sure that the correct logos are placed
+    expect(find.byIcon(Icons.calendar_today), findsOneWidget);
+    expect(find.byIcon(Icons.settings), findsOneWidget);
+    expect(find.byIcon(Icons.message), findsOneWidget);
+    expect(find.byIcon(Icons.info_outline), findsOneWidget);
   });
 }

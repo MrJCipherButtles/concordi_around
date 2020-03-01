@@ -1,11 +1,13 @@
 import 'package:concordi_around/main.dart';
-import 'package:concordi_around/widgets/generalUI/positionedFloatingSearchBar.dart';
-import 'package:concordi_around/widgets/generalUI/sidebarDrawer.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
-import 'package:concordi_around/widgets/generalUI/positionedFloatingSearchBar.dart';
+import 'package:concordi_around/widgets/search/main_search_bar.dart';
+import 'package:concordi_around/widgets/search/main_search_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter/widgets.dart';
+import 'package:concordi_around/widgets/search/main_search_bar.dart';
+import 'package:flutter/material.dart';
+import 'package:concordi_around/widgets/drawer.dart';
 
 void main() {
   Widget makeTestableWidget({Widget child}) {
@@ -18,17 +20,12 @@ void main() {
     //Building the application
     await tester.pumpWidget(MyApp());
 
-
-    //await tester.pumpWidget(makeTestableWidget(child: SearchBar()));
-    // await tester.pumpWidget(
-    //   SearchBar(
-    //                 name: (String building) =>
-    //                     {_goToSelectedBuilding("Hall")})
-    // );
-
-    // verify that the Text widgets appear exactly once in the widget tree.
-    expect(find.byType(SearchBar), findsOneWidget);
+    //verify that the Text widgets appear exactly once in the widget tree.
+    var searchButton = find.byType(SearchBar);
+    expect(searchButton, findsOneWidget);
     expect(find.text('Search'), findsOneWidget);
+    await tester.tap(find.byType(SearchBar));
+    await tester.pump();
 
     //Testing the raised button
     var campusButton = find.byType(RaisedButton);
