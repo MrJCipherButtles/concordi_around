@@ -1,6 +1,6 @@
-import 'building.dart';
-import 'coordinate.dart';
-import 'floor.dart';
+import '../models/building.dart';
+import '../models/coordinate.dart';
+import '../models/floor.dart';
 
 class BuildingSingleton {
   static final BuildingSingleton _instance = BuildingSingleton._internal();
