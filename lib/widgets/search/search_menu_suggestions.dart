@@ -28,7 +28,6 @@ class _SearchMenuSuggestions extends State<SearchMenuSuggestionsManager> {
               separatorBuilder: (context, index) {
                 return Divider();
               },
-              )
-            ));
-  }  
+            )));
+  }
 }

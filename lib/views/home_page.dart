@@ -16,7 +16,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   Completer<GoogleMapController> _controller = Completer();
   Geolocator _geolocator;
   Position _position;
@@ -25,35 +24,33 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-
-  if (_cameraPosition == null) {
+    if (_cameraPosition == null) {
       _cameraPosition = CameraPosition(target: LatLng(0, 0));
-  }
+    }
 
     return Scaffold(
         body: Stack(
-              children: <Widget>[
-                Container(
-                    child: GoogleMap(
-                  mapType: MapType.normal,
-                  myLocationEnabled: true,
-                  myLocationButtonEnabled: false,
-                  compassEnabled: false,
-                  indoorViewEnabled: false,
-                  scrollGesturesEnabled: true,
-                  rotateGesturesEnabled: true,
-                  tiltGesturesEnabled: true,
-                  zoomGesturesEnabled: true,
-                  initialCameraPosition: _cameraPosition,
-                  onMapCreated: (GoogleMapController controller) {
-                    _controller.complete(controller);
-                  },
-                  onCameraMove: (CameraPosition cameraPosition) async {
-                  },
-                )),
-                SearchBar(),
-              ],
-            ),
+          children: <Widget>[
+            Container(
+                child: GoogleMap(
+              mapType: MapType.normal,
+              myLocationEnabled: true,
+              myLocationButtonEnabled: false,
+              compassEnabled: false,
+              indoorViewEnabled: false,
+              scrollGesturesEnabled: true,
+              rotateGesturesEnabled: true,
+              tiltGesturesEnabled: true,
+              zoomGesturesEnabled: true,
+              initialCameraPosition: _cameraPosition,
+              onMapCreated: (GoogleMapController controller) {
+                _controller.complete(controller);
+              },
+              onCameraMove: (CameraPosition cameraPosition) async {},
+            )),
+            SearchBar(),
+          ],
+        ),
         drawer: SidebarDrawer(),
         resizeToAvoidBottomInset: false,
         floatingActionButton: Column(
@@ -62,7 +59,7 @@ class _HomePageState extends State<HomePage> {
             children: <Widget>[
               FloatingActionButton(
                 heroTag: 'location',
-                onPressed: (){
+                onPressed: () {
                   goToCurrent();
                 },
                 backgroundColor: Colors.white,
@@ -80,8 +77,7 @@ class _HomePageState extends State<HomePage> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => GoToPage(
-                        route: (List<String> temp) => {
-                        },
+                        route: (List<String> temp) => {},
                       ),
                     ),
                   );
@@ -97,8 +93,8 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _geolocator = Geolocator()..forceAndroidLocationManager;
-    LocationOptions locationOptions =
-        LocationOptions(accuracy: LocationAccuracy.bestForNavigation, distanceFilter: 1);
+    LocationOptions locationOptions = LocationOptions(
+        accuracy: LocationAccuracy.bestForNavigation, distanceFilter: 1);
     updateLocation();
     _positionStream =
         _geolocator.getPositionStream(locationOptions).listen((Position pos) {

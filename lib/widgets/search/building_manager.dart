@@ -17,7 +17,6 @@ class BuildingManager extends StatefulWidget {
 }
 
 class _BuildingManagerState extends State<BuildingManager> {
-  
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -37,7 +36,7 @@ class DisplayBuildingList extends State<DisplayBuildingListManager> {
         child: Container(
             color: Colors.white,
             child: ListView.separated(
-              itemCount: 0,//_myBuildingList.length,
+              itemCount: 0, //_myBuildingList.length,
               itemBuilder: (context, index) {
                 return ListTile(
                   title: Text(
@@ -51,8 +50,6 @@ class DisplayBuildingList extends State<DisplayBuildingListManager> {
               separatorBuilder: (context, index) {
                 return Divider();
               },
-            )
-        )
-    );
+            )));
   }
 }

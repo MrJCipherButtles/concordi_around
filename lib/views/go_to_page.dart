@@ -18,18 +18,23 @@ class GoToPage extends StatefulWidget {
 
 class _GoToPageState extends State<GoToPage> {
   //To be able to save the selected suggestion into the text field
-  final TextEditingController _originTypeAheadController = TextEditingController();
-  final TextEditingController _destinTypeAheadController = TextEditingController();
+  final TextEditingController _originTypeAheadController =
+      TextEditingController();
+  final TextEditingController _destinTypeAheadController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     List<String> originDestination = [];
     FocusNode destinationTextField =
-    new FocusNode(); // this focus node will be used for the second text field (destination)
+        new FocusNode(); // this focus node will be used for the second text field (destination)
     return Container(
       child: Material(
         child: Container(
-          margin: new EdgeInsets.only(left: 15.0, top: MediaQuery.of(context).padding.top + 5.0, right: 15.0),
+          margin: new EdgeInsets.only(
+              left: 15.0,
+              top: MediaQuery.of(context).padding.top + 5.0,
+              right: 15.0),
           padding: EdgeInsets.only(
             top: 10,
             right: 35,
@@ -137,7 +142,6 @@ class _GoToPageState extends State<GoToPage> {
                           child: ListTile(
                             leading: Icon(Icons.place,
                                 color: Color.fromRGBO(147, 0, 47, 1)),
-
                             title: Text(suggestion),
                           ),
                         );
