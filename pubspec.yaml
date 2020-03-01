@@ -30,35 +30,16 @@ dependencies:
   # Allows location based functions
   geolocator: ^5.2.1
 
-  # SVG plugin
-  flutter_svg: 0.17.1
-
-  #Autocomplete
+  # Autocomplete
   flutter_google_places: ^0.2.4
-  google_maps_webservice: ^0.0.16
   geocoder: ^0.2.1
 
-  # Provider
-  provider: ^3.1.0
-
-  #Search Suggestions (Flutter TypeAhead)
+  # Search Suggestions (Flutter TypeAhead)
   flutter_typeahead: ^1.8.0
-
-  map_overlay: 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
-  #App Luncher Icon dependency 
-  flutter_launcher_icons: ^0.7.4
-flutter_icons:
-  ios: true
-  android: true
-  image_path_ios: "assets/LuncherIcons/icon.png"
-  image_path_android: "assets/LuncherIcons/icon.png"
-  adaptive_icon_background: "assets/LuncherIcons/background.png"
-  adaptive_icon_foreground: "assets/LuncherIcons/foreground.png"
 
 
 # For information on the generic Dart part of this file, see the
@@ -73,6 +54,9 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
+  # assets:
+  #  - images/a_dot_burr.jpeg
+  #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
