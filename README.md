@@ -36,6 +36,12 @@ samples, guidance on mobile development, and a full API reference.
 
 ### Prototypes
 
+#### Round 2
+
+- Prototype designed based on round 1 feedback - [Link here](https://www.figma.com/file/rfiUTh2GkeCBAvtW3bqoak/ConcordiAround-(UI-TeamWork)?node-id=0%3A1)
+
+#### Round 1
+
 - Prototype designed by Garo Balouzian - [Link here](https://www.figma.com/file/XzHOtigWV0hs67zmfdpPtm/Concordia-Navigation-App?node-id=0%3A1)
 - Prototype designed by Seyedhoessein Noorbakhsh - [Link here](https://www.figma.com/file/WlTDgUjK4guinFq5b1VtfV/ConcordiAround?node-id=0%3A1)
 - Prototype designed by Chester Yu - [Link here](https://www.figma.com/file/p7wmZIPNqhUBFpw6sPbtKe/Mockup-v0.1?node-id=0%3A9)
