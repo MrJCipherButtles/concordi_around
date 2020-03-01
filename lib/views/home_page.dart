@@ -142,9 +142,8 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> goToSpecifiedLatLng(LatLng latLng) async {
     final GoogleMapController controller = await _controller.future;
-    if(latLng != null) {
-      CameraPosition _newPosition =
-      CameraPosition(target: latLng, zoom: 18.5);
+    if (latLng != null) {
+      CameraPosition _newPosition = CameraPosition(target: latLng, zoom: 18.5);
       controller.animateCamera(CameraUpdate.newCameraPosition(_newPosition));
     }
   }

@@ -27,7 +27,8 @@ class BuildingSingleton {
   List<Building> get buildings => _buildings;
 
   void initHallNinthFloor() {
-    Building hall = Building('Henry F. Hall', coordinate: Coordinate(45.49726, -73.57893, "0", "Hall", "SGW"));
+    Building hall = Building('Henry F. Hall',
+        coordinate: Coordinate(45.49726, -73.57893, "0", "Hall", "SGW"));
 
     PortalCoordinate j9F1 = PortalCoordinate(
         45.497223, -73.579356, '9', 'Hall', 'SGW',
@@ -152,7 +153,8 @@ class BuildingSingleton {
     PortalCoordinate j9F31 = PortalCoordinate(
         45.497408, -73.579041, '9', 'Hall', 'SGW',
         isDisabilityFriendly: true,
-        adjCoordinates: <Coordinate>{}, type: "PORTAL");
+        adjCoordinates: <Coordinate>{},
+        type: "PORTAL");
 
     PortalCoordinate j9F32 = PortalCoordinate(
         45.497084, -73.579120, '9', 'Hall', 'SGW',
@@ -173,7 +175,8 @@ class BuildingSingleton {
     PortalCoordinate j9F36 = PortalCoordinate(
         45.497319, -73.578772, '9', 'Hall', 'SGW',
         isDisabilityFriendly: true,
-        adjCoordinates: <Coordinate>{}, type: "PORTAL");
+        adjCoordinates: <Coordinate>{},
+        type: "PORTAL");
 
     PortalCoordinate j9F37 = PortalCoordinate(
         45.497364, -73.578729, '9', 'Hall', 'SGW',
@@ -216,7 +219,6 @@ class BuildingSingleton {
     j9F35.adjCoordinates = {j9F19, j9F20};
     j9F36.adjCoordinates = {j9F37, j9F24};
     j9F37.adjCoordinates = {j9F23, j9F36};
-
 
     RoomCoordinate h965 = RoomCoordinate(
         45.497205, -73.579329, '9', 'Hall', 'SGW',

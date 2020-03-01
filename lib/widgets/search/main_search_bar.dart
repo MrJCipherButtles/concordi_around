@@ -7,7 +7,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 String campus = 'SGW';
 
 class SearchBar extends StatefulWidget {
-
   final Function(LatLng) latlng;
   SearchBar({this.latlng});
 
@@ -52,7 +51,9 @@ class _SearchBarState extends State<SearchBar> {
                   onTap: () {
                     showSearch(
                         context: context,
-                        delegate: PositionedFloatingSearchBar(latlng: (LatLng latlng) => {widget.latlng(latlng)}));
+                        delegate: PositionedFloatingSearchBar(
+                            latlng: (LatLng latlng) =>
+                                {widget.latlng(latlng)}));
                   },
                 ),
               ),
@@ -80,9 +81,8 @@ class _SearchBarState extends State<SearchBar> {
 }
 
 class PositionedFloatingSearchBar extends SearchDelegate<String> {
-
-final Function(LatLng) latlng;
-PositionedFloatingSearchBar({this.latlng});
+  final Function(LatLng) latlng;
+  PositionedFloatingSearchBar({this.latlng});
 
   @override
   List<Widget> buildActions(BuildContext context) {

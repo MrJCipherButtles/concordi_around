@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class DisplayBuildingListManager extends StatefulWidget {
-
   final Function(LatLng) latlng;
 
   DisplayBuildingListManager({this.latlng});
@@ -33,7 +32,6 @@ class _BuildingManagerState extends State<BuildingManager> {
 }
 
 class DisplayBuildingList extends State<DisplayBuildingListManager> {
-
   final List<Building> _myBuildingList = BuildingSingleton().buildings;
 
   @override
