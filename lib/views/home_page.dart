@@ -48,7 +48,7 @@ class _HomePageState extends State<HomePage> {
               },
               onCameraMove: (CameraPosition cameraPosition) async {},
             )),
-            SearchBar(),
+            SearchBar(latlng: (LatLng latlng) => {goToSpecifiedLatLng(latlng)}),
           ],
         ),
         drawer: SidebarDrawer(),
@@ -138,5 +138,13 @@ class _HomePageState extends State<HomePage> {
     _cameraPosition = CameraPosition(
         target: LatLng(_position.latitude, _position.longitude), zoom: 19.03);
     controller.animateCamera(CameraUpdate.newCameraPosition(_cameraPosition));
+  }
+
+  Future<void> goToSpecifiedLatLng(LatLng latLng) async {
+    final GoogleMapController controller = await _controller.future;
+    if (latLng != null) {
+      CameraPosition _newPosition = CameraPosition(target: latLng, zoom: 18.5);
+      controller.animateCamera(CameraUpdate.newCameraPosition(_newPosition));
+    }
   }
 }

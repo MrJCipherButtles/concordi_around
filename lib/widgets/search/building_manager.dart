@@ -1,8 +1,13 @@
 import 'package:concordi_around/models/building.dart';
+import 'package:concordi_around/data/building_singleton.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class DisplayBuildingListManager extends StatefulWidget {
+  final Function(LatLng) latlng;
+
+  DisplayBuildingListManager({this.latlng});
+
   @override
   State<StatefulWidget> createState() {
     return DisplayBuildingList();
@@ -27,8 +32,8 @@ class _BuildingManagerState extends State<BuildingManager> {
 }
 
 class DisplayBuildingList extends State<DisplayBuildingListManager> {
-  //TODO: get building list
-  final List<Building> _myBuildingList = [];
+  final List<Building> _myBuildingList = BuildingSingleton().buildings;
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -36,7 +41,7 @@ class DisplayBuildingList extends State<DisplayBuildingListManager> {
         child: Container(
             color: Colors.white,
             child: ListView.separated(
-              itemCount: 0, //_myBuildingList.length,
+              itemCount: _myBuildingList.length,
               itemBuilder: (context, index) {
                 return ListTile(
                   title: Text(
@@ -44,6 +49,7 @@ class DisplayBuildingList extends State<DisplayBuildingListManager> {
                   ),
                   onTap: () {
                     Navigator.pop(context);
+                    widget.latlng(_myBuildingList[index].coordinate.toLatLng());
                   },
                 );
               },

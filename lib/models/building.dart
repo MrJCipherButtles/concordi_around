@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'coordinate.dart';
+import 'coordinate.dart';
 import 'floor.dart';
 import 'path.dart';
 
