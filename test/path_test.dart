@@ -1,6 +1,7 @@
 import 'package:concordi_around/models/coordinate.dart';
 import 'package:concordi_around/models/path.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 void main() {
   test('distance for path p1', () {
@@ -32,5 +33,20 @@ void main() {
     var b2 = PortalCoordinate(45.49734, -73.57918, '9', 'Hall', 'SGW', adjCoordinates: {a2, b1});
     var p1 = Path([a1,b1,b2,a2]);
     expect(p1.coordinatesInOrder(), [a1,b1,b2,a2]);
+  });
+  test('polyline should match path', () {
+    var a1 = PortalCoordinate(45.49719, -73.57933, '8', 'Hall', 'SGW', isDisabilityFriendly: true);
+    var b1 = PortalCoordinate(45.49734, -73.57918, '8', 'Hall', 'SGW', adjCoordinates: {a1});
+    var a2 = PortalCoordinate(45.49719, -73.57933, '9', 'Hall', 'SGW', adjCoordinates: {a1}, isDisabilityFriendly: true);
+    var b2 = PortalCoordinate(45.49734, -73.57918, '9', 'Hall', 'SGW', adjCoordinates: {a2, b1});
+    var p1 = Path([a1,b1,b2,a2]);
+
+    var polyline = p1.toPolyline();
+
+    var coordinates = p1.coordinatesInOrder();
+    var points = <LatLng>[];
+    coordinates.forEach((p) => points.add(p.toLatLng()));
+
+    expect(points, polyline.points);
   });
 }

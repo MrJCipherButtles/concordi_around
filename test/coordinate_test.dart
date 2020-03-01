@@ -9,6 +9,12 @@ void main() {
     expect(a.adjCoordinates, {b});
     expect(b.adjCoordinates, {a});
   });
+  test('convert a to latlng', () {
+    var a = Coordinate(45.49719, -73.57933, '8', 'Hall', 'SGW');
+    var latlng = a.toLatLng();
+    expect(latlng.latitude, a.lat);
+    expect(latlng.longitude, a.lng);
+  });
   group('adjacency', () {
     var start = Coordinate(45.49713, -73.57919, '8', 'Hall', 'SGW');
     var a = Coordinate(45.49719, -73.57933, '8', 'Hall', 'SGW', adjCoordinates: {start});

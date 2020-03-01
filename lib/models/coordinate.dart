@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class Coordinate {
   final double _lat;
@@ -50,6 +51,10 @@ class Coordinate {
     }
     //Not in adjacency list
     return false;
+  }
+
+  LatLng toLatLng() {
+    return LatLng(_lat, _lng);
   }
 
   // Might want to define a better toString...
