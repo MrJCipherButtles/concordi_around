@@ -1,5 +1,5 @@
 import 'package:concordi_around/models/building.dart';
-import 'package:concordi_around/models/building_singleton.dart';
+import 'package:concordi_around/data/building_singleton.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
