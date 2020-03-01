@@ -5,9 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import '../../models/building.dart';
-import '../../models/coordinate.dart';
-
 String campus = 'SGW';
 
 class SearchBar extends StatefulWidget {
@@ -114,13 +111,7 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    BuildingSingleton buildingSingleton = BuildingSingleton();
-    List<RoomCoordinate> roomList = <RoomCoordinate>[];
-    for (Building building in buildingSingleton.buildings) {
-      building.floors.forEach((floorName, floor) => floor
-          .coordinatesByGivenTypes({"ROOM"}).forEach(
-              (room) => roomList.add(room)));
-    }
+    List<RoomCoordinate> roomList = BuildingSingleton().getAllRooms();
     List<RoomCoordinate> suggestionList = query.isNotEmpty
         ? roomList
             .where((p) => p.roomId.startsWith(query.toUpperCase()))

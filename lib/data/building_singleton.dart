@@ -1,5 +1,6 @@
 import '../models/building.dart';
 import '../models/coordinate.dart';
+import '../models/coordinate.dart';
 import '../models/floor.dart';
 
 class BuildingSingleton {
@@ -25,6 +26,16 @@ class BuildingSingleton {
   }
 
   List<Building> get buildings => _buildings;
+
+  List<RoomCoordinate> getAllRooms() {
+    List<RoomCoordinate> roomList = <RoomCoordinate>[];
+    for (Building building in this.buildings) {
+      building.floors.forEach((floorName, floor) => floor
+          .coordinatesByGivenTypes({"ROOM"}).forEach(
+              (room) => roomList.add(room)));
+    }
+    return roomList;
+  }
 
   void initHallNinthFloor() {
     Building hall = Building('Henry F. Hall',
