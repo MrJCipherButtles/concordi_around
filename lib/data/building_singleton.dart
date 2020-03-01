@@ -26,6 +26,10 @@ class BuildingSingleton {
 
   List<Building> get buildings => _buildings;
 
+  void initHallEightFloor() {
+
+  }
+
   void initHallNinthFloor() {
     Building hall = Building('Henry F. Hall',
         coordinate: Coordinate(45.49726, -73.57893, "0", "Hall", "SGW"));
