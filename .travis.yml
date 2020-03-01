@@ -19,7 +19,7 @@ jobs:
       dist: trusty
       language: bash
       script:
-        - ./flutter/bin/flutter test --coverage
+        - ./flutter/bin/flutter test --coverage && bash <(curl -s https://codecov.io/bash) -f coverage/lcov.info
 
 
 before_script:
