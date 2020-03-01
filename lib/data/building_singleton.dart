@@ -26,6 +26,16 @@ class BuildingSingleton {
 
   List<Building> get buildings => _buildings;
 
+  List<RoomCoordinate> getAllRooms() {
+    List<RoomCoordinate> roomList = <RoomCoordinate>[];
+    for (Building building in this.buildings) {
+      building.floors.forEach((floorName, floor) => floor
+          .coordinatesByGivenTypes({"ROOM"}).forEach(
+              (room) => roomList.add(room)));
+    }
+    return roomList;
+  }
+
   void initHallNinthFloor() {
     Building hall = Building('Henry F. Hall',
         coordinate: Coordinate(45.49726, -73.57893, "0", "Hall", "SGW"));
@@ -222,11 +232,11 @@ class BuildingSingleton {
 
     RoomCoordinate h965 = RoomCoordinate(
         45.497205, -73.579329, '9', 'Hall', 'SGW',
-        type: "ROOM", roomId: "965", adjCoordinates: {j9F1, j9F4});
+        type: "ROOM", roomId: "H965", adjCoordinates: {j9F1, j9F4});
 
     RoomCoordinate h921 = RoomCoordinate(
         45.497380, -73.578606, '9', 'Hall', 'SGW',
-        type: "ROOM", roomId: "921", adjCoordinates: {j9F20, j9F23});
+        type: "ROOM", roomId: "H921", adjCoordinates: {j9F20, j9F23});
 
     Floor ninthFloor = Floor('9', coordinates: {
       h965,
