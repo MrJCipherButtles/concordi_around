@@ -16,7 +16,6 @@ void main() {
     await tester.pump();
 
     //verifying all correct widgets are present
-    expect(find.text("origin..."), findsOneWidget);
     expect(find.text("destination..."), findsOneWidget);
     expect(find.byIcon(Icons.arrow_back), findsOneWidget);
 
