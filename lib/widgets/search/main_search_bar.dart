@@ -3,7 +3,6 @@ import 'package:concordi_around/models/coordinate.dart';
 import 'package:concordi_around/widgets/search/search_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import '../../models/coordinate.dart';
 
 String campus = 'SGW';
 
