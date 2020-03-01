@@ -33,7 +33,6 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
         body: Stack(
               children: <Widget>[
-                // Replace this container with your Map widget
                 Container(
                     child: GoogleMap(
                   mapType: MapType.normal,

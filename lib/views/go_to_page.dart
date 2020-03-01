@@ -1,3 +1,4 @@
+import 'package:concordi_around/models/coordinate.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -17,10 +18,8 @@ class GoToPage extends StatefulWidget {
 
 class _GoToPageState extends State<GoToPage> {
   //To be able to save the selected suggestion into the text field
-  final TextEditingController _originTypeAheadController =
-      TextEditingController();
-  final TextEditingController _destinTypeAheadController =
-      TextEditingController();
+  final TextEditingController _originTypeAheadController = TextEditingController();
+  final TextEditingController _destinTypeAheadController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +30,6 @@ class _GoToPageState extends State<GoToPage> {
       child: Material(
         child: Container(
           margin: new EdgeInsets.only(left: 15.0, top: MediaQuery.of(context).padding.top + 5.0, right: 15.0),
-          //color: Color.fromRGBO(147, 0, 44, 1),
           padding: EdgeInsets.only(
             top: 10,
             right: 35,
@@ -74,15 +72,10 @@ class _GoToPageState extends State<GoToPage> {
                         controller: this._originTypeAheadController,
                       ),
                       suggestionsCallback: (pattern) async {
-                        var roomTitles = new List<String>();
+                        var roomTitles = new List<RoomCoordinate>();
                         //TODO: add room list here
-                        for (var room in []) {
-                          if (room
-                              .getTitle()
-                              .toUpperCase()
-                              .startsWith(pattern.toString().toUpperCase())) {
-                            roomTitles.add(room.getTitle());
-                          }
+                        for (var room in roomTitles) {
+                          //TODO: fix this for loop
                         }
                         return roomTitles; //await BackendService.getSuggestions(pattern);
                       },
@@ -93,8 +86,6 @@ class _GoToPageState extends State<GoToPage> {
                             leading: Icon(Icons.place,
                                 color: Color.fromRGBO(147, 0, 47, 1)),
                             title: Text(suggestion),
-
-                            //subtitle: Text('\$${suggestion['price']}'),
                           ),
                         );
                       },
@@ -133,16 +124,12 @@ class _GoToPageState extends State<GoToPage> {
                         controller: this._destinTypeAheadController,
                       ),
                       suggestionsCallback: (pattern) async {
-                        var roomTitles = new List<String>();
-                        for (var room in []) {
-                          if (room
-                              .getTitle()
-                              .toUpperCase()
-                              .startsWith(pattern.toString().toUpperCase())) {
-                            roomTitles.add(room.getTitle());
-                          }
+                        //TODO: add room list here
+                        var roomTitles = new List<RoomCoordinate>();
+                        for (var room in roomTitles) {
+                          //TODO: fix this for loop
                         }
-                        return roomTitles; //await BackendService.getSuggestions(pattern);
+                        return roomTitles;
                       },
                       itemBuilder: (context, suggestion) {
                         return Card(
@@ -152,7 +139,6 @@ class _GoToPageState extends State<GoToPage> {
                                 color: Color.fromRGBO(147, 0, 47, 1)),
 
                             title: Text(suggestion),
-                            //subtitle: Text('\$${suggestion['price']}'),
                           ),
                         );
                       },

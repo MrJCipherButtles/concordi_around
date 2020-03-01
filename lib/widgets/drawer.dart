@@ -8,8 +8,6 @@ class SidebarDrawer extends StatefulWidget {
 
 class _SidebarDrawerState extends State<SidebarDrawer> {
   Widget build(BuildContext context) {
-    //DisabilityNotifier disabilityNotifier = Provider.of<DisabilityNotifier>(context);
-
     return ClipRRect(
       borderRadius: BorderRadius.only(
           topRight: Radius.circular(20), bottomRight: Radius.circular(20)),

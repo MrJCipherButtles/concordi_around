@@ -51,6 +51,8 @@ class DisplayBuildingList extends State<DisplayBuildingListManager> {
               separatorBuilder: (context, index) {
                 return Divider();
               },
-            )));
+            )
+        )
+    );
   }
 }
