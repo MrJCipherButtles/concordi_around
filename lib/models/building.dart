@@ -1,44 +1,69 @@
-// Created by Chester Yu
-// Created: 20/02/2020
-// Last Modified: 20/02/2020
-// Class to create building object
+import 'dart:collection';
 
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'coordinate.dart';
+import 'floor.dart';
+import 'path.dart';
 
-class Building{
+class Building {
+  final String _building;
+  List<Coordinate> _polygon; //A polygon includes a duplicated point for google maps
+  Map<String, Floor> _floors = HashMap<String, Floor>();
 
-  String _name;
-  String _shortName;
-  String _campus;
-  LatLng _latLng;
-
-  Building(String name, String shortName, String campus, LatLng latLng){
-    _name = name;
-    _shortName = shortName;
-    _campus = campus;
-    _latLng = latLng;
+  Building(this._building, {polygon}){
+    _polygon = polygon;
   }
 
-  String getName() {
-    return _name;
+  String get building => _building;
+  List<Coordinate> get polygon => _polygon;
+  Map<String,Floor> get floors => _floors;
+
+  set floors(Map<String, Floor> floors) => _floors = floors;
+
+  void addFloor(Floor floor) {
+    _floors[floor.floor] = floor;
   }
 
-  String getShortName() {
-    return _shortName;
-  }
-
-  String getCampus() {
-    return _campus;
-  }
-
-  LatLng getLatLng() {
-    return _latLng;
+  //Would template method apply here to improve extensibility?
+  //May set disability to true using optional named parameter
+  //spans at most 2 floors per building
+  Map<String, Path> shortestPath(Coordinate s, Coordinate d, {bool isDisabilityFriendly = false}) {
+    assert (s != null && d != null);
+    var indoorNavigationMap = LinkedHashMap<String, Path>();
+    var sFloor = _floors[s.floor];
+    var dFloor = _floors[d.floor];
+    if(sFloor.floor == dFloor.floor) {
+      indoorNavigationMap[s.floor] = sFloor.shortestPath(s, d);
+      return indoorNavigationMap;
+    }
+    //How should I get the closest exit/entry coordinates in a
+    // more efficient method than below? KTree/Graph method maybe?
+    //Get all valid exits
+    var exits = sFloor.validExitCoordinates(d.floor, isDisabilityFriendly: isDisabilityFriendly);
+    //Get all paths to the exits found
+    var exitPaths = <Path>[];
+    for (var exit in exits) {
+      if (s == exit) {
+        exitPaths.add(Path(<Coordinate>[s, exit]));
+      }
+      exitPaths.add(sFloor.shortestPath(s, exit));
+    }
+    //Get the shortest of all the paths found
+    var shortestExitPath = exitPaths[0];
+    for (var exitPath in exitPaths) {
+      if (exitPath.length() < shortestExitPath.length()) {
+        shortestExitPath = exitPath;
+      }
+    }
+    indoorNavigationMap[s.floor] = shortestExitPath;
+    //Find the coordinate of the destination floor from the exit found
+    var sExitAdjacentExitCoordinates = shortestExitPath.segments.last.destination.adjCoordinates;
+    var dEntry;
+    for (var sExitAdjacentCoordinate in sExitAdjacentExitCoordinates) {
+      if (sExitAdjacentCoordinate.floor == dFloor.floor) {
+        dEntry = sExitAdjacentCoordinate;
+      }
+    }
+    indoorNavigationMap[d.floor] = dFloor.shortestPath(dEntry, d);
+    return indoorNavigationMap;
   }
 }
-
-final List<Building> buildingList = [
-  Building("Henry F. Hall", "Hall", "SGW", LatLng(45.49726, -73.57893)), 
-  Building("Engineering, Computer Science and Visual Arts", "EV", "SGW", LatLng(45.49558, -73.57801)), 
-  Building("John Molson School of Business", "JMSB", "SGW", LatLng(45.4954, -73.57909)), 
-  Building("Pavillon Guy-De Maisonneuve", "GM", "SGW", LatLng(45.49589, -73.5785)), 
-];
