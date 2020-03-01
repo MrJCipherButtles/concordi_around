@@ -5,19 +5,30 @@ import 'floor.dart';
 class BuildingSingleton {
   static final BuildingSingleton _instance = BuildingSingleton._internal();
 
-  Building _building = Building('Hall');
+  List<Building> _buildings = [];
 
   factory BuildingSingleton() {
     return _instance;
   }
 
   BuildingSingleton._internal() {
-    initNinthFloor();
+    Building ev = Building("Engineering, Computer Science and Visual Arts",
+        coordinate: Coordinate(45.49558, -73.57801, "0", "EV", "SGW"));
+    _buildings.add(ev);
+    Building jmsb = Building("John Molson School of Business",
+        coordinate: Coordinate(45.4954, -73.57909, "0", "JMSB", "SGW"));
+    _buildings.add(jmsb);
+    Building gm = Building("Pavillon Guy-De Maisonneuve",
+        coordinate: Coordinate(45.49589, -73.5785, "0", "GM", "SGW"));
+    _buildings.add(gm);
+    initHallNinthFloor();
   }
 
-  Building get building => _building;
+  List<Building> get buildings => _buildings;
 
-  void initNinthFloor() {
+  void initHallNinthFloor() {
+    Building hall = Building('Henry F. Hall', coordinate: Coordinate(45.49726, -73.57893, "0", "Hall", "SGW"));
+
     PortalCoordinate j9F1 = PortalCoordinate(
         45.497223, -73.579356, '9', 'Hall', 'SGW',
         adjCoordinates: <Coordinate>{}, type: "PORTAL");
@@ -257,6 +268,7 @@ class BuildingSingleton {
       j9F37
     });
 
-    _building.addFloor(ninthFloor);
+    hall.addFloor(ninthFloor);
+    _buildings.add(hall);
   }
 }

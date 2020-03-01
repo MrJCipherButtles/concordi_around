@@ -9,9 +9,11 @@ class Building {
   List<Coordinate>
       _polygon; //A polygon includes a duplicated point for google maps
   Map<String, Floor> _floors = HashMap<String, Floor>();
+  Coordinate _coordinate; //Central coordinate of building
 
-  Building(this._building, {polygon}) {
+  Building(this._building, {polygon, coordinate}) {
     _polygon = polygon;
+    _coordinate = coordinate;
   }
 
   String get building => _building;
