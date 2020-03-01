@@ -9,23 +9,6 @@ class DisplayBuildingListManager extends StatefulWidget {
   }
 }
 
-class BuildingManager extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return _BuildingManagerState();
-  }
-}
-
-class _BuildingManagerState extends State<BuildingManager> {
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-        height: 70,
-        child: RaisedButton(
-            child: Text("Building"), color: Colors.white, onPressed: () {}));
-  }
-}
-
 class DisplayBuildingList extends State<DisplayBuildingListManager> {
   //TODO: get building list
   final List<Building> _myBuildingList = [];
