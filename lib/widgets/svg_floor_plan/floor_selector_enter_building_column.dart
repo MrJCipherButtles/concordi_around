@@ -18,7 +18,7 @@ class FloorSelectorEnterBuilding extends StatefulWidget {
 
 class _FloorSelectorEnterBuildingState
     extends State<FloorSelectorEnterBuilding> {
-  List<bool> selectedFloor = [false, true]; // 8th floor selected
+  List<bool> selectedFloor = [true, false]; // 9th floor selected
 
   Widget build(BuildContext context) {
     MapNotifier mapNotifier = Provider.of<MapNotifier>(context);
