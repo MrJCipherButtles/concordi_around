@@ -26,7 +26,7 @@ class BuildingSingleton {
         adjCoordinates: <Coordinate>{});
 
     PortalCoordinate h8_mm = PortalCoordinate(
-       45.497211, -73.578889
+       45.497211, -73.578889,
       '8', 'Hall', 'SGW',
         adjCoordinates: <Coordinate>{});
 
