@@ -20,6 +20,8 @@ void main() {
     expect(find.text("Choose destination"), findsWidgets);
     expect(find.byType(FloatingActionButton), findsOneWidget);
     expect(find.text('ETA (min) + Distance (m/km)'), findsOneWidget);
+    expect(find.byIcon(Icons.navigation), findsOneWidget);
+    expect(find.byType(Card), findsOneWidget);
 
     //TODO: Find the existence of the two origin and destination search boxes
   });
