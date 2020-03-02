@@ -20,7 +20,7 @@ void main() {
     expect(find.byType(SidebarDrawer), findsOneWidget);
     expect(find.byType(UserAccountsDrawerHeader), findsOneWidget);
     expect(find.byType(CircleAvatar), findsOneWidget);
-    expect(find.byType(ListTile), findsNWidgets(4));
+    expect(find.byType(ListTile), findsNWidgets(5));
 
     //making sure that the correct logos are placed
     expect(find.byIcon(Icons.calendar_today), findsOneWidget);

@@ -42,5 +42,7 @@ void main() {
     await tester.tap(sidemenuButton);
     await tester.pump();
     expect(find.byType(SidebarDrawer), findsOneWidget);
+
+    //testing to see if the building list shows up
   });
 }
