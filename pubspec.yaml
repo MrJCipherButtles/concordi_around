@@ -33,6 +33,12 @@ dependencies:
   # Search Suggestions (Flutter TypeAhead)
   flutter_typeahead: ^1.8.0
 
+  # SVG plugin
+  flutter_svg: 0.17.1
+
+  # Provider
+  provider: ^3.1.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -50,9 +56,11 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #  - images/a_dot_burr.jpeg
-  #  - images/a_dot_ham.jpeg
+  assets:
+   - assets/floorplans/Hall-8.svg
+   - assets/floorplans/Hall-9.svg
+   - assets/map_style.json
+   - assets/map_style_reset.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
