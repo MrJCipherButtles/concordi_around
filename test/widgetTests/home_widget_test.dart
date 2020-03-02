@@ -13,7 +13,7 @@ void main() {
     expect(find.byType(GoogleMap), findsOneWidget);
 
     //making sure the correct buttons are located originally:
-    expect(find.byType(FloatingActionButton), findsNWidgets(2));
+    expect(find.byType(FloatingActionButton), findsNWidgets(3));
     expect(find.byIcon(Icons.my_location), findsOneWidget);
     expect(find.byIcon(Icons.directions), findsOneWidget);
     expect(find.byType(SearchBar), findsOneWidget);
