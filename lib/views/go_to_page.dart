@@ -187,7 +187,6 @@ class _GoToPageState extends State<GoToPage> {
                   backgroundColor: Color.fromRGBO(147, 0, 47, 1),
                   elevation: 2,
                   onPressed: () {
-                    print("THIS LISTTT IS longgg" + originDestinationCoords.length.toString());
                     if (originDestinationCoords[0] != null && originDestinationCoords[1] != null && originDestinationCoords[0] != originDestinationCoords[1]) {
                       Navigator.pop(context);
                       widget.coordinates(originDestinationCoords);
