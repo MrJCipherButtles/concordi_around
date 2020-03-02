@@ -6,7 +6,8 @@ void main() {
   //need this since we need a mediaQuery ancestor such as materialapp
   Widget makeTestableWidget({Widget child}) {
     return MaterialApp(
-      home: child,
+      // home: child,
+      home: Scaffold(body: child,),
     );
   }
 
@@ -20,6 +21,7 @@ void main() {
     expect(find.byType(SidebarDrawer), findsOneWidget);
     expect(find.byType(UserAccountsDrawerHeader), findsOneWidget);
     expect(find.byType(CircleAvatar), findsOneWidget);
+    expect(find.byType(CheckboxListTile), findsOneWidget);
     expect(find.byType(ListTile), findsNWidgets(5));
 
     //making sure that the correct logos are placed
@@ -27,5 +29,18 @@ void main() {
     expect(find.byIcon(Icons.settings), findsOneWidget);
     expect(find.byIcon(Icons.message), findsOneWidget);
     expect(find.byIcon(Icons.info_outline), findsOneWidget);
+
+    //making sure the correct text is placed
+    expect(find.text('My Calendar'), findsOneWidget);
+    expect(find.text('Settings'), findsOneWidget);
+    expect(find.text('Contact Us'), findsOneWidget);
+    expect(find.text('About'), findsOneWidget);
+    expect(find.text('Disability Mode'), findsOneWidget);
+
+    //testing the disability mode specifically
+    await tester.tap(find.byType(CheckboxListTile));
+    await tester.pump();
+    //TODO: Add check that makes sure that the disability box is ticked after being pressed
+    
   });
 }
