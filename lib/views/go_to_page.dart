@@ -104,7 +104,7 @@ class _GoToPageState extends State<GoToPage> {
                             destinationTextField); // to change the focus of the textfield to the second textfield
                         for (RoomCoordinate room in roomsList) {
                           if (room.roomId == suggestion) {
-                            originDestinationCoords.add(room);
+                            originDestinationCoords[0] = room;
                           }
                         }
                       },
@@ -168,7 +168,7 @@ class _GoToPageState extends State<GoToPage> {
                             destinationTextField); // to change the focus of the textfield to the second textfield
                         for (RoomCoordinate room in roomsList) {
                           if (room.roomId == suggestion) {
-                            originDestinationCoords.add(room);
+                            originDestinationCoords[1] = room;
                           }
                         }
                       },
