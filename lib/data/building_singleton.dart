@@ -637,16 +637,196 @@ PortalCoordinate h8_ll = PortalCoordinate(
     j9F36.adjCoordinates = {j9F37, j9F24};
     j9F37.adjCoordinates = {j9F23, j9F36};
 
+    RoomCoordinate h902 = RoomCoordinate(
+      45.497235, -73.578653, '9', 'Hall', 'SGW',
+        type: "ROOM", roomId: "H902", adjCoordinates: {j9F20, j9F35}
+    );
+
+    RoomCoordinate h903 = RoomCoordinate(
+      45.497320, -73.578568, '9', 'Hall', 'SGW',
+        type: "ROOM", roomId: "H903", adjCoordinates: {j9F20, j9F35}
+    );
+
+    RoomCoordinate h907 = RoomCoordinate(
+      45.497179, -73.578705, '9', 'Hall', 'SGW',
+        type: "ROOM", roomId: "H907", adjCoordinates: {j9F20, j9F35}
+    );
+
+    RoomCoordinate h909 = RoomCoordinate(
+      45.497159, -73.578722, '9', 'Hall', 'SGW',
+        type: "ROOM", roomId: "H909", adjCoordinates: {j9F19, j9F35}
+    );
+
+    RoomCoordinate h911 = RoomCoordinate(
+      45.497105, -73.578771, '9', 'Hall', 'SGW',
+        type: "ROOM", roomId: "H911", adjCoordinates: {j9F19, j9F29}
+    );
+
+    RoomCoordinate h913 = RoomCoordinate(
+      45.497058, -73.578814, '9', 'Hall', 'SGW',
+        type: "ROOM", roomId: "H913", adjCoordinates: {j9F19, j9F29}
+    );
+
+    RoomCoordinate h915 = RoomCoordinate(
+      45.496964, -73.578880, '9', 'Hall', 'SGW',
+        type: "ROOM", roomId: "H915", adjCoordinates: {j9F17, j9F18}
+    );
+
+    RoomCoordinate h917 = RoomCoordinate(
+      45.496962, -73.578875, '9', 'Hall', 'SGW',
+        type: "ROOM", roomId: "H917", adjCoordinates: {j9F17, j9F18}
+    );
+
+    RoomCoordinate h919 = RoomCoordinate(
+      45.496998, -73.578926, '9', 'Hall', 'SGW',
+        type: "ROOM", roomId: "H919", adjCoordinates: {j9F18, j9F34}
+    );
+
+    RoomCoordinate h923 = RoomCoordinate(
+      45.497042, -73.579020, '9', 'Hall', 'SGW',
+        type: "ROOM", roomId: "H923", adjCoordinates: {j9F18, j9F34}
+    );
+
+    RoomCoordinate h925 = RoomCoordinate(
+      45.497062, -73.579125, '9', 'Hall', 'SGW',
+        type: "ROOM", roomId: "H925", adjCoordinates: {j9F16, j9F33}
+    );
+
+    RoomCoordinate h927 = RoomCoordinate(
+      45.497168, -73.579250, '9', 'Hall', 'SGW',
+        type: "ROOM", roomId: "H927", adjCoordinates: {j9F4, j9F1}
+    );
+
+    RoomCoordinate h929 = RoomCoordinate(
+      45.497207, -73.579332, '9', 'Hall', 'SGW',
+        type: "ROOM", roomId: "H929", adjCoordinates: {j9F4, j9F1}
+    );
+
+    RoomCoordinate h933 = RoomCoordinate(
+      45.497262, -73.579321, '9', 'Hall', 'SGW',
+        type: "ROOM", roomId: "H933", adjCoordinates: {j9F1, j9F2}
+    );
+
+    RoomCoordinate h937 = RoomCoordinate(
+      45.497334, -73.579045, '9', 'Hall', 'SGW',
+        type: "ROOM", roomId: "H937", adjCoordinates: {j9F6, j9F7}
+    );
+
+    RoomCoordinate h941 = RoomCoordinate(
+      45.497468, -73.579155, '9', 'Hall', 'SGW',
+        type: "ROOM", roomId: "H941", adjCoordinates: {j9F10, j9F11}
+    );
+
+    RoomCoordinate h943 = RoomCoordinate(
+      45.497450, -73.579133, '9', 'Hall', 'SGW',
+        type: "ROOM", roomId: "H943", adjCoordinates: {j9F9, j9F10}
+    );
+
+    RoomCoordinate h945 = RoomCoordinate(
+      45.497439, -73.579112, '9', 'Hall', 'SGW',
+        type: "ROOM", roomId: "H945", adjCoordinates: {j9F9, j9F10}
+    );
+    
+    RoomCoordinate h961 = RoomCoordinate(
+      45.497480, -73.579166, '9', 'Hall', 'SGW',
+        type: "ROOM", roomId: "H961", adjCoordinates: {j9F10, j9F11}
+    );
+
+    RoomCoordinate h981 = RoomCoordinate(
+      45.497421, -73.579073, '9', 'Hall', 'SGW',
+        type: "ROOM", roomId: "H981", adjCoordinates: {j9F9, j9F10}
+    );
+
+    RoomCoordinate h975 = RoomCoordinate(
+      45.497432, -73.578963, '9', 'Hall', 'SGW',
+        type: "ROOM", roomId: "H975", adjCoordinates: {j9F8, j9F30}
+    );
+
+    RoomCoordinate h968 = RoomCoordinate(
+      45.497464, -73.578933, '9', 'Hall', 'SGW',
+        type: "ROOM", roomId: "H968", adjCoordinates: {j9F13, j9F30}
+    );
+
+    RoomCoordinate h966 = RoomCoordinate(
+      45.497403, -73.578989, '9', 'Hall', 'SGW',
+        type: "ROOM", roomId: "H966", adjCoordinates: {j9F8, j9F30}
+    );
+
+    RoomCoordinate h962 = RoomCoordinate(
+      45.497287, -73.578801, '9', 'Hall', 'SGW',
+        type: "ROOM", roomId: "H962", adjCoordinates: {j9F24, j9F36}
+    );
+
+    RoomCoordinate h964 = RoomCoordinate(
+      45.497348, -73.578743, '9', 'Hall', 'SGW',
+        type: "ROOM", roomId: "H964", adjCoordinates: {j9F36, j9F37}
+    );
+    
+    RoomCoordinate h963 = RoomCoordinate(
+      45.497417, -73.578692, '9', 'Hall', 'SGW',
+        type: "ROOM", roomId: "H963", adjCoordinates: {j9F22, j9F23}
+    );
+
+    RoomCoordinate h967 = RoomCoordinate(
+      45.497363, -73.578574, '9', 'Hall', 'SGW',
+        type: "ROOM", roomId: "H967", adjCoordinates: {j9F20, j9F23}
+    );
+
+    RoomCoordinate h980 = RoomCoordinate(
+      45.497284, -73.579072, '9', 'Hall', 'SGW',
+        type: "ROOM", roomId: "H980", adjCoordinates: {j9F5, j9F6}
+    );
+    
+    RoomCoordinate h920 = RoomCoordinate(
+      45.497070, -73.579078, '9', 'Hall', 'SGW',
+        type: "ROOM", roomId: "H920", adjCoordinates: {j9F33, j9F34}
+    );
+
+    RoomCoordinate h910 = RoomCoordinate(
+      45.497089, -73.578788, '9', 'Hall', 'SGW',
+        type: "ROOM", roomId: "H910", adjCoordinates: {j9F19, j9F29}
+    );
+
     RoomCoordinate h965 = RoomCoordinate(
         45.497205, -73.579329, '9', 'Hall', 'SGW',
-        type: "ROOM", roomId: "965", adjCoordinates: {j9F1, j9F4});
+        type: "ROOM", roomId: "H965", adjCoordinates: {j9F1, j9F4});
 
     RoomCoordinate h921 = RoomCoordinate(
         45.497380, -73.578606, '9', 'Hall', 'SGW',
-        type: "ROOM", roomId: "921", adjCoordinates: {j9F20, j9F23});
+        type: "ROOM", roomId: "H921", adjCoordinates: {j9F20, j9F23});
 
     Floor ninthFloor = Floor('9', coordinates: {
+      h902,
+      h903,
+      h907,
+      h909,
+      h911,
+      h913,
+      h915,
+      h917,
+      h919,
+      h923,
+      h925,
+      h927,
+      h929,
+      h933,
+      h937,
+      h941,
+      h943,
+      h945,
+      h961,
+      h981,
+      h975,
+      h966,
+      h968,
+      h962,
+      h963,
+      h964,
+      h967,
+      h980,
+      h910,
       h965,
+      h920,
       h921,
       j9F1,
       j9F2,
