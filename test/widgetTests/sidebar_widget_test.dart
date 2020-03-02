@@ -29,6 +29,7 @@ void main() {
     expect(find.byIcon(Icons.settings), findsOneWidget);
     expect(find.byIcon(Icons.message), findsOneWidget);
     expect(find.byIcon(Icons.info_outline), findsOneWidget);
+    expect(find.byIcon(Icons.accessible_forward), findsOneWidget);
 
     //making sure the correct text is placed
     expect(find.text('My Calendar'), findsOneWidget);
@@ -36,6 +37,8 @@ void main() {
     expect(find.text('Contact Us'), findsOneWidget);
     expect(find.text('About'), findsOneWidget);
     expect(find.text('Disability Mode'), findsOneWidget);
+    expect(find.text('John Doe'), findsOneWidget);
+    expect(find.text('40022345'), findsOneWidget);
 
     //testing the disability mode specifically
     await tester.tap(find.byType(CheckboxListTile));

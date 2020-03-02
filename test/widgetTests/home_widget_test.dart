@@ -1,5 +1,6 @@
 import 'package:concordi_around/main.dart';
 import 'package:concordi_around/widgets/search/main_search_bar.dart';
+import 'package:concordi_around/widgets/svg_floor_plan/floor_selector_enter_building_column.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -17,5 +18,8 @@ void main() {
     expect(find.byIcon(Icons.my_location), findsOneWidget);
     expect(find.byIcon(Icons.directions), findsOneWidget);
     expect(find.byType(SearchBar), findsOneWidget);
+
+    //making sure that the other widgets are present
+    expect(find.byType(FloorSelectorEnterBuilding), findsOneWidget);
   });
 }
