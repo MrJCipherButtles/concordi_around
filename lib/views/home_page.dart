@@ -1,5 +1,8 @@
 import 'dart:async';
 
+import 'package:concordi_around/data/building_singleton.dart';
+import 'package:concordi_around/models/building.dart';
+import 'package:concordi_around/models/path.dart';
 import 'package:concordi_around/models/coordinate.dart';
 import 'package:concordi_around/provider/map_notifier.dart';
 import 'package:concordi_around/services/map_helper.dart';
@@ -13,6 +16,7 @@ import 'package:flutter/widgets.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:concordi_around/global.dart' as globals;
 
 class HomePage extends StatefulWidget {
   @override
@@ -27,6 +31,8 @@ class _HomePageState extends State<HomePage> {
   Position _position;
   CameraPosition _cameraPosition;
   StreamSubscription _positionStream;
+
+  Set<Polyline> direction;
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +56,7 @@ class _HomePageState extends State<HomePage> {
               rotateGesturesEnabled: true,
               tiltGesturesEnabled: true,
               zoomGesturesEnabled: true,
+              polylines: direction,
               initialCameraPosition: _cameraPosition,
               onMapCreated: (GoogleMapController controller) {
                 _controller.complete(controller);
@@ -109,7 +116,9 @@ class _HomePageState extends State<HomePage> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => GoToPage(
-                        coordinates: (List<Coordinate> rooms) => {},
+                        coordinates: (List<Coordinate> rooms) => {
+                          drawShortestPath(rooms[0], rooms[1], globals.disabilityMode)
+                        },
                       ),
                     ),
                   );
@@ -163,6 +172,21 @@ class _HomePageState extends State<HomePage> {
     } catch (e) {
       print('Error in updateLocation: ${e.toString()}');
     }
+  }
+
+  void drawShortestPath(Coordinate start, Coordinate end, bool isDisabilityEnabled) {
+    BuildingSingleton buildingSingleton = new BuildingSingleton();
+    Building hall;
+    for(var building in buildingSingleton.buildings){
+      if(building.building.contains("Hall")){
+        hall = building;
+      }
+    }
+    Map<String, Path> shortestPath = hall.shortestPath(start, end, isDisabilityFriendly: isDisabilityEnabled);
+    Path path = shortestPath['9'];
+    setState(() {
+      direction = {path.toPolyline()};
+    });
   }
 
   void goToCurrent() async {
