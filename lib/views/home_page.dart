@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:concordi_around/models/coordinate.dart';
 import 'package:concordi_around/views/go_to_page.dart';
 import 'package:concordi_around/widgets/drawer.dart';
 import 'package:concordi_around/widgets/search/main_search_bar.dart';
@@ -77,7 +78,7 @@ class _HomePageState extends State<HomePage> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => GoToPage(
-                        route: (List<String> temp) => {},
+                        coordinates: (List<Coordinate> rooms) => {},
                       ),
                     ),
                   );

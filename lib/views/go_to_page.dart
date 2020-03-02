@@ -1,11 +1,14 @@
+import 'package:concordi_around/data/building_singleton.dart';
 import 'package:concordi_around/models/coordinate.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
+var roomsList = BuildingSingleton().getAllRooms();
+
 class GoToPage extends StatefulWidget {
-  final Function(List<String>) route;
-  GoToPage({this.route});
+  final Function(List<Coordinate>) coordinates;
+  GoToPage({@required this.coordinates});
 
   @override
   _GoToPageState createState() => new _GoToPageState();
@@ -23,9 +26,10 @@ class _GoToPageState extends State<GoToPage> {
   final TextEditingController _destinTypeAheadController =
       TextEditingController();
 
+  List<Coordinate> originDestinationCoords = [];
+
   @override
   Widget build(BuildContext context) {
-    List<String> originDestination = [];
     FocusNode destinationTextField =
         new FocusNode(); // this focus node will be used for the second text field (destination)
     return Container(
@@ -41,21 +45,18 @@ class _GoToPageState extends State<GoToPage> {
               SizedBox(height: 50.0),
               Row(
                 children: <Widget>[
-                  Expanded(
-                    flex: 1, // This flex is for the icon
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Icon(
-                        Icons.arrow_back,
-                        color: Color.fromRGBO(147, 0, 47, 1),
-                        size: 25,
-                      ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Icon(
+                      Icons.arrow_back,
+                      size: 25,
                     ),
                   ),
+                  SizedBox(width: 10),
                   Expanded(
-                    flex: 10,
+                    flex: 1,
                     child: TypeAheadField(
                       textFieldConfiguration: TextFieldConfiguration(
                         style: TextStyle(
@@ -66,9 +67,8 @@ class _GoToPageState extends State<GoToPage> {
                         decoration: InputDecoration(
                           contentPadding:
                               EdgeInsets.fromLTRB(15.0, 12.0, 20.0, 15.0),
-                          hintText: "origin...",
-                          hintStyle: TextStyle(
-                              color: Color.fromRGBO(147, 0, 44, 0.65)),
+                          hintText: "Choose starting location",
+                          hintStyle: TextStyle(color: Colors.grey),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(
                               10.0,
@@ -78,13 +78,30 @@ class _GoToPageState extends State<GoToPage> {
                         controller: this._originTypeAheadController,
                       ),
                       suggestionsCallback: (pattern) async {
-                        var roomTitles = new List<RoomCoordinate>();
-                        //TODO: add room list here
-                        for (var room in roomTitles) {
-                          //TODO: fix this for loop
-
+                        var roomTitles = new List<String>();
+                        for (var room in roomsList) {
+                          if (room.roomId
+                              .toUpperCase()
+                              .startsWith(pattern.toString().toUpperCase())) {
+                            roomTitles.add(room.roomId);
+                            roomTitles.add(room.roomId);
+                            roomTitles.add(room.roomId);
+                            roomTitles.add(room.roomId);
+                            roomTitles.add(room.roomId);
+                            roomTitles.add(room.roomId);
+                            roomTitles.add(room.roomId);
+                            roomTitles.add(room.roomId);
+                            roomTitles.add(room.roomId);
+                            roomTitles.add(room.roomId);
+                            roomTitles.add(room.roomId);
+                            roomTitles.add(room.roomId);
+                            
+                            roomTitles.add(room.roomId);
+                            roomTitles.add(room.roomId);
+                            roomTitles.add(room.roomId);
+                          }
                         }
-                        return roomTitles; //await BackendService.getSuggestions(pattern);
+                        return roomTitles;
                       },
                       itemBuilder: (context, suggestion) {
                         return Card(
@@ -98,9 +115,13 @@ class _GoToPageState extends State<GoToPage> {
                       },
                       onSuggestionSelected: (suggestion) {
                         this._originTypeAheadController.text = suggestion;
-                        originDestination.add("$suggestion");
                         FocusScope.of(context).requestFocus(
                             destinationTextField); // to change the focus of the textfield to the second textfield
+                        for (RoomCoordinate room in roomsList) {
+                          if (room.roomId == suggestion) {
+                            originDestinationCoords.add(room);
+                          }
+                        }
                       },
                     ),
                   ),
@@ -109,9 +130,9 @@ class _GoToPageState extends State<GoToPage> {
               SizedBox(height: 10.0),
               Row(
                 children: <Widget>[
-                  Expanded(flex: 1, child: Text('')),
+                  SizedBox(width: 35),
                   Expanded(
-                    flex: 10,
+                    flex: 1,
                     child: TypeAheadField(
                       textFieldConfiguration: TextFieldConfiguration(
                         focusNode:
@@ -124,20 +145,25 @@ class _GoToPageState extends State<GoToPage> {
                         decoration: InputDecoration(
                           contentPadding:
                               EdgeInsets.fromLTRB(15.0, 12.0, 10.0, 12.0),
-                          hintText: "destination...",
+                          hintText: "Choose destination",
                           hintStyle: TextStyle(
-                              color: Color.fromRGBO(147, 0, 44, 0.65)),
+                            color: Colors.grey,
+                          ),
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0)),
                         ),
                         controller: this._destinTypeAheadController,
                       ),
                       suggestionsCallback: (pattern) async {
-                        //TODO: add room list here
-                        var roomTitles = new List<RoomCoordinate>();
-                        for (var roomID in roomTitles) {
-                          //TODO: fix this for loop
-
+                        var roomTitles = new List<String>();
+                        var roomsList = new List<RoomCoordinate>();
+                        roomsList = BuildingSingleton().getAllRooms();
+                        for (var room in roomsList) {
+                          if (room.roomId
+                              .toUpperCase()
+                              .startsWith(pattern.toString().toUpperCase())) {
+                            roomTitles.add(room.roomId);
+                          }
                         }
                         return roomTitles;
                       },
@@ -153,8 +179,13 @@ class _GoToPageState extends State<GoToPage> {
                       },
                       onSuggestionSelected: (suggestion) {
                         this._destinTypeAheadController.text = suggestion;
-                        originDestination.add("$suggestion");
-                        widget.route(originDestination);
+                        FocusScope.of(context).requestFocus(
+                            destinationTextField); // to change the focus of the textfield to the second textfield
+                        for (RoomCoordinate room in roomsList) {
+                          if (room.roomId == suggestion) {
+                            originDestinationCoords.add(room);
+                          }
+                        }
                       },
                     ),
                   ),
@@ -171,7 +202,10 @@ class _GoToPageState extends State<GoToPage> {
                   backgroundColor: Color.fromRGBO(147, 0, 47, 1),
                   elevation: 2,
                   onPressed: () {
-                    print("Start navigation button pressed");
+                    if (originDestinationCoords.length == 2) {
+                      Navigator.pop(context);
+                      widget.coordinates(originDestinationCoords);
+                    }
                   },
                 ),
               ),
@@ -186,12 +220,11 @@ class _GoToPageState extends State<GoToPage> {
               ),
               Container(
                 height: 60,
-                margin: EdgeInsets.fromLTRB(0, 15, 0, 15),
+                margin: EdgeInsets.fromLTRB(0, 15, 0, 0),
                 child: Row(
                   children: <Widget>[
-                    Expanded(flex: 1, child: Text('')),
+                    SizedBox(width: 30),
                     Expanded(
-                      flex: 10,
                       child: Card(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -215,7 +248,6 @@ class _GoToPageState extends State<GoToPage> {
                   ],
                 ),
               ),
-              //TODO adding the recent places list
             ],
           ),
         ),
