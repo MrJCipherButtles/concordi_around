@@ -1,4 +1,5 @@
 import 'package:concordi_around/main.dart';
+import 'package:concordi_around/widgets/search/search_menu.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
 import 'package:concordi_around/widgets/search/main_search_bar.dart';
@@ -24,6 +25,23 @@ void main() {
     var searchButton = find.byType(SearchBar);
     expect(searchButton, findsOneWidget);
     expect(find.text('Search'), findsOneWidget);
+    
+
+    //Testing the building list from search menu
+    await tester.tap(find.text('Search'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Search'), findsOneWidget);
+    expect(find.byIcon(Icons.clear), findsOneWidget);
+    expect(find.byType(SearchMenuListOption), findsOneWidget);
+
+    await tester.enterText(find.byType(TextField), 'h');
+    await tester.pumpAndSettle();
+
+    expect(find.byType(ListView), findsOneWidget);
+    
+    await tester.tap(find.byType(AnimatedIcon));
+    await tester.pumpAndSettle();
 
     //Testing the raised button
     var campusButton = find.byType(RaisedButton);
