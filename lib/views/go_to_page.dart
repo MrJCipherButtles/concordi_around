@@ -26,7 +26,7 @@ class _GoToPageState extends State<GoToPage> {
   final TextEditingController _destinTypeAheadController =
       TextEditingController();
 
-  List<Coordinate> originDestinationCoords = [];
+  List<Coordinate> originDestinationCoords = new List(2);
 
   @override
   Widget build(BuildContext context) {
@@ -187,7 +187,8 @@ class _GoToPageState extends State<GoToPage> {
                   backgroundColor: Color.fromRGBO(147, 0, 47, 1),
                   elevation: 2,
                   onPressed: () {
-                    if (originDestinationCoords.length == 2) {
+                    print("THIS LISTTT IS longgg" + originDestinationCoords.length.toString());
+                    if (originDestinationCoords[0] != null && originDestinationCoords[1] != null && originDestinationCoords[0] != originDestinationCoords[1]) {
                       Navigator.pop(context);
                       widget.coordinates(originDestinationCoords);
                     }
