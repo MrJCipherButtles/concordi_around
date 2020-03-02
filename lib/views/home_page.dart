@@ -9,6 +9,8 @@ import 'package:flutter/widgets.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import '../models/coordinate.dart';
+
 class HomePage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -49,7 +51,7 @@ class _HomePageState extends State<HomePage> {
               },
               onCameraMove: (CameraPosition cameraPosition) async {},
             )),
-            SearchBar(latlng: (LatLng latlng) => {goToSpecifiedLatLng(latlng)}),
+            SearchBar(coordinate: (Coordinate coordinate) => {goToSpecifiedLatLng(coordinate)}),
           ],
         ),
         drawer: SidebarDrawer(),
@@ -141,10 +143,10 @@ class _HomePageState extends State<HomePage> {
     controller.animateCamera(CameraUpdate.newCameraPosition(_cameraPosition));
   }
 
-  Future<void> goToSpecifiedLatLng(LatLng latLng) async {
+  Future<void> goToSpecifiedLatLng(Coordinate coordinate) async {
     final GoogleMapController controller = await _controller.future;
-    if (latLng != null) {
-      CameraPosition _newPosition = CameraPosition(target: latLng, zoom: 18.5);
+    if (coordinate != null) {
+      CameraPosition _newPosition = CameraPosition(target: coordinate.toLatLng(), zoom: 18.5);
       controller.animateCamera(CameraUpdate.newCameraPosition(_newPosition));
     }
   }
