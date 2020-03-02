@@ -84,21 +84,6 @@ class _GoToPageState extends State<GoToPage> {
                               .toUpperCase()
                               .startsWith(pattern.toString().toUpperCase())) {
                             roomTitles.add(room.roomId);
-                            roomTitles.add(room.roomId);
-                            roomTitles.add(room.roomId);
-                            roomTitles.add(room.roomId);
-                            roomTitles.add(room.roomId);
-                            roomTitles.add(room.roomId);
-                            roomTitles.add(room.roomId);
-                            roomTitles.add(room.roomId);
-                            roomTitles.add(room.roomId);
-                            roomTitles.add(room.roomId);
-                            roomTitles.add(room.roomId);
-                            roomTitles.add(room.roomId);
-                            
-                            roomTitles.add(room.roomId);
-                            roomTitles.add(room.roomId);
-                            roomTitles.add(room.roomId);
                           }
                         }
                         return roomTitles;
