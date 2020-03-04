@@ -3,6 +3,7 @@ import 'package:concordi_around/models/coordinate.dart';
 import 'package:concordi_around/widgets/search/search_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:concordi_around/services/constants.dart' as constants;
 
 String campus = 'SGW';
 
@@ -28,7 +29,8 @@ class _SearchBarState extends State<SearchBar> {
         padding: EdgeInsets.only(bottom: 10),
         child: Container(
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20), color: Colors.white),
+              borderRadius: BorderRadius.circular(constants.BORDER_RADIUS),
+              color: Colors.white),
           child: Row(
             children: <Widget>[
               Container(
@@ -62,9 +64,10 @@ class _SearchBarState extends State<SearchBar> {
                 child: RaisedButton(
                   child: Text(campus),
                   textColor: Colors.white,
-                  color: Color.fromRGBO(147, 35, 57, 1),
+                  color: constants.COLOR_CONCORDIA,
                   shape: RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(50)),
+                      borderRadius:
+                          new BorderRadius.circular(constants.BORDER_RADIUS)),
                   onPressed: () {
                     setState(() {
                       (campus == 'SGW') ? (campus = 'LOY') : (campus = 'SGW');

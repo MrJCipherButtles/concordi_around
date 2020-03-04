@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:concordi_around/global.dart' as globals;
 import 'package:flutter/material.dart';
+import 'package:concordi_around/services/constants.dart' as constants;
 
 class SidebarDrawer extends StatefulWidget {
   @override
@@ -12,7 +13,8 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
     bool _isDisabilityOn = globals.disabilityMode;
     return ClipRRect(
       borderRadius: BorderRadius.only(
-          topRight: Radius.circular(20), bottomRight: Radius.circular(20)),
+          topRight: Radius.circular(constants.BORDER_RADIUS),
+          bottomRight: Radius.circular(20)),
       child: Drawer(
         child: Column(
           children: <Widget>[
@@ -30,8 +32,9 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
                     accountEmail: Text("40022345"),
                     decoration: BoxDecoration(
                         color: Color.fromRGBO(147, 35, 57, 1),
-                        borderRadius:
-                            BorderRadius.only(topRight: Radius.circular(20.0))),
+                        borderRadius: BorderRadius.only(
+                            topRight:
+                                Radius.circular(constants.BORDER_RADIUS))),
                     currentAccountPicture: CircleAvatar(
                       backgroundColor: Colors.white,
                       foregroundColor: Colors.black,
@@ -122,7 +125,7 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(15), topRight: Radius.circular(15))),
         backgroundColor:
-            globals.disabilityMode ? Color.fromRGBO(147, 35, 57, 1) : null,
+            globals.disabilityMode ? constants.COLOR_CONCORDIA : null,
         content: globals.disabilityMode
             ? Text('Disability Mode turned ON')
             : Text('Disability Mode turned OFF'),

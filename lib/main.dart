@@ -11,8 +11,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         title: 'ConcordiAround',
         home: ChangeNotifierProvider(
-            child: HomePage(),
-            create: (context) => MapNotifier())
-    );
+            child: HomePage(), create: (context) => MapNotifier()));
   }
 }
