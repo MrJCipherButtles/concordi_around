@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:concordi_around/services/constants.dart' as constants;
 
 class Map extends StatefulWidget {
   @override
@@ -24,7 +25,6 @@ class Map extends StatefulWidget {
 }
 
 class _MapState extends State<Map> {
-
   Completer<GoogleMapController> _completer;
   Geolocator _geolocator;
   Position _position;
@@ -42,13 +42,13 @@ class _MapState extends State<Map> {
     updateLocation();
     _positionStream =
         _geolocator.getPositionStream(locationOptions).listen((Position pos) {
-          setState(() {
-            _position = pos;
-            _cameraPosition = CameraPosition(
-                target: LatLng(_position.latitude, _position.longitude),
-                zoom: 19.03);
-          });
-        });
+      setState(() {
+        _position = pos;
+        _cameraPosition = CameraPosition(
+            target: LatLng(_position.latitude, _position.longitude),
+            zoom: constants.CAMERA_DEFAULT_ZOOM);
+      });
+    });
   }
 
   @override
@@ -69,7 +69,7 @@ class _MapState extends State<Map> {
         _position = position;
         _cameraPosition = CameraPosition(
             target: LatLng(_position.latitude, _position.longitude),
-            zoom: 19.03);
+            zoom: constants.CAMERA_DEFAULT_ZOOM);
       });
       controller.animateCamera(CameraUpdate.newCameraPosition(_cameraPosition));
     } catch (e) {
@@ -79,9 +79,8 @@ class _MapState extends State<Map> {
 
   @override
   Widget build(BuildContext context) {
-
     MapNotifier mapNotifier = Provider.of<MapNotifier>(context);
-    _completer = mapNotifier.getCompleter;
+    _completer = Provider.of<MapNotifier>(context, listen: false).getCompleter;
 
     if (_cameraPosition == null) {
       _cameraPosition = CameraPosition(target: LatLng(0, 0));
@@ -91,38 +90,38 @@ class _MapState extends State<Map> {
       children: <Widget>[
         Container(
             child: GoogleMap(
-              mapType: MapType.normal,
-              myLocationEnabled: true,
-              myLocationButtonEnabled: false,
-              compassEnabled: false,
-              indoorViewEnabled: false,
-              scrollGesturesEnabled: true,
-              rotateGesturesEnabled: true,
-              tiltGesturesEnabled: true,
-              zoomGesturesEnabled: true,
-              polylines: direction,
-              initialCameraPosition: _cameraPosition,
-              onMapCreated: (GoogleMapController controller) {
-                _completer.complete(controller);
-              },
-              onCameraMove: (CameraPosition cameraPosition) async {
-                GoogleMapController _mapController = await _completer.future;
-                if (MapHelper.isWithinHallStrictBound(cameraPosition.target) &&
-                    cameraPosition.zoom > 18) {
-                  mapNotifier.setFloorPlanVisibility(true);
-                  _setStyle(_mapController);
-                } else {
-                  mapNotifier.setFloorPlanVisibility(false);
-                  _resetStyle(_mapController);
-                }
-                if (MapHelper.isWithinHall(cameraPosition.target) &&
-                    mapNotifier.showFloorPlan == false) {
-                  mapNotifier.setEnterBuildingVisibility(true);
-                } else {
-                  mapNotifier.setEnterBuildingVisibility(false);
-                }
-              },
-            )),
+          mapType: MapType.normal,
+          myLocationEnabled: true,
+          myLocationButtonEnabled: false,
+          compassEnabled: false,
+          indoorViewEnabled: false,
+          scrollGesturesEnabled: true,
+          rotateGesturesEnabled: true,
+          tiltGesturesEnabled: true,
+          zoomGesturesEnabled: true,
+          polylines: direction,
+          initialCameraPosition: _cameraPosition,
+          onMapCreated: (GoogleMapController controller) {
+            _completer.complete(controller);
+          },
+          onCameraMove: (CameraPosition cameraPosition) async {
+            GoogleMapController _mapController = await _completer.future;
+            if (MapHelper.isWithinHallStrictBound(cameraPosition.target) &&
+                cameraPosition.zoom > constants.CAMERA_DEFAULT_ZOOM) {
+              mapNotifier.setFloorPlanVisibility(true);
+              _setStyle(_mapController);
+            } else {
+              mapNotifier.setFloorPlanVisibility(false);
+              _resetStyle(_mapController);
+            }
+            if (MapHelper.isWithinHall(cameraPosition.target) &&
+                mapNotifier.showFloorPlan == false) {
+              mapNotifier.setEnterBuildingVisibility(true);
+            } else {
+              mapNotifier.setEnterBuildingVisibility(false);
+            }
+          },
+        )),
         Positioned(
           bottom: MediaQuery.of(context).padding.bottom + 16,
           right: MediaQuery.of(context).padding.right + 16,
@@ -136,7 +135,7 @@ class _MapState extends State<Map> {
                     goToCurrent();
                   },
                   backgroundColor: Colors.white,
-                  foregroundColor: Color.fromRGBO(147, 0, 47, 1),
+                  foregroundColor: constants.COLOR_CONCORDIA,
                   tooltip: 'Get Location',
                   child: Icon(Icons.my_location),
                 ),
@@ -155,7 +154,7 @@ class _MapState extends State<Map> {
                       ),
                     );
                   },
-                  backgroundColor: Color.fromRGBO(147, 0, 47, 1),
+                  backgroundColor: constants.COLOR_CONCORDIA,
                   foregroundColor: Colors.white,
                   child: Icon(Icons.directions),
                 ),
@@ -163,11 +162,10 @@ class _MapState extends State<Map> {
         ),
         SearchBar(
             coordinate: (Coordinate coordinate) =>
-            {mapNotifier.goToSpecifiedLatLng(coordinate)}),
+                {Provider.of<MapNotifier>(context, listen: false).goToSpecifiedLatLng(coordinate)}),
         SVGFloorPlans(),
         FloorSelectorEnterBuilding(
-          selectedFloor: (int floor) =>
-          {mapNotifier.setSelectedFloor(floor)},
+          selectedFloor: (int floor) => {mapNotifier.setSelectedFloor(floor)},
           enterBuildingPressed: () => mapNotifier.goToHallSVG(),
         ),
       ],
@@ -191,20 +189,22 @@ class _MapState extends State<Map> {
   void goToCurrent() async {
     final GoogleMapController controller = await _completer.future;
     _cameraPosition = CameraPosition(
-        target: LatLng(_position.latitude, _position.longitude), zoom: 19.03);
+        target: LatLng(_position.latitude, _position.longitude),
+        zoom: constants.CAMERA_DEFAULT_ZOOM);
     controller.animateCamera(CameraUpdate.newCameraPosition(_cameraPosition));
   }
 
-
-  void drawShortestPath(Coordinate start, Coordinate end, bool isDisabilityEnabled) {
+  void drawShortestPath(
+      Coordinate start, Coordinate end, bool isDisabilityEnabled) {
     BuildingSingleton buildingSingleton = new BuildingSingleton();
     Building hall;
-    for(var building in buildingSingleton.buildings){
-      if(building.building.contains("Hall")){
+    for (var building in buildingSingleton.buildings) {
+      if (building.building.contains("Hall")) {
         hall = building;
       }
     }
-    var shortestPath = hall.shortestPath(start, end, isDisabilityFriendly: isDisabilityEnabled);
+    var shortestPath = hall.shortestPath(start, end,
+        isDisabilityFriendly: isDisabilityEnabled);
     Path path = shortestPath['9'];
     setState(() {
       direction = {path.toPolyline()};

@@ -1,7 +1,3 @@
-import 'dart:async';
-
-import 'package:concordi_around/models/coordinate.dart';
-import 'package:concordi_around/views/go_to_page.dart';
 import 'package:concordi_around/widgets/drawer.dart';
 import 'package:concordi_around/widgets/map.dart';
 import 'package:flutter/material.dart';
@@ -15,13 +11,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-        body: Map(),
-        drawer: SidebarDrawer(),
-        resizeToAvoidBottomInset: false);
+        body: Map(), drawer: SidebarDrawer(), resizeToAvoidBottomInset: false);
   }
 }
