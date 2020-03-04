@@ -12,7 +12,7 @@ class MapNotifier with ChangeNotifier {
 
   bool showFloorPlan = false;
   bool showEnterBuilding = false;
-  int selectedFloorPlan = 8;
+  int selectedFloorPlan = 9;
 
   void setFloorPlanVisibility(bool visibility) {
     showFloorPlan = visibility;

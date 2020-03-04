@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:concordi_around/data/building_singleton.dart';
 import 'package:concordi_around/models/building.dart';
 import 'package:concordi_around/models/coordinate.dart';
@@ -16,6 +15,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:concordi_around/services/constants.dart' as constants;
+import 'package:concordi_around/global.dart' as globals;
 
 class Map extends StatefulWidget {
   @override
@@ -149,7 +149,7 @@ class _MapState extends State<Map> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => GoToPage(
-                          coordinates: (List<Coordinate> rooms) => {},
+                          coordinates: (List<Coordinate> rooms) => {drawShortestPath(rooms[0], rooms[1], globals.disabilityMode)},
                         ),
                       ),
                     );
