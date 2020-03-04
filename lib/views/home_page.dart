@@ -18,6 +18,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:concordi_around/global.dart' as globals;
 
+import 'package:concordi_around/views/goto_page.dart';
+
 class HomePage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -115,11 +117,12 @@ class _HomePageState extends State<HomePage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => GoToPage(
-                        coordinates: (List<Coordinate> rooms) => {
-                          drawShortestPath(rooms[0], rooms[1], globals.disabilityMode)
-                        },
-                      ),
+                      builder: (context) => GotoPage(),
+                      // GoToPage(
+                      //   coordinates: (List<Coordinate> rooms) => {
+                      //     drawShortestPath(rooms[0], rooms[1], globals.disabilityMode)
+                      //   },
+                      // ),
                     ),
                   );
                 },
