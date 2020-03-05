@@ -21,18 +21,6 @@ class MapHelper {
         : boundsFromLatLngList(coordsList).contains(latLng));
   }
 
-  static bool isWithinSGW(LatLng latLng) {
-    List<LatLng> coordsList = [
-      LatLng(45.492532, -73.576848),
-      LatLng(45.496587, -73.581582),
-      LatLng(45.498974, -73.579218),
-      LatLng(45.496573, -73.572700),
-    ];
-    return (latLng == null
-        ? false
-        : boundsFromLatLngList(coordsList).contains(latLng));
-  }
-
   static bool isWithinLoyola(LatLng latLng) {
     List<LatLng> coordsList = [
       LatLng(45.458355, -73.633476),
