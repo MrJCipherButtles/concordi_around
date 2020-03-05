@@ -7,3 +7,6 @@ coverage:
       default:
         threshold: 100%
     patch: false
+
+ignore:
+  - /lib/data/building_singleton.dart
