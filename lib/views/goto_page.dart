@@ -161,7 +161,10 @@ class _GotoPageState extends State<GotoPage> {
                   : {
                       _searchedStart == null
                           ? widget.confirmDirection(new List<Coordinate>.from([
-                              widget._current,
+                              //this is to return the current location however there is a type conflict
+                              //unable to test further because current location needs outside navigation
+                              //TODO: update to the right type
+                              //widget._current, 
                               _searchedDestination
                             ])) //this doesn't work because of outside isnt implemented yet
                           : widget.confirmDirection(new List<Coordinate>.from(
