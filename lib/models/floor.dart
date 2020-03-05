@@ -25,7 +25,7 @@ class Floor {
   //returns a customized list of coordinates based on the types wanted
   List<Coordinate> coordinatesByGivenTypes(Iterable<String> types) {
     var subset = <Coordinate>[];
-    for (var coordinate in _coordinates) {
+    for (var coordinate in _coordinates ?? {}) {
       for (var type in types) {
         if (coordinate.type == type) {
           subset.add(coordinate);
