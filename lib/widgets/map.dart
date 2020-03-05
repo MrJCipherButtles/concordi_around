@@ -123,6 +123,7 @@ class _MapState extends State<Map> {
             } else {
               mapNotifier.setEnterBuildingVisibility(false);
             }
+            mapNotifier.setCampusLatLng(cameraPosition.target);
           },
         )),
         Positioned(
@@ -152,7 +153,10 @@ class _MapState extends State<Map> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => GoToPage(
-                          coordinates: (List<Coordinate> rooms) => {drawShortestPath(rooms[0], rooms[1], globals.disabilityMode)},
+                          coordinates: (List<Coordinate> rooms) => {
+                            drawShortestPath(
+                                rooms[0], rooms[1], globals.disabilityMode)
+                          },
                         ),
                       ),
                     );
@@ -164,8 +168,10 @@ class _MapState extends State<Map> {
               ]),
         ),
         SearchBar(
-            coordinate: (Coordinate coordinate) =>
-                {Provider.of<MapNotifier>(context, listen: false).goToSpecifiedLatLng(coordinate)}),
+            coordinate: (Coordinate coordinate) => {
+                  Provider.of<MapNotifier>(context, listen: false)
+                      .goToSpecifiedLatLng(coordinate)
+                }),
         SVGFloorPlans(),
         FloorSelectorEnterBuilding(
           selectedFloor: (int floor) => {mapNotifier.setSelectedFloor(floor)},

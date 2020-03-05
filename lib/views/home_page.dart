@@ -14,8 +14,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Map(), 
-        drawer: SidebarDrawer(), 
-        resizeToAvoidBottomInset: false);
+        body: Map(), drawer: SidebarDrawer(), resizeToAvoidBottomInset: false);
   }
 }
