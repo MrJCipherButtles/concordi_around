@@ -4,12 +4,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 void main() {
   group("Campus tests", () {
-    test('Should be within SGW campus', () {
-      expect(MapHelper.isWithinSGW(LatLng(45.495675, -73.578296)), true);
-      expect(MapHelper.isWithinSGW(LatLng(45.503080, -73.580781)), false);
-      expect(MapHelper.isWithinSGW(null), false);
-    });
-
     test('Should be in Hall Building', () {
       expect(MapHelper.isWithinHall(LatLng(45.497222, -73.578791)), true);
       expect(MapHelper.isWithinHall(LatLng(45.496865, -73.578056)), false);
