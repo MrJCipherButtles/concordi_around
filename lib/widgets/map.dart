@@ -32,10 +32,12 @@ class _MapState extends State<Map> {
   StreamSubscription _positionStream;
 
   Set<Polyline> direction;
+  Set<Polygon> floorPolygon;
 
   @override
   void initState() {
     super.initState();
+    floorPolygon = BuildingSingleton().getFloorPolygon('hall', '9');
     _geolocator = Geolocator()..forceAndroidLocationManager;
     LocationOptions locationOptions = LocationOptions(
         accuracy: LocationAccuracy.bestForNavigation, distanceFilter: 1);
@@ -99,6 +101,7 @@ class _MapState extends State<Map> {
           rotateGesturesEnabled: true,
           tiltGesturesEnabled: true,
           zoomGesturesEnabled: true,
+          polygons: floorPolygon,
           polylines: direction,
           initialCameraPosition: _cameraPosition,
           onMapCreated: (GoogleMapController controller) {
