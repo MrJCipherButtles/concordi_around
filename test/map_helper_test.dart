@@ -1,7 +1,6 @@
 import 'package:concordi_around/services/map_helper.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:concordi_around/services/constants.dart' as constants;
 
 void main() {
   group("Campus tests", () {

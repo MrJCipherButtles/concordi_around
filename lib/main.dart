@@ -10,12 +10,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         title: 'ConcordiAround',
-        home: MultiProvider(
-          providers: [
-            ChangeNotifierProvider(create: (context) => MapNotifier() )
-          ],
-          child: HomePage()
-        )
-    );
+        home: MultiProvider(providers: [
+          ChangeNotifierProvider(create: (context) => MapNotifier())
+        ], child: HomePage()));
   }
 }
