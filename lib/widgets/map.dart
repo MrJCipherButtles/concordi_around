@@ -183,25 +183,7 @@ class _MapState extends State<Map> {
                 }),
         FloorSelectorEnterBuilding(
           selectedFloor: (int floor) => {
-            setState(() {
-              if(shortestPath != null) {
-                Path path = shortestPath['$floor'];
-                if (path != null) {
-                  direction = {path.toPolyline()};
-                }
-                else {
-                  direction = {};
-                }
-              }
-              if(floor == 9) {
-                buildingHighlights.removeAll(eightFloorPolygon);
-                buildingHighlights.addAll(ninthFloorPolygon);
-              }
-              else {
-                buildingHighlights.removeAll(ninthFloorPolygon);
-                buildingHighlights.addAll(eightFloorPolygon);
-              }
-            }),
+            updateFloor(floor),
             mapNotifier.setSelectedFloor(floor)
           },
           enterBuildingPressed: () => mapNotifier.goToHallSVG(),
@@ -210,6 +192,27 @@ class _MapState extends State<Map> {
     );
   }
 
+  void updateFloor(int floor) {
+    setState(() {
+      if(shortestPath != null) {
+        Path path = shortestPath['$floor'];
+        if (path != null) {
+          direction = {path.toPolyline()};
+        }
+        else {
+          direction = {};
+        }
+      }
+      if(floor == 9) {
+        buildingHighlights.removeAll(eightFloorPolygon);
+        buildingHighlights.addAll(ninthFloorPolygon);
+      }
+      else {
+        buildingHighlights.removeAll(ninthFloorPolygon);
+        buildingHighlights.addAll(eightFloorPolygon);
+      }
+    });
+  }
   void _setStyle(GoogleMapController controller) async {
     print("Setting map style");
     String value = await DefaultAssetBundle.of(context)
