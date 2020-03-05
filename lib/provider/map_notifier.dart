@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:concordi_around/models/coordinate.dart';
+import 'package:concordi_around/services/map_helper.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:concordi_around/services/constants.dart' as constants;
@@ -13,6 +14,7 @@ class MapNotifier with ChangeNotifier {
   bool showFloorPlan = false;
   bool showEnterBuilding = false;
   int selectedFloorPlan = 9;
+  String currentCampus = 'SGW';
 
   void setFloorPlanVisibility(bool visibility) {
     showFloorPlan = visibility;
@@ -26,6 +28,20 @@ class MapNotifier with ChangeNotifier {
 
   void setEnterBuildingVisibility(bool visibility) {
     showEnterBuilding = visibility;
+    notifyListeners();
+  }
+
+  void setCampusLatLng(LatLng latLng) {
+    if (MapHelper.isWithinLoyola(latLng)) {
+      currentCampus = 'LOY';
+    } else {
+      currentCampus = 'SGW';
+    }
+    notifyListeners();
+  }
+
+  void setCampusString(String campus) {
+    currentCampus = campus;
     notifyListeners();
   }
 
@@ -48,5 +64,16 @@ class MapNotifier with ChangeNotifier {
 
     final GoogleMapController controller = await _completer.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(_currentPos));
+  }
+
+  Future<void> toggleCampus(LatLng latLng) async {
+    final c = await _completer.future;
+    final p = CameraPosition(
+      target: latLng,
+      zoom: constants.CAMERA_DEFAULT_ZOOM,
+      tilt: constants.CAMERA_DEFAULT_TILT,
+      bearing: 30.8334901395799,
+    );
+    c.animateCamera(CameraUpdate.newCameraPosition(p));
   }
 }
