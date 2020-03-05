@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:concordi_around/services/constants.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -108,7 +110,8 @@ class BuildingSingleton {
           polygonId: PolygonId(building.building),
           fillColor: COLOR_CONCORDIA.withOpacity(0.4),
           strokeWidth: 3,
-          points: latlngs
+          points: latlngs,
+          zIndex: 1
       ));
     }
     return result;
@@ -124,11 +127,13 @@ class BuildingSingleton {
             for(List<Coordinate> list in  floor.polygons) {
               List<LatLng> points = new List();
               list.forEach((coordinate) => points.add(coordinate.toLatLng()));
+              Random rnd = Random();
               result.add(Polygon(
-                  polygonId: PolygonId('1'),
+                  polygonId: PolygonId('${floor.floor}-${rnd.nextInt(100000000)}'),
                   points: points,
                   fillColor: COLOR_CONCORDIA,
-                  strokeWidth: 2
+                  strokeWidth: 2,
+                  zIndex: 2
               ));
             }
           }

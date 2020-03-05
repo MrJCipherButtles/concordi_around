@@ -8,7 +8,6 @@ import 'package:concordi_around/services/map_helper.dart';
 import 'package:concordi_around/views/go_to_page.dart';
 import 'package:concordi_around/widgets/search/main_search_bar.dart';
 import 'package:concordi_around/widgets/svg_floor_plan/floor_selector_enter_building_column.dart';
-import 'package:concordi_around/widgets/svg_floor_plan/svg_floor_plans.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -32,16 +31,20 @@ class _MapState extends State<Map> {
   StreamSubscription _positionStream;
 
   Set<Polyline> direction;
+
   Set<Polygon> buildingHighlights;
-  Set<Polygon> floorPolygon;
-  Set<Polygon> poly;
+  Set<Polygon> eightFloorPolygon;
+  Set<Polygon> ninthFloorPolygon;
 
   @override
   void initState() {
     super.initState();
     buildingHighlights = BuildingSingleton().getOutdoorBuildingHighlights();
-    floorPolygon = BuildingSingleton().getFloorPolygon('hall', '9');
-    floorPolygon.addAll(buildingHighlights);
+    eightFloorPolygon = BuildingSingleton().getFloorPolygon('hall', '8');
+    ninthFloorPolygon = BuildingSingleton().getFloorPolygon('hall', '9');
+
+    buildingHighlights.addAll(ninthFloorPolygon);
+
     _geolocator = Geolocator()..forceAndroidLocationManager;
     LocationOptions locationOptions = LocationOptions(
         accuracy: LocationAccuracy.bestForNavigation, distanceFilter: 1);
@@ -105,7 +108,7 @@ class _MapState extends State<Map> {
           rotateGesturesEnabled: true,
           tiltGesturesEnabled: true,
           zoomGesturesEnabled: true,
-          polygons: floorPolygon,
+          polygons: buildingHighlights,
           polylines: direction,
           initialCameraPosition: _cameraPosition,
           onMapCreated: (GoogleMapController controller) {
@@ -176,9 +179,20 @@ class _MapState extends State<Map> {
                   Provider.of<MapNotifier>(context, listen: false)
                       .goToSpecifiedLatLng(coordinate)
                 }),
-        SVGFloorPlans(),
         FloorSelectorEnterBuilding(
-          selectedFloor: (int floor) => {mapNotifier.setSelectedFloor(floor)},
+          selectedFloor: (int floor) => {
+            setState(() {
+              if(floor == 9) {
+                buildingHighlights.removeAll(eightFloorPolygon);
+                buildingHighlights.addAll(ninthFloorPolygon);
+              }
+              else {
+                buildingHighlights.removeAll(ninthFloorPolygon);
+                buildingHighlights.addAll(eightFloorPolygon);
+              }
+            }),
+            mapNotifier.setSelectedFloor(floor)
+          },
           enterBuildingPressed: () => mapNotifier.goToHallSVG(),
         ),
       ],
