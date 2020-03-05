@@ -71,8 +71,6 @@ class MapNotifier with ChangeNotifier {
     final p = CameraPosition(
       target: latLng,
       zoom: constants.CAMERA_DEFAULT_ZOOM,
-      tilt: constants.CAMERA_DEFAULT_TILT,
-      bearing: 30.8334901395799,
     );
     c.animateCamera(CameraUpdate.newCameraPosition(p));
   }
