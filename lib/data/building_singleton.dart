@@ -51,7 +51,7 @@ class BuildingSingleton {
       if(building.building.toUpperCase().contains(buildingName.toUpperCase())) {
         if(building.floors != null) {
           var floor = building.floors[floorName];
-          if(floor.polygons != null) {
+          if(floor != null && floor.polygons != null) {
             for(List<Coordinate> list in  floor.polygons) {
               List<LatLng> points = new List();
               list.forEach((coordinate) => points.add(coordinate.toLatLng()));
