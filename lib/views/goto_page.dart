@@ -6,9 +6,10 @@ import 'package:geolocator/geolocator.dart';
 
 class GotoPage extends StatefulWidget {
   final Position _current;
+  final Coordinate destination;
   final Function(List<Coordinate>) confirmDirection;
 
-  const GotoPage(this._current, {this.confirmDirection});
+  const GotoPage(this._current, {this.confirmDirection, this.destination});
 
   @override
   _GotoPageState createState() => _GotoPageState();
@@ -19,6 +20,7 @@ class _GotoPageState extends State<GotoPage> {
   Coordinate _searchedDestination = null;
 
   Widget build(BuildContext context) {
+    _searchedDestination = widget.destination;
     return SafeArea(
       child: Scaffold(
         body: Column(
