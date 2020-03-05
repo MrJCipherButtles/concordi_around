@@ -32,10 +32,12 @@ class _MapState extends State<Map> {
   StreamSubscription _positionStream;
 
   Set<Polyline> direction;
+  Set<Polygon> buildingHighlights;
 
   @override
   void initState() {
     super.initState();
+    buildingHighlights = BuildingSingleton().getOutdoorBuildingHighlights();
     _geolocator = Geolocator()..forceAndroidLocationManager;
     LocationOptions locationOptions = LocationOptions(
         accuracy: LocationAccuracy.bestForNavigation, distanceFilter: 1);
@@ -99,6 +101,7 @@ class _MapState extends State<Map> {
           rotateGesturesEnabled: true,
           tiltGesturesEnabled: true,
           zoomGesturesEnabled: true,
+          polygons: buildingHighlights,
           polylines: direction,
           initialCameraPosition: _cameraPosition,
           onMapCreated: (GoogleMapController controller) {
