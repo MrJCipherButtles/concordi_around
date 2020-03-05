@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:concordi_around/data/building_singleton.dart';
+import 'package:concordi_around/data/markers.dart';
 import 'package:concordi_around/models/building.dart';
 import 'package:concordi_around/models/coordinate.dart';
 import 'package:concordi_around/models/path.dart';
@@ -33,8 +34,12 @@ class _MapState extends State<Map> {
   Set<Polyline> direction;
 
   Set<Polygon> buildingHighlights;
+
   Set<Polygon> eightFloorPolygon;
+  Set<Marker> eightFloorMarker = {};
+
   Set<Polygon> ninthFloorPolygon;
+  Set<Marker> ninthFloorMarker;
 
   var shortestPath;
 
@@ -112,6 +117,7 @@ class _MapState extends State<Map> {
           zoomGesturesEnabled: true,
           polygons: buildingHighlights,
           polylines: direction,
+          markers: eightFloorMarker,
           initialCameraPosition: _cameraPosition,
           onMapCreated: (GoogleMapController controller) {
             _completer.complete(controller);
@@ -129,8 +135,10 @@ class _MapState extends State<Map> {
             if (MapHelper.isWithinHall(cameraPosition.target) &&
                 mapNotifier.showFloorPlan == false) {
               mapNotifier.setEnterBuildingVisibility(true);
+              setMarkers(eightFloorMarker);
             } else {
               mapNotifier.setEnterBuildingVisibility(false);
+              eightFloorMarker = {};
             }
             mapNotifier.setCampusLatLng(cameraPosition.target);
           },
@@ -250,5 +258,15 @@ class _MapState extends State<Map> {
     setState(() {
       direction = {path.toPolyline()};
     });
+  }
+
+  void setMarkers(Set<Marker> markers) {
+    floorMarkers['8'].forEach((f) => eightFloorMarker.add(
+        Marker(
+            markerId: MarkerId(f.roomId),
+            infoWindow: InfoWindow(title: f.roomId),
+            position: f.toLatLng()
+
+        )));
   }
 }
