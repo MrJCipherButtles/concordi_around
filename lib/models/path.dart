@@ -50,7 +50,7 @@ class Path {
   Polyline toPolyline() {
     var coordinates = coordinatesInOrder();
     var points = <LatLng>[];
-    for (var coordinate in coordinates) {
+    for (var coordinate in coordinates ?? []) {
       points.add(coordinate.toLatLng());
     }
     return Polyline(

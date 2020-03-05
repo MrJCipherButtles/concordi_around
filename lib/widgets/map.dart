@@ -36,6 +36,8 @@ class _MapState extends State<Map> {
   Set<Polygon> eightFloorPolygon;
   Set<Polygon> ninthFloorPolygon;
 
+  var shortestPath;
+
   @override
   void initState() {
     super.initState();
@@ -182,6 +184,15 @@ class _MapState extends State<Map> {
         FloorSelectorEnterBuilding(
           selectedFloor: (int floor) => {
             setState(() {
+              if(shortestPath != null) {
+                Path path = shortestPath['$floor'];
+                if (path != null) {
+                  direction = {path.toPolyline()};
+                }
+                else {
+                  direction = {};
+                }
+              }
               if(floor == 9) {
                 buildingHighlights.removeAll(eightFloorPolygon);
                 buildingHighlights.addAll(ninthFloorPolygon);
@@ -230,7 +241,7 @@ class _MapState extends State<Map> {
         hall = building;
       }
     }
-    var shortestPath = hall.shortestPath(start, end,
+    shortestPath = hall.shortestPath(start, end,
         isDisabilityFriendly: isDisabilityEnabled);
     Path path = shortestPath['9'];
     setState(() {
