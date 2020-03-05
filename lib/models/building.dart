@@ -1,5 +1,4 @@
 import 'dart:collection';
-
 import 'coordinate.dart';
 import 'floor.dart';
 import 'path.dart';
@@ -22,6 +21,7 @@ class Building {
   Map<String, Floor> get floors => _floors;
 
   set floors(Map<String, Floor> floors) => _floors = floors;
+  set polygon(List<Coordinate> polygon) => _polygon = polygon;
 
   void addFloor(Floor floor) {
     _floors[floor.floor] = floor;
