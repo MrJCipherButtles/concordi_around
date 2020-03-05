@@ -20,7 +20,6 @@ class _GotoPageState extends State<GotoPage> {
   Coordinate _searchedDestination = null;
 
   Widget build(BuildContext context) {
-    _searchedDestination = widget.destination;
     return SafeArea(
       child: Scaffold(
         body: Column(
@@ -64,7 +63,9 @@ class _GotoPageState extends State<GotoPage> {
                             TextField(
                               decoration: InputDecoration(
                                 hintText: (_searchedDestination == null)
-                                    ? "Enter Destination"
+                                    ? widget.destination == null
+                                        ? "Enter Destination"
+                                        : widget.destination
                                     : _searchedDestination.toString(),
                                 icon: Icon(Icons.location_on),
                               ),
@@ -166,7 +167,7 @@ class _GotoPageState extends State<GotoPage> {
                               //this is to return the current location however there is a type conflict
                               //unable to test further because current location needs outside navigation
                               //TODO: update to the right type
-                              //widget._current, 
+                              //widget._current,
                               _searchedDestination
                             ])) //this doesn't work because of outside isnt implemented yet
                           : widget.confirmDirection(new List<Coordinate>.from(
@@ -177,7 +178,6 @@ class _GotoPageState extends State<GotoPage> {
       ),
     );
   }
-
 
   //The snackbar is current not working but is a QoL implementation, will be added as a bug
   void _showToast(BuildContext context) {
