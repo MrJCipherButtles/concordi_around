@@ -4,7 +4,9 @@ class MapHelper {
   static bool isWithinHallStrictBound(LatLng latLng) {
     List<LatLng> coordsList = [LatLng(45.49726709926478, -73.57894677668811)];
 
-    return (latLng == null ? false : boundsFromLatLngList(coordsList).contains(latLng));
+    return (latLng == null
+        ? false
+        : boundsFromLatLngList(coordsList).contains(latLng));
   }
 
   static bool isWithinHall(LatLng latLng) {
@@ -14,7 +16,9 @@ class MapHelper {
       LatLng(45.49741, -73.57819),
       LatLng(45.49781, -73.57906)
     ];
-    return (latLng == null ? false : boundsFromLatLngList(coordsList).contains(latLng));
+    return (latLng == null
+        ? false
+        : boundsFromLatLngList(coordsList).contains(latLng));
   }
 
   static bool isWithinSGW(LatLng latLng) {
@@ -24,7 +28,9 @@ class MapHelper {
       LatLng(45.498974, -73.579218),
       LatLng(45.496573, -73.572700),
     ];
-    return (latLng == null ? false : boundsFromLatLngList(coordsList).contains(latLng));
+    return (latLng == null
+        ? false
+        : boundsFromLatLngList(coordsList).contains(latLng));
   }
 
   static bool isWithinLoyola(LatLng latLng) {
@@ -34,7 +40,9 @@ class MapHelper {
       LatLng(45.457324, -73.642574),
       LatLng(45.455706, -73.638207)
     ];
-    return (latLng == null ? false : boundsFromLatLngList(coordsList).contains(latLng));
+    return (latLng == null
+        ? false
+        : boundsFromLatLngList(coordsList).contains(latLng));
   }
 
   static LatLngBounds boundsFromLatLngList(List<LatLng> list) {
