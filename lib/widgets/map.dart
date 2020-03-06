@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:concordi_around/data/building_singleton.dart';
-import 'package:concordi_around/data/markers.dart';
+import 'package:concordi_around/data/data_points.dart';
 import 'package:concordi_around/models/building.dart';
 import 'package:concordi_around/models/coordinate.dart';
 import 'package:concordi_around/models/path.dart';
@@ -39,7 +39,7 @@ class _MapState extends State<Map> {
   Set<Marker> eightFloorMarker = {};
 
   Set<Polygon> ninthFloorPolygon;
-  Set<Marker> ninthFloorMarker;
+  Set<Marker> ninthFloorMarker = {};
 
   var shortestPath;
 
