@@ -7,6 +7,7 @@ import '../models/building.dart';
 import '../models/coordinate.dart';
 import '../models/floor.dart';
 import 'data_points.dart';
+import 'building_list.dart' as building_list_data;
 
 class BuildingSingleton {
   static final BuildingSingleton _instance = BuildingSingleton._internal();
@@ -18,68 +19,9 @@ class BuildingSingleton {
   }
 
   BuildingSingleton._internal() {
-    Building ev = Building("Engineering, Computer Science and Visual Arts",
-        coordinate: Coordinate(45.49558, -73.57801, "0", "EV", "SGW", type: "BUILDING"),
-        polygon: polygons['EV']);
-    _buildings.add(ev);
-
-    Building jmsb = Building("John Molson School of Business",
-        coordinate: Coordinate(45.4954, -73.57909, "0", "JMSB", "SGW"),
-        polygon: polygons['JMSB']);
-    _buildings.add(jmsb);
-
-    Building gm = Building("Pavillon Guy-De Maisonneuve",
-        coordinate: Coordinate(45.49589, -73.5785, "0", "GM", "SGW"),
-        polygon: polygons['GM']);
-    _buildings.add(gm);
-
-    Building jw = Building("J.W McConell Building",
-        coordinate: Coordinate(45.496865, -73.578041, "0", "JW", "SGW"),
-        polygon: polygons['JW']);
-    _buildings.add(jw);
-
-    Building hall = Building('Henry F. Hall',
-        coordinate: Coordinate(45.49726, -73.57893, "0", "H", "SGW"),
-        polygon: polygons['H']);
-    _initHallNinthFloor(hall);
-    initHallEightFloor(hall);
-    _buildings.add(hall);
-
-    //LOYOLA
-    Building vl = Building('Vanier Library',
-        coordinate: Coordinate(45.459053, -73.638683, "0", "Vanier Library", "LOY"),
-        polygon: polygons['VL']);
-    _buildings.add(vl);
-
-    Building fc = Building('F.C Smith Building',
-        coordinate: Coordinate(45.458563, -73.639277, "0", "FC", "LOY"),
-        polygon: polygons['FC']);
-    _buildings.add(fc);
-
-    Building pb = Building('Psychology Building',
-        coordinate: Coordinate(45.459068, -73.640577, "0", "PB", "LOY"),
-        polygon: polygons['PB']);
-    _buildings.add(pb);
-
-    Building cj = Building('Communication Studies and Journalism Building',
-        coordinate: Coordinate(45.457523, -73.640375, "0", "CJ", "LOY"),
-        polygon: polygons['CJ']);
-    _buildings.add(cj);
-
-    Building sp = Building('Richard J. Renaud Science Complex',
-        coordinate: Coordinate(45.457832, -73.641494, "0", "SP", "LOY"),
-        polygon: polygons['SP']);
-    _buildings.add(sp);
-
-    Building cb = Building('Central Building',
-        coordinate: Coordinate(45.458306, -73.640352, "0", "CB", "LOY"),
-        polygon: polygons['CB']);
-    _buildings.add(cb);
-
-    Building psb = Building('Physical Service Building',
-        coordinate: Coordinate(45.459647, -73.639784, "0", "PSB", "LOY"),
-        polygon: polygons['PSB']);
-    _buildings.add(psb);
+    _initHallEightFloor(building_list_data.buildings['H']);
+    _initHallNinthFloor(building_list_data.buildings['H']);
+    _buildings.addAll(building_list_data.buildings.values);
   }
 
   List<Building> get buildings => _buildings;
@@ -99,11 +41,11 @@ class BuildingSingleton {
     for (var building in buildings) {
       List<LatLng> latlngs = new List();
 
-      if(building.polygon == null) {
+      if (building.polygon == null) {
         continue;
       }
 
-      for(var coordinate in building.polygon) {
+      for (var coordinate in building.polygon) {
         latlngs.add(coordinate.toLatLng());
       }
 
@@ -112,30 +54,31 @@ class BuildingSingleton {
           fillColor: COLOR_CONCORDIA.withOpacity(0.4),
           strokeWidth: 3,
           points: latlngs,
-          zIndex: 1
-      ));
+          zIndex: 1));
     }
     return result;
   }
 
   Set<Polygon> getFloorPolygon(String buildingName, String floorName) {
     Set<Polygon> result = {};
-    for(var building in _buildings) {
-      if(building.building.toUpperCase().contains(buildingName.toUpperCase())) {
-        if(building.floors != null) {
+    for (var building in _buildings) {
+      if (building.building
+          .toUpperCase()
+          .contains(buildingName.toUpperCase())) {
+        if (building.floors != null) {
           var floor = building.floors[floorName];
-          if(floor != null && floor.polygons != null) {
-            for(List<Coordinate> list in  floor.polygons) {
+          if (floor != null && floor.polygons != null) {
+            for (List<Coordinate> list in floor.polygons) {
               List<LatLng> points = new List();
               list.forEach((coordinate) => points.add(coordinate.toLatLng()));
               Random rnd = Random();
               result.add(Polygon(
-                  polygonId: PolygonId('${floor.floor}-${rnd.nextInt(100000000)}'),
+                  polygonId:
+                      PolygonId('${floor.floor}-${rnd.nextInt(100000000)}'),
                   points: points,
                   fillColor: COLOR_CONCORDIA,
                   strokeWidth: 2,
-                  zIndex: 2
-              ));
+                  zIndex: 2));
             }
           }
         }
@@ -144,128 +87,8 @@ class BuildingSingleton {
     return result;
   }
 
-  void initHallEightFloor(Building hall) {
-    Floor eightFloor = Floor('8');
-    eightFloor.polygons = {
-      [
-        Coordinate(45.4970685, -73.578644, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4970682, -73.5786433, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4970971, -73.5786158, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4970976, -73.5786167, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4970685, -73.578644, '8', 'H', 'SGW', type: 'POLYGON')
-      ],
-      [
-        Coordinate(45.4971131, -73.5787376, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4969664, -73.5788754, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4969521, -73.5788462, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4969385, -73.5788596, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4969493, -73.5788827, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4969852, -73.5789582, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4970177, -73.5790219, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4970755, -73.5791429, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4971199, -73.5792344, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4971782, -73.5793551, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4971641, -73.5793682, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4971742, -73.579388, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4972398, -73.5793276, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4972886, -73.5792804, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4973406, -73.5792331, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497389, -73.5793347, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4971787, -73.5795319, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4968496, -73.5788498, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4970685, -73.578644, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4970685, -73.578644, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4971131, -73.5787376, '8', 'H', 'SGW', type: 'POLYGON'),
-      ],
-      [
-        Coordinate(45.4970976, -73.5786167, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4973807, -73.5783506, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4977088, -73.5790352, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4974353, -73.5792901, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4973871, -73.5791878, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497522, -73.5790618, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4975887, -73.5790007, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4976198, -73.5789642, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4976043, -73.5789307, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4975939, -73.5789404, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4975979, -73.5789501, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4975744, -73.5789729, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4974969, -73.578811, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4974299, -73.5786712, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4973596, -73.5785236, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4973709, -73.5785122, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4973512, -73.5784707, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4973378, -73.5784841, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4973483, -73.5785082, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4972452, -73.5786055, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4972224, -73.5785582, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497213, -73.5785669, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4972379, -73.5786195, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4971425, -73.5787084, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4970976, -73.5786167, '8', 'H', 'SGW', type: 'POLYGON'),
-      ],
-      [
-        Coordinate(45.4971992, -73.5793012, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4971143, -73.5791262, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4971357, -73.5791054, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4971171, -73.5790669, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4970946, -73.5790877, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4970704, -73.5790337, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4970922, -73.5790136, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4970763, -73.5789807, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4970544, -73.5790028, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4970027, -73.5788962, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4971247, -73.5787829, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4972184, -73.578977, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4972727, -73.5790897, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4973193, -73.5791879, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4973002, -73.5792064, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497264, -73.5791326, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4972542, -73.5791423, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4972896, -73.5792167, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4971992, -73.5793012, '8', 'H', 'SGW', type: 'POLYGON'),
-      ],
-      [
-        Coordinate(45.4972189, -73.5788412, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4971745, -73.5787507, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497205, -73.5787215, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4971996, -73.5787095, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4973388, -73.5785777, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4973505, -73.5786008, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4973895, -73.5786806, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4972189, -73.5788412, '8', 'H', 'SGW', type: 'POLYGON'),
-      ],
-      [
-        Coordinate(45.4973657, -73.5791449, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4973281, -73.5790678, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4973596, -73.5790373, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4973349, -73.5789853, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4973039, -73.5790165, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4972433, -73.5788911, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497275, -73.5788606, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4972708, -73.5788512, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4972901, -73.5788345, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4972879, -73.5788294, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497366, -73.5787563, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4974064, -73.5788361, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4974137, -73.5788274, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4973761, -73.5787473, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4974064, -73.5787181, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4974806, -73.57887, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4974776, -73.578874, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4974917, -73.5789029, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4974952, -73.5788998, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4975352, -73.578985, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4974322, -73.5790819, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4973958, -73.5790044, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4973796, -73.5790199, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4974094, -73.5790836, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4973791, -73.5791134, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4973852, -73.5791272, '8', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.4973657, -73.5791449, '8', 'H', 'SGW', type: 'POLYGON'),
-      ]
-    };
-
+  void _initHallEightFloor(Building hall) {
+    Floor eightFloor = Floor('8', polygons: floorPolygons['8']);
     hall.addFloor(eightFloor);
   }
 
@@ -460,15 +283,13 @@ class BuildingSingleton {
     j9F36.adjCoordinates = {j9F37, j9F24};
     j9F37.adjCoordinates = {j9F23, j9F36};
 
-    RoomCoordinate h965 = RoomCoordinate(
-        45.497205, -73.579329, '9', 'H', 'SGW',
+    RoomCoordinate h965 = RoomCoordinate(45.497205, -73.579329, '9', 'H', 'SGW',
         type: "ROOM", roomId: "H965", adjCoordinates: {j9F1, j9F4});
 
-    RoomCoordinate h921 = RoomCoordinate(
-        45.497380, -73.578606, '9', 'H', 'SGW',
+    RoomCoordinate h921 = RoomCoordinate(45.497380, -73.578606, '9', 'H', 'SGW',
         type: "ROOM", roomId: "H921", adjCoordinates: {j9F20, j9F23});
 
-    Floor ninthFloor = Floor('9', coordinates: {
+    Floor ninthFloor = Floor('9', polygons: floorPolygons['9'], coordinates: {
       h965,
       h921,
       j9F1,
@@ -510,111 +331,6 @@ class BuildingSingleton {
       j9F37
     });
 
-    ninthFloor.polygons = {
-      [
-        Coordinate(45.497224, -73.579342, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497275, -73.579296, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497272, -73.579235, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497235, -73.579161, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497164, -73.579227, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497224, -73.579342, '9', 'H', 'SGW', type: 'POLYGON')
-      ],
-      [
-        Coordinate(45.497161, -73.579152, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497286, -73.579035, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497152, -73.578760, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497005, -73.578897, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497055, -73.579002, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497078, -73.578985, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497094, -73.579019, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497073, -73.579038, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497096, -73.579086, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497119, -73.579068, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497161, -73.579152, '9', 'H', 'SGW', type: 'POLYGON'),
-      ],
-      [
-        Coordinate(45.497173, -73.578739, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497221, -73.578838, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497391, -73.578680, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497339, -73.578579, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497222, -73.578693, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497229, -73.578711, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497218, -73.578722, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497209, -73.578707, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497173, -73.578739, '9', 'H', 'SGW', type: 'POLYGON'),
-      ],
-      [
-        Coordinate(45.497467, -73.579142, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497486, -73.579157, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497633, -73.579014, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497555, -73.578855, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497400, -73.579007, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497467, -73.579142, '9', 'H', 'SGW', type: 'POLYGON'),
-      ],
-      [
-        Coordinate(45.497347, -73.579026, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497550, -73.578833, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497491, -73.578709, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497533, -73.578672, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497491, -73.578583, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497413, -73.578662, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497433, -73.578705, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497418, -73.578717, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497413, -73.578706, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497268, -73.578841, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497318, -73.578952, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497312, -73.578959, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497347, -73.579026, '9', 'H', 'SGW', type: 'POLYGON'),
-      ],
-      [
-        Coordinate(45.497421, -73.578649, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497491, -73.578583, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497374, -73.578342, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.496833, -73.578851, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497168, -73.579544, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497338, -73.579385, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497298, -73.579309, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497221, -73.579376, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497125, -73.579184, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497103, -73.579201, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497069, -73.579132, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497040, -73.579158, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497032, -73.579143, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497062, -73.579113, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.496942, -73.578862, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.496958, -73.578847, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.496969, -73.578865, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497336, -73.578521, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497321, -73.578489, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497333, -73.578478, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497349, -73.578512, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497355, -73.578508, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497421, -73.578649, '9', 'H', 'SGW', type: 'POLYGON'),
-      ],
-      [
-        Coordinate(45.497338, -73.579385, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497514, -73.579216, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497496, -73.579177, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497488, -73.579184, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497362, -73.579107, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497356, -73.579112, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497337, -73.579072, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497285, -73.579125, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497301, -73.579162, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497293, -73.579170, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497293, -73.579300, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497338, -73.579385, '9', 'H', 'SGW', type: 'POLYGON'),
-      ],
-      [
-        Coordinate(45.497533, -73.578672, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497709, -73.579033, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497514, -73.579216, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497496, -73.579177, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497663, -73.579019, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497505, -73.578697, '9', 'H', 'SGW', type: 'POLYGON'),
-        Coordinate(45.497533, -73.578672, '9', 'H', 'SGW', type: 'POLYGON'),
-      ]
-    };
     hall.addFloor(ninthFloor);
   }
 }
