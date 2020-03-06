@@ -39,6 +39,9 @@ dependencies:
   # Provider
   provider: ^4.0.2
 
+  #Sliding Up Panel
+  sliding_up_panel: ^1.0.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
