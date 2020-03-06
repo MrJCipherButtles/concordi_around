@@ -1,8 +1,10 @@
 import 'package:concordi_around/data/building_singleton.dart';
 import 'package:concordi_around/models/coordinate.dart';
+import 'package:concordi_around/widgets/sliding_up_panel.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 var roomsList = BuildingSingleton().getAllRooms();
 
@@ -28,12 +30,18 @@ class _GoToPageState extends State<GoToPage> {
 
   List<Coordinate> originDestinationCoords = new List(2);
 
-  @override
+  @override 
   Widget build(BuildContext context) {
     FocusNode destinationTextField =
         new FocusNode(); // this focus node will be used for the second text field (destination)
-    return Container(
-      child: Material(
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: SlidingUpPanel(
+        panel:Center(
+          child: Text("This is the sliding Widget")
+        ),
+        body: Center(
+          child: Material(
         child: Container(
           padding: EdgeInsets.only(
             top: 10,
@@ -239,6 +247,8 @@ class _GoToPageState extends State<GoToPage> {
             ],
           ),
         ),
+      ),
+      ),
       ),
     );
   }
