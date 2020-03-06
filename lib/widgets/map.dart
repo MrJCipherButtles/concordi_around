@@ -245,13 +245,7 @@ class _MapState extends State<Map> {
 
   void drawShortestPath(
       Coordinate start, Coordinate end, bool isDisabilityEnabled) {
-    BuildingSingleton buildingSingleton = new BuildingSingleton();
-    Building hall;
-    for (var building in buildingSingleton.buildings) {
-      if (building.building.contains("Hall")) {
-        hall = building;
-      }
-    }
+    Building hall = BuildingSingleton().buildings['H'];
     shortestPath = hall.shortestPath(start, end,
         isDisabilityFriendly: isDisabilityEnabled);
     Path path = shortestPath['9'];

@@ -718,8 +718,8 @@ Map<String, Set<List<Coordinate>>> floorPolygons = {
   }
 };
 
-Map<String, List<RoomCoordinate>> floorMarkers = {
-  '8': [
+Map<String, Set<RoomCoordinate>> floorMarkers = {
+  '8': {
     RoomCoordinate(45.4973403, -73.5793127, '8', 'H', 'SGW',
         type: "MARKER", roomId: 'H837'),
     RoomCoordinate(45.4972911, -73.5793601, '8', 'H', 'SGW',
@@ -862,6 +862,6 @@ Map<String, List<RoomCoordinate>> floorMarkers = {
         type: "MARKER", roomId: 'H842'),
     RoomCoordinate(45.4972596, -73.5787783, '8', 'H', 'SGW',
         type: "MARKER", roomId: 'PW'),
-  ],
-  '9': []
+  },
+  '9': {}
 };

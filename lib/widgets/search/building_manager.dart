@@ -15,7 +15,7 @@ class DisplayBuildingListManager extends StatefulWidget {
 }
 
 class DisplayBuildingList extends State<DisplayBuildingListManager> {
-  final List<Building> _myBuildingList = BuildingSingleton().buildings;
+  final List<Building> _myBuildingList = BuildingSingleton().getBuildingList();
 
   @override
   Widget build(BuildContext context) {

@@ -12,23 +12,28 @@ import 'building_list.dart' as building_list_data;
 class BuildingSingleton {
   static final BuildingSingleton _instance = BuildingSingleton._internal();
 
-  List<Building> _buildings = [];
+  Map<String, Building> _buildings;
 
   factory BuildingSingleton() {
     return _instance;
   }
 
   BuildingSingleton._internal() {
-    _initHallEightFloor(building_list_data.buildings['H']);
-    _initHallNinthFloor(building_list_data.buildings['H']);
-    _buildings.addAll(building_list_data.buildings.values);
+    _buildings = building_list_data.buildings;
+    _initHallEightFloor(_buildings['H']);
+    _initHallNinthFloor(_buildings['H']);
   }
 
-  List<Building> get buildings => _buildings;
+  Map<String, Building> get buildings => _buildings;
 
+  List<Building> getBuildingList() {
+    var result = <Building>[];
+    _buildings.forEach((k,v) => result.add(v));
+    return result;
+}
   List<RoomCoordinate> getAllRooms() {
     List<RoomCoordinate> roomList = <RoomCoordinate>[];
-    for (Building building in this.buildings) {
+    for (Building building in this.buildings.values) {
       building.floors.forEach((floorName, floor) => floor
           .coordinatesByGivenTypes({"ROOM"}).forEach(
               (room) => roomList.add(room)));
@@ -38,7 +43,7 @@ class BuildingSingleton {
 
   Set<Polygon> getOutdoorBuildingHighlights() {
     Set<Polygon> result = {};
-    for (var building in buildings) {
+    for (var building in buildings.values) {
       List<LatLng> latlngs = new List();
 
       if (building.polygon == null) {
@@ -61,7 +66,7 @@ class BuildingSingleton {
 
   Set<Polygon> getFloorPolygon(String buildingName, String floorName) {
     Set<Polygon> result = {};
-    for (var building in _buildings) {
+    for (var building in _buildings.values) {
       if (building.building
           .toUpperCase()
           .contains(buildingName.toUpperCase())) {
@@ -88,7 +93,7 @@ class BuildingSingleton {
   }
 
   void _initHallEightFloor(Building hall) {
-    Floor eightFloor = Floor('8', polygons: floorPolygons['8']);
+    Floor eightFloor = Floor('8', polygons: floorPolygons['8'], coordinates: floorMarkers[8]);
     hall.addFloor(eightFloor);
   }
 
