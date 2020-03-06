@@ -4,8 +4,8 @@ import 'package:concordi_around/widgets/search/search_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:concordi_around/services/constants.dart' as constants;
-
-String campus = 'SGW';
+import 'package:provider/provider.dart';
+import 'package:concordi_around/provider/map_notifier.dart';
 
 class SearchBar extends StatefulWidget {
   final Function(Coordinate) coordinate;
@@ -20,66 +20,73 @@ class SearchBar extends StatefulWidget {
 class _SearchBarState extends State<SearchBar> {
   @override
   Widget build(BuildContext context) {
-    return Column(children: <Widget>[
-      Container(
-        margin: new EdgeInsets.only(
-            left: 15.0,
-            top: MediaQuery.of(context).padding.top + 5.0,
-            right: 15.0),
-        padding: EdgeInsets.only(bottom: 10),
-        child: Container(
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(constants.BORDER_RADIUS),
-              color: Colors.white),
-          child: Row(
-            children: <Widget>[
-              Container(
-                child: IconButton(
-                  splashColor: Colors.grey,
-                  icon: Icon(Icons.menu),
-                  onPressed: () => Scaffold.of(context).openDrawer(),
+    return Consumer(
+      builder: (BuildContext context, MapNotifier mapNotifier, Widget child) =>
+          Column(children: <Widget>[
+        Container(
+          margin: new EdgeInsets.only(
+              left: 15.0,
+              top: MediaQuery.of(context).padding.top + 5.0,
+              right: 15.0),
+          padding: EdgeInsets.only(bottom: 10),
+          child: Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(constants.BORDER_RADIUS),
+                color: Colors.white),
+            child: Row(
+              children: <Widget>[
+                Container(
+                  child: IconButton(
+                    splashColor: Colors.grey,
+                    icon: Icon(Icons.menu),
+                    onPressed: () => Scaffold.of(context).openDrawer(),
+                  ),
                 ),
-              ),
-              Expanded(
-                child: TextField(
-                  readOnly: true,
-                  cursorColor: Colors.black,
-                  keyboardType: TextInputType.text,
-                  textInputAction: TextInputAction.go,
-                  decoration: InputDecoration(
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.symmetric(horizontal: 15),
-                      hintText: "Search"),
-                  onTap: () {
-                    showSearch(
-                        context: context,
-                        delegate: PositionedFloatingSearchBar(
-                            coordinate: (Coordinate coordinate) =>
-                                {widget.coordinate(coordinate)}));
-                  },
+                Expanded(
+                  child: TextField(
+                    readOnly: true,
+                    cursorColor: Colors.black,
+                    keyboardType: TextInputType.text,
+                    textInputAction: TextInputAction.go,
+                    decoration: InputDecoration(
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.symmetric(horizontal: 15),
+                        hintText: "Search"),
+                    onTap: () {
+                      showSearch(
+                          context: context,
+                          delegate: PositionedFloatingSearchBar(
+                              coordinate: (Coordinate coordinate) =>
+                                  {widget.coordinate(coordinate)}));
+                    },
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(right: 8.0),
-                child: RaisedButton(
-                  child: Text(campus),
-                  textColor: Colors.white,
-                  color: constants.COLOR_CONCORDIA,
-                  shape: RoundedRectangleBorder(
-                      borderRadius:
-                          new BorderRadius.circular(constants.BORDER_RADIUS)),
-                  onPressed: () {
-                    setState(() {
-                      (campus == 'SGW') ? (campus = 'LOY') : (campus = 'SGW');
-                    });
-                  },
-                ),
-              )
-            ],
+                Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: RaisedButton(
+                    child: Text(mapNotifier.currentCampus),
+                    textColor: Colors.white,
+                    color: constants.COLOR_CONCORDIA,
+                    shape: RoundedRectangleBorder(
+                        borderRadius:
+                            new BorderRadius.circular(constants.BORDER_RADIUS)),
+                    onPressed: () {
+                      if (mapNotifier.currentCampus == 'SGW') {
+                        mapNotifier.setCampusString("LOY");
+                        mapNotifier.toggleCampus(constants.LATLNG_LOYOLA);
+                      } else {
+                        mapNotifier.setCampusString("SGW");
+                        mapNotifier.toggleCampus(constants.LATLNG_GM);
+                      }
+                    },
+                  ),
+                )
+              ],
+            ),
           ),
         ),
-      ),
-    ]);
+      ]),
+    );
   }
 }
 
