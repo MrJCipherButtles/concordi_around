@@ -1,9 +1,8 @@
-import 'package:concordi_around/services/constants.dart';
+import 'package:concordi_around/model/building.dart';
+import 'package:concordi_around/model/coordinate.dart';
+import 'package:concordi_around/model/floor.dart';
+import 'package:concordi_around/service/map_constant.dart' as constant;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
-import '../models/building.dart';
-import '../models/coordinate.dart';
-import '../models/floor.dart';
 
 class BuildingSingleton {
   static final BuildingSingleton _instance = BuildingSingleton._internal();
@@ -16,7 +15,8 @@ class BuildingSingleton {
 
   BuildingSingleton._internal() {
     Building ev = Building("Engineering, Computer Science and Visual Arts",
-        coordinate: Coordinate(45.49558, -73.57801, "0", "EV", "SGW", type: "BUILDING"));
+        coordinate: Coordinate(45.49558, -73.57801, "0", "EV", "SGW",
+            type: "BUILDING"));
     _initEV(ev);
     _buildings.add(ev);
 
@@ -43,7 +43,8 @@ class BuildingSingleton {
 
     //LOYOLA
     Building vl = Building('Vanier Library',
-        coordinate: Coordinate(45.459053, -73.638683, "0", "Vanier Library", "LOY"));
+        coordinate:
+            Coordinate(45.459053, -73.638683, "0", "Vanier Library", "LOY"));
     _initVL(vl);
     _buildings.add(vl);
 
@@ -95,20 +96,19 @@ class BuildingSingleton {
     for (var building in buildings) {
       List<LatLng> latlngs = new List();
 
-      if(building.polygon == null) {
+      if (building.polygon == null) {
         continue;
       }
 
-      for(var coordinate in building.polygon) {
+      for (var coordinate in building.polygon) {
         latlngs.add(coordinate.toLatLng());
       }
 
       result.add(Polygon(
           polygonId: PolygonId(building.building),
-          fillColor: COLOR_CONCORDIA.withOpacity(0.4),
+          fillColor: constant.COLOR_CONCORDIA.withOpacity(0.4),
           strokeWidth: 3,
-          points: latlngs
-      ));
+          points: latlngs));
     }
     return result;
   }
@@ -825,12 +825,10 @@ class BuildingSingleton {
     j9F36.adjCoordinates = {j9F37, j9F24};
     j9F37.adjCoordinates = {j9F23, j9F36};
 
-    RoomCoordinate h965 = RoomCoordinate(
-        45.497205, -73.579329, '9', 'H', 'SGW',
+    RoomCoordinate h965 = RoomCoordinate(45.497205, -73.579329, '9', 'H', 'SGW',
         type: "ROOM", roomId: "H965", adjCoordinates: {j9F1, j9F4});
 
-    RoomCoordinate h921 = RoomCoordinate(
-        45.497380, -73.578606, '9', 'H', 'SGW',
+    RoomCoordinate h921 = RoomCoordinate(45.497380, -73.578606, '9', 'H', 'SGW',
         type: "ROOM", roomId: "H921", adjCoordinates: {j9F20, j9F23});
 
     Floor ninthFloor = Floor('9', coordinates: {

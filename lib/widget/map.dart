@@ -1,21 +1,21 @@
 import 'dart:async';
+
 import 'package:concordi_around/data/building_singleton.dart';
-import 'package:concordi_around/models/building.dart';
-import 'package:concordi_around/models/coordinate.dart';
-import 'package:concordi_around/models/path.dart';
+import 'package:concordi_around/model/building.dart';
+import 'package:concordi_around/model/coordinate.dart';
+import 'package:concordi_around/model/path.dart';
 import 'package:concordi_around/provider/map_notifier.dart';
-import 'package:concordi_around/services/map_helper.dart';
-import 'package:concordi_around/views/goto_page.dart';
-import 'package:concordi_around/widgets/search/main_search_bar.dart';
-import 'package:concordi_around/widgets/svg_floor_plan/floor_selector_enter_building_column.dart';
-import 'package:concordi_around/widgets/svg_floor_plan/svg_floor_plans.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:concordi_around/service/map_helper.dart';
+import 'package:concordi_around/view/goto_page.dart';
+import 'package:concordi_around/widget/search/main_search_bar.dart';
+import 'package:concordi_around/widget/svg_floor_plan/floor_selector_enter_building_column.dart';
+import 'package:concordi_around/widget/svg_floor_plan/svg_floor_plans.dart';
+import 'package:concordi_around/service/map_constant.dart' as constant;
+import '../global.dart' as global;
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:concordi_around/services/constants.dart' as constants;
-import 'package:concordi_around/global.dart' as globals;
 
 class Map extends StatefulWidget {
   @override
@@ -48,7 +48,7 @@ class _MapState extends State<Map> {
         _position = pos;
         _cameraPosition = CameraPosition(
             target: LatLng(_position.latitude, _position.longitude),
-            zoom: constants.CAMERA_DEFAULT_ZOOM);
+            zoom: constant.CAMERA_DEFAULT_ZOOM);
       });
     });
   }
@@ -71,7 +71,7 @@ class _MapState extends State<Map> {
         _position = position;
         _cameraPosition = CameraPosition(
             target: LatLng(_position.latitude, _position.longitude),
-            zoom: constants.CAMERA_DEFAULT_ZOOM);
+            zoom: constant.CAMERA_DEFAULT_ZOOM);
       });
       controller.animateCamera(CameraUpdate.newCameraPosition(_cameraPosition));
     } catch (e) {
@@ -110,7 +110,7 @@ class _MapState extends State<Map> {
           onCameraMove: (CameraPosition cameraPosition) async {
             GoogleMapController _mapController = await _completer.future;
             if (MapHelper.isWithinHallStrictBound(cameraPosition.target) &&
-                cameraPosition.zoom > constants.CAMERA_DEFAULT_ZOOM) {
+                cameraPosition.zoom > constant.CAMERA_DEFAULT_ZOOM) {
               mapNotifier.setFloorPlanVisibility(true);
               _setStyle(_mapController);
             } else {
@@ -139,7 +139,7 @@ class _MapState extends State<Map> {
                     goToCurrent();
                   },
                   backgroundColor: Colors.white,
-                  foregroundColor: constants.COLOR_CONCORDIA,
+                  foregroundColor: constant.COLOR_CONCORDIA,
                   tooltip: 'Get Location',
                   child: Icon(Icons.my_location),
                 ),
@@ -155,14 +155,14 @@ class _MapState extends State<Map> {
                         builder: (context) => GotoPage(
                           _position,
                           confirmDirection: (List<Coordinate> location) => {
-                            drawShortestPath(location[0], location[1],
-                                globals.disabilityMode)
+                            drawShortestPath(
+                                location[0], location[1], global.disabilityMode)
                           },
                         ),
                       ),
                     );
                   },
-                  backgroundColor: constants.COLOR_CONCORDIA,
+                  backgroundColor: constant.COLOR_CONCORDIA,
                   foregroundColor: Colors.white,
                   child: Icon(Icons.directions),
                 ),
@@ -200,7 +200,7 @@ class _MapState extends State<Map> {
     final GoogleMapController controller = await _completer.future;
     _cameraPosition = CameraPosition(
         target: LatLng(_position.latitude, _position.longitude),
-        zoom: constants.CAMERA_DEFAULT_ZOOM);
+        zoom: constant.CAMERA_DEFAULT_ZOOM);
     controller.animateCamera(CameraUpdate.newCameraPosition(_cameraPosition));
   }
 
