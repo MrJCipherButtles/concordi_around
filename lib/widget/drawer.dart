@@ -33,8 +33,7 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
                     decoration: BoxDecoration(
                         color: Color.fromRGBO(147, 35, 57, 1),
                         borderRadius: BorderRadius.only(
-                            topRight:
-                                Radius.circular(constant.BORDER_RADIUS))),
+                            topRight: Radius.circular(constant.BORDER_RADIUS))),
                     currentAccountPicture: CircleAvatar(
                       backgroundColor: Colors.white,
                       foregroundColor: Colors.black,
@@ -124,7 +123,8 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(15), topRight: Radius.circular(15))),
-        backgroundColor: global.disabilityMode ? constant.COLOR_CONCORDIA : null,
+        backgroundColor:
+            global.disabilityMode ? constant.COLOR_CONCORDIA : null,
         content: global.disabilityMode
             ? Text('Disability Mode turned ON')
             : Text('Disability Mode turned OFF'),

@@ -62,8 +62,7 @@ class Path {
         width: 5,
         jointType: JointType.bevel,
         patterns: [PatternItem.dot],
-        color: Color.fromRGBO(147, 0, 47, 1)
-    );
+        color: Color.fromRGBO(147, 0, 47, 1));
   }
 
   @override
