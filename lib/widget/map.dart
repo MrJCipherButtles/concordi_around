@@ -10,7 +10,6 @@ import 'package:concordi_around/view/goto_page.dart';
 import 'package:concordi_around/widget/search/main_search_bar.dart';
 import 'package:concordi_around/widget/svg_floor_plan/floor_selector_enter_building_column.dart';
 import 'package:concordi_around/widget/svg_floor_plan/svg_floor_plans.dart';
-import 'package:concordi_around/service/map_constant.dart' as constant;
 import '../global.dart' as global;
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
