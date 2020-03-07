@@ -1,5 +1,5 @@
 import 'package:concordi_around/provider/map_notifier.dart';
-import 'package:concordi_around/views/home_page.dart';
+import 'package:concordi_around/view/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
