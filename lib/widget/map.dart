@@ -5,13 +5,12 @@ import 'package:concordi_around/model/building.dart';
 import 'package:concordi_around/model/coordinate.dart';
 import 'package:concordi_around/model/path.dart';
 import 'package:concordi_around/provider/map_notifier.dart';
-import 'package:concordi_around/service/map_constant.dart';
+import 'package:concordi_around/service/map_constant.dart' as constant;
 import 'package:concordi_around/service/map_helper.dart';
 import 'package:concordi_around/view/goto_page.dart';
 import 'package:concordi_around/widget/search/main_search_bar.dart';
 import 'package:concordi_around/widget/svg_floor_plan/floor_selector_enter_building_column.dart';
 import 'package:concordi_around/widget/svg_floor_plan/svg_floor_plans.dart';
-import 'package:concordi_around/service/map_constant.dart' as constant;
 import '../global.dart' as global;
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -49,7 +48,7 @@ class _MapState extends State<Map> {
         _position = pos;
         _cameraPosition = CameraPosition(
             target: LatLng(_position.latitude, _position.longitude),
-            zoom: CAMERA_DEFAULT_ZOOM);
+            zoom: constant.CAMERA_DEFAULT_ZOOM);
       });
     });
   }
@@ -72,7 +71,7 @@ class _MapState extends State<Map> {
         _position = position;
         _cameraPosition = CameraPosition(
             target: LatLng(_position.latitude, _position.longitude),
-            zoom: CAMERA_DEFAULT_ZOOM);
+            zoom: constant.CAMERA_DEFAULT_ZOOM);
       });
       controller.animateCamera(CameraUpdate.newCameraPosition(_cameraPosition));
     } catch (e) {
@@ -111,7 +110,7 @@ class _MapState extends State<Map> {
           onCameraMove: (CameraPosition cameraPosition) async {
             GoogleMapController _mapController = await _completer.future;
             if (MapHelper.isWithinHallStrictBound(cameraPosition.target) &&
-                cameraPosition.zoom > CAMERA_DEFAULT_ZOOM) {
+                cameraPosition.zoom > constant.CAMERA_DEFAULT_ZOOM) {
               mapNotifier.setFloorPlanVisibility(true);
               _setStyle(_mapController);
             } else {
@@ -140,7 +139,7 @@ class _MapState extends State<Map> {
                     goToCurrent();
                   },
                   backgroundColor: Colors.white,
-                  foregroundColor: COLOR_CONCORDIA,
+                  foregroundColor: constant.COLOR_CONCORDIA,
                   tooltip: 'Get Location',
                   child: Icon(Icons.my_location),
                 ),
