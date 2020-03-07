@@ -1,9 +1,8 @@
-import 'package:concordi_around/services/constants.dart';
+import 'package:concordi_around/model/building.dart';
+import 'package:concordi_around/model/coordinate.dart';
+import 'package:concordi_around/model/floor.dart';
+import 'package:concordi_around/service/map_constant.dart' as constant;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
-import '../models/building.dart';
-import '../models/coordinate.dart';
-import '../models/floor.dart';
 
 class BuildingSingleton {
   static final BuildingSingleton _instance = BuildingSingleton._internal();
@@ -105,7 +104,7 @@ class BuildingSingleton {
 
       result.add(Polygon(
           polygonId: PolygonId(building.building),
-          fillColor: COLOR_CONCORDIA.withOpacity(0.4),
+          fillColor: constant.COLOR_CONCORDIA.withOpacity(0.4),
           strokeWidth: 3,
           points: latlngs
       ));

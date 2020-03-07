@@ -1,9 +1,10 @@
 import 'dart:async';
-import 'package:concordi_around/models/coordinate.dart';
-import 'package:concordi_around/services/map_helper.dart';
+
+import 'package:concordi_around/model/coordinate.dart';
+import 'package:concordi_around/service/map_constant.dart' as constant;
+import 'package:concordi_around/service/map_helper.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:concordi_around/services/constants.dart' as constants;
 
 class MapNotifier with ChangeNotifier {
   Completer<GoogleMapController> _completer = Completer();
@@ -49,7 +50,7 @@ class MapNotifier with ChangeNotifier {
     final GoogleMapController controller = await _completer.future;
     if (coordinate != null) {
       CameraPosition _newPosition = CameraPosition(
-          target: coordinate.toLatLng(), zoom: constants.CAMERA_DEFAULT_ZOOM);
+          target: coordinate.toLatLng(), zoom: constant.CAMERA_DEFAULT_ZOOM);
       controller.animateCamera(CameraUpdate.newCameraPosition(_newPosition));
     }
   }
@@ -70,7 +71,7 @@ class MapNotifier with ChangeNotifier {
     final c = await _completer.future;
     final p = CameraPosition(
       target: latLng,
-      zoom: constants.CAMERA_DEFAULT_ZOOM,
+      zoom: constant.CAMERA_DEFAULT_ZOOM,
     );
     c.animateCamera(CameraUpdate.newCameraPosition(p));
   }
