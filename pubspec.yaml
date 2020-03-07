@@ -42,6 +42,9 @@ dependencies:
   #Sliding Up Panel
   sliding_up_panel: ^1.0.0
 
+  #DateFormat
+  intl: ^0.15.8
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
