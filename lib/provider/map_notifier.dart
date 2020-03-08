@@ -46,6 +46,7 @@ class MapNotifier with ChangeNotifier {
     notifyListeners();
   }
 
+  // TODO: Coordinate should be Place
   Future<void> goToSpecifiedLatLng(Coordinate coordinate) async {
     final GoogleMapController controller = await _completer.future;
     if (coordinate != null) {

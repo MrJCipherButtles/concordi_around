@@ -93,6 +93,7 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
   final Function(Coordinate) coordinate;
   PositionedFloatingSearchBar({this.coordinate});
 
+  // THIS IS THE CLEAR BUTTON ON THE RIGHT "X"
   @override
   List<Widget> buildActions(BuildContext context) {
     return [
@@ -105,6 +106,7 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
     ];
   }
 
+  // THIS IS THE EXIT SEARCH BUTTON ON THE LEFT "<-"
   @override
   Widget buildLeading(BuildContext context) {
     return IconButton(
@@ -117,6 +119,7 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
         });
   }
 
+  // TODO: Should be a list of places to work with google web services
   @override
   Widget buildSuggestions(BuildContext context) {
     List<RoomCoordinate> roomList = BuildingSingleton().getAllRooms();
