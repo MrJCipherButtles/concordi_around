@@ -1,10 +1,14 @@
 import 'package:concordi_around/data/building_singleton.dart';
 import 'package:concordi_around/model/coordinate.dart';
+import 'package:concordi_around/model/place.dart';
 import 'package:concordi_around/provider/map_notifier.dart';
 import 'package:concordi_around/service/map_constant.dart' as constant;
-import 'package:concordi_around/widget/search/search_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:concordi_around/credential.dart';
+import 'package:dio/dio.dart';
+// TODO: Add session token for Google Places API calls
+import 'package:uuid/uuid.dart';
 
 class SearchBar extends StatefulWidget {
   final Function(Coordinate) coordinate;
@@ -17,6 +21,13 @@ class SearchBar extends StatefulWidget {
 }
 
 class _SearchBarState extends State<SearchBar> {
+  String _sessionToken;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer(
@@ -93,19 +104,6 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
   final Function(Coordinate) coordinate;
   PositionedFloatingSearchBar({this.coordinate});
 
-  // THIS IS THE CLEAR BUTTON ON THE RIGHT "X"
-  @override
-  List<Widget> buildActions(BuildContext context) {
-    return [
-      IconButton(
-        icon: Icon(Icons.clear),
-        onPressed: () {
-          query = "";
-        },
-      ),
-    ];
-  }
-
   // THIS IS THE EXIT SEARCH BUTTON ON THE LEFT "<-"
   @override
   Widget buildLeading(BuildContext context) {
@@ -119,36 +117,101 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
         });
   }
 
-  // TODO: Should be a list of places to work with google web services
+  // THIS IS THE CLEAR BUTTON ON THE RIGHT "X"
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return [
+      IconButton(
+        icon: Icon(Icons.clear),
+        onPressed: () {
+          query = "";
+        },
+      ),
+    ];
+  }
+
   @override
   Widget buildSuggestions(BuildContext context) {
-    List<RoomCoordinate> roomList = BuildingSingleton().getAllRooms();
-    List<RoomCoordinate> suggestionList = query.isNotEmpty
-        ? roomList
-            .where((p) => p.roomId.startsWith(query.toUpperCase()))
-            .toList()
-        : <RoomCoordinate>[];
-    return query.isEmpty
-        ? SearchMenuListOption(
-            coordinate: (Coordinate coordinate) =>
-                {this.coordinate(coordinate)})
-        : ListView.builder(
-            itemBuilder: (context, index) => ListTile(
-              onTap: () {
-                RoomCoordinate selected = (suggestionList[index]);
-                Navigator.pop(context);
-                this.coordinate(selected);
-              },
-              leading: Icon(Icons.place),
-              title: Text(suggestionList[index].roomId),
-            ),
-            itemCount: suggestionList.length,
-          );
+    return FutureBuilder(
+        future: query.length > 0
+            ? _getSuggestions(query)
+            : Future.value(List<Place>()),
+        builder: (BuildContext context, AsyncSnapshot<List<Place>> snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            List<Place> places;
+            if (snapshot.hasData) {
+              places = snapshot.data;
+            } else {
+              places = List<Place>();
+            }
+            return ListView.builder(
+              itemBuilder: (context, index) => ListTile(
+                onTap: () {
+                  Place selected = places[index];
+                  // TODO: use selected placeId to make a get request for place details then build coordinate
+                  Navigator.pop(context);
+                  // this.coordinate(_getLocationDetails(selected));
+                },
+                leading: Icon(Icons.place),
+                title: Text(places[index].description),
+              ),
+              itemCount: places.length,
+            );
+          } else {
+            return ListView();
+          }
+        });
   }
 
   @override
   Widget buildResults(BuildContext context) {
-    // TODO: implement buildResults
     return null;
+  }
+
+  static Future<List<Place>> _getSuggestions(String input) async {
+    List<Place> _suggestions = [];
+
+    if (input.isEmpty) {
+      return _suggestions;
+    }
+
+    List<RoomCoordinate> rooms = BuildingSingleton()
+        .getAllRooms()
+        .where((room) => room.roomId.startsWith(input.toUpperCase()))
+        .toList();
+
+    String baseURL =
+        'https://maps.googleapis.com/maps/api/place/autocomplete/json';
+    String types = 'establishment';
+    String locationSGW = '45.49612,-73.58012';
+    String locationLOY = '45.45906,-73.63973';
+    String radius = '500&strictbounds';
+
+    String request1 =
+        '$baseURL?input=$input&types=$types&location=$locationSGW&radius=$radius&key=$PLACES_API_KEY';
+    Response response1 = await Dio().get(request1);
+
+    String request2 =
+        '$baseURL?input=$input&types=$types&location=$locationLOY&radius=$radius&key=$PLACES_API_KEY';
+    Response response2 = await Dio().get(request2);
+
+    final predictions1 = response1.data['predictions'];
+    final predictions2 = response2.data['predictions'];
+
+    for (var prediction in predictions1) {
+      String placeId = prediction['place_id'];
+      String description = prediction['description'];
+      _suggestions.add(Place(placeId, description));
+    }
+    for (var prediction in predictions2) {
+      String placeId = prediction['place_id'];
+      String description = prediction['description'];
+      _suggestions.add(Place(placeId, description));
+    }
+    for (var room in rooms) {
+      _suggestions.add(Place(room.roomId, room.roomId));
+    }
+
+    return _suggestions;
   }
 }
