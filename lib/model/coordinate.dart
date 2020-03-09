@@ -2,8 +2,6 @@ import 'dart:collection';
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import 'list_item.dart';
-
 class Coordinate {
   final double _lat;
   final double _lng;
@@ -94,8 +92,4 @@ class RoomCoordinate extends Coordinate {
   String get roomId => _roomId;
 
   set roomId(String roomId) => _roomId = roomId;
-
-  PlaceItem toPlace() {
-    return PlaceItem(_roomId, _roomId);
-  }
 }
