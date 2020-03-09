@@ -7,11 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:concordi_around/credential.dart';
 import 'package:dio/dio.dart';
-// TODO: Add session token for Google Places API calls
 import 'package:uuid/uuid.dart';
 
 class SearchBar extends StatefulWidget {
-  final Function(Coordinate) coordinate;
+  final Function(Future<Coordinate>) coordinate;
   SearchBar({this.coordinate});
 
   @override
@@ -21,8 +20,6 @@ class SearchBar extends StatefulWidget {
 }
 
 class _SearchBarState extends State<SearchBar> {
-  String _sessionToken;
-
   @override
   void initState() {
     super.initState();
@@ -66,7 +63,7 @@ class _SearchBarState extends State<SearchBar> {
                       showSearch(
                           context: context,
                           delegate: PositionedFloatingSearchBar(
-                              coordinate: (Coordinate coordinate) =>
+                              coordinate: (Future<Coordinate> coordinate) =>
                                   {widget.coordinate(coordinate)}));
                     },
                   ),
@@ -101,7 +98,12 @@ class _SearchBarState extends State<SearchBar> {
 }
 
 class PositionedFloatingSearchBar extends SearchDelegate<String> {
-  final Function(Coordinate) coordinate;
+  final Function(Future<Coordinate>) coordinate;
+  List<ListItem> _suggestionResults;
+  var uuid = Uuid();
+  String _sessionToken;
+  int _lastKnownQueryLength = 0;
+
   PositionedFloatingSearchBar({this.coordinate});
 
   // THIS IS THE EXIT SEARCH BUTTON ON THE LEFT "<-"
@@ -132,11 +134,42 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
+    if (_lastKnownQueryLength == query.length) {
+      if (_suggestionResults != null) {
+        return ListView.builder(
+          itemCount: _suggestionResults.length,
+          itemBuilder: (context, index) {
+            if (_suggestionResults[index] is HeadingItem) {
+              return ListTile(
+                title: Text(
+                  _suggestionResults[index].description,
+                  style: Theme.of(context).textTheme.headline,
+                ),
+              );
+            } else {
+              return ListTile(
+                onTap: () {
+                  PlaceItem selected = _suggestionResults[index];
+                  Navigator.pop(context);
+                  this.coordinate(_getPlaceDetails(selected.placeId));
+                  _sessionToken = null;
+                },
+                leading: Icon(Icons.place),
+                title: Text(_suggestionResults[index].description),
+              );
+            }
+          },
+        );
+      }
+      return ListView();
+    }
+    _lastKnownQueryLength = query.length;
     return FutureBuilder(
         future: query.length > 0
             ? _getSuggestions(query)
             : Future.value(List<ListItem>()),
-        builder: (BuildContext context, AsyncSnapshot<List<ListItem>> snapshot) {
+        builder:
+            (BuildContext context, AsyncSnapshot<List<ListItem>> snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             List<ListItem> places;
             if (snapshot.hasData) {
@@ -154,14 +187,13 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
                       style: Theme.of(context).textTheme.headline,
                     ),
                   );
-                }
-                else {
+                } else {
                   return ListTile(
                     onTap: () {
-                      ListItem selected = places[index];
-                      // TODO: use selected placeId to make a get request for place details then build coordinate
+                      PlaceItem selected = places[index];
                       Navigator.pop(context);
-                      // this.coordinate(_getLocationDetails(selected));
+                      this.coordinate(_getPlaceDetails(selected.placeId));
+                      _sessionToken = null;
                     },
                     leading: Icon(Icons.place),
                     title: Text(places[index].description),
@@ -177,10 +209,39 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
 
   @override
   Widget buildResults(BuildContext context) {
-    return null;
+    if (_suggestionResults != null) {
+      return ListView.builder(
+        itemCount: _suggestionResults.length,
+        itemBuilder: (context, index) {
+          if (_suggestionResults[index] is HeadingItem) {
+            return ListTile(
+              title: Text(
+                _suggestionResults[index].description,
+                style: Theme.of(context).textTheme.headline,
+              ),
+            );
+          } else {
+            return ListTile(
+              onTap: () {
+                PlaceItem selected = _suggestionResults[index];
+                Navigator.pop(context);
+                this.coordinate(_getPlaceDetails(selected.placeId));
+                _sessionToken = null;
+              },
+              leading: Icon(Icons.place),
+              title: Text(_suggestionResults[index].description),
+            );
+          }
+        },
+      );
+    }
+    return ListView();
   }
 
-  static Future<List<ListItem>> _getSuggestions(String input) async {
+  Future<List<ListItem>> _getSuggestions(String input) async {
+    if (_sessionToken == null) {
+      _sessionToken = uuid.v4();
+    }
     List<ListItem> _suggestions = [];
 
     if (input.isEmpty) {
@@ -194,18 +255,20 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
 
     String baseURL =
         'https://maps.googleapis.com/maps/api/place/autocomplete/json';
-    String types = 'establishment';
     String locationSGW = '45.49612,-73.58012';
     String locationLOY = '45.45906,-73.63973';
     String radius = '500&strictbounds';
 
     String request1 =
-        '$baseURL?input=$input&types=$types&location=$locationSGW&radius=$radius&key=$PLACES_API_KEY';
+        '$baseURL?input=$input&location=$locationSGW&radius=$radius&sessiontoken=$_sessionToken&key=$PLACES_API_KEY';
     Response response1 = await Dio().get(request1);
 
     String request2 =
-        '$baseURL?input=$input&types=$types&location=$locationLOY&radius=$radius&key=$PLACES_API_KEY';
+        '$baseURL?input=$input&location=$locationLOY&radius=$radius&sessiontoken=$_sessionToken&key=$PLACES_API_KEY';
     Response response2 = await Dio().get(request2);
+
+    print(request1);
+    print(request2);
 
     final predictions1 = response1.data['predictions'];
     final predictions2 = response2.data['predictions'];
@@ -235,6 +298,42 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
       _suggestions.add(PlaceItem(room.roomId, room.roomId));
     }
 
+    _suggestionResults = _suggestions;
+
     return _suggestions;
+  }
+
+  Future<Coordinate> _getPlaceDetails(String placeId) async {
+    if (_sessionToken == null) {
+      _sessionToken = uuid.v4();
+    }
+    if (placeId.isEmpty) {
+      return null;
+    }
+    List<RoomCoordinate> rooms = BuildingSingleton().getAllRooms();
+    for (var room in rooms) {
+      if (room.roomId == placeId) {
+        return room;
+      }
+    }
+
+    String baseURL = 'https://maps.googleapis.com/maps/api/place/details/json';
+    String fields = 'address_component,name,geometry';
+
+    String request =
+        '$baseURL?place_id=$placeId&fields=$fields&sessiontoken=$_sessionToken&key=$PLACES_API_KEY';
+    Response response = await Dio().get(request);
+
+    print(request);
+    print(response);
+
+    final result = response.data['result'];
+    final geometry = result['geometry'];
+    final location = geometry['location'];
+
+    double lat = location['lat'];
+    double lng = location['lng'];
+
+    return Coordinate(lat, lng, null, null, null);
   }
 }

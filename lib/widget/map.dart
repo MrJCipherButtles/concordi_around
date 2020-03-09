@@ -167,7 +167,7 @@ class _MapState extends State<Map> {
               ]),
         ),
         SearchBar(
-            coordinate: (Coordinate coordinate) => {
+            coordinate: (Future<Coordinate> coordinate) => {
                   Provider.of<MapNotifier>(context, listen: false)
                       .goToSpecifiedLatLng(coordinate)
                 }),
