@@ -1,4 +1,4 @@
-abstract class ListItem{
+abstract class ListItem {
   String get description;
 }
 
