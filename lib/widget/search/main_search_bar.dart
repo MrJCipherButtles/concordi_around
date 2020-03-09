@@ -99,7 +99,7 @@ class _SearchBarState extends State<SearchBar> {
 
 class PositionedFloatingSearchBar extends SearchDelegate<String> {
   final Function(Future<Coordinate>) coordinate;
-  List<ListItem> _suggestionResults;
+  List<ListItem> _history;
   var uuid = Uuid();
   String _sessionToken;
   int _lastKnownQueryLength = 0;
@@ -132,30 +132,34 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
     ];
   }
 
+  // Every time the search query changes
+  // this method is called
   @override
   Widget buildSuggestions(BuildContext context) {
+    // If search was unfocused and refocused but no change
     if (_lastKnownQueryLength == query.length) {
-      if (_suggestionResults != null) {
+      // then build ListView from history
+      if (_history != null) {
         return ListView.builder(
-          itemCount: _suggestionResults.length,
+          itemCount: _history.length,
           itemBuilder: (context, index) {
-            if (_suggestionResults[index] is HeadingItem) {
+            if (_history[index] is HeadingItem) {
               return ListTile(
                 title: Text(
-                  _suggestionResults[index].description,
+                  _history[index].description,
                   style: Theme.of(context).textTheme.headline,
                 ),
               );
             } else {
               return ListTile(
                 onTap: () {
-                  PlaceItem selected = _suggestionResults[index];
+                  PlaceItem selected = _history[index];
                   Navigator.pop(context);
                   this.coordinate(_getPlaceDetails(selected.placeId));
                   _sessionToken = null;
                 },
                 leading: Icon(Icons.place),
-                title: Text(_suggestionResults[index].description),
+                title: Text(_history[index].description),
               );
             }
           },
@@ -163,8 +167,14 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
       }
       return ListView();
     }
+
+    // Update last known query length variable
     _lastKnownQueryLength = query.length;
+
+    // If no available history, then fetch suggestions
+    // Must await for fetch to conclude before building
     return FutureBuilder(
+      // start fetching when search query is not empty
         future: query.length > 0
             ? _getSuggestions(query)
             : Future.value(List<ListItem>()),
@@ -193,6 +203,7 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
                       PlaceItem selected = places[index];
                       Navigator.pop(context);
                       this.coordinate(_getPlaceDetails(selected.placeId));
+                      // session token must be cleared after getting place details
                       _sessionToken = null;
                     },
                     leading: Icon(Icons.place),
@@ -203,41 +214,50 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
             );
           } else {
             return ListView();
-          }
+          } // else nothing to build and return empty ListView
         });
   }
 
+  // Every time we submit a search query
+  // this method executes
+  // buildResults (a.k.a onSubmitted) must be implemented, but does
+  // not bring any value other than collapses the keyboard on-screen
   @override
   Widget buildResults(BuildContext context) {
-    if (_suggestionResults != null) {
+    if (_history != null) {
       return ListView.builder(
-        itemCount: _suggestionResults.length,
+        itemCount: _history.length,
         itemBuilder: (context, index) {
-          if (_suggestionResults[index] is HeadingItem) {
+          if (_history[index] is HeadingItem) {
+            // Header tile
             return ListTile(
               title: Text(
-                _suggestionResults[index].description,
+                _history[index].description,
                 style: Theme.of(context).textTheme.headline,
               ),
             );
           } else {
+            // Result tile
             return ListTile(
               onTap: () {
-                PlaceItem selected = _suggestionResults[index];
+                PlaceItem selected = _history[index];
                 Navigator.pop(context);
                 this.coordinate(_getPlaceDetails(selected.placeId));
+                // session token must be cleared after getting place details
                 _sessionToken = null;
               },
               leading: Icon(Icons.place),
-              title: Text(_suggestionResults[index].description),
+              title: Text(_history[index].description),
             );
           }
         },
       );
     }
+    // If history is null, return empty ListView
     return ListView();
   }
 
+  // Google Places API autocomplete requests
   Future<List<ListItem>> _getSuggestions(String input) async {
     if (_sessionToken == null) {
       _sessionToken = uuid.v4();
@@ -259,20 +279,20 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
     String locationLOY = '45.45906,-73.63973';
     String radius = '500&strictbounds';
 
+    // SGW autocomplete suggestions
     String request1 =
         '$baseURL?input=$input&location=$locationSGW&radius=$radius&sessiontoken=$_sessionToken&key=$PLACES_API_KEY';
     Response response1 = await Dio().get(request1);
 
+    // LOY autocomplete suggestions
     String request2 =
         '$baseURL?input=$input&location=$locationLOY&radius=$radius&sessiontoken=$_sessionToken&key=$PLACES_API_KEY';
     Response response2 = await Dio().get(request2);
 
-    print(request1);
-    print(request2);
-
     final predictions1 = response1.data['predictions'];
     final predictions2 = response2.data['predictions'];
 
+    // ListView header + items for SGW if exists
     if (predictions1.isNotEmpty) {
       _suggestions.add(HeadingItem('SGW'));
     }
@@ -282,6 +302,7 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
       _suggestions.add(PlaceItem(placeId, description));
     }
 
+    // ListView header + items for LOY if exists
     if (predictions2.isNotEmpty) {
       _suggestions.add(HeadingItem('Loyola'));
     }
@@ -291,6 +312,7 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
       _suggestions.add(PlaceItem(placeId, description));
     }
 
+    // ListView header + items for Rooms if exists
     if (rooms.isNotEmpty) {
       _suggestions.add(HeadingItem('Rooms'));
     }
@@ -298,18 +320,24 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
       _suggestions.add(PlaceItem(room.roomId, room.roomId));
     }
 
-    _suggestionResults = _suggestions;
+    // Set history for buildResults() method
+    _history = _suggestions;
 
     return _suggestions;
   }
 
+  // Google places API request for Place Details
   Future<Coordinate> _getPlaceDetails(String placeId) async {
     if (_sessionToken == null) {
       _sessionToken = uuid.v4();
     }
+
+    // If place id is empty, then return null
     if (placeId.isEmpty) {
       return null;
     }
+
+    // If place id is a room id, then return the room coordinate
     List<RoomCoordinate> rooms = BuildingSingleton().getAllRooms();
     for (var room in rooms) {
       if (room.roomId == placeId) {
@@ -320,13 +348,12 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
     String baseURL = 'https://maps.googleapis.com/maps/api/place/details/json';
     String fields = 'address_component,name,geometry';
 
+    // Send place details request
     String request =
         '$baseURL?place_id=$placeId&fields=$fields&sessiontoken=$_sessionToken&key=$PLACES_API_KEY';
     Response response = await Dio().get(request);
 
-    print(request);
-    print(response);
-
+    //Create Coordinate return type using place details for CameraPosition onto place
     final result = response.data['result'];
     final geometry = result['geometry'];
     final location = geometry['location'];
