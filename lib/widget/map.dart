@@ -213,11 +213,11 @@ class _MapState extends State<Map> {
     }
     var shortestPath = hall.shortestPath(start, end,
         isDisabilityFriendly: isDisabilityEnabled);
-    // TODO: setState of direction needs to be set by listening to selectedFloor MapNotifier instead of hardcoded '9'
+    // TODO: setState of direction should be set by listening to selectedFloor MapNotifier instead of hardcoded '9'
     setState(() {
       direction = {shortestPath['9'].toPolyline()};
     });
   }
 
-  // TODO: Clear shortest path function to be used by a exit navigation button
+  // TODO: Create a clear shortest path function with exit navigation button
 }
