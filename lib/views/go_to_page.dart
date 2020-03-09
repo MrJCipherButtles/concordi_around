@@ -46,7 +46,7 @@ class _GoToPageState extends State<GoToPage> {
           ),
           child: Center(
             child: Text(
-              "Next Shuttle: " + shuttleTimes.findNextShuttle(),
+              shuttleTimes.findNextShuttle(),
               style: TextStyle(color: Colors.white),
             ),
           ),
