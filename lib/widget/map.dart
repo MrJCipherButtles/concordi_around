@@ -6,6 +6,7 @@ import 'package:concordi_around/model/coordinate.dart';
 import 'package:concordi_around/model/path.dart';
 import 'package:concordi_around/provider/map_notifier.dart';
 import 'package:concordi_around/service/map_helper.dart';
+import 'package:concordi_around/service/map_constant.dart' as constant;
 import 'package:concordi_around/view/goto_page.dart';
 import 'package:concordi_around/widget/search/main_search_bar.dart';
 import 'package:concordi_around/widget/svg_floor_plan/floor_selector_enter_building_column.dart';
