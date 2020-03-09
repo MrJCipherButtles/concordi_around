@@ -5,7 +5,7 @@ import 'package:concordi_around/models/coordinate.dart';
 import 'package:concordi_around/models/path.dart';
 import 'package:concordi_around/provider/map_notifier.dart';
 import 'package:concordi_around/services/map_helper.dart';
-import 'package:concordi_around/views/go_to_page.dart';
+import 'package:concordi_around/views/goto_page.dart';
 import 'package:concordi_around/widgets/search/main_search_bar.dart';
 import 'package:concordi_around/widgets/svg_floor_plan/floor_selector_enter_building_column.dart';
 import 'package:concordi_around/widgets/svg_floor_plan/svg_floor_plans.dart';
@@ -16,6 +16,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:concordi_around/services/constants.dart' as constants;
 import 'package:concordi_around/global.dart' as globals;
+
 
 class Map extends StatefulWidget {
   @override
@@ -152,10 +153,12 @@ class _MapState extends State<Map> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => GoToPage(
-                          coordinates: (List<Coordinate> rooms) => {
-                            drawShortestPath(
-                                rooms[0], rooms[1], globals.disabilityMode)
+                        builder: (context) => 
+                        GotoPage(
+                          _position,
+                          confirmDirection: (List<Coordinate> location) => {
+                            drawShortestPath(location[0], location[1],
+                                globals.disabilityMode)
                           },
                         ),
                       ),

@@ -3,6 +3,8 @@ import 'package:concordi_around/widgets/map.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+import 'package:concordi_around/views/goto_page.dart';
+
 class HomePage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
