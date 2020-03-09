@@ -1,6 +1,6 @@
 import 'package:concordi_around/data/building_singleton.dart';
 import 'package:concordi_around/model/coordinate.dart';
-import 'package:concordi_around/model/place.dart';
+import 'package:concordi_around/model/list_item.dart';
 import 'package:concordi_around/provider/map_notifier.dart';
 import 'package:concordi_around/service/map_constant.dart' as constant;
 import 'package:flutter/material.dart';
@@ -135,27 +135,39 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
     return FutureBuilder(
         future: query.length > 0
             ? _getSuggestions(query)
-            : Future.value(List<Place>()),
-        builder: (BuildContext context, AsyncSnapshot<List<Place>> snapshot) {
+            : Future.value(List<ListItem>()),
+        builder: (BuildContext context, AsyncSnapshot<List<ListItem>> snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            List<Place> places;
+            List<ListItem> places;
             if (snapshot.hasData) {
               places = snapshot.data;
             } else {
-              places = List<Place>();
+              places = List<ListItem>();
             }
             return ListView.builder(
-              itemBuilder: (context, index) => ListTile(
-                onTap: () {
-                  Place selected = places[index];
-                  // TODO: use selected placeId to make a get request for place details then build coordinate
-                  Navigator.pop(context);
-                  // this.coordinate(_getLocationDetails(selected));
-                },
-                leading: Icon(Icons.place),
-                title: Text(places[index].description),
-              ),
               itemCount: places.length,
+              itemBuilder: (context, index) {
+                if (places[index] is HeadingItem) {
+                  return ListTile(
+                    title: Text(
+                      places[index].description,
+                      style: Theme.of(context).textTheme.headline,
+                    ),
+                  );
+                }
+                else {
+                  return ListTile(
+                    onTap: () {
+                      ListItem selected = places[index];
+                      // TODO: use selected placeId to make a get request for place details then build coordinate
+                      Navigator.pop(context);
+                      // this.coordinate(_getLocationDetails(selected));
+                    },
+                    leading: Icon(Icons.place),
+                    title: Text(places[index].description),
+                  );
+                }
+              },
             );
           } else {
             return ListView();
@@ -168,8 +180,8 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
     return null;
   }
 
-  static Future<List<Place>> _getSuggestions(String input) async {
-    List<Place> _suggestions = [];
+  static Future<List<ListItem>> _getSuggestions(String input) async {
+    List<ListItem> _suggestions = [];
 
     if (input.isEmpty) {
       return _suggestions;
@@ -198,18 +210,29 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
     final predictions1 = response1.data['predictions'];
     final predictions2 = response2.data['predictions'];
 
+    if (predictions1.isNotEmpty) {
+      _suggestions.add(HeadingItem('SGW'));
+    }
     for (var prediction in predictions1) {
       String placeId = prediction['place_id'];
       String description = prediction['description'];
-      _suggestions.add(Place(placeId, description));
+      _suggestions.add(PlaceItem(placeId, description));
+    }
+
+    if (predictions2.isNotEmpty) {
+      _suggestions.add(HeadingItem('Loyola'));
     }
     for (var prediction in predictions2) {
       String placeId = prediction['place_id'];
       String description = prediction['description'];
-      _suggestions.add(Place(placeId, description));
+      _suggestions.add(PlaceItem(placeId, description));
+    }
+
+    if (rooms.isNotEmpty) {
+      _suggestions.add(HeadingItem('Rooms'));
     }
     for (var room in rooms) {
-      _suggestions.add(Place(room.roomId, room.roomId));
+      _suggestions.add(PlaceItem(room.roomId, room.roomId));
     }
 
     return _suggestions;
