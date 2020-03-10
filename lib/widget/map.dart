@@ -5,17 +5,18 @@ import 'package:concordi_around/model/building.dart';
 import 'package:concordi_around/model/coordinate.dart';
 import 'package:concordi_around/model/path.dart';
 import 'package:concordi_around/provider/map_notifier.dart';
-import 'package:concordi_around/service/map_helper.dart';
 import 'package:concordi_around/service/map_constant.dart' as constant;
+import 'package:concordi_around/service/map_helper.dart';
 import 'package:concordi_around/view/goto_page_new.dart';
 import 'package:concordi_around/widget/search/main_search_bar.dart';
 import 'package:concordi_around/widget/svg_floor_plan/floor_selector_enter_building_column.dart';
 import 'package:concordi_around/widget/svg_floor_plan/svg_floor_plans.dart';
-import '../global.dart' as global;
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
+
+import '../global.dart' as global;
 
 class Map extends StatefulWidget {
   @override
@@ -44,13 +45,13 @@ class _MapState extends State<Map> {
     updateLocation();
     _positionStream =
         _geolocator.getPositionStream(locationOptions).listen((Position pos) {
-          setState(() {
-            _position = pos;
-            _cameraPosition = CameraPosition(
-                target: LatLng(_position.latitude, _position.longitude),
-                zoom: constant.CAMERA_DEFAULT_ZOOM);
-          });
-        });
+      setState(() {
+        _position = pos;
+        _cameraPosition = CameraPosition(
+            target: LatLng(_position.latitude, _position.longitude),
+            zoom: constant.CAMERA_DEFAULT_ZOOM);
+      });
+    });
   }
 
   @override
@@ -92,40 +93,40 @@ class _MapState extends State<Map> {
       children: <Widget>[
         Container(
             child: GoogleMap(
-              mapType: MapType.normal,
-              myLocationEnabled: true,
-              myLocationButtonEnabled: false,
-              compassEnabled: false,
-              indoorViewEnabled: false,
-              scrollGesturesEnabled: true,
-              rotateGesturesEnabled: true,
-              tiltGesturesEnabled: true,
-              zoomGesturesEnabled: true,
-              polygons: buildingHighlights,
-              polylines: direction,
-              initialCameraPosition: _cameraPosition,
-              onMapCreated: (GoogleMapController controller) {
-                _completer.complete(controller);
-              },
-              onCameraMove: (CameraPosition cameraPosition) async {
-                GoogleMapController _mapController = await _completer.future;
-                if (MapHelper.isWithinHallStrictBound(cameraPosition.target) &&
-                    cameraPosition.zoom > constant.CAMERA_DEFAULT_ZOOM) {
-                  mapNotifier.setFloorPlanVisibility(true);
-                  _setStyle(_mapController);
-                } else {
-                  mapNotifier.setFloorPlanVisibility(false);
-                  _resetStyle(_mapController);
-                }
-                if (MapHelper.isWithinHall(cameraPosition.target) &&
-                    mapNotifier.showFloorPlan == false) {
-                  mapNotifier.setEnterBuildingVisibility(true);
-                } else {
-                  mapNotifier.setEnterBuildingVisibility(false);
-                }
-                mapNotifier.setCampusLatLng(cameraPosition.target);
-              },
-            )),
+          mapType: MapType.normal,
+          myLocationEnabled: true,
+          myLocationButtonEnabled: false,
+          compassEnabled: false,
+          indoorViewEnabled: false,
+          scrollGesturesEnabled: true,
+          rotateGesturesEnabled: true,
+          tiltGesturesEnabled: true,
+          zoomGesturesEnabled: true,
+          polygons: buildingHighlights,
+          polylines: direction,
+          initialCameraPosition: _cameraPosition,
+          onMapCreated: (GoogleMapController controller) {
+            _completer.complete(controller);
+          },
+          onCameraMove: (CameraPosition cameraPosition) async {
+            GoogleMapController _mapController = await _completer.future;
+            if (MapHelper.isWithinHallStrictBound(cameraPosition.target) &&
+                cameraPosition.zoom > constant.CAMERA_DEFAULT_ZOOM) {
+              mapNotifier.setFloorPlanVisibility(true);
+              _setStyle(_mapController);
+            } else {
+              mapNotifier.setFloorPlanVisibility(false);
+              _resetStyle(_mapController);
+            }
+            if (MapHelper.isWithinHall(cameraPosition.target) &&
+                mapNotifier.showFloorPlan == false) {
+              mapNotifier.setEnterBuildingVisibility(true);
+            } else {
+              mapNotifier.setEnterBuildingVisibility(false);
+            }
+            mapNotifier.setCampusLatLng(cameraPosition.target);
+          },
+        )),
         Positioned(
           bottom: MediaQuery.of(context).padding.bottom + 16,
           right: MediaQuery.of(context).padding.right + 16,
@@ -152,14 +153,13 @@ class _MapState extends State<Map> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>
-                            GotoPage(
-                              _position,
-                              confirmDirection: (List<Coordinate> location) => {
-                                drawShortestPath(location[0], location[1],
-                                    global.disabilityMode)
-                              },
-                            ),
+                        builder: (context) => GotoPage(
+                          _position,
+                          confirmDirection: (List<Coordinate> location) => {
+                            drawShortestPath(
+                                location[0], location[1], global.disabilityMode)
+                          },
+                        ),
                       ),
                     );
                   },
@@ -171,9 +171,9 @@ class _MapState extends State<Map> {
         ),
         SearchBar(
             coordinate: (Coordinate coordinate) => {
-              Provider.of<MapNotifier>(context, listen: false)
-                  .goToSpecifiedLatLng(coordinate)
-            }),
+                  Provider.of<MapNotifier>(context, listen: false)
+                      .goToSpecifiedLatLng(coordinate)
+                }),
         SVGFloorPlans(),
         FloorSelectorEnterBuilding(
           selectedFloor: (int floor) => {mapNotifier.setSelectedFloor(floor)},
