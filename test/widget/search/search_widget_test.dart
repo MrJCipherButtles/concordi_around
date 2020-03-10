@@ -1,7 +1,6 @@
 import 'package:concordi_around/main.dart';
 import 'package:concordi_around/widget/drawer.dart';
 import 'package:concordi_around/widget/search/main_search_bar.dart';
-import 'package:concordi_around/widget/search/search_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -22,7 +21,6 @@ void main() {
 
     expect(find.text('Search'), findsOneWidget);
     expect(find.byIcon(Icons.clear), findsOneWidget);
-    expect(find.byType(SearchMenuListOption), findsOneWidget);
 
     await tester.enterText(find.byType(TextField), 'h');
     await tester.pumpAndSettle();
