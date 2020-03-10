@@ -60,7 +60,7 @@ class Coordinate {
 
   // Might want to define a better toString...
   @override
-  String toString() => '$_lat,$_lng,$_floor';
+  String toString() => '$_building';
 }
 
 class PortalCoordinate extends Coordinate {
@@ -92,4 +92,7 @@ class RoomCoordinate extends Coordinate {
   String get roomId => _roomId;
 
   set roomId(String roomId) => _roomId = roomId;
+
+  @override
+  String toString() => '$roomId';
 }
