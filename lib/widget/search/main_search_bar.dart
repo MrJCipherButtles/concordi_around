@@ -1,12 +1,12 @@
+import 'package:concordi_around/credential.dart';
 import 'package:concordi_around/data/building_singleton.dart';
 import 'package:concordi_around/model/coordinate.dart';
 import 'package:concordi_around/model/list_item.dart';
 import 'package:concordi_around/provider/map_notifier.dart';
 import 'package:concordi_around/service/map_constant.dart' as constant;
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:concordi_around/credential.dart';
-import 'package:dio/dio.dart';
 import 'package:uuid/uuid.dart';
 
 class SearchBar extends StatefulWidget {
@@ -174,7 +174,7 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
     // If no available history, then fetch suggestions
     // Must await for fetch to conclude before building
     return FutureBuilder(
-      // start fetching when search query is not empty
+        // start fetching when search query is not empty
         future: query.length > 0
             ? _getSuggestions(query)
             : Future.value(List<ListItem>()),

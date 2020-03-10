@@ -10,11 +10,12 @@ import 'package:concordi_around/view/goto_page.dart';
 import 'package:concordi_around/widget/search/main_search_bar.dart';
 import 'package:concordi_around/widget/svg_floor_plan/floor_selector_enter_building_column.dart';
 import 'package:concordi_around/widget/svg_floor_plan/svg_floor_plans.dart';
-import '../global.dart' as global;
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
+
+import '../global.dart' as global;
 
 class Map extends StatefulWidget {
   @override
