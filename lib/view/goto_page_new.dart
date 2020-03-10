@@ -16,8 +16,8 @@ class GotoPage extends StatefulWidget {
 }
 
 class _GotoPageState extends State<GotoPage> {
-  Coordinate _searchedStart;
-  Coordinate _searchedDestination;
+  Coordinate _searchedStart = null;
+  Coordinate _searchedDestination = null;
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,10 +54,10 @@ class _GotoPageState extends State<GotoPage> {
                                 context: context,
                                 delegate: PositionedFloatingSearchBar(
                                     coordinate: (Coordinate val) {
-                                  setState(() {
-                                    _searchedStart = val;
-                                  });
-                                }),
+                                      setState(() {
+                                        _searchedStart = val;
+                                      });
+                                    }),
                               );
                             },
                           ),
@@ -65,8 +65,8 @@ class _GotoPageState extends State<GotoPage> {
                             decoration: InputDecoration(
                               hintText: (_searchedDestination == null)
                                   ? widget.destination == null
-                                      ? "Enter Destination"
-                                      : widget.destination
+                                  ? "Enter Destination"
+                                  : widget.destination
                                   : _searchedDestination.toString(),
                               icon: Icon(Icons.location_on),
                             ),
@@ -76,10 +76,10 @@ class _GotoPageState extends State<GotoPage> {
                                 context: context,
                                 delegate: PositionedFloatingSearchBar(
                                     coordinate: (Coordinate val) {
-                                  setState(() {
-                                    _searchedDestination = val;
-                                  });
-                                }),
+                                      setState(() {
+                                        _searchedDestination = val;
+                                      });
+                                    }),
                               );
                             },
                           ),
@@ -102,11 +102,12 @@ class _GotoPageState extends State<GotoPage> {
                     Expanded(
                       flex: 1,
                       child: Container(
-                        margin: EdgeInsets.only(top: 5, left: 2.5, right: 2.5),
+                        margin:
+                        EdgeInsets.only(top: 5, left: 2.5, right: 2.5),
                         decoration: BoxDecoration(
                             color: constant.COLOR_CONCORDIA,
-                            borderRadius:
-                                BorderRadius.circular(constant.BORDER_RADIUS)),
+                            borderRadius: BorderRadius.circular(
+                                constant.BORDER_RADIUS)),
                         child: IconButton(
                             icon: Icon(Icons.directions_car),
                             color: Colors.white,
@@ -162,19 +163,20 @@ class _GotoPageState extends State<GotoPage> {
             _searchedDestination == null
                 ? null
                 : {
-                    _searchedStart == null
-                        ? widget.confirmDirection(new List<Coordinate>.from([
-                            //this is to return the current location however there is a type conflict
-                            //unable to test further because current location needs outside navigation
-                            //TODO: update to the right type
-                            //widget._current,
-                            _searchedDestination
-                          ])) //this doesn't work because of outside isnt implemented yet
-                        : widget.confirmDirection(new List<Coordinate>.from(
-                            [_searchedStart, _searchedDestination])),
-                    Navigator.pop(context)
-                  };
+              _searchedStart == null
+                  ? widget.confirmDirection(new List<Coordinate>.from([
+                //this is to return the current location however there is a type conflict
+                //unable to test further because current location needs outside navigation
+                //TODO: update to the right type
+                //widget._current,
+                _searchedDestination
+              ])) //this doesn't work because of outside isnt implemented yet
+                  : widget.confirmDirection(new List<Coordinate>.from(
+                  [_searchedStart, _searchedDestination])),
+              Navigator.pop(context)
+            };
           }),
     );
   }
+
 }

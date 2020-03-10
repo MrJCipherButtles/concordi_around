@@ -1,8 +1,7 @@
 import 'package:concordi_around/data/building_singleton.dart';
 import 'package:concordi_around/model/coordinate.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 var roomsList = BuildingSingleton().getAllRooms();
 
@@ -22,16 +21,16 @@ class GoToPage extends StatefulWidget {
 class _GoToPageState extends State<GoToPage> {
   //To be able to save the selected suggestion into the text field
   final TextEditingController _originTypeAheadController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController _destinTypeAheadController =
-      TextEditingController();
+  TextEditingController();
 
   List<Coordinate> originDestinationCoords = new List(2);
 
   @override
   Widget build(BuildContext context) {
     FocusNode destinationTextField =
-        new FocusNode(); // this focus node will be used for the second text field (destination)
+    new FocusNode(); // this focus node will be used for the second text field (destination)
     return Container(
       child: Material(
         child: Container(
@@ -66,7 +65,7 @@ class _GoToPageState extends State<GoToPage> {
                         ),
                         decoration: InputDecoration(
                           contentPadding:
-                              EdgeInsets.fromLTRB(15.0, 12.0, 20.0, 15.0),
+                          EdgeInsets.fromLTRB(15.0, 12.0, 20.0, 15.0),
                           hintText: "Choose starting location",
                           hintStyle: TextStyle(color: Colors.grey),
                           border: OutlineInputBorder(
@@ -121,7 +120,7 @@ class _GoToPageState extends State<GoToPage> {
                     child: TypeAheadField(
                       textFieldConfiguration: TextFieldConfiguration(
                         focusNode:
-                            destinationTextField, //set the focus to the variable defined in definition of class
+                        destinationTextField, //set the focus to the variable defined in definition of class
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w400,
@@ -129,7 +128,7 @@ class _GoToPageState extends State<GoToPage> {
                         ),
                         decoration: InputDecoration(
                           contentPadding:
-                              EdgeInsets.fromLTRB(15.0, 12.0, 10.0, 12.0),
+                          EdgeInsets.fromLTRB(15.0, 12.0, 10.0, 12.0),
                           hintText: "Choose destination",
                           hintStyle: TextStyle(
                             color: Colors.grey,
