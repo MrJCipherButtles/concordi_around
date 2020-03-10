@@ -1,4 +1,4 @@
-import 'package:concordi_around/view/goto_page.dart';
+import 'package:concordi_around/view/go_to_page.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
 
