@@ -11,6 +11,9 @@ class ShuttleTimes {
   }
 
   String findNextShuttle() {
+    int weekday = DateTime.now().weekday;
+    TimeOfDay nextShuttle;
+    TimeOfDay now = TimeOfDay.now();
     List<TimeOfDay> sgwWeekdays = new List(36);
     List<TimeOfDay> sgwFriday = new List(26);
 
@@ -78,12 +81,9 @@ class ShuttleTimes {
     sgwFriday[24] = TimeOfDay(hour: 19, minute: 15);
     sgwFriday[25] = TimeOfDay(hour: 19, minute: 50);
 
-    if (DateTime.now().weekday == (6 | 7)) {
-      return "Next Shuttle: Monday " + formatTimeOfDay(sgwWeekdays[0]);
+    if (weekday == 6 || weekday == 7) {
+      return "Next Shuttle: Monday " + formatTimeOfDay(sgwWeekdays[0]);  
     } else {
-      TimeOfDay nextShuttle;
-      TimeOfDay now = TimeOfDay.now();
-
       TimeOfDay nextShuttleTime(List campus) {
         var i = 0;
         while (i < campus.length - 1) {
@@ -102,15 +102,14 @@ class ShuttleTimes {
         return nextShuttle;
       }
 
-      if (DateTime.now().weekday == (1 | 2 | 3 | 4)) {
+      if (weekday == 1 || weekday == 2 || weekday == 3 || weekday == 4) {
         if (now.hour >= 23) {
           return "Next Shuttle: " + formatTimeOfDay(sgwWeekdays[0]);
         } else {
           return "Next Shuttle: " +
               formatTimeOfDay(nextShuttleTime(sgwWeekdays));
         }
-      } else if (DateTime.now().weekday == 5 &&
-          (now.hour >= 19 && now.hour >= 50)) {
+      } else if (weekday == 5 && (now.hour >= 19 && now.minute >= 50)) {
         return "Next Shuttle: Monday " + formatTimeOfDay(sgwWeekdays[0]);
       } else {
         return "Next Shuttle: " + formatTimeOfDay(nextShuttleTime(sgwFriday));
