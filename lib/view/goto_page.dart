@@ -16,8 +16,8 @@ class GotoPage extends StatefulWidget {
 }
 
 class _GotoPageState extends State<GotoPage> {
-  Coordinate _searchedStart = null;
-  Coordinate _searchedDestination = null;
+  Coordinate _searchedStart;
+  Coordinate _searchedDestination;
 
   Widget build(BuildContext context) {
     return Scaffold(

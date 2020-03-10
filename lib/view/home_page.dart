@@ -2,8 +2,6 @@ import 'package:concordi_around/widget/drawer.dart';
 import 'package:concordi_around/widget/map.dart';
 import 'package:flutter/material.dart';
 
-import 'package:concordi_around/views/goto_page.dart';
-
 class HomePage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
