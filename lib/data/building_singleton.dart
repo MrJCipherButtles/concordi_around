@@ -28,9 +28,9 @@ class BuildingSingleton {
 
   List<Building> getBuildingList() {
     var result = <Building>[];
-    _buildings.forEach((k,v) => result.add(v));
+    _buildings.forEach((k, v) => result.add(v));
     return result;
-}
+  }
 
   List<RoomCoordinate> getAllRooms() {
     List<RoomCoordinate> roomList = <RoomCoordinate>[];
@@ -93,8 +93,27 @@ class BuildingSingleton {
     return result;
   }
 
+  Set<Marker> getFloorMarker(String buildingName, String floorName) {
+    Set<Marker> result = {};
+    for (var building in _buildings.values) {
+      if (building.building
+          .toUpperCase()
+          .contains(buildingName.toUpperCase())) {
+        if (building.floors != null) {
+          var floor = building.floors[floorName];
+          List<RoomCoordinate> markers = floor.coordinatesByGivenTypes({'MARKER'});
+          markers.forEach((f) => result.add(Marker(
+              markerId: MarkerId(f.roomId),
+              infoWindow: InfoWindow(title: f.roomId))));
+        }
+      }
+    }
+    return result;
+  }
+
   void _initHallEightFloor(Building hall) {
-    Floor eightFloor = Floor('8', polygons: floorPolygons['8'], coordinates: floorMarkers[8]);
+    Floor eightFloor =
+        Floor('8', polygons: floorPolygons['8'], coordinates: floorMarkers[8]);
     hall.addFloor(eightFloor);
   }
 

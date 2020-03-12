@@ -4,6 +4,7 @@ import 'package:concordi_around/data/building_singleton.dart';
 import 'package:concordi_around/model/building.dart';
 import 'package:concordi_around/model/coordinate.dart';
 import 'package:concordi_around/model/path.dart';
+import 'package:concordi_around/data/data_points.dart' as data;
 import 'package:concordi_around/provider/map_notifier.dart';
 import 'package:concordi_around/service/map_constant.dart' as constant;
 import 'package:concordi_around/service/map_helper.dart';
@@ -48,6 +49,7 @@ class _MapState extends State<Map> {
     buildingHighlights = BuildingSingleton().getOutdoorBuildingHighlights();
     eightFloorPolygon = BuildingSingleton().getFloorPolygon('hall', '8');
     ninthFloorPolygon = BuildingSingleton().getFloorPolygon('hall', '9');
+    initMarker();
 
     buildingHighlights.addAll(ninthFloorPolygon);
 
@@ -188,10 +190,8 @@ class _MapState extends State<Map> {
                       .goToSpecifiedLatLng(coordinate)
                 }),
         FloorSelectorEnterBuilding(
-          selectedFloor: (int floor) => {
-            updateFloor(floor),
-            mapNotifier.setSelectedFloor(floor)
-          },
+          selectedFloor: (int floor) =>
+              {updateFloor(floor), mapNotifier.setSelectedFloor(floor)},
           enterBuildingPressed: () => mapNotifier.goToHallSVG(),
         ),
       ],
@@ -200,25 +200,24 @@ class _MapState extends State<Map> {
 
   void updateFloor(int floor) {
     setState(() {
-      if(shortestPath != null) {
+      if (shortestPath != null) {
         Path path = shortestPath['$floor'];
         if (path != null) {
           direction = {path.toPolyline()};
-        }
-        else {
+        } else {
           direction = {};
         }
       }
-      if(floor == 9) {
+      if (floor == 9) {
         buildingHighlights.removeAll(eightFloorPolygon);
         buildingHighlights.addAll(ninthFloorPolygon);
-      }
-      else {
+      } else {
         buildingHighlights.removeAll(ninthFloorPolygon);
         buildingHighlights.addAll(eightFloorPolygon);
       }
     });
   }
+
   void _setStyle(GoogleMapController controller) async {
     print("Setting map style");
     String value = await DefaultAssetBundle.of(context)
@@ -252,6 +251,13 @@ class _MapState extends State<Map> {
     setState(() {
       direction = {shortestPath['9'].toPolyline()};
     });
+  }
+
+  void initMarker() {
+    data.floorMarkers['8'].forEach((f) => eightFloorMarker.add(Marker(
+        markerId: MarkerId(f.roomId),
+        infoWindow: InfoWindow(title: f.roomId),
+        position: f.toLatLng())));
   }
 
   // TODO: Create a clear shortest path function with exit navigation button
