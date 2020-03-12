@@ -49,8 +49,6 @@ class _MapState extends State<Map> {
     buildingHighlights = BuildingSingleton().getOutdoorBuildingHighlights();
     eightFloorPolygon = BuildingSingleton().getFloorPolygon('hall', '8');
     ninthFloorPolygon = BuildingSingleton().getFloorPolygon('hall', '9');
-    initMarker();
-
     buildingHighlights.addAll(ninthFloorPolygon);
 
     _geolocator = Geolocator()..forceAndroidLocationManager;
@@ -136,8 +134,10 @@ class _MapState extends State<Map> {
             if (MapHelper.isWithinHall(cameraPosition.target) &&
                 mapNotifier.showFloorPlan == false) {
               mapNotifier.setEnterBuildingVisibility(true);
+              setMarkers(eightFloorMarker);
             } else {
               mapNotifier.setEnterBuildingVisibility(false);
+              eightFloorMarker = {};
             }
             mapNotifier.setCampusLatLng(cameraPosition.target);
           },
@@ -253,11 +253,14 @@ class _MapState extends State<Map> {
     });
   }
 
-  void initMarker() {
-    data.floorMarkers['8'].forEach((f) => eightFloorMarker.add(Marker(
-        markerId: MarkerId(f.roomId),
-        infoWindow: InfoWindow(title: f.roomId),
-        position: f.toLatLng())));
+  void setMarkers(Set<Marker> markers) {
+    data.floorMarkers['8'].forEach((f) => eightFloorMarker.add(
+        Marker(
+            markerId: MarkerId(f.roomId),
+            infoWindow: InfoWindow(title: f.roomId),
+            position: f.toLatLng()
+
+        )));
   }
 
   // TODO: Create a clear shortest path function with exit navigation button
