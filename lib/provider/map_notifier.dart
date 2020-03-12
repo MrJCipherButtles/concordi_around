@@ -46,11 +46,12 @@ class MapNotifier with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> goToSpecifiedLatLng(Coordinate coordinate) async {
+  Future<void> goToSpecifiedLatLng(Future<Coordinate> coordinate) async {
     final GoogleMapController controller = await _completer.future;
-    if (coordinate != null) {
+    final Coordinate c = await coordinate;
+    if (c != null) {
       CameraPosition _newPosition = CameraPosition(
-          target: coordinate.toLatLng(), zoom: constant.CAMERA_DEFAULT_ZOOM);
+          target: c.toLatLng(), zoom: constant.CAMERA_DEFAULT_ZOOM);
       controller.animateCamera(CameraUpdate.newCameraPosition(_newPosition));
     }
   }

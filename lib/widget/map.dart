@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:concordi_around/data/building_singleton.dart';
 import 'package:concordi_around/model/building.dart';
 import 'package:concordi_around/model/coordinate.dart';
-import 'package:concordi_around/model/path.dart';
 import 'package:concordi_around/provider/map_notifier.dart';
 import 'package:concordi_around/service/map_constant.dart' as constant;
 import 'package:concordi_around/service/map_helper.dart';
@@ -170,7 +169,7 @@ class _MapState extends State<Map> {
               ]),
         ),
         SearchBar(
-            coordinate: (Coordinate coordinate) => {
+            coordinate: (Future<Coordinate> coordinate) => {
                   Provider.of<MapNotifier>(context, listen: false)
                       .goToSpecifiedLatLng(coordinate)
                 }),
@@ -216,9 +215,11 @@ class _MapState extends State<Map> {
     }
     var shortestPath = hall.shortestPath(start, end,
         isDisabilityFriendly: isDisabilityEnabled);
-    Path path = shortestPath['9'];
+    // TODO: setState of direction should be set by listening to selectedFloor MapNotifier instead of hardcoded '9'
     setState(() {
-      direction = {path.toPolyline()};
+      direction = {shortestPath['9'].toPolyline()};
     });
   }
+
+  // TODO: Create a clear shortest path function with exit navigation button
 }
