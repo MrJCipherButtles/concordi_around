@@ -1,5 +1,5 @@
-import 'package:concordi_around/models/building.dart';
-import 'package:concordi_around/models/coordinate.dart';
+import 'package:concordi_around/model/building.dart';
+import 'package:concordi_around/model/coordinate.dart';
 
 import 'data_points.dart';
 

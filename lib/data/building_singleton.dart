@@ -1,11 +1,11 @@
 import 'dart:math';
 
-import 'package:concordi_around/services/constants.dart';
+import 'package:concordi_around/service/map_constant.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import '../models/building.dart';
-import '../models/coordinate.dart';
-import '../models/floor.dart';
+import '../model/building.dart';
+import '../model/coordinate.dart';
+import '../model/floor.dart';
 import 'data_points.dart';
 import 'building_list.dart' as building_list_data;
 
@@ -31,6 +31,7 @@ class BuildingSingleton {
     _buildings.forEach((k,v) => result.add(v));
     return result;
 }
+
   List<RoomCoordinate> getAllRooms() {
     List<RoomCoordinate> roomList = <RoomCoordinate>[];
     for (Building building in this.buildings.values) {
