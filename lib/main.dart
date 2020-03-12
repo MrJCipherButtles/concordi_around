@@ -9,6 +9,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'ConcordiAround',
         home: MultiProvider(providers: [
           ChangeNotifierProvider(create: (context) => MapNotifier())
