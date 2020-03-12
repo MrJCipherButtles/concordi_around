@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:concordi_around/provider/map_notifier.dart';
+import 'package:provider/provider.dart';
 
 class BuildingPopup extends StatefulWidget {
   State<StatefulWidget> createState() {
@@ -8,14 +10,15 @@ class BuildingPopup extends StatefulWidget {
 }
 
 class _BuildingPopupState extends State<BuildingPopup> {
-
+  
   @override
   Widget build(BuildContext context) {
-
+    MapNotifier mapNotifier = Provider.of<MapNotifier>(context);
     return Visibility(
       maintainSize: true,
       maintainAnimation: true,
       maintainState: true,
+      visible: mapNotifier.showInfo,
       child:Container(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,

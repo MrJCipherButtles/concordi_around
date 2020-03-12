@@ -14,8 +14,14 @@ class MapNotifier with ChangeNotifier {
 
   bool showFloorPlan = false;
   bool showEnterBuilding = false;
+  bool showInfo = false;
   int selectedFloorPlan = 9;
   String currentCampus = 'SGW';
+  
+  void setPopupInfoVisibility(bool visibility) {
+    showInfo = visibility;
+    notifyListeners();
+  }
 
   void setFloorPlanVisibility(bool visibility) {
     showFloorPlan = visibility;
