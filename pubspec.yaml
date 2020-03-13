@@ -28,3 +28,4 @@ flutter:
    - assets/floorplans/Hall-9.svg
    - assets/map_style.json
    - assets/map_style_reset.json
+   - assets/icon/class_icon.png

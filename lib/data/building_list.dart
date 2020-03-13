@@ -22,8 +22,7 @@ Map<String, Building> buildings = {
       polygon: bounds['JW']),
 
   'H': Building('Henry F. Hall',
-      coordinate: Coordinate(45.49726, -73.57893, "0", "H", "SGW"),
-      polygon: bounds['H']),
+      coordinate: Coordinate(45.49726, -73.57893, "0", "H", "SGW")),
 
   //LOYOLA
   'VL': Building('Vanier Library',

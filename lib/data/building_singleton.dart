@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:concordi_around/service/map_constant.dart';
+import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../model/building.dart';
@@ -82,8 +83,8 @@ class BuildingSingleton {
                   polygonId:
                       PolygonId('${floor.floor}-${rnd.nextInt(100000000)}'),
                   points: points,
-                  fillColor: COLOR_CONCORDIA,
-                  strokeWidth: 2,
+                  fillColor: COLOR_CONCORDIA.withOpacity(0.4),
+                  strokeWidth: 3,
                   zIndex: 2));
             }
           }

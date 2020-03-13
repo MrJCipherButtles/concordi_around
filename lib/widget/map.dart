@@ -41,6 +41,8 @@ class _MapState extends State<Map> {
   Set<Polygon> ninthFloorPolygon;
   Set<Marker> ninthFloorMarker = {};
 
+  BitmapDescriptor pinLocationIcon;
+
   var shortestPath;
 
   @override
@@ -50,6 +52,12 @@ class _MapState extends State<Map> {
     eightFloorPolygon = BuildingSingleton().getFloorPolygon('hall', '8');
     ninthFloorPolygon = BuildingSingleton().getFloorPolygon('hall', '9');
     buildingHighlights.addAll(ninthFloorPolygon);
+
+    BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 2.5),
+        'assets/icon/class_icon.png').then((onValue) {
+      pinLocationIcon = onValue;
+    });
 
     _geolocator = Geolocator()..forceAndroidLocationManager;
     LocationOptions locationOptions = LocationOptions(
@@ -250,6 +258,7 @@ class _MapState extends State<Map> {
     data.floorMarkers['8'].forEach((f) => eightFloorMarker.add(
         Marker(
             markerId: MarkerId(f.roomId),
+            icon: pinLocationIcon,
             infoWindow: InfoWindow(title: f.roomId),
             position: f.toLatLng()
 
