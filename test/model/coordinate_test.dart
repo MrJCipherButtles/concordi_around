@@ -43,7 +43,7 @@ void main() {
     test('a1 == b should return false', (){
       expect(a1 == b, false);
     });
-    test('a1 != b should return false', (){
+    test('a1 != b should return true', (){
       expect(a1 != b, true);
     });
   });
