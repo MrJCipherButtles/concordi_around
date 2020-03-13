@@ -110,8 +110,14 @@ class _GotoPageState extends State<GotoPage> {
                     Expanded(
                       flex: 1,
                       child: IconButton(
-                        onPressed: null,
                         icon: Icon(Icons.swap_vert),
+                        onPressed: () {
+                          setState(() {
+                            var tmp = _searchedStart;
+                            _searchedStart = _searchedDestination;
+                            _searchedDestination = tmp;
+                          });
+                        },
                       ),
                     ),
                   ],
