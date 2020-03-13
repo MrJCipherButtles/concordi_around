@@ -255,7 +255,7 @@ class _MapState extends State<Map> {
   }
 
   void setMarkers(Set<Marker> markers) {
-    data.floorMarkers['8'].forEach((f) => eightFloorMarker.add(
+    data.floorMarkers['9'].forEach((f) => eightFloorMarker.add(
         Marker(
             markerId: MarkerId(f.roomId),
             icon: pinLocationIcon,
