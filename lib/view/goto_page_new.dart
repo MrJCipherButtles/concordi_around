@@ -211,7 +211,8 @@ class _GotoPageState extends State<GotoPage> {
           foregroundColor: Colors.white,
           child: Text("GO"),
           onPressed: () {
-            if (_searchedDestination != null) {
+            if (_searchedDestination != null &&
+                _searchedStart != _searchedDestination) {
               widget.confirmDirection(new List<Coordinate>.from(
                   [_searchedStart, _searchedDestination]));
               Navigator.pop(context);
