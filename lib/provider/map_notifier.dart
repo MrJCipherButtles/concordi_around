@@ -46,14 +46,23 @@ class MapNotifier with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> goToSpecifiedLatLng(Future<Coordinate> coordinate) async {
-    final GoogleMapController controller = await _completer.future;
-    final Coordinate c = await coordinate;
-    if (c != null) {
-      CameraPosition _newPosition = CameraPosition(
-          target: c.toLatLng(), zoom: constant.CAMERA_DEFAULT_ZOOM);
-      controller.animateCamera(CameraUpdate.newCameraPosition(_newPosition));
+//Must include a named parameter for coordinate OR future coordinate, NOT BOTH
+  Future<void> goToSpecifiedLatLng(
+      {Future<Coordinate> futureCoordinate, Coordinate coordinate}) async {
+    if ((futureCoordinate == null && coordinate == null) ||
+        (futureCoordinate != null && coordinate != null)) {
+      return;
     }
+    final GoogleMapController controller = await _completer.future;
+    Coordinate c;
+    if (coordinate != null) {
+      c = coordinate;
+    } else {
+      c = await futureCoordinate;
+    }
+    CameraPosition _newPosition = CameraPosition(
+        target: c.toLatLng(), zoom: constant.CAMERA_DEFAULT_ZOOM);
+    controller.animateCamera(CameraUpdate.newCameraPosition(_newPosition));
   }
 
   Future<void> goToHallSVG() async {
