@@ -123,21 +123,14 @@ class _MapState extends State<Map> {
           },
           onCameraMove: (CameraPosition cameraPosition) async {
             GoogleMapController _mapController = await _completer.future;
-            if (MapHelper.isWithinHallStrictBound(cameraPosition.target) &&
-                cameraPosition.zoom > constant.CAMERA_DEFAULT_ZOOM) {
+            if (MapHelper.isWithinHall(cameraPosition.target) && cameraPosition.zoom >= 18.5) {
               mapNotifier.setFloorPlanVisibility(true);
+              setMarkers(eightFloorMarker);
               _setStyle(_mapController);
             } else {
               mapNotifier.setFloorPlanVisibility(false);
-              _resetStyle(_mapController);
-            }
-            if (MapHelper.isWithinHall(cameraPosition.target) &&
-                mapNotifier.showFloorPlan == false) {
-              mapNotifier.setEnterBuildingVisibility(true);
-              setMarkers(eightFloorMarker);
-            } else {
-              mapNotifier.setEnterBuildingVisibility(false);
               eightFloorMarker = {};
+              _resetStyle(_mapController);
             }
             mapNotifier.setCampusLatLng(cameraPosition.target);
           },
