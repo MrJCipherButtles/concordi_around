@@ -360,7 +360,8 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
 
     double lat = location['lat'];
     double lng = location['lng'];
+    String building = result['name'];
 
-    return Coordinate(lat, lng, null, null, null);
+    return Coordinate(lat, lng, '', building, '');
   }
 }
