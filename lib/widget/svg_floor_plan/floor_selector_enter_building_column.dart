@@ -17,7 +17,7 @@ class FloorSelectorEnterBuilding extends StatefulWidget {
 class _FloorSelectorEnterBuildingState
     extends State<FloorSelectorEnterBuilding> {
   Widget build(BuildContext context) {
-    
+
     MapNotifier mapNotifier = Provider.of<MapNotifier>(context);
     List<bool> selectedFloor = [mapNotifier.selectedFloorPlan == 9,mapNotifier.selectedFloorPlan == 8]; // 9th floor selected
 
@@ -65,6 +65,9 @@ class _FloorSelectorEnterBuildingState
                     ),
                   ),
                 ),
+                SizedBox(
+                  height: 16,
+                )
               ],
             ),
           )
