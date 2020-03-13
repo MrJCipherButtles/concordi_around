@@ -30,4 +30,21 @@ void main() {
       expect(start.isAdjacent(end), true);
     });
   });
+  group('equality', (){
+    var a1 = Coordinate(45.49719, -73.57933, '8', 'Hall', 'SGW');
+    var a2 = Coordinate(45.49719, -73.57933, '8', 'Hall', 'SGW');
+    var b = Coordinate(45.49734, -73.57918, '8', 'Hall', 'SGW');
+    test('a1 == a2 should be return true', (){
+      expect(a1 == a2, true);
+    });
+    test('a1 != a2 should return false', (){
+      expect(a1 != a2, false);
+    });
+    test('a1 == b should return false', (){
+      expect(a1 == b, false);
+    });
+    test('a1 != b should return false', (){
+      expect(a1 != b, true);
+    });
+  });
 }
