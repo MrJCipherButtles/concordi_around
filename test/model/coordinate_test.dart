@@ -34,6 +34,12 @@ void main() {
     var a1 = Coordinate(45.49719, -73.57933, '8', 'Hall', 'SGW');
     var a2 = Coordinate(45.49719, -73.57933, '8', 'Hall', 'SGW');
     var b = Coordinate(45.49734, -73.57918, '8', 'Hall', 'SGW');
+    test('a1 == a1 should return true', (){
+      expect(a1 == a1, true);
+    });
+    test('a1 != a1 should return false', (){
+      expect(a1 != a1, false);
+    });
     test('a1 == a2 should be return true', (){
       expect(a1 == a2, true);
     });
