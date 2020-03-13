@@ -155,8 +155,14 @@ class _MapState extends State<Map> {
                         builder: (context) => GotoPage(
                           _position,
                           confirmDirection: (List<Coordinate> location) => {
-                            drawShortestPath(
-                                location[0], location[1], global.disabilityMode)
+                            (location[0] is RoomCoordinate &&
+                                    location[1] is RoomCoordinate)
+                                ? drawShortestPath(location[0], location[1],
+                                    global.disabilityMode)
+                                : null, //TODO: Set outdoor direction
+                            //Moves camera to the starting point
+                            mapNotifier.goToSpecifiedLatLng(
+                                coordinate: location[0]),
                           },
                         ),
                       ),
@@ -171,7 +177,7 @@ class _MapState extends State<Map> {
         SearchBar(
             coordinate: (Future<Coordinate> coordinate) => {
                   Provider.of<MapNotifier>(context, listen: false)
-                      .goToSpecifiedLatLng(coordinate)
+                      .goToSpecifiedLatLng(futureCoordinate: coordinate)
                 }),
         SVGFloorPlans(),
         FloorSelectorEnterBuilding(
