@@ -135,15 +135,22 @@ class _MapState extends State<Map> {
                       MaterialPageRoute(
                         builder: (context) => GotoPage(
                           _position,
-                          confirmDirection: (List<Coordinate> location) => {
-                            (location[0] is RoomCoordinate &&
-                                    location[1] is RoomCoordinate)
-                                ? drawShortestPath(location[0], location[1],
+                          startPointAndDestinationCoordinates: (List<Coordinate>
+                                  startPointAndDestinationCoordinates) =>
+                              {
+                            (startPointAndDestinationCoordinates[0]
+                                        is RoomCoordinate &&
+                                    startPointAndDestinationCoordinates[1]
+                                        is RoomCoordinate)
+                                ? drawShortestPath(
+                                    startPointAndDestinationCoordinates[0],
+                                    startPointAndDestinationCoordinates[1],
                                     global.disabilityMode)
                                 : null, //TODO: Set outdoor direction
                             //Moves camera to the starting point
                             mapNotifier.goToSpecifiedLatLng(
-                                coordinate: location[0]),
+                                coordinate:
+                                    startPointAndDestinationCoordinates[0]),
                           },
                         ),
                       ),

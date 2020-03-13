@@ -7,26 +7,27 @@ import 'package:geolocator/geolocator.dart';
 import '../global.dart' as global;
 
 class GotoPage extends StatefulWidget {
-  final Position _current;
+  final Position currentPosition;
   final Coordinate destination;
-  final Function(List<Coordinate>) confirmDirection;
+  final Function(List<Coordinate>) startPointAndDestinationCoordinates;
 
-  const GotoPage(this._current, {this.confirmDirection, this.destination});
+  const GotoPage(this.currentPosition,
+      {this.destination, this.startPointAndDestinationCoordinates});
 
   @override
   _GotoPageState createState() => _GotoPageState();
 }
 
 class _GotoPageState extends State<GotoPage> {
-  Coordinate _searchedStart;
-  Coordinate _searchedDestination;
+  Coordinate _startPoint;
+  Coordinate _destination;
 
   @override
   void initState() {
     super.initState();
-    _searchedStart = Coordinate(widget._current.latitude,
-        widget._current.longitude, '', "Your location", '');
-    _searchedDestination = widget.destination;
+    this._startPoint = Coordinate(widget.currentPosition.latitude,
+        widget.currentPosition.longitude, '', "Your location", '');
+    this._destination = widget.destination;
   }
 
   Widget build(BuildContext context) {
@@ -55,11 +56,11 @@ class _GotoPageState extends State<GotoPage> {
                           TextField(
                             decoration: InputDecoration(
                               hintStyle: TextStyle(
-                                  color: _searchedStart == null
+                                  color: this._startPoint == null
                                       ? Colors.grey
                                       : Colors.black),
-                              hintText: (_searchedStart != null)
-                                  ? _searchedStart.toString()
+                              hintText: (this._startPoint != null)
+                                  ? this._startPoint.toString()
                                   : "Choose starting point",
                               icon: Icon(Icons.my_location),
                             ),
@@ -70,7 +71,7 @@ class _GotoPageState extends State<GotoPage> {
                                 delegate: PositionedFloatingSearchBar(
                                     coordinate: (Future<Coordinate> val) {
                                   setState(() async {
-                                    _searchedStart = await val;
+                                    this._startPoint = await val;
                                     //Used to force a second refresh of the view
                                     setState(() {});
                                   });
@@ -81,11 +82,11 @@ class _GotoPageState extends State<GotoPage> {
                           TextField(
                             decoration: InputDecoration(
                               hintStyle: TextStyle(
-                                  color: _searchedDestination == null
+                                  color: this._destination == null
                                       ? Colors.grey
                                       : Colors.black),
-                              hintText: (_searchedDestination != null)
-                                  ? _searchedDestination.toString()
+                              hintText: (this._destination != null)
+                                  ? this._destination.toString()
                                   : 'Choose destination',
                               icon: Icon(Icons.location_on),
                             ),
@@ -96,7 +97,7 @@ class _GotoPageState extends State<GotoPage> {
                                 delegate: PositionedFloatingSearchBar(
                                     coordinate: (Future<Coordinate> val) {
                                   setState(() async {
-                                    _searchedDestination = await val;
+                                    this._destination = await val;
                                     //Used to force a second refresh of the view
                                     setState(() {});
                                   });
@@ -113,9 +114,9 @@ class _GotoPageState extends State<GotoPage> {
                         icon: Icon(Icons.swap_vert),
                         onPressed: () {
                           setState(() {
-                            var tmp = _searchedStart;
-                            _searchedStart = _searchedDestination;
-                            _searchedDestination = tmp;
+                            var tmp = this._startPoint;
+                            this._startPoint = this._destination;
+                            this._destination = tmp;
                           });
                         },
                       ),
@@ -217,10 +218,11 @@ class _GotoPageState extends State<GotoPage> {
           foregroundColor: Colors.white,
           child: Text("GO"),
           onPressed: () {
-            if (_searchedDestination != null &&
-                _searchedStart != _searchedDestination) {
-              widget.confirmDirection(new List<Coordinate>.from(
-                  [_searchedStart, _searchedDestination]));
+            if (this._destination != null &&
+                this._startPoint != this._destination) {
+              widget.startPointAndDestinationCoordinates(
+                  new List<Coordinate>.from(
+                      [this._startPoint, this._destination]));
               Navigator.pop(context);
             }
           }),
