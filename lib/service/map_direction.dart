@@ -7,7 +7,7 @@ import '../credential.dart';
 
 class MapDirection {
   // Google Directions API requests
-  Future<Direction> _getDirection(String origin, String destination,
+  Future<Direction> getDirection(String origin, String destination,
       [String mode = 'driving']) async {
     if (origin.isEmpty || destination.isEmpty) {
       throw ("Origin or destination is empty");

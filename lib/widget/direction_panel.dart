@@ -26,9 +26,7 @@ class _DirectionPanelState extends State<DirectionPanel> {
           visible: directionNotifier.showDirectionPanel,
           child: SlidingUpPanel(
             minHeight: 80,
-            panel: Center(
-              child: Text("Please turn left"),
-            ),
+            panelBuilder: (ScrollController sc) => _scrollingList(sc),
             collapsed: Container(
               decoration:
                   BoxDecoration(color: Colors.white, borderRadius: radius),
@@ -62,6 +60,27 @@ class _DirectionPanelState extends State<DirectionPanel> {
           ));
     });
   }
+
+  Widget _scrollingList(ScrollController sc){
+  return ListView.builder(
+    controller: sc,
+    itemCount: 20, // TODO Changes to directions.length
+    itemBuilder: (BuildContext context, int i){
+      return Padding(
+        padding: const EdgeInsets.only(left: 16),
+              child: Row(
+          children: <Widget>[
+            Icon(Icons.directions),
+            Container(
+              padding: const EdgeInsets.all(20),
+              child: Text("$i"),
+            ),
+          ],
+        ),
+      );
+    },
+  );
+}
 
   Icon getModeIcon(DrivingMode mode) {
     if(mode == DrivingMode.Car)
