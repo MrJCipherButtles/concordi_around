@@ -22,7 +22,7 @@ void main() {
     expect(find.byType(UserAccountsDrawerHeader), findsOneWidget);
     expect(find.byType(CircleAvatar), findsOneWidget);
     expect(find.byType(CheckboxListTile), findsOneWidget);
-    expect(find.byType(ListTile), findsNWidgets(5));
+    expect(find.byType(ListTile), findsNWidgets(6));
 
     //making sure that the correct logos are placed
     expect(find.byIcon(Icons.calendar_today), findsOneWidget);

@@ -4,11 +4,13 @@ import 'package:concordi_around/data/building_singleton.dart';
 import 'package:concordi_around/model/building.dart';
 import 'package:concordi_around/model/coordinate.dart';
 import 'package:concordi_around/model/path.dart';
+import 'package:concordi_around/provider/direction_notifier.dart';
 import 'package:concordi_around/provider/map_notifier.dart';
 import 'package:concordi_around/service/map_constant.dart' as constant;
 import 'package:concordi_around/service/map_helper.dart';
 import 'package:concordi_around/service/marker_helper.dart';
 import 'package:concordi_around/view/goto_page_new.dart';
+import 'package:concordi_around/widget/direction_panel.dart';
 import 'package:concordi_around/widget/search/main_search_bar.dart';
 import 'package:concordi_around/widget/svg_floor_plan/floor_selector_enter_building_column.dart';
 import 'package:flutter/material.dart';
@@ -55,7 +57,6 @@ class _MapState extends State<Map> {
     _geolocator = Geolocator()..forceAndroidLocationManager;
     LocationOptions locationOptions = LocationOptions(
         accuracy: LocationAccuracy.bestForNavigation, distanceFilter: 1);
-    updateLocation();
     _positionStream =
         _geolocator.getPositionStream(locationOptions).listen((Position pos) {
       setState(() {
@@ -75,27 +76,11 @@ class _MapState extends State<Map> {
     super.dispose();
   }
 
-  void updateLocation() async {
-    try {
-      final GoogleMapController controller = await _completer.future;
-      Position position = await _geolocator
-          .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
-          .timeout(new Duration(seconds: 5));
-      setState(() {
-        _position = position;
-        _cameraPosition = CameraPosition(
-            target: LatLng(_position.latitude, _position.longitude),
-            zoom: constant.CAMERA_DEFAULT_ZOOM);
-      });
-      controller.animateCamera(CameraUpdate.newCameraPosition(_cameraPosition));
-    } catch (e) {
-      print('Error in updateLocation: ${e.toString()}');
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     MapNotifier mapNotifier = Provider.of<MapNotifier>(context);
+    DirectionNotifier directionNotifier =
+        Provider.of<DirectionNotifier>(context);
     _completer = Provider.of<MapNotifier>(context, listen: false).getCompleter;
 
     if (_cameraPosition == null) {
@@ -165,9 +150,23 @@ class _MapState extends State<Map> {
                       MaterialPageRoute(
                         builder: (context) => GotoPage(
                           _position,
-                          confirmDirection: (List<Coordinate> location) => {
-                            drawShortestPath(
-                                location[0], location[1], global.disabilityMode)
+                          startPointAndDestinationCoordinates: (List<Coordinate>
+                                  startPointAndDestinationCoordinates) =>
+                              {
+                            directionNotifier.setShowDirectionPanel(true),
+                            (startPointAndDestinationCoordinates[0]
+                                        is RoomCoordinate &&
+                                    startPointAndDestinationCoordinates[1]
+                                        is RoomCoordinate)
+                                ? drawShortestPath(
+                                    startPointAndDestinationCoordinates[0],
+                                    startPointAndDestinationCoordinates[1],
+                                    global.disabilityMode)
+                                : null, //TODO: Set outdoor direction
+                            //Moves camera to the starting point
+                            mapNotifier.goToSpecifiedLatLng(
+                                coordinate:
+                                    startPointAndDestinationCoordinates[0]),
                           },
                         ),
                       ),
@@ -182,13 +181,14 @@ class _MapState extends State<Map> {
         SearchBar(
             coordinate: (Future<Coordinate> coordinate) => {
                   Provider.of<MapNotifier>(context, listen: false)
-                      .goToSpecifiedLatLng(coordinate)
+                      .goToSpecifiedLatLng(futureCoordinate: coordinate)
                 }),
         FloorSelectorEnterBuilding(
           selectedFloor: (int floor) =>
               {updateFloor(floor), mapNotifier.setSelectedFloor(floor)},
           enterBuildingPressed: () => mapNotifier.goToHallSVG(),
         ),
+        DirectionPanel(),
       ],
     );
   }
@@ -244,7 +244,7 @@ class _MapState extends State<Map> {
     BuildingSingleton buildingSingleton = new BuildingSingleton();
     Building hall = buildingSingleton.buildings['H'];
 
-    var shortestPath = hall.shortestPath(start, end,
+    shortestPath = hall.shortestPath(start, end,
         isDisabilityFriendly: isDisabilityEnabled);
     // TODO: setState of direction should be set by listening to selectedFloor MapNotifier instead of hardcoded '9'
     setState(() {
