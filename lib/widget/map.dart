@@ -3,10 +3,12 @@ import 'dart:async';
 import 'package:concordi_around/data/building_singleton.dart';
 import 'package:concordi_around/model/building.dart';
 import 'package:concordi_around/model/coordinate.dart';
+import 'package:concordi_around/provider/direction_notifier.dart';
 import 'package:concordi_around/provider/map_notifier.dart';
 import 'package:concordi_around/service/map_constant.dart' as constant;
 import 'package:concordi_around/service/map_helper.dart';
 import 'package:concordi_around/view/goto_page_new.dart';
+import 'package:concordi_around/widget/direction_panel.dart';
 import 'package:concordi_around/widget/search/main_search_bar.dart';
 import 'package:concordi_around/widget/svg_floor_plan/floor_selector_enter_building_column.dart';
 import 'package:concordi_around/widget/svg_floor_plan/svg_floor_plans.dart';
@@ -63,6 +65,8 @@ class _MapState extends State<Map> {
   @override
   Widget build(BuildContext context) {
     MapNotifier mapNotifier = Provider.of<MapNotifier>(context);
+    DirectionNotifier directionNotifier =
+        Provider.of<DirectionNotifier>(context);
     _completer = Provider.of<MapNotifier>(context, listen: false).getCompleter;
 
     if (_cameraPosition == null) {
@@ -138,6 +142,7 @@ class _MapState extends State<Map> {
                           startPointAndDestinationCoordinates: (List<Coordinate>
                                   startPointAndDestinationCoordinates) =>
                               {
+                            directionNotifier.setShowDirectionPanel(true),
                             (startPointAndDestinationCoordinates[0]
                                         is RoomCoordinate &&
                                     startPointAndDestinationCoordinates[1]
@@ -172,6 +177,7 @@ class _MapState extends State<Map> {
           selectedFloor: (int floor) => {mapNotifier.setSelectedFloor(floor)},
           enterBuildingPressed: () => mapNotifier.goToHallSVG(),
         ),
+        DirectionPanel(),
       ],
     );
   }
