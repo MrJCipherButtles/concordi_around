@@ -4,20 +4,31 @@ import 'package:concordi_around/widget/search/main_search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
-class GotoPage extends StatefulWidget {
-  final Position _current;
-  final Coordinate destination;
-  final Function(List<Coordinate>) confirmDirection;
+import '../global.dart' as global;
 
-  const GotoPage(this._current, {this.confirmDirection, this.destination});
+class GotoPage extends StatefulWidget {
+  final Position currentPosition;
+  final Coordinate destination;
+  final Function(List<Coordinate>) startPointAndDestinationCoordinates;
+
+  const GotoPage(this.currentPosition,
+      {this.destination, this.startPointAndDestinationCoordinates});
 
   @override
   _GotoPageState createState() => _GotoPageState();
 }
 
 class _GotoPageState extends State<GotoPage> {
-  Coordinate _searchedStart;
-  Coordinate _searchedDestination;
+  Coordinate _startPoint;
+  Coordinate _destination;
+
+  @override
+  void initState() {
+    super.initState();
+    this._startPoint = Coordinate(widget.currentPosition.latitude,
+        widget.currentPosition.longitude, '', "Your location", '');
+    this._destination = widget.destination;
+  }
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,11 +52,16 @@ class _GotoPageState extends State<GotoPage> {
                       flex: 8,
                       child: Column(
                         children: <Widget>[
+                          //This field is always "filled" by a value, default is current location
                           TextField(
                             decoration: InputDecoration(
-                              hintText: (_searchedStart == null)
-                                  ? "Current Location"
-                                  : _searchedStart.toString(),
+                              hintStyle: TextStyle(
+                                  color: this._startPoint == null
+                                      ? Colors.grey
+                                      : Colors.black),
+                              hintText: (this._startPoint != null)
+                                  ? this._startPoint.toString()
+                                  : "Choose starting point",
                               icon: Icon(Icons.my_location),
                             ),
                             readOnly: true,
@@ -55,7 +71,9 @@ class _GotoPageState extends State<GotoPage> {
                                 delegate: PositionedFloatingSearchBar(
                                     coordinate: (Future<Coordinate> val) {
                                   setState(() async {
-                                    _searchedStart = await val;
+                                    this._startPoint = await val;
+                                    //Used to force a second refresh of the view
+                                    setState(() {});
                                   });
                                 }),
                               );
@@ -63,11 +81,13 @@ class _GotoPageState extends State<GotoPage> {
                           ),
                           TextField(
                             decoration: InputDecoration(
-                              hintText: (_searchedDestination == null)
-                                  ? widget.destination == null
-                                      ? "Enter Destination"
-                                      : widget.destination
-                                  : _searchedDestination.toString(),
+                              hintStyle: TextStyle(
+                                  color: this._destination == null
+                                      ? Colors.grey
+                                      : Colors.black),
+                              hintText: (this._destination != null)
+                                  ? this._destination.toString()
+                                  : 'Choose destination',
                               icon: Icon(Icons.location_on),
                             ),
                             readOnly: true,
@@ -77,7 +97,9 @@ class _GotoPageState extends State<GotoPage> {
                                 delegate: PositionedFloatingSearchBar(
                                     coordinate: (Future<Coordinate> val) {
                                   setState(() async {
-                                    _searchedStart = await val;
+                                    this._destination = await val;
+                                    //Used to force a second refresh of the view
+                                    setState(() {});
                                   });
                                 }),
                               );
@@ -89,8 +111,14 @@ class _GotoPageState extends State<GotoPage> {
                     Expanded(
                       flex: 1,
                       child: IconButton(
-                        onPressed: null,
                         icon: Icon(Icons.swap_vert),
+                        onPressed: () {
+                          setState(() {
+                            var tmp = this._startPoint;
+                            this._startPoint = this._destination;
+                            this._destination = tmp;
+                          });
+                        },
                       ),
                     ),
                   ],
@@ -99,49 +127,80 @@ class _GotoPageState extends State<GotoPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Expanded(flex: 1, child: Container()),
-                    Expanded(
-                      flex: 1,
-                      child: Container(
-                        margin: EdgeInsets.only(top: 5, left: 2.5, right: 2.5),
-                        decoration: BoxDecoration(
-                            color: constant.COLOR_CONCORDIA,
-                            borderRadius:
-                                BorderRadius.circular(constant.BORDER_RADIUS)),
-                        child: IconButton(
-                            icon: Icon(Icons.directions_car),
-                            color: Colors.white,
-                            onPressed: () {
-                              Navigator.pop(context);
-                            }),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: IconButton(
-                          icon: Icon(Icons.directions_transit),
+                    Container(
+                      margin: EdgeInsets.only(top: 5),
+                      child: ToggleButtons(
+                          selectedColor: Colors.white,
                           color: Colors.black,
-                          onPressed: () {
-                            Navigator.pop(context);
+                          fillColor: Colors.transparent,
+                          renderBorder: false,
+                          children: <Widget>[
+                            Container(
+                              constraints: BoxConstraints(
+                                  minWidth:
+                                      MediaQuery.of(context).size.width / 6,
+                                  minHeight: double.infinity),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(
+                                    constant.BORDER_RADIUS),
+                                color: global.travelMode[0]
+                                    ? constant.COLOR_CONCORDIA
+                                    : Colors.transparent,
+                              ),
+                              child: Icon(Icons.directions_car),
+                            ),
+                            Container(
+                              constraints: BoxConstraints(
+                                  minWidth:
+                                      MediaQuery.of(context).size.width / 6,
+                                  minHeight: double.infinity),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(
+                                    constant.BORDER_RADIUS),
+                                color: global.travelMode[1]
+                                    ? constant.COLOR_CONCORDIA
+                                    : Colors.transparent,
+                              ),
+                              child: Icon(Icons.directions_transit),
+                            ),
+                            Container(
+                              constraints: BoxConstraints(
+                                  minWidth:
+                                      MediaQuery.of(context).size.width / 6,
+                                  minHeight: double.infinity),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(
+                                    constant.BORDER_RADIUS),
+                                color: global.travelMode[2]
+                                    ? constant.COLOR_CONCORDIA
+                                    : Colors.transparent,
+                              ),
+                              child: Icon(Icons.directions_bike),
+                            ),
+                            Container(
+                              constraints: BoxConstraints(
+                                  minWidth:
+                                      MediaQuery.of(context).size.width / 6,
+                                  minHeight: double.infinity),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(
+                                    constant.BORDER_RADIUS),
+                                color: global.travelMode[3]
+                                    ? constant.COLOR_CONCORDIA
+                                    : Colors.transparent,
+                              ),
+                              child: Icon(Icons.directions_walk),
+                            ),
+                          ],
+                          isSelected: global.travelMode,
+                          onPressed: (int index) {
+                            setState(() {
+                              global.travelMode = [false, false, false, false];
+                              global.travelMode[index] = true;
+                            });
                           }),
                     ),
-                    Expanded(
-                      flex: 1,
-                      child: IconButton(
-                          icon: Icon(Icons.directions_bike),
-                          color: Colors.black,
-                          onPressed: () {
-                            Navigator.pop(context);
-                          }),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: IconButton(
-                          icon: Icon(Icons.directions_walk),
-                          color: Colors.black,
-                          onPressed: () {
-                            Navigator.pop(context);
-                          }),
-                    ),
+                    //Add a flexible padding to the row
                     Expanded(
                       flex: 1,
                       child: Container(),
@@ -159,21 +218,13 @@ class _GotoPageState extends State<GotoPage> {
           foregroundColor: Colors.white,
           child: Text("GO"),
           onPressed: () {
-            _searchedDestination == null
-                ? null
-                : {
-                    _searchedStart == null
-                        ? widget.confirmDirection(new List<Coordinate>.from([
-                            //this is to return the current location however there is a type conflict
-                            //unable to test further because current location needs outside navigation
-                            //TODO: update to the right type
-                            //widget._current,
-                            _searchedDestination
-                          ])) //this doesn't work because of outside isnt implemented yet
-                        : widget.confirmDirection(new List<Coordinate>.from(
-                            [_searchedStart, _searchedDestination])),
-                    Navigator.pop(context)
-                  };
+            if (this._destination != null &&
+                this._startPoint != this._destination) {
+              widget.startPointAndDestinationCoordinates(
+                  new List<Coordinate>.from(
+                      [this._startPoint, this._destination]));
+              Navigator.pop(context);
+            }
           }),
     );
   }

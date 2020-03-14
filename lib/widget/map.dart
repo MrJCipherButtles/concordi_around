@@ -41,7 +41,6 @@ class _MapState extends State<Map> {
     _geolocator = Geolocator()..forceAndroidLocationManager;
     LocationOptions locationOptions = LocationOptions(
         accuracy: LocationAccuracy.bestForNavigation, distanceFilter: 1);
-    updateLocation();
     _positionStream =
         _geolocator.getPositionStream(locationOptions).listen((Position pos) {
       setState(() {
@@ -59,24 +58,6 @@ class _MapState extends State<Map> {
       _positionStream.cancel();
     }
     super.dispose();
-  }
-
-  void updateLocation() async {
-    try {
-      final GoogleMapController controller = await _completer.future;
-      Position position = await _geolocator
-          .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
-          .timeout(new Duration(seconds: 5));
-      setState(() {
-        _position = position;
-        _cameraPosition = CameraPosition(
-            target: LatLng(_position.latitude, _position.longitude),
-            zoom: constant.CAMERA_DEFAULT_ZOOM);
-      });
-      controller.animateCamera(CameraUpdate.newCameraPosition(_cameraPosition));
-    } catch (e) {
-      print('Error in updateLocation: ${e.toString()}');
-    }
   }
 
   @override
@@ -154,9 +135,22 @@ class _MapState extends State<Map> {
                       MaterialPageRoute(
                         builder: (context) => GotoPage(
                           _position,
-                          confirmDirection: (List<Coordinate> location) => {
-                            drawShortestPath(
-                                location[0], location[1], global.disabilityMode)
+                          startPointAndDestinationCoordinates: (List<Coordinate>
+                                  startPointAndDestinationCoordinates) =>
+                              {
+                            (startPointAndDestinationCoordinates[0]
+                                        is RoomCoordinate &&
+                                    startPointAndDestinationCoordinates[1]
+                                        is RoomCoordinate)
+                                ? drawShortestPath(
+                                    startPointAndDestinationCoordinates[0],
+                                    startPointAndDestinationCoordinates[1],
+                                    global.disabilityMode)
+                                : null, //TODO: Set outdoor direction
+                            //Moves camera to the starting point
+                            mapNotifier.goToSpecifiedLatLng(
+                                coordinate:
+                                    startPointAndDestinationCoordinates[0]),
                           },
                         ),
                       ),
@@ -171,7 +165,7 @@ class _MapState extends State<Map> {
         SearchBar(
             coordinate: (Future<Coordinate> coordinate) => {
                   Provider.of<MapNotifier>(context, listen: false)
-                      .goToSpecifiedLatLng(coordinate)
+                      .goToSpecifiedLatLng(futureCoordinate: coordinate)
                 }),
         SVGFloorPlans(),
         FloorSelectorEnterBuilding(
