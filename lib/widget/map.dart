@@ -91,7 +91,7 @@ class _MapState extends State<Map> {
     return Stack(
       children: <Widget>[
         Container(
-          child: GoogleMap(
+            child: GoogleMap(
           mapType: MapType.normal,
           myLocationEnabled: true,
           myLocationButtonEnabled: false,
