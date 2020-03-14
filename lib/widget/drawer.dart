@@ -58,7 +58,10 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
                     title: Text('Shuttle Schedule'),
                     onTap: () {
                       // Update the state of the app.
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShuttlePage()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ShuttlePage()));
                     },
                   ),
                   ListTile(
