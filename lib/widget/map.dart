@@ -9,6 +9,7 @@ import 'package:concordi_around/provider/map_notifier.dart';
 import 'package:concordi_around/service/map_constant.dart' as constant;
 import 'package:concordi_around/service/map_helper.dart';
 import 'package:concordi_around/service/marker_helper.dart';
+import 'package:concordi_around/service/polygon_helper.dart';
 import 'package:concordi_around/view/goto_page_new.dart';
 import 'package:concordi_around/widget/direction_panel.dart';
 import 'package:concordi_around/widget/search/main_search_bar.dart';
@@ -34,14 +35,11 @@ class _MapState extends State<Map> {
   CameraPosition _cameraPosition;
   StreamSubscription _positionStream;
   MarkerHelper markerHelper;
-
+  PolygonHelper polygonHelper;
   Set<Polyline> direction;
   Set<Polygon> buildingHighlights;
-
-  Set<Polygon> eightFloorPolygon;
   Set<Marker> mapMarkers = {};
 
-  Set<Polygon> ninthFloorPolygon;
 
   var shortestPath;
 
@@ -49,11 +47,9 @@ class _MapState extends State<Map> {
   void initState() {
     super.initState();
     buildingHighlights = BuildingSingleton().getOutdoorBuildingHighlights();
-    eightFloorPolygon = BuildingSingleton().getFloorPolygon('hall', '8');
-    ninthFloorPolygon = BuildingSingleton().getFloorPolygon('hall', '9');
-    buildingHighlights.addAll(ninthFloorPolygon);
+    polygonHelper = PolygonHelper();
     markerHelper = MarkerHelper();
-
+    buildingHighlights.addAll(polygonHelper.getFloorPolygon(9));
     _geolocator = Geolocator()..forceAndroidLocationManager;
     LocationOptions locationOptions = LocationOptions(
         accuracy: LocationAccuracy.bestForNavigation, distanceFilter: 1);
@@ -204,16 +200,14 @@ class _MapState extends State<Map> {
         }
       }
       if (floor == 9) {
-        buildingHighlights.removeAll(eightFloorPolygon);
-        buildingHighlights.addAll(ninthFloorPolygon);
+        buildingHighlights.removeAll(polygonHelper.getFloorPolygon(8));
         mapMarkers.removeAll(markerHelper.getFloorMarkers(8));
-        mapMarkers.addAll(markerHelper.getFloorMarkers(9));
       } else if (floor == 8) {
-        buildingHighlights.removeAll(ninthFloorPolygon);
-        buildingHighlights.addAll(eightFloorPolygon);
+        buildingHighlights.removeAll(polygonHelper.getFloorPolygon(9));
         mapMarkers.removeAll(markerHelper.getFloorMarkers(9));
-        mapMarkers.addAll(markerHelper.getFloorMarkers(8));
       }
+      mapMarkers.addAll(markerHelper.getFloorMarkers(floor));
+      buildingHighlights.addAll(polygonHelper.getFloorPolygon(floor));
     });
   }
 
