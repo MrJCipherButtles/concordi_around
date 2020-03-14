@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class ShuttleTimes {
-  List<TimeOfDay> sgwWeekdays = new List(36);
-  List<TimeOfDay> loyWeekdays = new List(37);
-  List<TimeOfDay> sgwFriday = new List(27);
-  List<TimeOfDay> loyFriday = new List(27);
-  List<TimeOfDay> sgwNextDepartures = new List();
-  List<TimeOfDay> loyNextDepartures = new List();
+  List<TimeOfDay> sgwWeekdays = List(36);
+  List<TimeOfDay> loyWeekdays = List(37);
+  List<TimeOfDay> sgwFriday = List(27);
+  List<TimeOfDay> loyFriday = List(27);
+  List<TimeOfDay> sgwNextDepartures = List();
+  List<TimeOfDay> loyNextDepartures = List();
   int weekday = DateTime.now().weekday;
   TimeOfDay nextShuttle;
   TimeOfDay now = TimeOfDay.now();
