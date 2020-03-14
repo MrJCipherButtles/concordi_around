@@ -18,7 +18,7 @@ class DirectionNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  void navigateByName(String origin, String destination) {
+  Future<Direction> navigateByName(String origin, String destination) async {
     String _transportationMode;
     switch(this.mode) {
       case DrivingMode.Car: {
@@ -43,11 +43,12 @@ class DirectionNotifier extends ChangeNotifier {
     }
 
     MapDirection _mapDirection = MapDirection();
+    Direction _direction = await _mapDirection.getDirection(origin, destination, _transportationMode);
 
-    // Direction direction = _mapDirection.getDirection(origin, destination, _transportationMode);
+    return _direction;
   }
 
-  void navigateByCoordinates(Coordinate originCoordinates, Coordinate destinationCoordinates) {
+  Future<Direction> navigateByCoordinates(Coordinate originCoordinates, Coordinate destinationCoordinates) async {
     String originLatitude = originCoordinates.lat.toString();
     String originLongitude = originCoordinates.lng.toString();
     String destinationLatitude = destinationCoordinates.lat.toString();
@@ -55,6 +56,6 @@ class DirectionNotifier extends ChangeNotifier {
     String origin = "$originLatitude,$originLongitude";
     String destination = "$destinationLatitude,$destinationLongitude";
 
-    navigateByName(origin, destination);
+    return navigateByName(origin, destination);
   }
 }

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:concordi_around/data/building_singleton.dart';
 import 'package:concordi_around/model/building.dart';
 import 'package:concordi_around/model/coordinate.dart';
+import 'package:concordi_around/model/direction.dart';
 import 'package:concordi_around/model/path.dart';
 import 'package:concordi_around/provider/direction_notifier.dart';
 import 'package:concordi_around/provider/map_notifier.dart';
@@ -159,7 +160,7 @@ class _MapState extends State<Map> {
                                     startPointAndDestinationCoordinates[1],
                                     global.disabilityMode)
                                 : 
-                                directionNotifier.navigateByCoordinates(startPointAndDestinationCoordinates[0], startPointAndDestinationCoordinates[1])
+                                direction = directionNotifier.navigateByCoordinates(startPointAndDestinationCoordinates[0], startPointAndDestinationCoordinates[1])
                                 ,
                             //Moves camera to the starting point
                             mapNotifier.goToSpecifiedLatLng(
@@ -211,6 +212,20 @@ class _MapState extends State<Map> {
       mapMarkers.addAll(markerHelper.getFloorMarkers(floor));
       buildingHighlights.addAll(polygonHelper.getFloorPolygon(floor));
     });
+  }
+
+  void _updatePolylines(Direction directionModel) {
+    Set<Polyline> _lines = {};
+
+    for (var leg in directionModel.routes.first.legs) {
+      for (var step in leg.steps) {
+        String polylineModelPoints = step.polyline.points;
+        // Polyline polyline = Polyline(points: )
+        // _lines.add(polyline);
+      }
+    }
+
+    direction = _lines;
   }
 
   void _setStyle(GoogleMapController controller) async {

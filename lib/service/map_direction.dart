@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import '../credential.dart';
 
 class MapDirection {
+  Direction currentDirection;
 
     // Google Directions API requests
   Future<Direction> getDirection(String origin, String destination, String mode) async {
@@ -19,8 +20,8 @@ class MapDirection {
     Response response = await Dio().get(request);
 
     final jsonResponse = jsonDecode(response.toString());
-    Direction direction = Direction.fromJson(jsonResponse);
+    currentDirection = Direction.fromJson(jsonResponse);
 
-    return direction;
+    return currentDirection;
   }
 }
