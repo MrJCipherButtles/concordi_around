@@ -225,6 +225,23 @@ class _GotoPageState extends State<GotoPage> {
                       [this._startPoint, this._destination]));
               Navigator.pop(context);
             }
+            else {
+              showDialog(
+                context: context,
+                builder: (_) => AlertDialog(
+                  title: Text("Alert"),
+                  content: Text("Please make sure you choose from and destination"),
+                      actions: <Widget>[
+                        FlatButton(child: Text("OK"), onPressed: () {
+                          setState(() {
+                            Navigator.pop(context);
+                          });
+                        },),
+                      ],
+                    ),
+                    barrierDismissible: false,
+              );
+            }
           }),
     );
   }
