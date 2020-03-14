@@ -4,10 +4,10 @@ import 'package:concordi_around/data/building_singleton.dart';
 import 'package:concordi_around/model/building.dart';
 import 'package:concordi_around/model/coordinate.dart';
 import 'package:concordi_around/model/path.dart';
-import 'package:concordi_around/data/data_points.dart' as data;
 import 'package:concordi_around/provider/map_notifier.dart';
 import 'package:concordi_around/service/map_constant.dart' as constant;
 import 'package:concordi_around/service/map_helper.dart';
+import 'package:concordi_around/service/marker_helper.dart';
 import 'package:concordi_around/view/goto_page_new.dart';
 import 'package:concordi_around/widget/search/main_search_bar.dart';
 import 'package:concordi_around/widget/svg_floor_plan/floor_selector_enter_building_column.dart';
@@ -31,22 +31,15 @@ class _MapState extends State<Map> {
   Position _position;
   CameraPosition _cameraPosition;
   StreamSubscription _positionStream;
+  MarkerHelper markerHelper;
 
   Set<Polyline> direction;
   Set<Polygon> buildingHighlights;
 
   Set<Polygon> eightFloorPolygon;
-  Set<Marker> eightFloorMarker = {};
+  Set<Marker> mapMarkers = {};
 
   Set<Polygon> ninthFloorPolygon;
-  Set<Marker> ninthFloorMarker = {};
-
-  BitmapDescriptor roomIcon;
-  BitmapDescriptor maleIcon;
-  BitmapDescriptor femaleIcon;
-  BitmapDescriptor wheelchairIcon;
-  BitmapDescriptor stairsIcon;
-  BitmapDescriptor escalatorIcon;
 
   var shortestPath;
 
@@ -57,43 +50,7 @@ class _MapState extends State<Map> {
     eightFloorPolygon = BuildingSingleton().getFloorPolygon('hall', '8');
     ninthFloorPolygon = BuildingSingleton().getFloorPolygon('hall', '9');
     buildingHighlights.addAll(ninthFloorPolygon);
-
-    BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(devicePixelRatio: 2.5),
-        'assets/icon/class_icon.png').then((onValue) {
-      roomIcon = onValue;
-    });
-
-    BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(devicePixelRatio: 2.5),
-        'assets/icon/male_icon.png').then((onValue) {
-      maleIcon = onValue;
-    });
-
-    BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(devicePixelRatio: 2.5),
-        'assets/icon/female_icon.png').then((onValue) {
-      femaleIcon = onValue;
-    });
-
-    BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(devicePixelRatio: 2.5),
-        'assets/icon/wheelchair_icon.png').then((onValue) {
-      wheelchairIcon = onValue;
-    });
-
-    BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(devicePixelRatio: 2.5),
-        'assets/icon/escalator_icon.png').then((onValue) {
-      escalatorIcon = onValue;
-    });
-
-    BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(devicePixelRatio: 2.5),
-        'assets/icon/stairs_icon.png').then((onValue) {
-      stairsIcon = onValue;
-    });
-
+    markerHelper = MarkerHelper();
 
     _geolocator = Geolocator()..forceAndroidLocationManager;
     LocationOptions locationOptions = LocationOptions(
@@ -160,20 +117,21 @@ class _MapState extends State<Map> {
           zoomGesturesEnabled: true,
           polygons: buildingHighlights,
           polylines: direction,
-          markers: eightFloorMarker,
+          markers: mapMarkers,
           initialCameraPosition: _cameraPosition,
           onMapCreated: (GoogleMapController controller) {
             _completer.complete(controller);
           },
           onCameraMove: (CameraPosition cameraPosition) async {
             GoogleMapController _mapController = await _completer.future;
-            if (MapHelper.isWithinHall(cameraPosition.target) && cameraPosition.zoom >= 18.5) {
+            if (MapHelper.isWithinHall(cameraPosition.target) &&
+                cameraPosition.zoom >= 18.5) {
               mapNotifier.setFloorPlanVisibility(true);
-              setMarkers(eightFloorMarker);
               _setStyle(_mapController);
+              mapMarkers.addAll(
+                  markerHelper.getFloorMarkers(mapNotifier.selectedFloorPlan));
             } else {
               mapNotifier.setFloorPlanVisibility(false);
-              eightFloorMarker = {};
               _resetStyle(_mapController);
             }
             mapNotifier.setCampusLatLng(cameraPosition.target);
@@ -248,25 +206,29 @@ class _MapState extends State<Map> {
       if (floor == 9) {
         buildingHighlights.removeAll(eightFloorPolygon);
         buildingHighlights.addAll(ninthFloorPolygon);
-      } else {
+        mapMarkers.removeAll(markerHelper.getFloorMarkers(8));
+        mapMarkers.addAll(markerHelper.getFloorMarkers(9));
+      } else if (floor == 8) {
         buildingHighlights.removeAll(ninthFloorPolygon);
         buildingHighlights.addAll(eightFloorPolygon);
+        mapMarkers.removeAll(markerHelper.getFloorMarkers(9));
+        mapMarkers.addAll(markerHelper.getFloorMarkers(8));
       }
     });
   }
 
   void _setStyle(GoogleMapController controller) async {
-    print("Setting map style");
     String value = await DefaultAssetBundle.of(context)
         .loadString('assets/map_style.json');
     controller.setMapStyle(value);
   }
 
   void _resetStyle(GoogleMapController controller) async {
-    print("Reseting");
     String value = await DefaultAssetBundle.of(context)
         .loadString('assets/map_style_reset.json');
     controller.setMapStyle(value);
+    mapMarkers.removeAll(markerHelper.getFloorMarkers(8));
+    mapMarkers.removeAll(markerHelper.getFloorMarkers(9));
   }
 
   void goToCurrent() async {
@@ -288,41 +250,6 @@ class _MapState extends State<Map> {
     setState(() {
       direction = {shortestPath['9'].toPolyline()};
     });
-  }
-
-  void setMarkers(Set<Marker> markers) {
-    for(RoomCoordinate room in data.floorMarkers['8']) {
-      BitmapDescriptor icon;
-
-      String roomName = room.roomId;
-
-      if(roomName == 'MW') {
-        icon = maleIcon;
-      }
-      else if (roomName == 'WW') {
-        icon = femaleIcon;
-      }
-      else if (roomName.contains('EL')) {
-        icon = wheelchairIcon;
-      }
-      else if (roomName.contains('STAIRS')) {
-        icon = stairsIcon;
-      }
-      else if (roomName.contains('ESC')) {
-        icon = escalatorIcon;
-      }
-      else {
-        icon = roomIcon;
-      }
-
-      eightFloorMarker.add(
-          Marker(
-              markerId: MarkerId(room.roomId),
-              icon: icon,
-              infoWindow: InfoWindow(title: room.roomId),
-              position: room.toLatLng()
-          ));
-    }
   }
 
   // TODO: Create a clear shortest path function with exit navigation button
