@@ -36,7 +36,7 @@ class _DirectionPanelState extends State<DirectionPanel> {
                 child: Row(
                   children: <Widget>[
                     SizedBox(width: 16),
-                    Icon(Icons.directions_car),
+                    getModeIcon(directionNotifier.mode),
                     SizedBox(width: 16),
                     Text(
                       "Your estimated time is 10 min",
@@ -61,5 +61,15 @@ class _DirectionPanelState extends State<DirectionPanel> {
             borderRadius: radius,
           ));
     });
+  }
+
+  Icon getModeIcon(DrivingMode mode) {
+    if(mode == DrivingMode.Car)
+    return Icon(Icons.directions_car);
+    else if (mode == DrivingMode.Bus)
+    return Icon(Icons.directions_bus);
+    else if (mode == DrivingMode.Bike)
+    return Icon(Icons.directions_bike);
+    return Icon(Icons.directions_walk);
   }
 }
