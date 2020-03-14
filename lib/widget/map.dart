@@ -41,7 +41,12 @@ class _MapState extends State<Map> {
   Set<Polygon> ninthFloorPolygon;
   Set<Marker> ninthFloorMarker = {};
 
-  BitmapDescriptor pinLocationIcon;
+  BitmapDescriptor roomIcon;
+  BitmapDescriptor maleIcon;
+  BitmapDescriptor femaleIcon;
+  BitmapDescriptor wheelchairIcon;
+  BitmapDescriptor stairsIcon;
+  BitmapDescriptor escalatorIcon;
 
   var shortestPath;
 
@@ -56,8 +61,39 @@ class _MapState extends State<Map> {
     BitmapDescriptor.fromAssetImage(
         ImageConfiguration(devicePixelRatio: 2.5),
         'assets/icon/class_icon.png').then((onValue) {
-      pinLocationIcon = onValue;
+      roomIcon = onValue;
     });
+
+    BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 2.5),
+        'assets/icon/male_icon.png').then((onValue) {
+      maleIcon = onValue;
+    });
+
+    BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 2.5),
+        'assets/icon/female_icon.png').then((onValue) {
+      femaleIcon = onValue;
+    });
+
+    BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 2.5),
+        'assets/icon/wheelchair_icon.png').then((onValue) {
+      wheelchairIcon = onValue;
+    });
+
+    BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 2.5),
+        'assets/icon/escalator_icon.png').then((onValue) {
+      escalatorIcon = onValue;
+    });
+
+    BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 2.5),
+        'assets/icon/stairs_icon.png').then((onValue) {
+      stairsIcon = onValue;
+    });
+
 
     _geolocator = Geolocator()..forceAndroidLocationManager;
     LocationOptions locationOptions = LocationOptions(
@@ -255,14 +291,38 @@ class _MapState extends State<Map> {
   }
 
   void setMarkers(Set<Marker> markers) {
-    data.floorMarkers['9'].forEach((f) => eightFloorMarker.add(
-        Marker(
-            markerId: MarkerId(f.roomId),
-            icon: pinLocationIcon,
-            infoWindow: InfoWindow(title: f.roomId),
-            position: f.toLatLng()
+    for(RoomCoordinate room in data.floorMarkers['8']) {
+      BitmapDescriptor icon;
 
-        )));
+      String roomName = room.roomId;
+
+      if(roomName == 'MW') {
+        icon = maleIcon;
+      }
+      else if (roomName == 'WW') {
+        icon = femaleIcon;
+      }
+      else if (roomName.contains('EL')) {
+        icon = wheelchairIcon;
+      }
+      else if (roomName.contains('STAIRS')) {
+        icon = stairsIcon;
+      }
+      else if (roomName.contains('ESC')) {
+        icon = escalatorIcon;
+      }
+      else {
+        icon = roomIcon;
+      }
+
+      eightFloorMarker.add(
+          Marker(
+              markerId: MarkerId(room.roomId),
+              icon: icon,
+              infoWindow: InfoWindow(title: room.roomId),
+              position: room.toLatLng()
+          ));
+    }
   }
 
   // TODO: Create a clear shortest path function with exit navigation button
