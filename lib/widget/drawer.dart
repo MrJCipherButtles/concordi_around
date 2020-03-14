@@ -14,7 +14,7 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
     return ClipRRect(
       borderRadius: BorderRadius.only(
           topRight: Radius.circular(constant.BORDER_RADIUS),
-          bottomRight: Radius.circular(20)),
+          bottomRight: Radius.circular(constant.BORDER_RADIUS)),
       child: Drawer(
         child: Column(
           children: <Widget>[
