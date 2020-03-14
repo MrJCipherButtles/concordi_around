@@ -16,11 +16,6 @@ dependencies:
   provider: ^4.0.2
   dio: ^3.0.9
   uuid: ^2.0.4
-
-  #Sliding Up Panel
-  sliding_up_panel: ^1.0.0
-
-  #DateFormat
   intl: ^0.15.8
 
 dev_dependencies:
