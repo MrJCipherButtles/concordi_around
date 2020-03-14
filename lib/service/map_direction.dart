@@ -20,7 +20,7 @@ class MapDirection {
     Response response = await Dio().get(request);
 
     final jsonResponse = json.decode(response.data);
-    Direction direction = new Direction.fromJson(jsonResponse);
+    Direction direction = Direction.fromJson(jsonResponse);
 
     return direction;
   }
