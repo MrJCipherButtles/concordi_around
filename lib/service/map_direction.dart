@@ -19,8 +19,6 @@ class MapDirection {
         '$baseURL?origin=$origin&destination=$destination&mode=$mode&key=$DIRECTIONS_API_KEY';
     Response response = await Dio().get(request);
 
-    print(response.data);
-
     final jsonResponse = json.decode(response.data);
     Direction direction = new Direction.fromJson(jsonResponse);
 
