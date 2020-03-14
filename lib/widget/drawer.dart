@@ -1,5 +1,6 @@
 import 'package:concordi_around/service/map_constant.dart' as constant;
 import 'package:flutter/material.dart';
+import 'package:concordi_around/view/shuttle_page.dart';
 
 import '../global.dart' as global;
 
@@ -14,7 +15,7 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
     return ClipRRect(
       borderRadius: BorderRadius.only(
           topRight: Radius.circular(constant.BORDER_RADIUS),
-          bottomRight: Radius.circular(20)),
+          bottomRight: Radius.circular(constant.BORDER_RADIUS)),
       child: Drawer(
         child: Column(
           children: <Widget>[
@@ -50,6 +51,17 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
                     onTap: () {
                       // Update the state of the app.
                       Navigator.pop(context);
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.airport_shuttle),
+                    title: Text('Shuttle Schedule'),
+                    onTap: () {
+                      // Update the state of the app.
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ShuttlePage()));
                     },
                   ),
                   ListTile(

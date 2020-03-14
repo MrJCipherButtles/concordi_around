@@ -3,7 +3,7 @@ description: ConcordiaAround is a campus guide mobile application for Concordia 
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.2.0 <3.0.0"
+  sdk: ">=2.2.2 <3.0.0"
 
 dependencies:
   flutter:
@@ -16,6 +16,8 @@ dependencies:
   provider: ^4.0.2
   dio: ^3.0.9
   uuid: ^2.0.4
+  sliding_up_panel: ^1.0.0
+  intl: ^0.15.8
 
 dev_dependencies:
   flutter_test:
@@ -28,3 +30,4 @@ flutter:
    - assets/floorplans/Hall-9.svg
    - assets/map_style.json
    - assets/map_style_reset.json
+   - assets/icon/

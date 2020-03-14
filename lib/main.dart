@@ -1,3 +1,4 @@
+import 'package:concordi_around/provider/direction_notifier.dart';
 import 'package:concordi_around/provider/map_notifier.dart';
 import 'package:concordi_around/view/home_page.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,10 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'ConcordiAround',
         home: MultiProvider(providers: [
-          ChangeNotifierProvider(create: (context) => MapNotifier())
+          ChangeNotifierProvider(
+            create: (context) => MapNotifier(),
+          ),
+          ChangeNotifierProvider(create: (context) => DirectionNotifier())
         ], child: HomePage()));
   }
 }
