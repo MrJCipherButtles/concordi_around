@@ -76,8 +76,8 @@ class _GotoPageState extends State<GotoPage> {
                                 context: context,
                                 delegate: PositionedFloatingSearchBar(
                                     coordinate: (Future<Coordinate> val) {
-                                      setState(() async {
-                                        _searchedStart = await val;
+                                  setState(() async {
+                                    _searchedStart = await val;
                                   });
                                 }),
                               );
