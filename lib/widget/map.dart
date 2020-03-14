@@ -158,7 +158,9 @@ class _MapState extends State<Map> {
                                     startPointAndDestinationCoordinates[0],
                                     startPointAndDestinationCoordinates[1],
                                     global.disabilityMode)
-                                : null, //TODO: Set outdoor direction
+                                : 
+                                directionNotifier.navigateByCoordinates(startPointAndDestinationCoordinates[0], startPointAndDestinationCoordinates[1])
+                                ,
                             //Moves camera to the starting point
                             mapNotifier.goToSpecifiedLatLng(
                                 coordinate:
