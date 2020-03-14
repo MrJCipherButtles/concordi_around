@@ -151,6 +151,7 @@ class ShuttleTimes {
     return findNextShuttleTime(loyWeekdays, loyFriday);
   }
 
+  //Depending on the day of the week, and the time of the days, returns the time for the soonest shuttle available 
   TimeOfDay findNextShuttleTime(List weekdays, List fridays) {
     if (weekday == 6 || weekday == 7) {
       return (weekdays[0]);
@@ -193,6 +194,7 @@ class ShuttleTimes {
     }
   }
 
+  //Based on the current time of the day, returns all future departures remaining
   void nextShuttleDepartures(List shuttles, List fridays, List weekdays,
       List nextDepartures, TimeOfDay nextShuttleTime) {
     var i = 0;
