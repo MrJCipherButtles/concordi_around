@@ -5,15 +5,15 @@ class Direction {
 
   Direction.fromJson(Map<String, dynamic> json) {
     if (json['routes'] != null) {
-      routes = new List<Routes>();
+      routes = List<Routes>();
       json['routes'].forEach((v) {
-        routes.add(new Routes.fromJson(v));
+        routes.add(Routes.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     if (this.routes != null) {
       data['routes'] = this.routes.map((v) => v.toJson()).toList();
     }
@@ -44,29 +44,27 @@ class Routes {
   Routes.fromJson(Map<String, dynamic> json) {
     summary = json['summary'];
     if (json['legs'] != null) {
-      legs = new List<Legs>();
+      legs = List<Legs>();
       json['legs'].forEach((v) {
-        legs.add(new Legs.fromJson(v));
+        legs.add(Legs.fromJson(v));
       });
     }
-    duration = json['duration'] != null
-        ? new Duration.fromJson(json['duration'])
-        : null;
-    distance = json['distance'] != null
-        ? new Duration.fromJson(json['distance'])
-        : null;
+    duration =
+        json['duration'] != null ? Duration.fromJson(json['duration']) : null;
+    distance =
+        json['distance'] != null ? Duration.fromJson(json['distance']) : null;
     startLocation = json['start_location'] != null
-        ? new LocationModel.fromJson(json['start_location'])
+        ? LocationModel.fromJson(json['start_location'])
         : null;
     endLocation = json['end_location'] != null
-        ? new LocationModel.fromJson(json['end_location'])
+        ? LocationModel.fromJson(json['end_location'])
         : null;
     startAddress = json['start_address'];
     endAddress = json['end_address'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['summary'] = this.summary;
     if (this.legs != null) {
       data['legs'] = this.legs.map((v) => v.toJson()).toList();
@@ -96,15 +94,15 @@ class Legs {
 
   Legs.fromJson(Map<String, dynamic> json) {
     if (json['steps'] != null) {
-      steps = new List<Steps>();
+      steps = List<Steps>();
       json['steps'].forEach((v) {
-        steps.add(new Steps.fromJson(v));
+        steps.add(Steps.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     if (this.steps != null) {
       data['steps'] = this.steps.map((v) => v.toJson()).toList();
     }
@@ -129,21 +127,20 @@ class Steps {
   Steps.fromJson(Map<String, dynamic> json) {
     travelMode = json['travel_mode'];
     startLocation = json['start_location'] != null
-        ? new LocationModel.fromJson(json['start_location'])
+        ? LocationModel.fromJson(json['start_location'])
         : null;
     endLocation = json['end_location'] != null
-        ? new LocationModel.fromJson(json['end_location'])
+        ? LocationModel.fromJson(json['end_location'])
         : null;
     polyline = json['polyline'] != null
-        ? new PolylineModel.fromJson(json['polyline'])
+        ? PolylineModel.fromJson(json['polyline'])
         : null;
-    duration = json['duration'] != null
-        ? new Duration.fromJson(json['duration'])
-        : null;
+    duration =
+        json['duration'] != null ? Duration.fromJson(json['duration']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['travel_mode'] = this.travelMode;
     if (this.startLocation != null) {
       data['start_location'] = this.startLocation.toJson();
@@ -173,7 +170,7 @@ class LocationModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['lat'] = this.lat;
     data['lng'] = this.lng;
     return data;
@@ -190,7 +187,7 @@ class PolylineModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['points'] = this.points;
     return data;
   }
@@ -208,7 +205,7 @@ class Duration {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['value'] = this.value;
     data['text'] = this.text;
     return data;
