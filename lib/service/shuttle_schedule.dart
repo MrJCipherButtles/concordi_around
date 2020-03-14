@@ -6,21 +6,13 @@ class ShuttleTimes {
   List<TimeOfDay> loyWeekdays = new List(37);
   List<TimeOfDay> sgwFriday = new List(27);
   List<TimeOfDay> loyFriday = new List(27);
-  List<TimeOfDay> nextDepratures = new List(); 
-  List<TimeOfDay> loyNextDepratures = new List(); 
+  List<TimeOfDay> sgwNextDepartures = new List();
+  List<TimeOfDay> loyNextDepartures = new List();
   int weekday = DateTime.now().weekday;
   TimeOfDay nextShuttle;
   TimeOfDay now = TimeOfDay.now();
-  
-  String formatTimeOfDay(TimeOfDay today) {
-    final now = new DateTime.now();
-    final dt = DateTime(now.year, now.month, now.day, today.hour, today.minute);
-    final format = DateFormat.jm();
 
-    return format.format(dt);
-  }
-
-  TimeOfDay findNextShuttle() {
+  TimeOfDay findNextShuttleSGW() {
     sgwWeekdays[0] = TimeOfDay(hour: 7, minute: 45);
     sgwWeekdays[1] = TimeOfDay(hour: 8, minute: 05);
     sgwWeekdays[2] = TimeOfDay(hour: 8, minute: 20);
@@ -86,38 +78,7 @@ class ShuttleTimes {
     sgwFriday[25] = TimeOfDay(hour: 19, minute: 15);
     sgwFriday[26] = TimeOfDay(hour: 19, minute: 50);
 
-    if (weekday == 6 || weekday == 7) {
-      return (sgwWeekdays[0]);  
-    } else {
-      TimeOfDay nextShuttleTime(List campus) {
-        var i = 0;
-        while (i < campus.length) {
-          nextShuttle = campus[i];
-          if (nextShuttle.hour == now.hour &&
-              nextShuttle.minute >= now.minute) {
-            nextShuttle = campus[i];
-            break;
-          } else if (nextShuttle.hour > now.hour) {
-            nextShuttle = campus[i];
-            break;
-          }
-          i++;
-        }
-        return nextShuttle;
-      }
-
-      if (weekday == 1 || weekday == 2 || weekday == 3 || weekday == 4) {
-        if (now.hour >= 23) {
-          return sgwWeekdays[0];
-        } else {
-          return nextShuttleTime(sgwWeekdays);
-        }
-      } else if (weekday == 5 && ((now.hour >= 19 && now.minute>=50) || now.hour >=20)) {
-        return sgwWeekdays[0];
-      } else {
-        return (nextShuttleTime(sgwFriday));
-      }
-    }
+    return findNextShuttleTime(sgwWeekdays, sgwFriday);
   }
 
   TimeOfDay findNextShuttleLOYOLA() {
@@ -187,19 +148,23 @@ class ShuttleTimes {
     loyFriday[25] = TimeOfDay(hour: 19, minute: 15);
     loyFriday[26] = TimeOfDay(hour: 19, minute: 50);
 
+    return findNextShuttleTime(loyWeekdays, loyFriday);
+  }
+
+  TimeOfDay findNextShuttleTime(List weekdays, List fridays) {
     if (weekday == 6 || weekday == 7) {
-      return (loyWeekdays[0]);  
+      return (weekdays[0]);
     } else {
-      TimeOfDay nextShuttleTime(List campus) {
+      TimeOfDay nextShuttleTime(List shuttles) {
         var i = 0;
-        while (i < campus.length) {
-          nextShuttle = campus[i];
+        while (i < shuttles.length) {
+          nextShuttle = shuttles[i];
           if (nextShuttle.hour == now.hour &&
               nextShuttle.minute >= now.minute) {
-            nextShuttle = campus[i];
+            nextShuttle = shuttles[i];
             break;
           } else if (nextShuttle.hour > now.hour) {
-            nextShuttle = campus[i];
+            nextShuttle = shuttles[i];
             break;
           }
           i++;
@@ -207,49 +172,62 @@ class ShuttleTimes {
         return nextShuttle;
       }
 
-      if (weekday == 1 || weekday == 2 || weekday == 3 || weekday == 4) {
+      if (weekday == 1 || weekday == 2 || weekday == 3) {
         if (now.hour >= 23) {
-          return loyWeekdays[0];
+          return weekdays[0];
         } else {
-          return nextShuttleTime(loyWeekdays);
+          return nextShuttleTime(weekdays);
         }
-      } else if (weekday == 5 && ((now.hour >= 19 && now.minute >= 50) || now.hour >=20)) {
-        return loyWeekdays[0];
+      } else if (weekday == 4) {
+        if (now.hour < 23) {
+          return nextShuttleTime(weekdays);
+        } else {
+          return fridays[0];
+        }
+      } else if (weekday == 5 &&
+          ((now.hour >= 19 && now.minute >= 50) || now.hour >= 20)) {
+        return weekdays[0];
       } else {
-        return (nextShuttleTime(loyFriday));
+        return nextShuttleTime(fridays);
       }
     }
   }
 
-  void nextDepartures(List campus)
-  {
-    var i=0; 
-    while (i < campus.length) {
-      if((campus[i].hour == findNextShuttle().hour && campus[i].minute >= findNextShuttle().minute) || (campus[i].hour > findNextShuttle().hour))      
-      {
-        if(weekday == 5 && ((now.hour <= 19 && now.minute <= 50) || now.hour <20)){
-          nextDepratures.add(sgwFriday[i]); 
+  void nextShuttleDepartures(List shuttles, List fridays, List weekdays,
+      List nextDepartures, TimeOfDay nextShuttleTime) {
+    var i = 0;
+    while (i < shuttles.length) {
+      if ((shuttles[i].hour == nextShuttleTime.hour &&
+              shuttles[i].minute >= nextShuttleTime.minute) ||
+          (shuttles[i].hour > nextShuttleTime.hour)) {
+        if (weekday == 5 &&
+                ((now.hour <= 19 && now.minute <= 50) || now.hour < 20) ||
+            (weekday == 4 && now.hour >= 23)) {
+          nextDepartures.add(fridays[i]);
         } else {
-          nextDepratures.add(sgwWeekdays[i]);
+          nextDepartures.add(weekdays[i]);
         }
       }
       i++;
     }
   }
 
-  void loyNextDepartures(List campus)
-  {
-    var i=0; 
-    while (i < campus.length) {
-      if((campus[i].hour == findNextShuttleLOYOLA().hour && campus[i].minute >= findNextShuttleLOYOLA().minute) || (campus[i].hour > findNextShuttleLOYOLA().hour))      
-      {
-        if(weekday == 5 && ((now.hour <= 19 && now.minute <= 50) || now.hour <20)){
-        loyNextDepratures.add(loyFriday[i]); 
-        }else{
-          loyNextDepratures.add(loyWeekdays[i]);
-        }
-      }
-      i++;
+  String formatTimeOfDay(TimeOfDay today) {
+    final now = new DateTime.now();
+    final dt = DateTime(now.year, now.month, now.day, today.hour, today.minute);
+    final format = DateFormat.jm();
+
+    return format.format(dt);
+  }
+
+  String listViewText() {
+    if (weekday == 6 ||
+        weekday == 7 ||
+        (weekday == 5 &&
+            ((now.hour >= 19 && now.minute >= 20) || now.hour >= 20))) {
+      return "Scheduled for Monday · ";
+    } else {
+      return "Scheduled · ";
     }
   }
 }
