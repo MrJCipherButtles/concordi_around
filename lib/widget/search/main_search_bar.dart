@@ -156,7 +156,6 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
                   PlaceItem selected = _history[index];
                   Navigator.pop(context);
                   this.coordinate(_getPlaceDetails(selected.placeId));
-                  _sessionToken = null;
                 },
                 leading: Icon(Icons.place),
                 title: Text(_history[index].description),
@@ -203,8 +202,6 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
                       PlaceItem selected = places[index];
                       Navigator.pop(context);
                       this.coordinate(_getPlaceDetails(selected.placeId));
-                      // session token must be cleared after getting place details
-                      _sessionToken = null;
                     },
                     leading: Icon(Icons.place),
                     title: Text(places[index].description),
@@ -353,6 +350,9 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
         '$baseURL?place_id=$placeId&fields=$fields&sessiontoken=$_sessionToken&key=$PLACES_API_KEY';
     Response response = await Dio().get(request);
 
+    // session token must be cleared after getting place details
+    _sessionToken = null;
+
     //Create Coordinate return type using place details for CameraPosition onto place
     final result = response.data['result'];
     final geometry = result['geometry'];
@@ -360,7 +360,8 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
 
     double lat = location['lat'];
     double lng = location['lng'];
+    String building = result['name'];
 
-    return Coordinate(lat, lng, null, null, null);
+    return Coordinate(lat, lng, '', building, '');
   }
 }

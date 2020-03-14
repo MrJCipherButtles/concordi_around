@@ -61,6 +61,23 @@ class Coordinate {
   // Might want to define a better toString...
   @override
   String toString() => '$_building';
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Coordinate &&
+          runtimeType == other.runtimeType &&
+          this.lat == other.lat &&
+          this.lng == other.lng &&
+          this.floor == other.floor &&
+          this.building == other.building &&
+          this.campus == other.campus &&
+          this.type == other.type &&
+          this.adjCoordinates.containsAll(other.adjCoordinates) &&
+          other.adjCoordinates.containsAll(this.adjCoordinates);
+
+  @override
+  int get hashCode => toString().hashCode;
 }
 
 class PortalCoordinate extends Coordinate {
