@@ -21,8 +21,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
-// NEEDS TO CHANGE
-
 class Map extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -40,7 +38,7 @@ class _MapState extends State<Map> {
   PolygonHelper polygonHelper;
   Set<Polyline> direction;
   Set<Polygon> buildingHighlights;
-  Set<Marker> mapMarkers = {};
+  Set<Marker> marker = Set();
 
   var shortestPath;
 
@@ -99,18 +97,19 @@ class _MapState extends State<Map> {
           zoomGesturesEnabled: true,
           polygons: buildingHighlights,
           polylines: direction,
-          markers: mapMarkers,
+          markers: marker,
           initialCameraPosition: _cameraPosition,
           onMapCreated: (GoogleMapController controller) {
             _completer.complete(controller);
           },
           onCameraMove: (CameraPosition cameraPosition) async {
+            marker = SearchBar.searchResultMarker;
             GoogleMapController _mapController = await _completer.future;
             if (MapHelper.isWithinHall(cameraPosition.target) &&
                 cameraPosition.zoom >= 18.5) {
               mapNotifier.setFloorPlanVisibility(true);
               _setStyle(_mapController);
-              mapMarkers.addAll(
+              marker.addAll(
                   markerHelper.getFloorMarkers(mapNotifier.selectedFloorPlan));
             } else {
               mapNotifier.setFloorPlanVisibility(false);
@@ -207,12 +206,12 @@ class _MapState extends State<Map> {
       }
       if (floor == 9) {
         buildingHighlights.removeAll(polygonHelper.getFloorPolygon(8));
-        mapMarkers.removeAll(markerHelper.getFloorMarkers(8));
+        marker.removeAll(markerHelper.getFloorMarkers(8));
       } else if (floor == 8) {
         buildingHighlights.removeAll(polygonHelper.getFloorPolygon(9));
-        mapMarkers.removeAll(markerHelper.getFloorMarkers(9));
+        marker.removeAll(markerHelper.getFloorMarkers(9));
       }
-      mapMarkers.addAll(markerHelper.getFloorMarkers(floor));
+      marker.addAll(markerHelper.getFloorMarkers(floor));
       buildingHighlights.addAll(polygonHelper.getFloorPolygon(floor));
     });
   }
@@ -227,8 +226,8 @@ class _MapState extends State<Map> {
     String value = await DefaultAssetBundle.of(context)
         .loadString('assets/map_style_reset.json');
     controller.setMapStyle(value);
-    mapMarkers.removeAll(markerHelper.getFloorMarkers(8));
-    mapMarkers.removeAll(markerHelper.getFloorMarkers(9));
+    marker.removeAll(markerHelper.getFloorMarkers(8));
+    marker.removeAll(markerHelper.getFloorMarkers(9));
   }
 
   void goToCurrent() async {

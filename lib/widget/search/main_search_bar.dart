@@ -8,12 +8,12 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
-
-// NEEDS TO CHANGE
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class SearchBar extends StatefulWidget {
   final Function(Future<Coordinate>) coordinate;
   SearchBar({this.coordinate});
+  static Set<Marker> searchResultMarker = Set();
 
   @override
   State<StatefulWidget> createState() {
@@ -62,6 +62,9 @@ class _SearchBarState extends State<SearchBar> {
                         contentPadding: EdgeInsets.symmetric(horizontal: 15),
                         hintText: "Search"),
                     onTap: () {
+                      if (SearchBar.searchResultMarker != null) {
+                        SearchBar.searchResultMarker.clear();
+                      }
                       showSearch(
                           context: context,
                           delegate: PositionedFloatingSearchBar(
@@ -345,7 +348,8 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
     }
 
     String baseURL = 'https://maps.googleapis.com/maps/api/place/details/json';
-    String fields = 'address_component,name,geometry';
+    String fields =
+        'geometry,name,formatted_phone_number,formatted_address,website';
 
     // Send place details request
     String request =
@@ -362,8 +366,29 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
 
     double lat = location['lat'];
     double lng = location['lng'];
-    String building = result['name'];
+    String title = result['name'];
+    String address = result['formatted_address'];
+    String phone = result['formatted_phone_number'];
+    String website = result['website'];
 
-    return Coordinate(lat, lng, '', building, '');
+    Coordinate searchResult = Coordinate(lat, lng, '', '', '',
+        gPlaceTitle: title,
+        gPlaceAddress: address,
+        gPlacePhone: phone,
+        gPlaceWebsite: website);
+//creating a google maps marker based on the search results
+    Marker m = Marker(
+        markerId: MarkerId('searchResult'),
+        infoWindow: InfoWindow(title: title),
+        position: LatLng(
+          lat,
+          lng,
+        ),
+        onTap: () {
+         // TODO: creating popUp window when tapped
+          });
+    SearchBar.searchResultMarker = Set(); // to overcome a null exception error
+    SearchBar.searchResultMarker.add(m);
+    return searchResult;
   }
 }

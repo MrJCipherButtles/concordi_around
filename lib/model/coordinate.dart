@@ -2,26 +2,50 @@ import 'dart:collection';
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-// NEEDS TO CHANGE
-
 class Coordinate {
   final double _lat;
   final double _lng;
-  final String _floor;
-  final String _building;
-  final String _campus;
+  String _floor;
+  String _building;
+  String _campus;
+
+  //attributes to be used for google places search results
+  String _gPlaceTitle;
+  //String _gPlacePhotos;
+  String _gPlaceAddress;
+  String _gPlacePhone;
+  String _gPlaceWebsite;
+
   String _type;
   Set<Coordinate> _adjCoordinates = HashSet<Coordinate>();
 
-  Coordinate(this._lat, this._lng, this._floor, this._building, this._campus,
-      {type, adjCoordinates}) {
-    _type = type;
+ // Constructor:
+// All the attributes inside curly bracket are optional/dynamic attributes
+  Coordinate(
+    this._lat,
+    this._lng,
+    this._floor,
+    this._building,
+    this._campus, {
+    type,
+    adjCoordinates,
+    gPlaceTitle,
+    //String  gPlacePhoto,
+    gPlaceAddress,
+    gPlacePhone,
+    gPlaceWebsite,
+  }) {
+        _type = type;
     if (adjCoordinates != null) {
       _adjCoordinates = adjCoordinates;
       for (var adjCoordinate in _adjCoordinates) {
         adjCoordinate.addAdjCoordinate(this);
       }
     }
+     _gPlaceTitle = gPlaceTitle;
+    _gPlaceAddress = gPlaceAddress;
+    _gPlacePhone = gPlacePhone;
+    _gPlaceWebsite = gPlaceWebsite;
   }
 
   double get lat => _lat;
@@ -30,6 +54,14 @@ class Coordinate {
   String get building => _building;
   String get campus => _campus;
   String get type => _type;
+  
+  String get gPlaceTitle => _gPlaceTitle;
+  //String get gPlacePhoto => _gPlacePhoto;
+  String get gPlaceAddress => _gPlaceAddress;
+  String get gPlacePhone => _gPlacePhone;
+
+  String get gPlaceWebsite => _gPlaceWebsite;
+
   Set<Coordinate> get adjCoordinates => _adjCoordinates;
 
   set type(String type) => _type = type;
