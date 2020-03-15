@@ -102,7 +102,8 @@ class Floor {
     // Recur for all the coordinates
     // adjacent to current coordinate
     for (var coordinate in s.adjCoordinates) {
-      if (!visitedList.contains(coordinate)) {
+      if (!visitedList.contains(coordinate) &&
+          (coordinate is PortalCoordinate || coordinate == d)) {
         // store current coordinate
         // in path list
         coordinateList.add(coordinate);
