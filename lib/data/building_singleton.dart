@@ -101,7 +101,8 @@ class BuildingSingleton {
           .contains(buildingName.toUpperCase())) {
         if (building.floors != null) {
           var floor = building.floors[floorName];
-          List<RoomCoordinate> markers = floor.coordinatesByGivenTypes({'MARKER'});
+          List<RoomCoordinate> markers =
+              floor.coordinatesByGivenTypes({'MARKER'});
           markers.forEach((f) => result.add(Marker(
               markerId: MarkerId(f.roomId),
               infoWindow: InfoWindow(title: f.roomId))));
