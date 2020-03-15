@@ -159,9 +159,8 @@ class _MapState extends State<Map> {
                                     startPointAndDestinationCoordinates[0],
                                     startPointAndDestinationCoordinates[1],
                                     global.disabilityMode)
-                                : 
-                                direction = directionNotifier.navigateByCoordinates(startPointAndDestinationCoordinates[0], startPointAndDestinationCoordinates[1])
-                                ,
+                                : drawDirectionPath(directionNotifier, startPointAndDestinationCoordinates[0],
+                                    startPointAndDestinationCoordinates[1]),
                             //Moves camera to the starting point
                             mapNotifier.goToSpecifiedLatLng(
                                 coordinate:
@@ -263,5 +262,12 @@ class _MapState extends State<Map> {
     });
   }
 
-  // TODO: Create a clear shortest path function with exit navigation button
+  Future<void> drawDirectionPath(DirectionNotifier directionNotifier, Coordinate startPoint, Coordinate endPoint) async {
+    await directionNotifier.navigateByCoordinates(startPoint, endPoint);
+
+
+    
+    print("MYYYYYYYYYYYYYYYYYYY NANEEEEEEEEEEEEEEEEE IS JEFFFFFFFFFFFF");
+    print(directionNotifier.direction.routes[0].legs[0].steps[0].duration.text);
+  }
 }

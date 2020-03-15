@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 class DirectionNotifier extends ChangeNotifier {
   bool showDirectionPanel = false;
   DrivingMode mode = DrivingMode.Car;
+  Direction direction;
 
   void setShowDirectionPanel(bool visiblity) {
     showDirectionPanel = visiblity;
@@ -16,6 +17,10 @@ class DirectionNotifier extends ChangeNotifier {
   void setDrivingMode(DrivingMode mode) {
     this.mode = mode;
     notifyListeners();
+  }
+
+  Direction getDirection() {
+    return direction;
   }
 
   Future<Direction> navigateByName(String origin, String destination) async {
@@ -43,9 +48,9 @@ class DirectionNotifier extends ChangeNotifier {
     }
 
     MapDirection _mapDirection = MapDirection();
-    Direction _direction = await _mapDirection.getDirection(origin, destination, _transportationMode);
+    direction = await _mapDirection.getDirection(origin, destination, _transportationMode);
 
-    return _direction;
+    return direction;
   }
 
   Future<Direction> navigateByCoordinates(Coordinate originCoordinates, Coordinate destinationCoordinates) async {
