@@ -1,12 +1,13 @@
 import 'dart:async';
-
 import 'package:concordi_around/data/building_singleton.dart';
+import 'package:concordi_around/global.dart';
 import 'package:concordi_around/model/building.dart';
 import 'package:concordi_around/model/coordinate.dart';
+import 'package:concordi_around/model/direction.dart';
 import 'package:concordi_around/model/path.dart';
 import 'package:concordi_around/provider/direction_notifier.dart';
 import 'package:concordi_around/provider/map_notifier.dart';
-import 'package:concordi_around/service/map_constant.dart' as constant;
+import 'package:concordi_around/service/map_constant.dart';
 import 'package:concordi_around/service/map_helper.dart';
 import 'package:concordi_around/service/marker_helper.dart';
 import 'package:concordi_around/service/polygon_helper.dart';
@@ -15,11 +16,10 @@ import 'package:concordi_around/widget/direction_panel.dart';
 import 'package:concordi_around/widget/search/main_search_bar.dart';
 import 'package:concordi_around/widget/svg_floor_plan/floor_selector_enter_building_column.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
-
-import '../global.dart' as global;
 
 class Map extends StatefulWidget {
   @override
@@ -40,7 +40,6 @@ class _MapState extends State<Map> {
   Set<Polygon> buildingHighlights;
   Set<Marker> mapMarkers = {};
 
-
   var shortestPath;
 
   @override
@@ -59,7 +58,7 @@ class _MapState extends State<Map> {
         _position = pos;
         _cameraPosition = CameraPosition(
             target: LatLng(_position.latitude, _position.longitude),
-            zoom: constant.CAMERA_DEFAULT_ZOOM);
+            zoom: CAMERA_DEFAULT_ZOOM);
       });
     });
   }
@@ -131,7 +130,7 @@ class _MapState extends State<Map> {
                     goToCurrent();
                   },
                   backgroundColor: Colors.white,
-                  foregroundColor: constant.COLOR_CONCORDIA,
+                  foregroundColor: COLOR_CONCORDIA,
                   tooltip: 'Get Location',
                   child: Icon(Icons.my_location),
                 ),
@@ -146,6 +145,8 @@ class _MapState extends State<Map> {
                       MaterialPageRoute(
                         builder: (context) => GotoPage(
                           _position,
+                          drivingMode: (DrivingMode mode) =>
+                              {directionNotifier.setDrivingMode(mode)},
                           startPointAndDestinationCoordinates: (List<Coordinate>
                                   startPointAndDestinationCoordinates) =>
                               {
@@ -157,8 +158,11 @@ class _MapState extends State<Map> {
                                 ? drawShortestPath(
                                     startPointAndDestinationCoordinates[0],
                                     startPointAndDestinationCoordinates[1],
-                                    global.disabilityMode)
-                                : null, //TODO: Set outdoor direction
+                                    disabilityMode)
+                                : drawDirectionPath(
+                                    directionNotifier,
+                                    startPointAndDestinationCoordinates[0],
+                                    startPointAndDestinationCoordinates[1]),
                             //Moves camera to the starting point
                             mapNotifier.goToSpecifiedLatLng(
                                 coordinate:
@@ -168,7 +172,7 @@ class _MapState extends State<Map> {
                       ),
                     );
                   },
-                  backgroundColor: constant.COLOR_CONCORDIA,
+                  backgroundColor: COLOR_CONCORDIA,
                   foregroundColor: Colors.white,
                   child: Icon(Icons.directions),
                 ),
@@ -229,7 +233,7 @@ class _MapState extends State<Map> {
     final GoogleMapController controller = await _completer.future;
     _cameraPosition = CameraPosition(
         target: LatLng(_position.latitude, _position.longitude),
-        zoom: constant.CAMERA_DEFAULT_ZOOM);
+        zoom: CAMERA_DEFAULT_ZOOM);
     controller.animateCamera(CameraUpdate.newCameraPosition(_cameraPosition));
   }
 
@@ -246,5 +250,41 @@ class _MapState extends State<Map> {
     });
   }
 
-  // TODO: Create a clear shortest path function with exit navigation button
+  Future<void> drawDirectionPath(DirectionNotifier directionNotifier,
+      Coordinate startPoint, Coordinate endPoint) async {
+    await directionNotifier.navigateByCoordinates(
+        startPoint, endPoint); // Important api call
+
+    PolylinePoints polylinePoints = PolylinePoints();
+    List<Routes> routes = directionNotifier.direction.routes;
+    List<PointLatLng> points = List();
+    for (Routes route in routes) {
+      for (Legs leg in route.legs) {
+        for (Steps step in leg.steps) {
+          points.addAll(polylinePoints.decodePolyline(step.polyline.points));
+        }
+      }
+    }
+    _updatePolylines(points);
+  }
+
+  void _updatePolylines(List<PointLatLng> polyList) {
+    Set<Polyline> _lines = {};
+
+    List<LatLng> points = new List();
+    for (PointLatLng latlng in polyList) {
+      points.add(LatLng(latlng.latitude, latlng.longitude));
+    }
+
+    _lines.add(Polyline(
+      polylineId: PolylineId("direction"),
+      points: points,
+      color: COLOR_CONCORDIA,
+      width: 5,
+    ));
+
+    setState(() {
+      direction = _lines;
+    });
+  }
 }
