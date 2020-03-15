@@ -43,8 +43,8 @@ class _DirectionPanelState extends State<DirectionPanel> {
                     getModeIcon(directionNotifier.mode),
                     Flexible(
                         child: Text(
-                        "Estimated time: ${directionNotifier.getDuration()} \n\nDistance: ${directionNotifier.getDistance()}",
-                        style: TextStyle(color: Colors.black),
+                        "${directionNotifier.getDuration()} (${directionNotifier.getDistance()})",
+                        style: TextStyle(color: Colors.black, fontSize: 18),
                       ),
                     ),
                     RaisedButton(
