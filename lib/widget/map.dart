@@ -1,9 +1,9 @@
 import 'dart:async';
 
+import 'package:concordi_around/credential.dart';
 import 'package:concordi_around/data/building_singleton.dart';
 import 'package:concordi_around/model/building.dart';
 import 'package:concordi_around/model/coordinate.dart';
-import 'package:concordi_around/model/direction.dart';
 import 'package:concordi_around/model/path.dart';
 import 'package:concordi_around/provider/direction_notifier.dart';
 import 'package:concordi_around/provider/map_notifier.dart';
@@ -16,6 +16,7 @@ import 'package:concordi_around/widget/direction_panel.dart';
 import 'package:concordi_around/widget/search/main_search_bar.dart';
 import 'package:concordi_around/widget/svg_floor_plan/floor_selector_enter_building_column.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart' as;
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
@@ -213,20 +214,6 @@ class _MapState extends State<Map> {
     });
   }
 
-  void _updatePolylines(Direction directionModel) {
-    Set<Polyline> _lines = {};
-
-    for (var leg in directionModel.routes.first.legs) {
-      for (var step in leg.steps) {
-        String polylineModelPoints = step.polyline.points;
-        // Polyline polyline = Polyline(points: )
-        // _lines.add(polyline);
-      }
-    }
-
-    direction = _lines;
-  }
-
   void _setStyle(GoogleMapController controller) async {
     String value = await DefaultAssetBundle.of(context)
         .loadString('assets/map_style.json');
@@ -265,9 +252,28 @@ class _MapState extends State<Map> {
   Future<void> drawDirectionPath(DirectionNotifier directionNotifier, Coordinate startPoint, Coordinate endPoint) async {
     await directionNotifier.navigateByCoordinates(startPoint, endPoint);
 
+    PolylinePoints polylinePoints = PolylinePoints();
+    List<PointLatLng> result = await polylinePoints.getRouteBetweenCoordinates(
+      DIRECTIONS_API_KEY,startPoint.lat, startPoint.lng, endPoint.lat, endPoint.lng);
 
-    
-    print("MYYYYYYYYYYYYYYYYYYY NANEEEEEEEEEEEEEEEEE IS JEFFFFFFFFFFFF");
-    print(directionNotifier.direction.routes[0].legs[0].steps[0].duration.text);
+    _updatePolylines(result);
+  }
+
+  void _updatePolylines(List<PointLatLng> polyList) {
+    Set<Polyline> _lines = {};
+
+    List<LatLng> points = new List();    
+    for(PointLatLng latlng in polyList) {
+    points.add(LatLng(latlng.latitude, latlng.longitude));
+    }
+
+    _lines.add(Polyline(
+      polylineId: PolylineId("direction"),
+      points: points
+    ));
+
+    setState(() {
+      direction = _lines;
+    });
   }
 }
