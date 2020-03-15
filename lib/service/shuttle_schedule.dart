@@ -226,7 +226,7 @@ class ShuttleTimes {
     if (weekday == 6 ||
         weekday == 7 ||
         (weekday == 5 &&
-            ((now.hour >= 19 && now.minute >= 20) || now.hour >= 20))) {
+            ((now.hour >= 19 && now.minute >= 50) || now.hour >= 20))) {
       return "Scheduled for Monday · ";
     } else {
       return "Scheduled · ";
