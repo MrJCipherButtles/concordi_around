@@ -21,6 +21,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
+// NEEDS TO CHANGE
+
 class Map extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {

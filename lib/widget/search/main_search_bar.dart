@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
+// NEEDS TO CHANGE
+
 class SearchBar extends StatefulWidget {
   final Function(Future<Coordinate>) coordinate;
   SearchBar({this.coordinate});

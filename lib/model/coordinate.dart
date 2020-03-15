@@ -2,6 +2,8 @@ import 'dart:collection';
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+// NEEDS TO CHANGE
+
 class Coordinate {
   final double _lat;
   final double _lng;
