@@ -1,13 +1,15 @@
+import 'package:concordi_around/model/coordinate.dart';
 import 'package:concordi_around/model/direction.dart';
 import 'package:concordi_around/service/map_constant.dart';
+import 'package:concordi_around/service/map_direction.dart';
 import 'package:flutter/cupertino.dart';
+
+import '../service/map_constant.dart';
 
 class DirectionNotifier extends ChangeNotifier {
   bool showDirectionPanel = false;
-  DrivingMode mode = DrivingMode.Car;
+  DrivingMode mode = DrivingMode.walking;
   Direction direction;
-  String duration;
-  List<String> directions;
 
   void setShowDirectionPanel(bool visiblity) {
     showDirectionPanel = visiblity;
@@ -19,22 +21,26 @@ class DirectionNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  int setTotalDuration(Direction direction) {
-    int duration = 0;
-    for(Routes route in direction.routes) {
-      duration += route.duration.value;
-    }
-    return duration;
+  Direction getDirection() {
+    return direction;
   }
 
-  List<String> setDirections(Direction direction) {
-    for(Routes route in direction.routes) {
-      for(Legs leg in route.legs) {
-        for(Steps step in leg.steps) {
-          directions.add(step.toString());
-        }
-      }
-    }
-    return directions;
+  Future<Direction> navigateByName(String origin, String destination) async {
+    MapDirection _mapDirection = MapDirection();
+    direction = await _mapDirection.getDirection(
+        origin, destination, mode.toString().replaceAll("DrivingMode.", ""));
+    return direction;
+  }
+
+  Future<Direction> navigateByCoordinates(
+      Coordinate originCoordinates, Coordinate destinationCoordinates) async {
+    String originLatitude = originCoordinates.lat.toString();
+    String originLongitude = originCoordinates.lng.toString();
+    String destinationLatitude = destinationCoordinates.lat.toString();
+    String destinationLongitude = destinationCoordinates.lng.toString();
+    String origin = "$originLatitude,$originLongitude";
+    String destination = "$destinationLatitude,$destinationLongitude";
+
+    return navigateByName(origin, destination);
   }
 }

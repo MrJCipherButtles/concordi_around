@@ -6,6 +6,10 @@ import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class DirectionPanel extends StatefulWidget {
+  final Function(bool) removeDirectionPolyline;
+  
+  DirectionPanel({this.removeDirectionPolyline});
+
   @override
   State<StatefulWidget> createState() {
     return _DirectionPanelState();
@@ -50,6 +54,7 @@ class _DirectionPanelState extends State<DirectionPanel> {
                               new BorderRadius.circular(BORDER_RADIUS)),
                       onPressed: () {
                         directionNotifier.setShowDirectionPanel(false);
+                        widget.removeDirectionPolyline(true);
                       },
                     )
                   ],
@@ -83,12 +88,11 @@ class _DirectionPanelState extends State<DirectionPanel> {
 }
 
   Icon getModeIcon(DrivingMode mode) {
-    if(mode == DrivingMode.Car)
-    return Icon(Icons.directions_car);
-    else if (mode == DrivingMode.Bus)
-    return Icon(Icons.directions_bus);
-    else if (mode == DrivingMode.Bike)
-    return Icon(Icons.directions_bike);
+    if (mode == DrivingMode.driving)
+      return Icon(Icons.directions_car);
+    else if (mode == DrivingMode.transit)
+      return Icon(Icons.directions_bus);
+    else if (mode == DrivingMode.bicycling) return Icon(Icons.directions_bike);
     return Icon(Icons.directions_walk);
   }
 }
