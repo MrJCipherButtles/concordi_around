@@ -252,10 +252,11 @@ class _MapState extends State<Map> {
 
   Future<void> drawDirectionPath(DirectionNotifier directionNotifier,
       Coordinate startPoint, Coordinate endPoint) async {
-    directionNotifier.setShowDirectionPanel(true);
 
     await directionNotifier.navigateByCoordinates(
         startPoint, endPoint); // Important api call
+
+    directionNotifier.setShowDirectionPanel(true);
 
     PolylinePoints polylinePoints = PolylinePoints();
     List<Routes> routes = directionNotifier.direction.routes;
