@@ -47,18 +47,12 @@ class _DirectionPanelState extends State<DirectionPanel> {
                         style: TextStyle(color: Colors.black, fontSize: 18),
                       ),
                     ),
-                    RaisedButton(
-                      child: Text("Done"),
-                      textColor: Colors.white,
-                      color: COLOR_CONCORDIA,
-                      shape: RoundedRectangleBorder(
-                          borderRadius:
-                              new BorderRadius.circular(BORDER_RADIUS)),
-                      onPressed: () {
-                        directionNotifier.setShowDirectionPanel(false);
-                        widget.removeDirectionPolyline(true);
-                      },
-                    )
+                    IconButton(
+                      icon: Icon(Icons.close), 
+                      onPressed: () => {
+                        directionNotifier.setShowDirectionPanel(false),
+                        widget.removeDirectionPolyline(true)
+                      })
                   ],
                 ),
               ),
