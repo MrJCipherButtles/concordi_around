@@ -27,11 +27,13 @@ class DirectionNotifier extends ChangeNotifier {
 
   Future<Direction> navigateByName(String origin, String destination) async {
     MapDirection _mapDirection = MapDirection();
-    direction = await _mapDirection.getDirection(origin, destination, mode.toString().replaceAll("DrivingMode.", ""));
+    direction = await _mapDirection.getDirection(
+        origin, destination, mode.toString().replaceAll("DrivingMode.", ""));
     return direction;
   }
 
-  Future<Direction> navigateByCoordinates(Coordinate originCoordinates, Coordinate destinationCoordinates) async {
+  Future<Direction> navigateByCoordinates(
+      Coordinate originCoordinates, Coordinate destinationCoordinates) async {
     String originLatitude = originCoordinates.lat.toString();
     String originLongitude = originCoordinates.lng.toString();
     String destinationLatitude = destinationCoordinates.lat.toString();

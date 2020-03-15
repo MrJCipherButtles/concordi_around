@@ -45,7 +45,6 @@ class _MapState extends State<Map> {
   Set<Polygon> buildingHighlights;
   Set<Marker> mapMarkers = {};
 
-
   var shortestPath;
 
   @override
@@ -151,7 +150,8 @@ class _MapState extends State<Map> {
                       MaterialPageRoute(
                         builder: (context) => GotoPage(
                           _position,
-                          drivingMode: (DrivingMode mode) => {directionNotifier.setDrivingMode(mode)},
+                          drivingMode: (DrivingMode mode) =>
+                              {directionNotifier.setDrivingMode(mode)},
                           startPointAndDestinationCoordinates: (List<Coordinate>
                                   startPointAndDestinationCoordinates) =>
                               {
@@ -164,7 +164,9 @@ class _MapState extends State<Map> {
                                     startPointAndDestinationCoordinates[0],
                                     startPointAndDestinationCoordinates[1],
                                     global.disabilityMode)
-                                : drawDirectionPath(directionNotifier, startPointAndDestinationCoordinates[0],
+                                : drawDirectionPath(
+                                    directionNotifier,
+                                    startPointAndDestinationCoordinates[0],
                                     startPointAndDestinationCoordinates[1]),
                             //Moves camera to the starting point
                             mapNotifier.goToSpecifiedLatLng(
@@ -253,15 +255,17 @@ class _MapState extends State<Map> {
     });
   }
 
-  Future<void> drawDirectionPath(DirectionNotifier directionNotifier, Coordinate startPoint, Coordinate endPoint) async {
-    await directionNotifier.navigateByCoordinates(startPoint, endPoint); // Important api call
+  Future<void> drawDirectionPath(DirectionNotifier directionNotifier,
+      Coordinate startPoint, Coordinate endPoint) async {
+    await directionNotifier.navigateByCoordinates(
+        startPoint, endPoint); // Important api call
 
     PolylinePoints polylinePoints = PolylinePoints();
     List<Routes> routes = directionNotifier.direction.routes;
     List<PointLatLng> points = List();
-    for(Routes route in routes){
-      for(Legs leg in route.legs) {
-        for(Steps step in leg.steps) {
+    for (Routes route in routes) {
+      for (Legs leg in route.legs) {
+        for (Steps step in leg.steps) {
           points.addAll(polylinePoints.decodePolyline(step.polyline.points));
         }
       }
@@ -272,9 +276,9 @@ class _MapState extends State<Map> {
   void _updatePolylines(List<PointLatLng> polyList) {
     Set<Polyline> _lines = {};
 
-    List<LatLng> points = new List();    
-    for(PointLatLng latlng in polyList) {
-    points.add(LatLng(latlng.latitude, latlng.longitude));
+    List<LatLng> points = new List();
+    for (PointLatLng latlng in polyList) {
+      points.add(LatLng(latlng.latitude, latlng.longitude));
     }
 
     _lines.add(Polyline(

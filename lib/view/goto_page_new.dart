@@ -13,7 +13,9 @@ class GotoPage extends StatefulWidget {
   final Function(DrivingMode) drivingMode;
 
   const GotoPage(this.currentPosition,
-      {this.destination, this.startPointAndDestinationCoordinates, this.drivingMode});
+      {this.destination,
+      this.startPointAndDestinationCoordinates,
+      this.drivingMode});
 
   @override
   _GotoPageState createState() => _GotoPageState();
@@ -197,7 +199,12 @@ class _GotoPageState extends State<GotoPage> {
                           isSelected: travelMode,
                           onPressed: (int index) {
                             setState(() {
-                              travelMode = [false, false, false, false]; // Available modes are: [driving, transit, bicycling, walking] respectively
+                              travelMode = [
+                                false,
+                                false,
+                                false,
+                                false
+                              ]; // Available modes are: [driving, transit, bicycling, walking] respectively
                               travelMode[index] = true;
                             });
                           }),
@@ -222,7 +229,8 @@ class _GotoPageState extends State<GotoPage> {
           onPressed: () {
             if (this._destination != null &&
                 this._startPoint != this._destination) {
-              widget.drivingMode(getSelectedMode(travelMode)); // This callback must occur first
+              widget.drivingMode(getSelectedMode(
+                  travelMode)); // This callback must occur first
               widget.startPointAndDestinationCoordinates(
                   new List<Coordinate>.from(
                       [this._startPoint, this._destination]));
@@ -233,13 +241,12 @@ class _GotoPageState extends State<GotoPage> {
   }
 
   DrivingMode getSelectedMode(List<bool> modes) {
-    if(modes[0] == true)
-    return DrivingMode.driving;
+    if (modes[0] == true)
+      return DrivingMode.driving;
     else if (modes[1] == true)
-    return DrivingMode.transit;
+      return DrivingMode.transit;
     else if (modes[2] == true)
-    return DrivingMode.bicycling;
-    else if (modes[3] == true)
-    return DrivingMode.walking;
+      return DrivingMode.bicycling;
+    else if (modes[3] == true) return DrivingMode.walking;
   }
 }
