@@ -269,7 +269,9 @@ class _MapState extends State<Map> {
 
     _lines.add(Polyline(
       polylineId: PolylineId("direction"),
-      points: points
+      points: points,
+      color: constant.COLOR_CONCORDIA,
+      width: 5,
     ));
 
     setState(() {
