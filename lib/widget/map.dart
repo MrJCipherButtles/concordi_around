@@ -22,6 +22,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '../global.dart' as global;
+import '../model/direction.dart';
+import '../model/direction.dart';
 
 class Map extends StatefulWidget {
   @override
@@ -250,13 +252,19 @@ class _MapState extends State<Map> {
   }
 
   Future<void> drawDirectionPath(DirectionNotifier directionNotifier, Coordinate startPoint, Coordinate endPoint) async {
-    await directionNotifier.navigateByCoordinates(startPoint, endPoint);
+    await directionNotifier.navigateByCoordinates(startPoint, endPoint); // Important api call
 
     PolylinePoints polylinePoints = PolylinePoints();
-    List<PointLatLng> result = await polylinePoints.getRouteBetweenCoordinates(
-      DIRECTIONS_API_KEY,startPoint.lat, startPoint.lng, endPoint.lat, endPoint.lng);
-
-    _updatePolylines(result);
+    List<Routes> routes = directionNotifier.direction.routes;
+    List<PointLatLng> points = List();
+    for(Routes route in routes){
+      for(Legs leg in route.legs) {
+        for(Steps step in leg.steps) {
+          points.addAll(polylinePoints.decodePolyline(step.polyline.points));
+        }
+      }
+    }
+    _updatePolylines(points);
   }
 
   void _updatePolylines(List<PointLatLng> polyList) {
