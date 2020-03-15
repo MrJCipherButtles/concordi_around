@@ -8,9 +8,11 @@ class ShuttleTimes {
   List<TimeOfDay> loyFriday = List(27);
   List<TimeOfDay> sgwNextDepartures = List();
   List<TimeOfDay> loyNextDepartures = List();
-  int weekday = DateTime.now().weekday;
+  int weekday;
   TimeOfDay nextShuttle;
-  TimeOfDay now = TimeOfDay.now();
+  TimeOfDay now;
+
+  ShuttleTimes({this.weekday, this.now});
 
   TimeOfDay findNextShuttleSGW() {
     sgwWeekdays[0] = TimeOfDay(hour: 7, minute: 45);
