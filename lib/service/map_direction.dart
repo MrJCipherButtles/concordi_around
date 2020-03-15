@@ -12,7 +12,7 @@ class MapDirection {
     if (origin.isEmpty || destination.isEmpty) {
       throw ("Origin or destination is empty");
     }
-
+    
     String baseURL = 'https://maps.googleapis.com/maps/api/directions/json';
 
     String request = '$baseURL?origin=$origin&destination=$destination&mode=$mode&key=$DIRECTIONS_API_KEY';

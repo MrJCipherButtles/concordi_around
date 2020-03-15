@@ -24,6 +24,7 @@ import 'package:provider/provider.dart';
 import '../global.dart' as global;
 import '../model/direction.dart';
 import '../model/direction.dart';
+import '../service/map_constant.dart';
 
 class Map extends StatefulWidget {
   @override
@@ -150,6 +151,7 @@ class _MapState extends State<Map> {
                       MaterialPageRoute(
                         builder: (context) => GotoPage(
                           _position,
+                          drivingMode: (DrivingMode mode) => {directionNotifier.setDrivingMode(mode)},
                           startPointAndDestinationCoordinates: (List<Coordinate>
                                   startPointAndDestinationCoordinates) =>
                               {

@@ -64,11 +64,11 @@ class _DirectionPanelState extends State<DirectionPanel> {
   }
 
   Icon getModeIcon(DrivingMode mode) {
-    if(mode == DrivingMode.Car)
+    if(mode == DrivingMode.driving)
     return Icon(Icons.directions_car);
-    else if (mode == DrivingMode.Bus)
+    else if (mode == DrivingMode.transit)
     return Icon(Icons.directions_bus);
-    else if (mode == DrivingMode.Bike)
+    else if (mode == DrivingMode.bicycling)
     return Icon(Icons.directions_bike);
     return Icon(Icons.directions_walk);
   }

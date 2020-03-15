@@ -18,4 +18,4 @@ const LatLng LATLNG_JMSB = LatLng(45.495312, -73.579033);
 const LatLng LATLNG_LOYOLA = LatLng(45.458279, -73.640436);
 const LatLng LATLNG_SP = LatLng(45.457914, -73.641557);
 
-enum DrivingMode {Car, Bus, Walk, Bike}
+enum DrivingMode {driving , walking , bicycling , transit } // Do not use toString method here to get value

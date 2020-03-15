@@ -4,9 +4,11 @@ import 'package:concordi_around/service/map_constant.dart';
 import 'package:concordi_around/service/map_direction.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../service/map_constant.dart';
+
 class DirectionNotifier extends ChangeNotifier {
   bool showDirectionPanel = false;
-  DrivingMode mode = DrivingMode.Car;
+  DrivingMode mode = DrivingMode.walking;
   Direction direction;
 
   void setShowDirectionPanel(bool visiblity) {
@@ -24,32 +26,8 @@ class DirectionNotifier extends ChangeNotifier {
   }
 
   Future<Direction> navigateByName(String origin, String destination) async {
-    String _transportationMode;
-    switch(this.mode) {
-      case DrivingMode.Car: {
-        _transportationMode = "driving";
-      }
-      break;
-
-      case DrivingMode.Bike: {
-        _transportationMode = "bicycling";
-      }
-      break;
-
-      case DrivingMode.Walk: {
-        _transportationMode = "walking";
-      }
-      break;
-
-      case DrivingMode.Bus: {
-        _transportationMode = "transit";
-      }
-      break;
-    }
-
     MapDirection _mapDirection = MapDirection();
-    direction = await _mapDirection.getDirection(origin, destination, _transportationMode);
-
+    direction = await _mapDirection.getDirection(origin, destination, mode.toString().replaceAll("DrivingMode.", ""));
     return direction;
   }
 

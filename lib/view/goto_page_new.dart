@@ -1,18 +1,19 @@
+import 'package:concordi_around/global.dart';
 import 'package:concordi_around/model/coordinate.dart';
 import 'package:concordi_around/service/map_constant.dart' as constant;
+import 'package:concordi_around/service/map_constant.dart';
 import 'package:concordi_around/widget/search/main_search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-
-import '../global.dart' as global;
 
 class GotoPage extends StatefulWidget {
   final Position currentPosition;
   final Coordinate destination;
   final Function(List<Coordinate>) startPointAndDestinationCoordinates;
+  final Function(DrivingMode) drivingMode;
 
   const GotoPage(this.currentPosition,
-      {this.destination, this.startPointAndDestinationCoordinates});
+      {this.destination, this.startPointAndDestinationCoordinates, this.drivingMode});
 
   @override
   _GotoPageState createState() => _GotoPageState();
@@ -21,6 +22,7 @@ class GotoPage extends StatefulWidget {
 class _GotoPageState extends State<GotoPage> {
   Coordinate _startPoint;
   Coordinate _destination;
+  List<bool> travelMode = [false, false, false, true];
 
   @override
   void initState() {
@@ -143,7 +145,7 @@ class _GotoPageState extends State<GotoPage> {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(
                                     constant.BORDER_RADIUS),
-                                color: global.travelMode[0]
+                                color: travelMode[0]
                                     ? constant.COLOR_CONCORDIA
                                     : Colors.transparent,
                               ),
@@ -157,7 +159,7 @@ class _GotoPageState extends State<GotoPage> {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(
                                     constant.BORDER_RADIUS),
-                                color: global.travelMode[1]
+                                color: travelMode[1]
                                     ? constant.COLOR_CONCORDIA
                                     : Colors.transparent,
                               ),
@@ -171,7 +173,7 @@ class _GotoPageState extends State<GotoPage> {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(
                                     constant.BORDER_RADIUS),
-                                color: global.travelMode[2]
+                                color: travelMode[2]
                                     ? constant.COLOR_CONCORDIA
                                     : Colors.transparent,
                               ),
@@ -185,18 +187,18 @@ class _GotoPageState extends State<GotoPage> {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(
                                     constant.BORDER_RADIUS),
-                                color: global.travelMode[3]
+                                color: travelMode[3]
                                     ? constant.COLOR_CONCORDIA
                                     : Colors.transparent,
                               ),
                               child: Icon(Icons.directions_walk),
                             ),
                           ],
-                          isSelected: global.travelMode,
+                          isSelected: travelMode,
                           onPressed: (int index) {
                             setState(() {
-                              global.travelMode = [false, false, false, false];
-                              global.travelMode[index] = true;
+                              travelMode = [false, false, false, false]; // Available modes are: [driving, transit, bicycling, walking] respectively
+                              travelMode[index] = true;
                             });
                           }),
                     ),
@@ -220,6 +222,7 @@ class _GotoPageState extends State<GotoPage> {
           onPressed: () {
             if (this._destination != null &&
                 this._startPoint != this._destination) {
+              widget.drivingMode(getSelectedMode(travelMode)); // This callback must occur first
               widget.startPointAndDestinationCoordinates(
                   new List<Coordinate>.from(
                       [this._startPoint, this._destination]));
@@ -227,5 +230,16 @@ class _GotoPageState extends State<GotoPage> {
             }
           }),
     );
+  }
+
+  DrivingMode getSelectedMode(List<bool> modes) {
+    if(modes[0] == true)
+    return DrivingMode.driving;
+    else if (modes[1] == true)
+    return DrivingMode.transit;
+    else if (modes[2] == true)
+    return DrivingMode.bicycling;
+    else if (modes[3] == true)
+    return DrivingMode.walking;
   }
 }
