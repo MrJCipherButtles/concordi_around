@@ -41,9 +41,11 @@ class _DirectionPanelState extends State<DirectionPanel> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     getModeIcon(directionNotifier.mode),
-                    Text(
-                      "Estimated time: ${directionNotifier.getDuration()} min",
-                      style: TextStyle(color: Colors.black),
+                    Flexible(
+                        child: Text(
+                        "Estimated time: ${directionNotifier.getDuration()} \n\nDistance: ${directionNotifier.getDistance()}",
+                        style: TextStyle(color: Colors.black),
+                      ),
                     ),
                     RaisedButton(
                       child: Text("Done"),

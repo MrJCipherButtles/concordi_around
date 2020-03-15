@@ -44,20 +44,30 @@ class DirectionNotifier extends ChangeNotifier {
     return navigateByName(origin, destination);
   }
 
-  int getDuration() {
-    int duration = 0;
+  String getDuration() {
+    String duration = "0 min";
     if (direction != null) {
       List<Routes> routes = direction.routes;
       for (Routes route in routes) {
         for (Legs leg in route.legs) {
-          for (Steps step in leg.steps) {
-            duration += int.parse(step.duration.text.split(" ")[0]);
-          }
+          duration = leg.duration.text;
         }
       }
     }
-    getStepDirections();
     return duration;
+  }
+
+  String getDistance() {
+    String distance = "0 km";
+    if (direction != null) {
+      List<Routes> routes = direction.routes;
+      for (Routes route in routes) {
+        for (Legs leg in route.legs) {
+          distance = leg.distance.text;
+        }
+      }
+    }
+    return distance;
   }
 
   List<String> getStepDirections() {
