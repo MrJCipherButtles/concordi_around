@@ -245,6 +245,6 @@ class _GotoPageState extends State<GotoPage> {
       return DrivingMode.transit;
     else if (modes[2] == true)
       return DrivingMode.bicycling;
-    else if (modes[3] == true) return DrivingMode.walking;
+    return DrivingMode.walking;
   }
 }
