@@ -46,16 +46,36 @@ class DirectionNotifier extends ChangeNotifier {
 
   int getDuration() {
     int duration = 0;
-    if(direction != null) {
+    if (direction != null) {
       List<Routes> routes = direction.routes;
       for (Routes route in routes) {
-      for (Legs leg in route.legs) {
-        for (Steps step in leg.steps) {
-          duration += int.parse(step.duration.text.split(" ")[0]);
+        for (Legs leg in route.legs) {
+          for (Steps step in leg.steps) {
+            duration += int.parse(step.duration.text.split(" ")[0]);
+          }
         }
       }
     }
+    getStepDirections();
+    return duration;
   }
-  return duration;
+
+  List<String> getStepDirections() {
+    List<String> directions = List();
+    if (direction != null) {
+      List<Routes> routes = direction.routes;
+      for (Routes route in routes) {
+        for (Legs leg in route.legs) {
+          for (Steps step in leg.steps) {
+            directions.add(step.htmlInstructions
+                .replaceAll("<b>", "")
+                .replaceAll("</b>", "")
+                .replaceAll("<b>", "")
+                .replaceAll("/<wbr/>", " "));
+          }
+        }
+      }
+    }
+    return directions;
   }
 }

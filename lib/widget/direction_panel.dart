@@ -7,7 +7,7 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class DirectionPanel extends StatefulWidget {
   final Function(bool) removeDirectionPolyline;
-  
+
   DirectionPanel({this.removeDirectionPolyline});
 
   @override
@@ -30,7 +30,8 @@ class _DirectionPanelState extends State<DirectionPanel> {
           visible: directionNotifier.showDirectionPanel,
           child: SlidingUpPanel(
             minHeight: 80,
-            panelBuilder: (ScrollController sc) => _scrollingList(sc),
+            panelBuilder: (ScrollController sc) =>
+                _scrollingList(sc, directionNotifier.getStepDirections()),
             collapsed: Container(
               decoration:
                   BoxDecoration(color: Colors.white, borderRadius: radius),
@@ -65,26 +66,22 @@ class _DirectionPanelState extends State<DirectionPanel> {
     });
   }
 
-  Widget _scrollingList(ScrollController sc){
-  return ListView.builder(
-    controller: sc,
-    itemCount: 20, // TODO Changes to directions.length
-    itemBuilder: (BuildContext context, int i){
-      return Padding(
-        padding: const EdgeInsets.only(left: 16),
-              child: Row(
-          children: <Widget>[
-            Icon(Icons.directions),
-            Container(
-              padding: const EdgeInsets.all(20),
-              child: Text("$i"),
-            ),
-          ],
-        ),
-      );
-    },
-  );
-}
+  Widget _scrollingList(ScrollController sc, List<String> directions) {
+    return ListView.builder(
+      controller: sc,
+      itemCount: directions.length,
+      itemBuilder: (BuildContext context, int i) {
+        return Padding(
+          padding: const EdgeInsets.all(15),
+          child: Wrap(
+            children: <Widget>[
+              Text("${i + 1}. ${directions[i]}"),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
   Icon getModeIcon(DrivingMode mode) {
     if (mode == DrivingMode.driving)

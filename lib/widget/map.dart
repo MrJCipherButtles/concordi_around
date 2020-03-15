@@ -187,7 +187,8 @@ class _MapState extends State<Map> {
               {updateFloor(floor), mapNotifier.setSelectedFloor(floor)},
           enterBuildingPressed: () => mapNotifier.goToHallSVG(),
         ),
-        DirectionPanel(removeDirectionPolyline: (bool removePolyline) => {direction = {}}),
+        DirectionPanel(
+            removeDirectionPolyline: (bool removePolyline) => {direction = {}}),
       ],
     );
   }
@@ -249,13 +250,13 @@ class _MapState extends State<Map> {
     });
   }
 
-  Future<void> drawDirectionPath(DirectionNotifier directionNotifier, Coordinate startPoint, Coordinate endPoint) async {
-
+  Future<void> drawDirectionPath(DirectionNotifier directionNotifier,
+      Coordinate startPoint, Coordinate endPoint) async {
     directionNotifier.setShowDirectionPanel(true);
 
     await directionNotifier.navigateByCoordinates(
         startPoint, endPoint); // Important api call
-    
+
     PolylinePoints polylinePoints = PolylinePoints();
     List<Routes> routes = directionNotifier.direction.routes;
     List<PointLatLng> points = List();

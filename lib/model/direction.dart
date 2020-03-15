@@ -116,13 +116,15 @@ class Steps {
   LocationModel endLocation;
   PolylineModel polyline;
   Duration duration;
+  String htmlInstructions;
 
   Steps(
       {this.travelMode,
       this.startLocation,
       this.endLocation,
       this.polyline,
-      this.duration});
+      this.duration,
+      this.htmlInstructions});
 
   Steps.fromJson(Map<String, dynamic> json) {
     travelMode = json['travel_mode'];
@@ -137,6 +139,7 @@ class Steps {
         : null;
     duration =
         json['duration'] != null ? Duration.fromJson(json['duration']) : null;
+    htmlInstructions = json['html_instructions'];
   }
 
   Map<String, dynamic> toJson() {
