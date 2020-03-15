@@ -36,15 +36,14 @@ class _DirectionPanelState extends State<DirectionPanel> {
                   BoxDecoration(color: Colors.white, borderRadius: radius),
               child: Center(
                 child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    SizedBox(width: 16),
                     getModeIcon(directionNotifier.mode),
-                    SizedBox(width: 16),
                     Text(
-                      "Your estimated time is 10 min",
+                      "Estimated time: ${directionNotifier.getDuration()} min",
                       style: TextStyle(color: Colors.black),
                     ),
-                    SizedBox(width: 16),
                     RaisedButton(
                       child: Text("Done"),
                       textColor: Colors.white,
