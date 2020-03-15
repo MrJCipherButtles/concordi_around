@@ -61,7 +61,7 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => ShuttlePage()));
+                              builder: (context) => ShuttlePage(weekday: DateTime.now().weekday, now: TimeOfDay.now())));
                     },
                   ),
                   ListTile(
