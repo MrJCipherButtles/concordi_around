@@ -73,9 +73,22 @@ class _DirectionPanelState extends State<DirectionPanel> {
       itemBuilder: (BuildContext context, int i) {
         return Padding(
           padding: const EdgeInsets.all(15),
-          child: Wrap(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Text("${i + 1}. ${directions[i]}"),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Icon(Icons.directions),
+                  SizedBox(width: 10,),
+                  Text("${i + 1}."),
+                  SizedBox(width: 10,),
+                  Flexible(child: Text(" ${directions[i]}")),
+                ],
+              ),
+              Divider(
+                    color: Colors.grey,
+                  ),
             ],
           ),
         );
