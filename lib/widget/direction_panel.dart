@@ -36,23 +36,28 @@ class _DirectionPanelState extends State<DirectionPanel> {
               decoration:
                   BoxDecoration(color: Colors.white, borderRadius: radius),
               child: Center(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                child: Column(
                   children: <Widget>[
-                    getModeIcon(directionNotifier.mode),
-                    Flexible(
-                        child: Text(
-                        "${directionNotifier.getDuration()} (${directionNotifier.getDistance()})",
-                        style: TextStyle(color: Colors.black, fontSize: 18),
-                      ),
+                    Icon(Icons.maximize),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        getModeIcon(directionNotifier.mode),
+                        Flexible(
+                            child: Text(
+                            "${directionNotifier.getDuration()} (${directionNotifier.getDistance()})",
+                            style: TextStyle(color: Colors.black, fontSize: 18),
+                          ),
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.close), 
+                          onPressed: () => {
+                            directionNotifier.setShowDirectionPanel(false),
+                            widget.removeDirectionPolyline(true)
+                          })
+                      ],
                     ),
-                    IconButton(
-                      icon: Icon(Icons.close), 
-                      onPressed: () => {
-                        directionNotifier.setShowDirectionPanel(false),
-                        widget.removeDirectionPolyline(true)
-                      })
                   ],
                 ),
               ),
