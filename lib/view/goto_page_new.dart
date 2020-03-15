@@ -1,6 +1,4 @@
-import 'package:concordi_around/global.dart';
 import 'package:concordi_around/model/coordinate.dart';
-import 'package:concordi_around/service/map_constant.dart' as constant;
 import 'package:concordi_around/service/map_constant.dart';
 import 'package:concordi_around/widget/search/main_search_bar.dart';
 import 'package:flutter/material.dart';
@@ -146,9 +144,9 @@ class _GotoPageState extends State<GotoPage> {
                                   minHeight: double.infinity),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(
-                                    constant.BORDER_RADIUS),
+                                    BORDER_RADIUS),
                                 color: travelMode[0]
-                                    ? constant.COLOR_CONCORDIA
+                                    ? COLOR_CONCORDIA
                                     : Colors.transparent,
                               ),
                               child: Icon(Icons.directions_car),
@@ -160,9 +158,9 @@ class _GotoPageState extends State<GotoPage> {
                                   minHeight: double.infinity),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(
-                                    constant.BORDER_RADIUS),
+                                    BORDER_RADIUS),
                                 color: travelMode[1]
-                                    ? constant.COLOR_CONCORDIA
+                                    ? COLOR_CONCORDIA
                                     : Colors.transparent,
                               ),
                               child: Icon(Icons.directions_transit),
@@ -174,9 +172,9 @@ class _GotoPageState extends State<GotoPage> {
                                   minHeight: double.infinity),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(
-                                    constant.BORDER_RADIUS),
+                                    BORDER_RADIUS),
                                 color: travelMode[2]
-                                    ? constant.COLOR_CONCORDIA
+                                    ? COLOR_CONCORDIA
                                     : Colors.transparent,
                               ),
                               child: Icon(Icons.directions_bike),
@@ -188,9 +186,9 @@ class _GotoPageState extends State<GotoPage> {
                                   minHeight: double.infinity),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(
-                                    constant.BORDER_RADIUS),
+                                    BORDER_RADIUS),
                                 color: travelMode[3]
-                                    ? constant.COLOR_CONCORDIA
+                                    ? COLOR_CONCORDIA
                                     : Colors.transparent,
                               ),
                               child: Icon(Icons.directions_walk),
@@ -223,7 +221,7 @@ class _GotoPageState extends State<GotoPage> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-          backgroundColor: constant.COLOR_CONCORDIA,
+          backgroundColor: COLOR_CONCORDIA,
           foregroundColor: Colors.white,
           child: Text("GO"),
           onPressed: () {
