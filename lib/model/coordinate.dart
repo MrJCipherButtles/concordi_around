@@ -11,7 +11,6 @@ class Coordinate {
 
   //attributes to be used for google places search results
   String _gPlaceTitle;
-  //String _gPlacePhotos;
   String _gPlaceAddress;
   String _gPlacePhone;
   String _gPlaceWebsite;
@@ -19,7 +18,7 @@ class Coordinate {
   String _type;
   Set<Coordinate> _adjCoordinates = HashSet<Coordinate>();
 
- // Constructor:
+  // Constructor:
 // All the attributes inside curly bracket are optional/dynamic attributes
   Coordinate(
     this._lat,
@@ -30,19 +29,18 @@ class Coordinate {
     type,
     adjCoordinates,
     gPlaceTitle,
-    //String  gPlacePhoto,
     gPlaceAddress,
     gPlacePhone,
     gPlaceWebsite,
   }) {
-        _type = type;
+    _type = type;
     if (adjCoordinates != null) {
       _adjCoordinates = adjCoordinates;
       for (var adjCoordinate in _adjCoordinates) {
         adjCoordinate.addAdjCoordinate(this);
       }
     }
-     _gPlaceTitle = gPlaceTitle;
+    _gPlaceTitle = gPlaceTitle;
     _gPlaceAddress = gPlaceAddress;
     _gPlacePhone = gPlacePhone;
     _gPlaceWebsite = gPlaceWebsite;
@@ -54,7 +52,7 @@ class Coordinate {
   String get building => _building;
   String get campus => _campus;
   String get type => _type;
-  
+
   String get gPlaceTitle => _gPlaceTitle;
   //String get gPlacePhoto => _gPlacePhoto;
   String get gPlaceAddress => _gPlaceAddress;
