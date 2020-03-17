@@ -31,6 +31,20 @@ void main() {
     expect(find.text('Choose destination'), findsWidgets);
     expect(find.byType(FloatingActionButton), findsOneWidget);
 
+    await tester.tap(find.text('Your location'));
+    await tester.pumpAndSettle();
+    expect(find.text('Search'), findsOneWidget);
+    expect(find.byIcon(Icons.clear), findsOneWidget);
+    await tester.tap(find.byType(AnimatedIcon));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Choose destination'));
+    await tester.pumpAndSettle();
+    expect(find.text('Search'), findsOneWidget);
+    expect(find.byIcon(Icons.clear), findsOneWidget);
+    await tester.tap(find.byType(AnimatedIcon));
+    await tester.pumpAndSettle();
+
     expect(find.byIcon(Icons.directions_car), findsOneWidget);
     await tester.tap(find.byIcon(Icons.directions_car));
     await tester.pumpAndSettle();
@@ -74,6 +88,13 @@ void main() {
     );
     await tester.pumpAndSettle();
 
+    expect(find.text('TestBuilding'), findsOneWidget);
+    expect(find.text('Your location'), findsOneWidget);
+    expect(find.byType(TextField), findsNWidgets(2));
+    expect(find.byType(FloatingActionButton), findsOneWidget);
+
+    await tester.tap(find.byIcon(Icons.swap_vert));
+    await tester.pumpAndSettle();
     expect(find.text('TestBuilding'), findsOneWidget);
     expect(find.text('Your location'), findsOneWidget);
     expect(find.byType(TextField), findsNWidgets(2));
