@@ -54,6 +54,7 @@ class _DirectionPanelState extends State<DirectionPanel> {
                           icon: Icon(Icons.close), 
                           onPressed: () => {
                             directionNotifier.setShowDirectionPanel(false),
+                            directionNotifier.clearStepDirections(),
                             widget.removeDirectionPolyline(true)
                           })
                       ],
@@ -84,7 +85,7 @@ class _DirectionPanelState extends State<DirectionPanel> {
                   SizedBox(width: 10,),
                   Text("${i + 1}."),
                   SizedBox(width: 10,),
-                  Flexible(child: Text(" ${directions[i]}")),
+                  Flexible(child: Text("${directions[i]}")),
                 ],
               ),
               Divider(

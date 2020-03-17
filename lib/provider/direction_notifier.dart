@@ -3,6 +3,7 @@ import 'package:concordi_around/model/direction.dart';
 import 'package:concordi_around/service/map_constant.dart';
 import 'package:concordi_around/service/map_direction.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:html/parser.dart';
 
 import '../service/map_constant.dart';
 
@@ -10,6 +11,7 @@ class DirectionNotifier extends ChangeNotifier {
   bool showDirectionPanel = false;
   DrivingMode mode = DrivingMode.walking;
   Direction direction;
+  List<String> directionSteps = List();
 
   void setShowDirectionPanel(bool visiblity) {
     showDirectionPanel = visiblity;
@@ -29,6 +31,7 @@ class DirectionNotifier extends ChangeNotifier {
     MapDirection _mapDirection = MapDirection();
     direction = await _mapDirection.getDirection(
         origin, destination, mode.toString().replaceAll("DrivingMode.", ""));
+    setStepDirections();
     return direction;
   }
 
@@ -70,22 +73,26 @@ class DirectionNotifier extends ChangeNotifier {
     return distance;
   }
 
-  List<String> getStepDirections() {
-    List<String> directions = List();
+  void setStepDirections() {
     if (direction != null) {
       List<Routes> routes = direction.routes;
       for (Routes route in routes) {
         for (Legs leg in route.legs) {
           for (Steps step in leg.steps) {
-            directions.add(step.htmlInstructions
-                .replaceAll("<b>", "")
-                .replaceAll("</b>", "")
-                .replaceAll("<b>", "")
-                .replaceAll("/<wbr/>", " "));
+            var document = parse(step.htmlInstructions);
+            String parsedString = parse(document.body.text).documentElement.text;
+            directionSteps.add(parsedString);
           }
         }
       }
     }
-    return directions;
+  }
+
+  List<String> getStepDirections() {
+    return directionSteps;
+  }
+
+  void clearStepDirections() { // Clear after polyline is drawn
+  directionSteps.clear();
   }
 }
