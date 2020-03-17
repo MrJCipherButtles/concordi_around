@@ -1,5 +1,5 @@
 import 'package:concordi_around/model/coordinate.dart';
-import 'package:concordi_around/view/goto_page_new.dart';
+import 'package:concordi_around/view/goto_page.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
