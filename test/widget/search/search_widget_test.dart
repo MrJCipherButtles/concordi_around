@@ -3,16 +3,6 @@ import 'package:concordi_around/widget/drawer.dart';
 import 'package:concordi_around/widget/search/main_search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:concordi_around/credential.dart';
-import 'package:concordi_around/data/building_singleton.dart';
-import 'package:concordi_around/model/coordinate.dart';
-import 'package:concordi_around/model/list_item.dart';
-import 'package:concordi_around/provider/map_notifier.dart';
-import 'package:concordi_around/service/map_constant.dart' as constant;
-import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:uuid/uuid.dart';
 
 void main() {
   testWidgets('Testing the search widget', (WidgetTester tester) async {
