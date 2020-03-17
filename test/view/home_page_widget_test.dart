@@ -21,5 +21,7 @@ void main() {
 
     //making sure that the other widgets are present
     expect(find.byType(FloorSelectorEnterBuilding), findsOneWidget);
+
+    //TODO: making sure that the correct buildings are marked
   });
 }
