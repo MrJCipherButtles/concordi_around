@@ -878,6 +878,6 @@ Map<String, Set<RoomCoordinate>> floorMarkers = {
 };
 
 Map<String, Coordinate> shuttleStops = {
-  'SGW' : Coordinate(45.497148, -73.578447, "0", "Hall", "SGW" ),
-  'LOY' : Coordinate(45.458451, -73.638270, "0", "Vanier", "LOY" )
+  'SGW': Coordinate(45.497148, -73.578447, "0", "Hall", "SGW"),
+  'LOY': Coordinate(45.458451, -73.638270, "0", "Vanier", "LOY")
 };

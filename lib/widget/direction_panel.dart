@@ -45,18 +45,19 @@ class _DirectionPanelState extends State<DirectionPanel> {
                       children: <Widget>[
                         getModeIcon(directionNotifier.mode),
                         Flexible(
-                            child: Text(
+                          child: Text(
                             "${directionNotifier.getDuration()} (${directionNotifier.getDistance()})",
                             style: TextStyle(color: Colors.black, fontSize: 18),
                           ),
                         ),
                         IconButton(
-                          icon: Icon(Icons.close), 
-                          onPressed: () => {
-                            directionNotifier.setShowDirectionPanel(false),
-                            directionNotifier.clearAll(),
-                            widget.removeDirectionPolyline(true)
-                          })
+                            icon: Icon(Icons.close),
+                            onPressed: () => {
+                                  directionNotifier
+                                      .setShowDirectionPanel(false),
+                                  directionNotifier.clearAll(),
+                                  widget.removeDirectionPolyline(true)
+                                })
                       ],
                     ),
                   ],
@@ -82,15 +83,19 @@ class _DirectionPanelState extends State<DirectionPanel> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   Icon(Icons.directions),
-                  SizedBox(width: 10,),
+                  SizedBox(
+                    width: 10,
+                  ),
                   Text("${i + 1}."),
-                  SizedBox(width: 10,),
+                  SizedBox(
+                    width: 10,
+                  ),
                   Flexible(child: Text("${directions[i]}")),
                 ],
               ),
               Divider(
-                    color: Colors.grey,
-                  ),
+                color: Colors.grey,
+              ),
             ],
           ),
         );
@@ -105,8 +110,7 @@ class _DirectionPanelState extends State<DirectionPanel> {
       return Icon(Icons.directions_bus);
     else if (mode == DrivingMode.bicycling)
       return Icon(Icons.directions_bike);
-    else if (mode == DrivingMode.shuttle)
-      return Icon(Icons.airport_shuttle);
+    else if (mode == DrivingMode.shuttle) return Icon(Icons.airport_shuttle);
     return Icon(Icons.directions_walk);
   }
 }

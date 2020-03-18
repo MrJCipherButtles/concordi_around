@@ -9,7 +9,8 @@ class ShuttlePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ShuttleTimes shuttleTimes = new ShuttleTimes(weekday: this.weekday, now: this.now);
+    ShuttleTimes shuttleTimes =
+        new ShuttleTimes(weekday: this.weekday, now: this.now);
     shuttleTimes.findNextShuttleSGW();
     shuttleTimes.findNextShuttleLOYOLA();
 

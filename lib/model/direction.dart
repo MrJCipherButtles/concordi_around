@@ -89,11 +89,11 @@ class Legs {
     }
     if (json['distance'] != null) {
       distance =
-        json['distance'] != null ? Distance.fromJson(json['distance']) : null;
+          json['distance'] != null ? Distance.fromJson(json['distance']) : null;
     }
     if (json['duration'] != null) {
       duration =
-        json['duration'] != null ? Duration.fromJson(json['duration']) : null;
+          json['duration'] != null ? Duration.fromJson(json['duration']) : null;
     }
   }
 
@@ -102,10 +102,10 @@ class Legs {
     if (this.steps != null) {
       data['steps'] = this.steps.map((v) => v.toJson()).toList();
     }
-    if(this.distance != null) {
+    if (this.distance != null) {
       data['distance'] = this.distance.toJson();
     }
-    if(this.duration != null) {
+    if (this.duration != null) {
       data['duration'] = this.duration.toJson();
     }
     return data;
@@ -142,7 +142,7 @@ class Steps {
         ? PolylineModel.fromJson(json['polyline'])
         : null;
     distance =
-    json['distance'] != null ? Distance.fromJson(json['distance']) : null;
+        json['distance'] != null ? Distance.fromJson(json['distance']) : null;
     duration =
         json['duration'] != null ? Duration.fromJson(json['duration']) : null;
     htmlInstructions = json['html_instructions'];

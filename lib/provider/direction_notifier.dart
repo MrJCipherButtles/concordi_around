@@ -37,11 +37,10 @@ class DirectionNotifier extends ChangeNotifier {
   Future<Direction> navigateByName(String origin, String destination) async {
     apiCallCounter++;
     MapDirection _mapDirection = MapDirection();
-    if(mode == DrivingMode.shuttle) {
-      direction = await _mapDirection.getDirection(
-          origin, destination, DrivingMode.transit.toString().replaceAll("DrivingMode.", ""));
-    }
-    else {
+    if (mode == DrivingMode.shuttle) {
+      direction = await _mapDirection.getDirection(origin, destination,
+          DrivingMode.transit.toString().replaceAll("DrivingMode.", ""));
+    } else {
       direction = await _mapDirection.getDirection(
           origin, destination, mode.toString().replaceAll("DrivingMode.", ""));
     }
@@ -65,19 +64,20 @@ class DirectionNotifier extends ChangeNotifier {
 
   void setDuration() {
     if (direction != null) {
-
       List<Routes> routes = direction.routes;
 
-      if(mode == DrivingMode.shuttle) {
+      if (mode == DrivingMode.shuttle) {
         for (Routes route in routes) {
           for (Legs leg in route.legs) {
-            for(Steps step in leg.steps) {
-              totalDuration+= int.parse(step.duration.text.replaceAll("mins", "").replaceAll("min", "").replaceAll(" ", ""));
+            for (Steps step in leg.steps) {
+              totalDuration += int.parse(step.duration.text
+                  .replaceAll("mins", "")
+                  .replaceAll("min", "")
+                  .replaceAll(" ", ""));
             }
           }
         }
-      }
-      else {
+      } else {
         for (Routes route in routes) {
           for (Legs leg in route.legs) {
             duration = leg.duration.text;
@@ -92,7 +92,8 @@ class DirectionNotifier extends ChangeNotifier {
       List<Routes> routes = direction.routes;
       for (Routes route in routes) {
         for (Legs leg in route.legs) {
-          totalDistance+= double.parse(leg.distance.text.replaceAll("km", "").replaceAll(" ", ""));
+          totalDistance += double.parse(
+              leg.distance.text.replaceAll("km", "").replaceAll(" ", ""));
         }
       }
     }
@@ -100,15 +101,18 @@ class DirectionNotifier extends ChangeNotifier {
 
   void setStepDirections() {
     if (direction != null) {
-      if(apiCallCounter == 2 && mode == DrivingMode.shuttle) { // If statement is true, this is the 2nd api call for a shuttle direction
-        directionSteps.add("Shuttle towards ${MapHelper.furthestShuttleCampus}");
+      if (apiCallCounter == 2 && mode == DrivingMode.shuttle) {
+        // If statement is true, this is the 2nd api call for a shuttle direction
+        directionSteps
+            .add("Shuttle towards ${MapHelper.furthestShuttleCampus}");
       }
       List<Routes> routes = direction.routes;
       for (Routes route in routes) {
         for (Legs leg in route.legs) {
           for (Steps step in leg.steps) {
             var document = parse(step.htmlInstructions);
-            String parsedString = parse(document.body.text).documentElement.text;
+            String parsedString =
+                parse(document.body.text).documentElement.text;
             directionSteps.add(parsedString);
           }
         }
@@ -117,7 +121,7 @@ class DirectionNotifier extends ChangeNotifier {
   }
 
   void setPolylines() {
-    if(direction != null) {
+    if (direction != null) {
       PolylinePoints polylinePoints = PolylinePoints();
       List<Routes> routes = direction.routes;
       List<PointLatLng> points = List();
@@ -148,14 +152,14 @@ class DirectionNotifier extends ChangeNotifier {
   }
 
   String getDuration() {
-    if(mode == DrivingMode.shuttle) {
+    if (mode == DrivingMode.shuttle) {
       return "${totalDuration + 30} mins"; // Add 30 minutes for shuttle travel time
     }
     return duration;
   }
 
   String getDistance() {
-    if(mode == DrivingMode.shuttle) {
+    if (mode == DrivingMode.shuttle) {
       return "${totalDistance + 6.9} km"; // Add 7 km  for shuttle travel distance time
     }
     return "$totalDistance km";
@@ -164,7 +168,6 @@ class DirectionNotifier extends ChangeNotifier {
   Set<Polyline> getPolylines() {
     return polylines;
   }
-
 
   void clearAll() {
     polylines.clear();
