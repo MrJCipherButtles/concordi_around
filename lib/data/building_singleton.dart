@@ -79,7 +79,7 @@ class BuildingSingleton {
               Random rnd = Random();
               result.add(Polygon(
                   polygonId:
-                  PolygonId('${floor.floor}-${rnd.nextInt(100000000)}'),
+                      PolygonId('${floor.floor}-${rnd.nextInt(100000000)}'),
                   points: points,
                   fillColor: COLOR_CONCORDIA.withOpacity(0.4),
                   strokeWidth: 3,
@@ -101,7 +101,7 @@ class BuildingSingleton {
         if (building.floors != null) {
           var floor = building.floors[floorName];
           List<RoomCoordinate> markers =
-          floor.coordinatesByGivenTypes({'MARKER'});
+              floor.coordinatesByGivenTypes({'MARKER'});
           markers.forEach((f) => result.add(Marker(
               markerId: MarkerId(f.roomId),
               infoWindow: InfoWindow(title: f.roomId))));
@@ -195,7 +195,6 @@ class BuildingSingleton {
         45.4974342, -73.5791097, '8', 'H', 'SGW',
         adjCoordinates: <Coordinate>{}, type: "PORTAL");
 
-
     //9th floor portals
     PortalCoordinate j9F1 = PortalCoordinate(
         45.4972229, -73.5793637, '9', 'H', 'SGW',
@@ -215,8 +214,9 @@ class BuildingSingleton {
 
     PortalCoordinate j9F5 = PortalCoordinate(
         45.4972032, -73.579156, '9', 'H', 'SGW',
-        adjCoordinates: <Coordinate>{}, type: "PORTAL",
-    isDisabilityFriendly: false);
+        adjCoordinates: <Coordinate>{},
+        type: "PORTAL",
+        isDisabilityFriendly: false);
 
     PortalCoordinate j9F6 = PortalCoordinate(
         45.497236, -73.5791237, '9', 'H', 'SGW',
@@ -228,7 +228,8 @@ class BuildingSingleton {
 
     PortalCoordinate j9F8 = PortalCoordinate(
         45.4970442, -73.5788285, '9', 'H', 'SGW',
-        adjCoordinates: <Coordinate>{}, type: "PORTAL",
+        adjCoordinates: <Coordinate>{},
+        type: "PORTAL",
         isDisabilityFriendly: false);
 
     PortalCoordinate j9F9 = PortalCoordinate(
@@ -245,12 +246,14 @@ class BuildingSingleton {
 
     PortalCoordinate j9F12 = PortalCoordinate(
         45.4973589, -73.5787337, '9', 'H', 'SGW',
-        adjCoordinates: <Coordinate>{}, type: "PORTAL",
+        adjCoordinates: <Coordinate>{},
+        type: "PORTAL",
         isDisabilityFriendly: false);
 
     PortalCoordinate j9F13 = PortalCoordinate(
         45.4973184, -73.5787723, '9', 'H', 'SGW',
-        adjCoordinates: <Coordinate>{}, type: "PORTAL",
+        adjCoordinates: <Coordinate>{},
+        type: "PORTAL",
         isDisabilityFriendly: true);
 
     PortalCoordinate j9F14 = PortalCoordinate(
@@ -263,7 +266,8 @@ class BuildingSingleton {
 
     PortalCoordinate j9F16 = PortalCoordinate(
         45.4972815, -73.5789366, '9', 'H', 'SGW',
-        adjCoordinates: <Coordinate>{}, type: "PORTAL",
+        adjCoordinates: <Coordinate>{},
+        type: "PORTAL",
         isDisabilityFriendly: false);
 
     PortalCoordinate j9F17 = PortalCoordinate(
@@ -284,7 +288,8 @@ class BuildingSingleton {
 
     PortalCoordinate j9F21 = PortalCoordinate(
         45.4973955, -73.5790524, '9', 'H', 'SGW',
-        adjCoordinates: <Coordinate>{}, type: "PORTAL",
+        adjCoordinates: <Coordinate>{},
+        type: "PORTAL",
         isDisabilityFriendly: true);
 
     PortalCoordinate j9F22 = PortalCoordinate(
@@ -297,8 +302,9 @@ class BuildingSingleton {
 
     PortalCoordinate j9F24 = PortalCoordinate(
         45.4974402, -73.5789529, '9', 'H', 'SGW',
-        adjCoordinates: <Coordinate>{}, type: "PORTAL",
-    isDisabilityFriendly: false);
+        adjCoordinates: <Coordinate>{},
+        type: "PORTAL",
+        isDisabilityFriendly: false);
 
     j8F1.adjCoordinates = {j8F2, j8F15};
     j8F2.adjCoordinates = {j8F1, j8F3, j9F5};
