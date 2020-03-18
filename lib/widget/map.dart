@@ -253,14 +253,14 @@ class _MapState extends State<Map> {
   Future<void> drawDirectionPath(DirectionNotifier directionNotifier,
       Coordinate startPoint, Coordinate endPoint) async {
 
-    if(shuttleMode && (directionNotifier.mode == DrivingMode.transit)) {
-      directionNotifier.navigateByCoordinates(
-          startPoint, Coordinate(45.497148, -73.578447, "0", "Hall", "SGW" )); // Current position to SGW shuttle stop
-      directionNotifier.navigateByCoordinates(
-          Coordinate(45.458451, -73.638270, "0", "Vanier", "LOY" ), endPoint); // LOY shuttle stop to end point
+    if(shuttleMode && (directionNotifier.mode == DrivingMode.transit)) { // await keyword is very important!!!!!!
+      await directionNotifier.navigateByCoordinates(
+          startPoint, MapHelper.nearestShuttleStop(startPoint)); // Current position to closest shuttle stop
+      await directionNotifier.navigateByCoordinates(
+          MapHelper.furthestShuttleStop(startPoint), endPoint); // Furthest shuttle stop to end point
     }
     else {
-      directionNotifier.navigateByCoordinates(
+      await directionNotifier.navigateByCoordinates(
           startPoint, endPoint);
     }
 

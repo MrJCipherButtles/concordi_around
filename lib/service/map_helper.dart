@@ -1,6 +1,13 @@
+import 'dart:math';
+
+import 'package:concordi_around/data/data_points.dart';
+import 'package:concordi_around/model/coordinate.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapHelper {
+  static String furthestShuttleCampus;
+  static String nearestShuttleCampus;
+
   static bool isWithinHallStrictBound(LatLng latLng) {
     List<LatLng> coordsList = [LatLng(45.49726709926478, -73.57894677668811)];
 
@@ -48,5 +55,34 @@ class MapHelper {
       }
     }
     return LatLngBounds(northeast: LatLng(x1, y1), southwest: LatLng(x0, y0));
+  }
+
+  static Coordinate nearestShuttleStop(Coordinate startpoint) {
+    double distanceToSGW = calculateDistance(startpoint.toLatLng(), shuttleStops['SGW'].toLatLng());
+    double distanceToLOY = calculateDistance(startpoint.toLatLng(), shuttleStops['LOY'].toLatLng());
+    if(distanceToLOY > distanceToSGW) {
+      nearestShuttleCampus = "SGW";
+      furthestShuttleCampus = "Loyola";
+    }
+    else {
+      nearestShuttleCampus = "Loyola";
+      furthestShuttleCampus = "SGW";
+    }
+    return distanceToLOY > distanceToSGW ? shuttleStops['SGW'] : shuttleStops['LOY'];
+  }
+
+  static Coordinate furthestShuttleStop(Coordinate startpoint) {
+    double distanceToSGW = calculateDistance(startpoint.toLatLng(), shuttleStops['SGW'].toLatLng());
+    double distanceToLOY = calculateDistance(startpoint.toLatLng(), shuttleStops['LOY'].toLatLng());
+    return distanceToLOY > distanceToSGW ? shuttleStops['LOY'] : shuttleStops['SGW'];
+  }
+
+  static double calculateDistance(LatLng first, LatLng second){
+    var p = 0.017453292519943295;
+    var c = cos;
+    var a = 0.5 - c((second.latitude - first.latitude) * p)/2 +
+        c(first.latitude * p) * c(second.latitude * p) *
+            (1 - c((second.longitude - first.longitude) * p))/2;
+    return 12742 * asin(sqrt(a));
   }
 }

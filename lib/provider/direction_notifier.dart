@@ -1,9 +1,11 @@
 import 'dart:math';
 
+import 'package:concordi_around/global.dart';
 import 'package:concordi_around/model/coordinate.dart';
 import 'package:concordi_around/model/direction.dart';
 import 'package:concordi_around/service/map_constant.dart';
 import 'package:concordi_around/service/map_direction.dart';
+import 'package:concordi_around/service/map_helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -17,6 +19,7 @@ class DirectionNotifier extends ChangeNotifier {
   Direction direction;
   List<String> directionSteps = List();
   Set<Polyline> polylines = {};
+  int apiCallCounter = 0;
 
   void setShowDirectionPanel(bool visiblity) {
     showDirectionPanel = visiblity;
@@ -33,6 +36,7 @@ class DirectionNotifier extends ChangeNotifier {
   }
 
   Future<Direction> navigateByName(String origin, String destination) async {
+    apiCallCounter++;
     MapDirection _mapDirection = MapDirection();
     direction = await _mapDirection.getDirection(
         origin, destination, mode.toString().replaceAll("DrivingMode.", ""));
@@ -81,6 +85,11 @@ class DirectionNotifier extends ChangeNotifier {
 
   void setStepDirections() {
     if (direction != null) {
+
+      if(apiCallCounter == 2 && shuttleMode && mode == DrivingMode.transit) { // If statement is true, this is the 2nd api call
+        directionSteps.add("Shuttle towards ${MapHelper.furthestShuttleCampus}");
+      }
+
       List<Routes> routes = direction.routes;
       for (Routes route in routes) {
         for (Legs leg in route.legs) {
@@ -96,10 +105,6 @@ class DirectionNotifier extends ChangeNotifier {
 
   List<String> getStepDirections() {
     return directionSteps;
-  }
-
-  void clearStepDirections() { // Clear after polyline is drawn
-  directionSteps.clear();
   }
 
   void setPolylines() {
@@ -135,7 +140,9 @@ class DirectionNotifier extends ChangeNotifier {
     return polylines;
   }
 
-  void clearPolylines() {
+  void clearAll() {
     polylines.clear();
+    directionSteps.clear();
+    apiCallCounter = 0;
   }
 }
