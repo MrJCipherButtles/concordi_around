@@ -26,6 +26,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byType(ListView), findsOneWidget);
+    expect(find.byType(AnimatedIcon), findsOneWidget);
     
     await tester.tap(find.byType(AnimatedIcon));
     await tester.pumpAndSettle();

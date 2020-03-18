@@ -3,13 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:concordi_around/service/map_constant.dart' as constant;
 
 class ShuttlePage extends StatelessWidget {
+  int weekday;
+  TimeOfDay now;
+  ShuttlePage({this.weekday, this.now});
+
   @override
   Widget build(BuildContext context) {
-    int weekday = DateTime.now().weekday;
-    ShuttleTimes shuttleTimes = new ShuttleTimes();
+    ShuttleTimes shuttleTimes = new ShuttleTimes(weekday: this.weekday, now: this.now);
     shuttleTimes.findNextShuttleSGW();
     shuttleTimes.findNextShuttleLOYOLA();
-    TimeOfDay now = TimeOfDay.now();
+
     if ((weekday == 5 &&
             ((now.hour <= 19 && now.minute <= 50) || now.hour < 20)) ||
         (weekday == 4 && now.hour >= 23)) {

@@ -11,7 +11,7 @@ import 'package:concordi_around/service/map_constant.dart';
 import 'package:concordi_around/service/map_helper.dart';
 import 'package:concordi_around/service/marker_helper.dart';
 import 'package:concordi_around/service/polygon_helper.dart';
-import 'package:concordi_around/view/goto_page_new.dart';
+import 'package:concordi_around/view/goto_page.dart';
 import 'package:concordi_around/widget/direction_panel.dart';
 import 'package:concordi_around/widget/search/main_search_bar.dart';
 import 'package:concordi_around/widget/svg_floor_plan/floor_selector_enter_building_column.dart';
@@ -150,7 +150,6 @@ class _MapState extends State<Map> {
                           startPointAndDestinationCoordinates: (List<Coordinate>
                                   startPointAndDestinationCoordinates) =>
                               {
-                            directionNotifier.setShowDirectionPanel(true),
                             (startPointAndDestinationCoordinates[0]
                                         is RoomCoordinate &&
                                     startPointAndDestinationCoordinates[1]
@@ -188,7 +187,8 @@ class _MapState extends State<Map> {
               {updateFloor(floor), mapNotifier.setSelectedFloor(floor)},
           enterBuildingPressed: () => mapNotifier.goToHallSVG(),
         ),
-        DirectionPanel(),
+        DirectionPanel(
+            removeDirectionPolyline: (bool removePolyline) => {direction = {}}),
       ],
     );
   }
@@ -252,8 +252,11 @@ class _MapState extends State<Map> {
 
   Future<void> drawDirectionPath(DirectionNotifier directionNotifier,
       Coordinate startPoint, Coordinate endPoint) async {
+
     await directionNotifier.navigateByCoordinates(
         startPoint, endPoint); // Important api call
+
+    directionNotifier.setShowDirectionPanel(true);
 
     PolylinePoints polylinePoints = PolylinePoints();
     List<Routes> routes = directionNotifier.direction.routes;

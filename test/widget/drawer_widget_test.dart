@@ -26,6 +26,7 @@ void main() {
 
     //making sure that the correct logos are placed
     expect(find.byIcon(Icons.calendar_today), findsOneWidget);
+    expect(find.byIcon(Icons.airport_shuttle), findsOneWidget);
     expect(find.byIcon(Icons.settings), findsOneWidget);
     expect(find.byIcon(Icons.message), findsOneWidget);
     expect(find.byIcon(Icons.info_outline), findsOneWidget);
@@ -33,6 +34,7 @@ void main() {
 
     //making sure the correct text is placed
     expect(find.text('My Calendar'), findsOneWidget);
+    expect(find.text('Shuttle Schedule'), findsOneWidget);
     expect(find.text('Settings'), findsOneWidget);
     expect(find.text('Contact Us'), findsOneWidget);
     expect(find.text('About'), findsOneWidget);
@@ -44,6 +46,6 @@ void main() {
     await tester.tap(find.byType(CheckboxListTile));
     await tester.pump();
     //TODO: Add check that makes sure that the disability box is ticked after being pressed
-    
+
   });
 }

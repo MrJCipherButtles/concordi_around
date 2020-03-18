@@ -6,6 +6,10 @@ import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class DirectionPanel extends StatefulWidget {
+  final Function(bool) removeDirectionPolyline;
+
+  DirectionPanel({this.removeDirectionPolyline});
+
   @override
   State<StatefulWidget> createState() {
     return _DirectionPanelState();
@@ -26,34 +30,34 @@ class _DirectionPanelState extends State<DirectionPanel> {
           visible: directionNotifier.showDirectionPanel,
           child: SlidingUpPanel(
             minHeight: 80,
-            panel: Center(
-              child: Text("Please turn left"),
-            ),
+            panelBuilder: (ScrollController sc) =>
+                _scrollingList(sc, directionNotifier.getStepDirections()),
             collapsed: Container(
               decoration:
                   BoxDecoration(color: Colors.white, borderRadius: radius),
               child: Center(
-                child: Row(
+                child: Column(
                   children: <Widget>[
-                    SizedBox(width: 16),
-                    getModeIcon(directionNotifier.mode),
-                    SizedBox(width: 16),
-                    Text(
-                      "Your estimated time is 10 min",
-                      style: TextStyle(color: Colors.black),
+                    Icon(Icons.maximize),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        getModeIcon(directionNotifier.mode),
+                        Flexible(
+                            child: Text(
+                            "${directionNotifier.getDuration()} (${directionNotifier.getDistance()})",
+                            style: TextStyle(color: Colors.black, fontSize: 18),
+                          ),
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.close), 
+                          onPressed: () => {
+                            directionNotifier.setShowDirectionPanel(false),
+                            widget.removeDirectionPolyline(true)
+                          })
+                      ],
                     ),
-                    SizedBox(width: 16),
-                    RaisedButton(
-                      child: Text("Done"),
-                      textColor: Colors.white,
-                      color: COLOR_CONCORDIA,
-                      shape: RoundedRectangleBorder(
-                          borderRadius:
-                              new BorderRadius.circular(BORDER_RADIUS)),
-                      onPressed: () {
-                        directionNotifier.setShowDirectionPanel(false);
-                      },
-                    )
                   ],
                 ),
               ),
@@ -61,6 +65,36 @@ class _DirectionPanelState extends State<DirectionPanel> {
             borderRadius: radius,
           ));
     });
+  }
+
+  Widget _scrollingList(ScrollController sc, List<String> directions) {
+    return ListView.builder(
+      controller: sc,
+      itemCount: directions.length,
+      itemBuilder: (BuildContext context, int i) {
+        return Padding(
+          padding: const EdgeInsets.all(15),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Icon(Icons.directions),
+                  SizedBox(width: 10,),
+                  Text("${i + 1}."),
+                  SizedBox(width: 10,),
+                  Flexible(child: Text(" ${directions[i]}")),
+                ],
+              ),
+              Divider(
+                    color: Colors.grey,
+                  ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   Icon getModeIcon(DrivingMode mode) {

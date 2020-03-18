@@ -68,7 +68,7 @@ class _FloorSelectorEnterBuildingState
                   ),
                 ),
                 SizedBox(
-                  height: 16,
+                  height: 72,
                 )
               ],
             ),
