@@ -347,26 +347,6 @@ class BuildingSingleton {
     j9F23.adjCoordinates = {j9F22};
     j9F24.adjCoordinates = {j9F20, j8F4};
 
-//    RoomCoordinate h801 = RoomCoordinate(
-//        45.4973307, -73.5785616, '8', 'H', 'SGW',
-//        type: "ROOM", roomId: "H801", adjCoordinates: {j8F8, j8F11});
-//
-//    RoomCoordinate h803 = RoomCoordinate(
-//        45.4972776, -73.5786106, '8', 'H', 'SGW',
-//        type: "ROOM", roomId: "H803", adjCoordinates: {j8F8, j8F11});
-//
-//    RoomCoordinate h805 = RoomCoordinate(
-//        45.4972277, -73.5786569, '8', 'H', 'SGW',
-//        type: "ROOM", roomId: "H805", adjCoordinates: {j8F8, j8F11});
-//
-//    RoomCoordinate h806 = RoomCoordinate(
-//        45.4971761, -73.5788206, '8', 'H', 'SGW',
-//        type: "ROOM", roomId: "H806", adjCoordinates: {j8F10, j8F11});
-//
-//    RoomCoordinate h807 = RoomCoordinate(
-//        45.4971802, -73.5787002, '8', 'H', 'SGW',
-//        type: "ROOM", roomId: "H807", adjCoordinates: {j8F8, j8F11});
-
     RoomCoordinate h811 = RoomCoordinate(
         45.4970862, -73.5787884, '8', 'H', 'SGW',
         type: "ROOM", roomId: "H811", adjCoordinates: {j8F11, j8F14});
@@ -478,28 +458,15 @@ class BuildingSingleton {
         45.4973844, -73.5787818, '8', 'H', 'SGW',
         type: "ROOM", roomId: "H860", adjCoordinates: {j8F9});
 
-//    RoomCoordinate h861 = RoomCoordinate(
-//        45.4973862, -73.5786337, '9', 'H', 'SGW',
-//        type: "ROOM", roomId: "H861", adjCoordinates: {j8F7, j8F8});
-
     RoomCoordinate h862 = RoomCoordinate(
         45.4973047, -73.5787902, '9', 'H', 'SGW',
         type: "ROOM", roomId: "H862", adjCoordinates: {j8F10, j8F12});
-
-//    RoomCoordinate h863 = RoomCoordinate(
-//        45.4973577, -73.578575, '8', 'H', 'SGW',
-//        type: "ROOM", roomId: "H863", adjCoordinates: {j8F7, j8F8});
 
     RoomCoordinate h881 = RoomCoordinate(
         45.4974547, -73.5790906, '8', 'H', 'SGW',
         type: "ROOM", roomId: "H881", adjCoordinates: {j8F4, j8F17});
 
     Floor eightFloor = Floor('8', polygons: floorPolygons['8'], coordinates: {
-//      h801,
-//      h803,
-//      h805,
-//      h806,
-//      h807,
       h811,
       h813,
       h815,
@@ -528,9 +495,7 @@ class BuildingSingleton {
       h854,
       h855,
       h860,
-//      h861,
       h862,
-//      h863,
       h881,
       j8F1,
       j8F2,
