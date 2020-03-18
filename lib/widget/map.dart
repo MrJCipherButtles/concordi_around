@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:concordi_around/data/building_singleton.dart';
+import 'package:concordi_around/data/data_points.dart';
 import 'package:concordi_around/global.dart';
 import 'package:concordi_around/model/building.dart';
 import 'package:concordi_around/model/coordinate.dart';
@@ -103,10 +104,36 @@ class _MapState extends State<Map> {
             _completer.complete(controller);
           },
           onCameraMove: (CameraPosition cameraPosition) async {
-            marker = SearchBar.searchResultMarker;
+            String searchResultTitle =
+                SearchBar.searchResultMarker.first.infoWindow.title;
+            // if it's not a room or we are not inside a building always show the marker
+            if (cameraPosition.zoom < 18.5 ||
+                (!searchResultTitle.startsWith('H8') &&
+                    !searchResultTitle.startsWith('H9'))) {
+              marker = SearchBar.searchResultMarker;
+            }
             GoogleMapController _mapController = await _completer.future;
             if (MapHelper.isWithinHall(cameraPosition.target) &&
                 cameraPosition.zoom >= 18.5) {
+              // Remove marker if searchResults and selected floor do not match
+              if (searchResultTitle.startsWith('H8') &&
+                  mapNotifier.selectedFloorPlan == 9) {
+                marker = Set();
+              }
+              if (searchResultTitle.startsWith('H9') &&
+                  mapNotifier.selectedFloorPlan == 9 &&
+                  marker.length <= markerHelper.ninthfloorMarker.length) {
+                marker.add(SearchBar.searchResultMarker.first);
+              }
+              if (searchResultTitle.startsWith('H9') &&
+                  mapNotifier.selectedFloorPlan == 8) {
+                marker = Set();
+              }
+              if (searchResultTitle.startsWith('H8') &&
+                  mapNotifier.selectedFloorPlan == 8 &&
+                  marker.length <= markerHelper.eightfloorMarker.length) {
+                marker.add(SearchBar.searchResultMarker.first);
+              }
               mapNotifier.setFloorPlanVisibility(true);
               _setStyle(_mapController);
               marker.addAll(
@@ -204,6 +231,7 @@ class _MapState extends State<Map> {
           direction = {};
         }
       }
+
       if (floor == 9) {
         buildingHighlights.removeAll(polygonHelper.getFloorPolygon(8));
         marker.removeAll(markerHelper.getFloorMarkers(8));
@@ -253,7 +281,6 @@ class _MapState extends State<Map> {
 
   Future<void> drawDirectionPath(DirectionNotifier directionNotifier,
       Coordinate startPoint, Coordinate endPoint) async {
-
     await directionNotifier.navigateByCoordinates(
         startPoint, endPoint); // Important api call
 
