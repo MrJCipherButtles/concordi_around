@@ -11,25 +11,26 @@ void main() {
     building.addFloor(floor);
     expect(building.floors.length, 1);
   });
-  group('shortest path', ()
-  {
-    var a = Coordinate(45.49719, -73.57933, '1', 'Hall', 'SGW');
-    var b = Coordinate(45.49735, -73.57918, '1', 'Hall', 'SGW');
+  group('shortest path', () {
+    var a = PortalCoordinate(45.49719, -73.57933, '1', 'Hall', 'SGW');
+    var b = PortalCoordinate(45.49735, -73.57918, '1', 'Hall', 'SGW');
     var c = PortalCoordinate(45.49755, -73.57899, '1', 'Hall', 'SGW');
-    var d = Coordinate(45.49734, -73.57855, '1', 'Hall', 'SGW');
-    var e = Coordinate(45.49714, -73.57875, '1', 'Hall', 'SGW');
-    var f = Coordinate(45.49698, -73.57888, '1', 'Hall', 'SGW');
-    var x = PortalCoordinate(45.49720, -73.57887, '1', 'Hall', 'SGW', isDisabilityFriendly: true);
-    var y = Coordinate(45.49741, -73.57868, '1', 'Hall', 'SGW');
+    var d = PortalCoordinate(45.49734, -73.57855, '1', 'Hall', 'SGW');
+    var e = RoomCoordinate(45.49714, -73.57875, '1', 'Hall', 'SGW');
+    var f = RoomCoordinate(45.49698, -73.57888, '1', 'Hall', 'SGW');
+    var x = PortalCoordinate(45.49720, -73.57887, '1', 'Hall', 'SGW',
+        isDisabilityFriendly: true);
+    var y = PortalCoordinate(45.49741, -73.57868, '1', 'Hall', 'SGW');
 
-    var a2 = Coordinate(45.49719, -73.57933, '2', 'Hall', 'SGW');
-    var b2 = Coordinate(45.49735, -73.57918, '2', 'Hall', 'SGW');
+    var a2 = PortalCoordinate(45.49719, -73.57933, '2', 'Hall', 'SGW');
+    var b2 = PortalCoordinate(45.49735, -73.57918, '2', 'Hall', 'SGW');
     var c2 = PortalCoordinate(45.49755, -73.57899, '2', 'Hall', 'SGW');
-    var d2 = Coordinate(45.49734, -73.57855, '2', 'Hall', 'SGW');
-    var e2 = Coordinate(45.49714, -73.57875, '2', 'Hall', 'SGW');
-    var f2 = Coordinate(45.49698, -73.57888, '2', 'Hall', 'SGW');
-    var x2 = PortalCoordinate(45.49720, -73.57887, '2', 'Hall', 'SGW', isDisabilityFriendly: true);
-    var y2 = Coordinate(45.49741, -73.57868, '2', 'Hall', 'SGW');
+    var d2 = PortalCoordinate(45.49734, -73.57855, '2', 'Hall', 'SGW');
+    var e2 = RoomCoordinate(45.49714, -73.57875, '2', 'Hall', 'SGW');
+    var f2 = RoomCoordinate(45.49698, -73.57888, '2', 'Hall', 'SGW');
+    var x2 = PortalCoordinate(45.49720, -73.57887, '2', 'Hall', 'SGW',
+        isDisabilityFriendly: true);
+    var y2 = PortalCoordinate(45.49741, -73.57868, '2', 'Hall', 'SGW');
 
     a.adjCoordinates = {f, b};
     b.adjCoordinates = {a, x, c};
@@ -59,12 +60,22 @@ void main() {
     building.addFloor(floor2);
 
     test('should get the shortest path, disability = false', () {
-      expect(building.shortestPath(f, e2)['1'].toString(), Path([f,a,b,c]).toString());
-      expect(building.shortestPath(f, e2)['2'].toString(), Path([c2,y2,d2,e2]).toString());
+      expect(building.shortestPath(f, e2)['1'].toString(),
+          Path([f, a, b, c]).toString());
+      expect(building.shortestPath(f, e2)['2'].toString(),
+          Path([c2, y2, d2, e2]).toString());
     });
     test('should get the shortest path, disability = true', () {
-      expect(building.shortestPath(f, e2, isDisabilityFriendly: true)['1'].toString(), Path([f,a,b,x]).toString());
-      expect(building.shortestPath(f, e2, isDisabilityFriendly: true)['2'].toString(), Path([x2,y2,d2,e2]).toString());
+      expect(
+          building
+              .shortestPath(f, e2, isDisabilityFriendly: true)['1']
+              .toString(),
+          Path([f, a, b, x]).toString());
+      expect(
+          building
+              .shortestPath(f, e2, isDisabilityFriendly: true)['2']
+              .toString(),
+          Path([x2, y2, d2, e2]).toString());
     });
   });
 }

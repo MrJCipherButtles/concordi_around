@@ -143,8 +143,8 @@ class _GotoPageState extends State<GotoPage> {
                                       MediaQuery.of(context).size.width / 6,
                                   minHeight: double.infinity),
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(
-                                    BORDER_RADIUS),
+                                borderRadius:
+                                    BorderRadius.circular(BORDER_RADIUS),
                                 color: travelMode[0]
                                     ? COLOR_CONCORDIA
                                     : Colors.transparent,
@@ -157,8 +157,8 @@ class _GotoPageState extends State<GotoPage> {
                                       MediaQuery.of(context).size.width / 6,
                                   minHeight: double.infinity),
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(
-                                    BORDER_RADIUS),
+                                borderRadius:
+                                    BorderRadius.circular(BORDER_RADIUS),
                                 color: travelMode[1]
                                     ? COLOR_CONCORDIA
                                     : Colors.transparent,
@@ -171,8 +171,8 @@ class _GotoPageState extends State<GotoPage> {
                                       MediaQuery.of(context).size.width / 6,
                                   minHeight: double.infinity),
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(
-                                    BORDER_RADIUS),
+                                borderRadius:
+                                    BorderRadius.circular(BORDER_RADIUS),
                                 color: travelMode[2]
                                     ? COLOR_CONCORDIA
                                     : Colors.transparent,
@@ -185,8 +185,8 @@ class _GotoPageState extends State<GotoPage> {
                                       MediaQuery.of(context).size.width / 6,
                                   minHeight: double.infinity),
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(
-                                    BORDER_RADIUS),
+                                borderRadius:
+                                    BorderRadius.circular(BORDER_RADIUS),
                                 color: travelMode[3]
                                     ? COLOR_CONCORDIA
                                     : Colors.transparent,
@@ -245,6 +245,6 @@ class _GotoPageState extends State<GotoPage> {
       return DrivingMode.transit;
     else if (modes[2] == true)
       return DrivingMode.bicycling;
-    else if (modes[3] == true) return DrivingMode.walking;
+    return DrivingMode.walking;
   }
 }

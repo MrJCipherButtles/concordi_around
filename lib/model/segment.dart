@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'coordinate.dart';
 
 class Segment {
