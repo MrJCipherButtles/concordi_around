@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:concordi_around/model/coordinate.dart';
 import 'package:concordi_around/model/direction.dart';
 import 'package:concordi_around/service/map_constant.dart';
@@ -118,8 +120,10 @@ class DirectionNotifier extends ChangeNotifier {
         latlngPoints.add(LatLng(latlng.latitude, latlng.longitude));
       }
 
+      Random random = new Random();
+
       polylines.add(Polyline(
-        polylineId: PolylineId("direction"),
+        polylineId: PolylineId("${random.nextInt(9999)}"),
         points: latlngPoints,
         color: COLOR_CONCORDIA,
         width: 5,
