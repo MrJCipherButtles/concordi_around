@@ -1,6 +1,3 @@
-import 'dart:math';
-
-import 'package:concordi_around/global.dart';
 import 'package:concordi_around/model/coordinate.dart';
 import 'package:concordi_around/model/direction.dart';
 import 'package:concordi_around/service/map_constant.dart';
@@ -10,7 +7,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:html/parser.dart';
-
 import '../service/map_constant.dart';
 
 class DirectionNotifier extends ChangeNotifier {
@@ -19,6 +15,9 @@ class DirectionNotifier extends ChangeNotifier {
   Direction direction;
   List<String> directionSteps = List();
   Set<Polyline> polylines = {};
+  String duration = "0 min";
+  int totalDuration = 0; // Only used for shuttle
+  double totalDistance = 0; // Only used for shuttle
   int apiCallCounter = 0;
 
   void setShowDirectionPanel(bool visiblity) {
@@ -38,9 +37,17 @@ class DirectionNotifier extends ChangeNotifier {
   Future<Direction> navigateByName(String origin, String destination) async {
     apiCallCounter++;
     MapDirection _mapDirection = MapDirection();
-    direction = await _mapDirection.getDirection(
-        origin, destination, mode.toString().replaceAll("DrivingMode.", ""));
+    if(mode == DrivingMode.shuttle) {
+      direction = await _mapDirection.getDirection(
+          origin, destination, DrivingMode.transit.toString().replaceAll("DrivingMode.", ""));
+    }
+    else {
+      direction = await _mapDirection.getDirection(
+          origin, destination, mode.toString().replaceAll("DrivingMode.", ""));
+    }
     setStepDirections();
+    setDuration();
+    setDistance();
     setPolylines();
     return direction;
   }
@@ -53,43 +60,49 @@ class DirectionNotifier extends ChangeNotifier {
     String destinationLongitude = destinationCoordinates.lng.toString();
     String origin = "$originLatitude,$originLongitude";
     String destination = "$destinationLatitude,$destinationLongitude";
-
     return navigateByName(origin, destination);
   }
 
-  String getDuration() {
-    String duration = "0 min";
+  void setDuration() {
     if (direction != null) {
+
       List<Routes> routes = direction.routes;
-      for (Routes route in routes) {
-        for (Legs leg in route.legs) {
-          duration = leg.duration.text;
+
+      if(mode == DrivingMode.shuttle) {
+        for (Routes route in routes) {
+          for (Legs leg in route.legs) {
+            for(Steps step in leg.steps) {
+              totalDuration+= int.parse(step.duration.text.replaceAll("mins", "").replaceAll("min", "").replaceAll(" ", ""));
+            }
+          }
+        }
+      }
+      else {
+        for (Routes route in routes) {
+          for (Legs leg in route.legs) {
+            duration = leg.duration.text;
+          }
         }
       }
     }
-    return duration;
   }
 
-  String getDistance() {
-    String distance = "0 km";
+  void setDistance() {
     if (direction != null) {
       List<Routes> routes = direction.routes;
       for (Routes route in routes) {
         for (Legs leg in route.legs) {
-          distance = leg.distance.text;
+          totalDistance+= double.parse(leg.distance.text.replaceAll("km", "").replaceAll(" ", ""));
         }
       }
     }
-    return distance;
   }
 
   void setStepDirections() {
     if (direction != null) {
-
-      if(apiCallCounter == 2 && shuttleMode && mode == DrivingMode.transit) { // If statement is true, this is the 2nd api call
+      if(apiCallCounter == 2 && mode == DrivingMode.shuttle) { // If statement is true, this is the 2nd api call for a shuttle direction
         directionSteps.add("Shuttle towards ${MapHelper.furthestShuttleCampus}");
       }
-
       List<Routes> routes = direction.routes;
       for (Routes route in routes) {
         for (Legs leg in route.legs) {
@@ -101,10 +114,6 @@ class DirectionNotifier extends ChangeNotifier {
         }
       }
     }
-  }
-
-  List<String> getStepDirections() {
-    return directionSteps;
   }
 
   void setPolylines() {
@@ -125,10 +134,8 @@ class DirectionNotifier extends ChangeNotifier {
         latlngPoints.add(LatLng(latlng.latitude, latlng.longitude));
       }
 
-      Random random = new Random();
-
       polylines.add(Polyline(
-        polylineId: PolylineId("${random.nextInt(9999)}"),
+        polylineId: PolylineId("Direction $apiCallCounter"),
         points: latlngPoints,
         color: COLOR_CONCORDIA,
         width: 5,
@@ -136,13 +143,33 @@ class DirectionNotifier extends ChangeNotifier {
     }
   }
 
+  List<String> getStepDirections() {
+    return directionSteps;
+  }
+
+  String getDuration() {
+    if(mode == DrivingMode.shuttle) {
+      return "${totalDuration + 30} mins"; // Add 30 minutes for shuttle travel time
+    }
+    return duration;
+  }
+
+  String getDistance() {
+    if(mode == DrivingMode.shuttle) {
+      return "${totalDistance + 6.9} km"; // Add 7 km  for shuttle travel distance time
+    }
+    return "$totalDistance km";
+  }
+
   Set<Polyline> getPolylines() {
     return polylines;
   }
+
 
   void clearAll() {
     polylines.clear();
     directionSteps.clear();
     apiCallCounter = 0;
+    totalDuration = 0;
   }
 }

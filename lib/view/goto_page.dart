@@ -22,7 +22,7 @@ class GotoPage extends StatefulWidget {
 class _GotoPageState extends State<GotoPage> {
   Coordinate _startPoint;
   Coordinate _destination;
-  List<bool> travelMode = [false, false, false, true];
+  List<bool> travelMode = [true, false, false, false, false];
 
   @override
   void initState() {
@@ -140,16 +140,16 @@ class _GotoPageState extends State<GotoPage> {
                             Container(
                               constraints: BoxConstraints(
                                   minWidth:
-                                      MediaQuery.of(context).size.width / 6,
+                                  MediaQuery.of(context).size.width / 6,
                                   minHeight: double.infinity),
                               decoration: BoxDecoration(
                                 borderRadius:
-                                    BorderRadius.circular(BORDER_RADIUS),
+                                BorderRadius.circular(BORDER_RADIUS),
                                 color: travelMode[0]
                                     ? COLOR_CONCORDIA
                                     : Colors.transparent,
                               ),
-                              child: Icon(Icons.directions_car),
+                              child: Icon(Icons.directions_walk),
                             ),
                             Container(
                               constraints: BoxConstraints(
@@ -163,21 +163,21 @@ class _GotoPageState extends State<GotoPage> {
                                     ? COLOR_CONCORDIA
                                     : Colors.transparent,
                               ),
-                              child: Icon(Icons.directions_bus),
+                              child: Icon(Icons.directions_transit),
                             ),
                             Container(
                               constraints: BoxConstraints(
                                   minWidth:
-                                      MediaQuery.of(context).size.width / 6,
+                                  MediaQuery.of(context).size.width / 6,
                                   minHeight: double.infinity),
                               decoration: BoxDecoration(
                                 borderRadius:
-                                    BorderRadius.circular(BORDER_RADIUS),
+                                BorderRadius.circular(BORDER_RADIUS),
                                 color: travelMode[2]
                                     ? COLOR_CONCORDIA
                                     : Colors.transparent,
                               ),
-                              child: Icon(Icons.directions_bike),
+                              child: Icon(Icons.airport_shuttle),
                             ),
                             Container(
                               constraints: BoxConstraints(
@@ -191,7 +191,21 @@ class _GotoPageState extends State<GotoPage> {
                                     ? COLOR_CONCORDIA
                                     : Colors.transparent,
                               ),
-                              child: Icon(Icons.directions_walk),
+                              child: Icon(Icons.directions_bike),
+                            ),
+                            Container(
+                              constraints: BoxConstraints(
+                                  minWidth:
+                                  MediaQuery.of(context).size.width / 6,
+                                  minHeight: double.infinity),
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                BorderRadius.circular(BORDER_RADIUS),
+                                color: travelMode[4]
+                                    ? COLOR_CONCORDIA
+                                    : Colors.transparent,
+                              ),
+                              child: Icon(Icons.directions_car),
                             ),
                           ],
                           isSelected: travelMode,
@@ -201,8 +215,9 @@ class _GotoPageState extends State<GotoPage> {
                                 false,
                                 false,
                                 false,
+                                false,
                                 false
-                              ]; // Available modes are: [driving, transit, bicycling, walking] respectively
+                              ]; // Available modes are: [walking, transit, shuttle, bicycling, car] respectively
                               travelMode[index] = true;
                             });
                           }),
@@ -240,11 +255,13 @@ class _GotoPageState extends State<GotoPage> {
 
   DrivingMode getSelectedMode(List<bool> modes) {
     if (modes[0] == true)
-      return DrivingMode.driving;
+      return DrivingMode.walking;
     else if (modes[1] == true)
       return DrivingMode.transit;
     else if (modes[2] == true)
+      return DrivingMode.shuttle;
+    else if (modes[3] == true)
       return DrivingMode.bicycling;
-    return DrivingMode.walking;
+    return DrivingMode.driving;
   }
 }

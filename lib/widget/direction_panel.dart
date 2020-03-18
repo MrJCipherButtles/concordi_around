@@ -103,7 +103,10 @@ class _DirectionPanelState extends State<DirectionPanel> {
       return Icon(Icons.directions_car);
     else if (mode == DrivingMode.transit)
       return Icon(Icons.directions_bus);
-    else if (mode == DrivingMode.bicycling) return Icon(Icons.directions_bike);
+    else if (mode == DrivingMode.bicycling)
+      return Icon(Icons.directions_bike);
+    else if (mode == DrivingMode.shuttle)
+      return Icon(Icons.airport_shuttle);
     return Icon(Icons.directions_walk);
   }
 }
