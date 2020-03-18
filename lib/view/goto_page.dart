@@ -163,7 +163,7 @@ class _GotoPageState extends State<GotoPage> {
                                     ? COLOR_CONCORDIA
                                     : Colors.transparent,
                               ),
-                              child: Icon(Icons.directions_transit),
+                              child: Icon(Icons.directions_bus),
                             ),
                             Container(
                               constraints: BoxConstraints(

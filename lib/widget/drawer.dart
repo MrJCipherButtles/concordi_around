@@ -12,6 +12,7 @@ class SidebarDrawer extends StatefulWidget {
 class _SidebarDrawerState extends State<SidebarDrawer> {
   Widget build(BuildContext context) {
     bool _isDisabilityOn = global.disabilityMode;
+    bool _isShuttleOn = global.shuttleMode;
     return ClipRRect(
       borderRadius: BorderRadius.only(
           topRight: Radius.circular(constant.BORDER_RADIUS),
@@ -103,8 +104,28 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
             */
             StatefulBuilder(
               builder: (context, _setState) => CheckboxListTile(
+                secondary: Icon(Icons.directions_bus),
+                activeColor: constant.COLOR_CONCORDIA,
+                title: Text("Shuttle Bus Preference"),
+                value: _isShuttleOn,
+                onChanged: (bool value) {
+                  _setState(() {
+                    _isShuttleOn = value;
+                    global.shuttleMode = value;
+                    /*
+                    TODO: replace the global variable for the shuttle bus mode for a "config" file
+                    where the choice of the user will be saved even after the app restarts
+                    */
+                    _showShuttleToast(context);
+                    Navigator.pop(context);
+                  });
+                },
+              ),
+            ),
+            StatefulBuilder(
+              builder: (context, _setState) => CheckboxListTile(
                 secondary: Icon(Icons.accessible_forward),
-                activeColor: Color.fromRGBO(147, 35, 57, 1),
+                activeColor: constant.COLOR_CONCORDIA,
                 title: Text("Disability Mode"),
                 value: _isDisabilityOn,
                 onChanged: (bool value) {
@@ -115,7 +136,7 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
                     TODO: replace the global variable for the disability mode for a "config" file
                     where the choice of the user will be saved even after the app restarts
                     */
-                    _showToast(context);
+                    _showDisabilityToast(context);
                     Navigator.pop(context);
                   });
                 },
@@ -127,7 +148,30 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
     );
   }
 
-  void _showToast(BuildContext context) {
+  void _showShuttleToast(BuildContext context) {
+    final scaffold = Scaffold.of(context);
+    scaffold.removeCurrentSnackBar();
+    scaffold.showSnackBar(
+      SnackBar(
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(15), topRight: Radius.circular(15))),
+        backgroundColor:
+        global.shuttleMode ? constant.COLOR_CONCORDIA : null,
+        content: global.shuttleMode
+            ? Text('Shuttle Bus Mode ON')
+            : Text('Shuttle Bus Mode OFF'),
+        action: SnackBarAction(
+            label: 'UNDO',
+            onPressed: () {
+              global.shuttleMode = global.shuttleMode? false : true;
+              _showShuttleToast(context);
+            }),
+      ),
+    );
+  }
+
+  void _showDisabilityToast(BuildContext context) {
     final scaffold = Scaffold.of(context);
     scaffold.removeCurrentSnackBar();
     scaffold.showSnackBar(
@@ -144,7 +188,7 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
             label: 'UNDO',
             onPressed: () {
               global.disabilityMode = global.disabilityMode ? false : true;
-              _showToast(context);
+              _showDisabilityToast(context);
             }),
       ),
     );
