@@ -55,6 +55,7 @@ class _DirectionPanelState extends State<DirectionPanel> {
                           onPressed: () => {
                             directionNotifier.setShowDirectionPanel(false),
                             directionNotifier.clearStepDirections(),
+                            directionNotifier.clearPolylines(),
                             widget.removeDirectionPolyline(true)
                           })
                       ],

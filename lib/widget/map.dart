@@ -258,36 +258,8 @@ class _MapState extends State<Map> {
 
     directionNotifier.setShowDirectionPanel(true);
 
-    PolylinePoints polylinePoints = PolylinePoints();
-    List<Routes> routes = directionNotifier.direction.routes;
-    List<PointLatLng> points = List();
-    for (Routes route in routes) {
-      for (Legs leg in route.legs) {
-        for (Steps step in leg.steps) {
-          points.addAll(polylinePoints.decodePolyline(step.polyline.points));
-        }
-      }
-    }
-    _updatePolylines(points);
-  }
-
-  void _updatePolylines(List<PointLatLng> polyList) {
-    Set<Polyline> _lines = {};
-
-    List<LatLng> points = new List();
-    for (PointLatLng latlng in polyList) {
-      points.add(LatLng(latlng.latitude, latlng.longitude));
-    }
-
-    _lines.add(Polyline(
-      polylineId: PolylineId("direction"),
-      points: points,
-      color: COLOR_CONCORDIA,
-      width: 5,
-    ));
-
     setState(() {
-      direction = _lines;
+      direction = directionNotifier.getPolylines();
     });
   }
 }

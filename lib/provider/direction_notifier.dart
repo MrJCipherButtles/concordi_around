@@ -3,6 +3,8 @@ import 'package:concordi_around/model/direction.dart';
 import 'package:concordi_around/service/map_constant.dart';
 import 'package:concordi_around/service/map_direction.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:html/parser.dart';
 
 import '../service/map_constant.dart';
@@ -12,6 +14,7 @@ class DirectionNotifier extends ChangeNotifier {
   DrivingMode mode = DrivingMode.walking;
   Direction direction;
   List<String> directionSteps = List();
+  Set<Polyline> polylines = {};
 
   void setShowDirectionPanel(bool visiblity) {
     showDirectionPanel = visiblity;
@@ -32,6 +35,7 @@ class DirectionNotifier extends ChangeNotifier {
     direction = await _mapDirection.getDirection(
         origin, destination, mode.toString().replaceAll("DrivingMode.", ""));
     setStepDirections();
+    setPolylines();
     return direction;
   }
 
@@ -94,5 +98,40 @@ class DirectionNotifier extends ChangeNotifier {
 
   void clearStepDirections() { // Clear after polyline is drawn
   directionSteps.clear();
+  }
+
+  void setPolylines() {
+    if(direction != null) {
+      PolylinePoints polylinePoints = PolylinePoints();
+      List<Routes> routes = direction.routes;
+      List<PointLatLng> points = List();
+      for (Routes route in routes) {
+        for (Legs leg in route.legs) {
+          for (Steps step in leg.steps) {
+            points.addAll(polylinePoints.decodePolyline(step.polyline.points));
+          }
+        }
+      }
+
+      List<LatLng> latlngPoints = new List();
+      for (PointLatLng latlng in points) {
+        latlngPoints.add(LatLng(latlng.latitude, latlng.longitude));
+      }
+
+      polylines.add(Polyline(
+        polylineId: PolylineId("direction"),
+        points: latlngPoints,
+        color: COLOR_CONCORDIA,
+        width: 5,
+      ));
+    }
+  }
+
+  Set<Polyline> getPolylines() {
+    return polylines;
+  }
+
+  void clearPolylines() {
+    polylines.clear();
   }
 }
