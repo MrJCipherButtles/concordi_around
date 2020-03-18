@@ -117,21 +117,21 @@ class _MapState extends State<Map> {
                 cameraPosition.zoom >= 18.5) {
               // Remove marker if searchResults and selected floor do not match
               if (searchResultTitle.startsWith('H8') &&
-                  mapNotifier.selectedFloorPlan == 9) {
+                  mapNotifier.selectedFloorPlan == 9 &&
+                  marker.isNotEmpty) {
                 marker = Set();
               }
               if (searchResultTitle.startsWith('H9') &&
-                  mapNotifier.selectedFloorPlan == 9 &&
-                  marker.length <= markerHelper.ninthfloorMarker.length) {
+                  mapNotifier.selectedFloorPlan == 9) {
                 marker.add(SearchBar.searchResultMarker.first);
               }
               if (searchResultTitle.startsWith('H9') &&
-                  mapNotifier.selectedFloorPlan == 8) {
+                  mapNotifier.selectedFloorPlan == 8 &&
+                  marker.isNotEmpty) {
                 marker = Set();
               }
               if (searchResultTitle.startsWith('H8') &&
-                  mapNotifier.selectedFloorPlan == 8 &&
-                  marker.length <= markerHelper.eightfloorMarker.length) {
+                  mapNotifier.selectedFloorPlan == 8) {
                 marker.add(SearchBar.searchResultMarker.first);
               }
               mapNotifier.setFloorPlanVisibility(true);
