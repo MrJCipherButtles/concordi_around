@@ -343,6 +343,20 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
     List<RoomCoordinate> rooms = BuildingSingleton().getAllRooms();
     for (var room in rooms) {
       if (room.roomId == placeId) {
+        Marker m = Marker(
+            markerId: MarkerId(placeId),
+            infoWindow: InfoWindow(title: placeId),
+            position: LatLng(
+              room.lat,
+              room.lng,
+            ),
+            onTap: () {
+              // TODO: creating popUp window when tapped
+            });
+        SearchBar.searchResultMarker =
+            Set(); // to overcome a null exception error
+        SearchBar.searchResultMarker.add(m);
+        
         return room;
       }
     }
