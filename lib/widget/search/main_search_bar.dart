@@ -356,7 +356,7 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
         SearchBar.searchResultMarker =
             Set(); // to overcome a null exception error
         SearchBar.searchResultMarker.add(m);
-        
+
         return room;
       }
     }
@@ -385,11 +385,8 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
     String phone = result['formatted_phone_number'];
     String website = result['website'];
 
-    Coordinate searchResult = Coordinate(lat, lng, '', '', '',
-        gPlaceTitle: title,
-        gPlaceAddress: address,
-        gPlacePhone: phone,
-        gPlaceWebsite: website);
+    Coordinate searchResult =
+        PlaceCoordinate(lat, lng, '', title, '', address, phone, website);
 //creating a google maps marker based on the search results
     Marker m = Marker(
         markerId: MarkerId('searchResult'),
@@ -399,8 +396,8 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
           lng,
         ),
         onTap: () {
-         // TODO: creating popUp window when tapped
-          });
+          // TODO: creating popUp window when tapped
+        });
     SearchBar.searchResultMarker = Set(); // to overcome a null exception error
     SearchBar.searchResultMarker.add(m);
     return searchResult;

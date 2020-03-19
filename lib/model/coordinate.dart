@@ -7,31 +7,11 @@ class Coordinate {
   String _floor;
   String _building;
   String _campus;
-
-  //attributes to be used for google places search results
-  String _gPlaceTitle;
-  String _gPlaceAddress;
-  String _gPlacePhone;
-  String _gPlaceWebsite;
-
   String _type;
   Set<Coordinate> _adjCoordinates = HashSet<Coordinate>();
 
-  // Constructor:
-// All the attributes inside curly bracket are optional/dynamic attributes
-  Coordinate(
-    this._lat,
-    this._lng,
-    this._floor,
-    this._building,
-    this._campus, {
-    type,
-    adjCoordinates,
-    gPlaceTitle,
-    gPlaceAddress,
-    gPlacePhone,
-    gPlaceWebsite,
-  }) {
+  Coordinate(this._lat, this._lng, this._floor, this._building, this._campus,
+      {type, adjCoordinates}) {
     _type = type;
     if (adjCoordinates != null) {
       _adjCoordinates = adjCoordinates;
@@ -39,10 +19,6 @@ class Coordinate {
         adjCoordinate.addAdjCoordinate(this);
       }
     }
-    _gPlaceTitle = gPlaceTitle;
-    _gPlaceAddress = gPlaceAddress;
-    _gPlacePhone = gPlacePhone;
-    _gPlaceWebsite = gPlaceWebsite;
   }
 
   double get lat => _lat;
@@ -51,14 +27,6 @@ class Coordinate {
   String get building => _building;
   String get campus => _campus;
   String get type => _type;
-
-  String get gPlaceTitle => _gPlaceTitle;
-  //String get gPlacePhoto => _gPlacePhoto;
-  String get gPlaceAddress => _gPlaceAddress;
-  String get gPlacePhone => _gPlacePhone;
-
-  String get gPlaceWebsite => _gPlaceWebsite;
-
   Set<Coordinate> get adjCoordinates => _adjCoordinates;
 
   set type(String type) => _type = type;
@@ -143,4 +111,19 @@ class RoomCoordinate extends Coordinate {
 
   @override
   String toString() => '$roomId';
+}
+
+class PlaceCoordinate extends Coordinate {
+  final String _gPlaceAddress;
+  final String _gPlacePhone;
+  final String _gPlaceWebsite;
+
+  PlaceCoordinate(lat, lng, floorLevel, building, campus, this._gPlaceAddress,
+      this._gPlacePhone, this._gPlaceWebsite, {type, adjCoordinates})
+      : super(lat, lng, floorLevel, building, campus,
+            type: type, adjCoordinates: adjCoordinates);
+
+  String get gPlaceAddress => _gPlaceAddress;
+  String get gPlacePhone => _gPlacePhone;
+  String get gPlaceWebsite => _gPlaceWebsite;
 }
