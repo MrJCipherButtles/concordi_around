@@ -66,7 +66,7 @@ class DirectionNotifier extends ChangeNotifier {
     if (direction != null) {
       List<Routes> routes = direction.routes;
 
-      if (mode == DrivingMode.shuttle) {
+      if (mode == DrivingMode.shuttle && MapHelper.isShuttleTaken) {
         for (Routes route in routes) {
           for (Legs leg in route.legs) {
             for (Steps step in leg.steps) {
@@ -101,7 +101,7 @@ class DirectionNotifier extends ChangeNotifier {
 
   void setStepDirections() {
     if (direction != null) {
-      if (apiCallCounter == 2 && mode == DrivingMode.shuttle) {
+      if (apiCallCounter == 2 && mode == DrivingMode.shuttle && MapHelper.isShuttleTaken) {
         // If statement is true, this is the 2nd api call for a shuttle direction
         directionSteps
             .add("Shuttle towards ${MapHelper.furthestShuttleCampus}");
@@ -152,14 +152,14 @@ class DirectionNotifier extends ChangeNotifier {
   }
 
   String getDuration() {
-    if (mode == DrivingMode.shuttle) {
+    if (mode == DrivingMode.shuttle && MapHelper.isShuttleTaken) {
       return "${totalDuration + 30} mins"; // Add 30 minutes for shuttle travel time
     }
     return duration;
   }
 
   String getDistance() {
-    if (mode == DrivingMode.shuttle) {
+    if (mode == DrivingMode.shuttle && MapHelper.isShuttleTaken) {
       return "${totalDistance + 6.9} km"; // Add 7 km  for shuttle travel distance time
     }
     return "$totalDistance km";

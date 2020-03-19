@@ -7,6 +7,13 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 class MapHelper {
   static String furthestShuttleCampus = "SGW";
   static String nearestShuttleCampus = "LOY";
+  static bool _isShuttleTaken = false;
+  static Coordinate _nearestShuttleStop;
+  static Coordinate _furthestShuttleStop;
+
+  static bool get isShuttleTaken => _isShuttleTaken;
+  static Coordinate get nearestShuttleStop => _nearestShuttleStop;
+  static Coordinate get furthestShuttleStop => _furthestShuttleStop;
 
   static bool isWithinHallStrictBound(LatLng latLng) {
     List<LatLng> coordsList = [LatLng(45.49726709926478, -73.57894677668811)];
@@ -57,31 +64,31 @@ class MapHelper {
     return LatLngBounds(northeast: LatLng(x1, y1), southwest: LatLng(x0, y0));
   }
 
-  static Coordinate nearestShuttleStop(Coordinate startpoint) {
+  static void setShuttleStops(Coordinate startPoint) {
     double distanceToSGW = calculateDistance(
-        startpoint.toLatLng(), shuttleStops['SGW'].toLatLng());
+        startPoint.toLatLng(), shuttleStops['SGW'].toLatLng());
     double distanceToLOY = calculateDistance(
-        startpoint.toLatLng(), shuttleStops['LOY'].toLatLng());
+        startPoint.toLatLng(), shuttleStops['LOY'].toLatLng());
     if (distanceToLOY > distanceToSGW) {
       nearestShuttleCampus = "SGW";
       furthestShuttleCampus = "Loyola";
+      _nearestShuttleStop = shuttleStops['SGW'];
+      _furthestShuttleStop = shuttleStops['LOY'];
     } else {
       nearestShuttleCampus = "Loyola";
       furthestShuttleCampus = "SGW";
+      _nearestShuttleStop = shuttleStops['LOY'];
+      _furthestShuttleStop = shuttleStops['SGW'];
     }
-    return distanceToLOY > distanceToSGW
-        ? shuttleStops['SGW']
-        : shuttleStops['LOY'];
   }
 
-  static Coordinate furthestShuttleStop(Coordinate startpoint) {
-    double distanceToSGW = calculateDistance(
-        startpoint.toLatLng(), shuttleStops['SGW'].toLatLng());
-    double distanceToLOY = calculateDistance(
-        startpoint.toLatLng(), shuttleStops['LOY'].toLatLng());
-    return distanceToLOY > distanceToSGW
-        ? shuttleStops['LOY']
-        : shuttleStops['SGW'];
+  static bool isShuttleRequired(Coordinate endPoint) {
+    double distanceToClosestStop = calculateDistance(
+        endPoint.toLatLng(),_nearestShuttleStop.toLatLng());
+    double distanceToFurthestStop = calculateDistance(
+        endPoint.toLatLng(), _furthestShuttleStop.toLatLng());
+    _isShuttleTaken = distanceToFurthestStop < distanceToClosestStop;
+    return _isShuttleTaken;
   }
 
   static double calculateDistance(LatLng first, LatLng second) {

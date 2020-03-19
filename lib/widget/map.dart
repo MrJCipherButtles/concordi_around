@@ -3,7 +3,6 @@ import 'package:concordi_around/data/building_singleton.dart';
 import 'package:concordi_around/global.dart';
 import 'package:concordi_around/model/building.dart';
 import 'package:concordi_around/model/coordinate.dart';
-import 'package:concordi_around/model/direction.dart';
 import 'package:concordi_around/model/path.dart';
 import 'package:concordi_around/provider/direction_notifier.dart';
 import 'package:concordi_around/provider/map_notifier.dart';
@@ -16,7 +15,6 @@ import 'package:concordi_around/widget/direction_panel.dart';
 import 'package:concordi_around/widget/search/main_search_bar.dart';
 import 'package:concordi_around/widget/svg_floor_plan/floor_selector_enter_building_column.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
@@ -252,14 +250,14 @@ class _MapState extends State<Map> {
 
   Future<void> drawDirectionPath(DirectionNotifier directionNotifier,
       Coordinate startPoint, Coordinate endPoint) async {
-    if (directionNotifier.mode == DrivingMode.shuttle) {
-      // await keyword is very important!!!!!!
+    MapHelper.setShuttleStops(startPoint);
+    if (directionNotifier.mode == DrivingMode.shuttle && MapHelper.isShuttleRequired(endPoint)) {
+      // await keyword is very important for synchronizing the calls!!!!!!
       await directionNotifier.navigateByCoordinates(
           startPoint,
-          MapHelper.nearestShuttleStop(
-              startPoint)); // Current position to closest shuttle stop
+          MapHelper.nearestShuttleStop); // Current position to closest shuttle stop
       await directionNotifier.navigateByCoordinates(
-          MapHelper.furthestShuttleStop(startPoint),
+          MapHelper.furthestShuttleStop,
           endPoint); // Furthest shuttle stop to end point
     } else {
       await directionNotifier.navigateByCoordinates(startPoint, endPoint);
