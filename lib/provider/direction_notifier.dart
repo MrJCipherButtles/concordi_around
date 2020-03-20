@@ -174,5 +174,6 @@ class DirectionNotifier extends ChangeNotifier {
     directionSteps.clear();
     apiCallCounter = 0;
     totalDuration = 0;
+    totalDistance = 0;
   }
 }
