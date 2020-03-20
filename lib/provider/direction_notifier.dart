@@ -153,7 +153,7 @@ class DirectionNotifier extends ChangeNotifier {
 
   String getDuration() {
     if (mode == DrivingMode.shuttle && MapHelper.isShuttleTaken) {
-      return "${totalDuration + 25} mins"; // Add 30 minutes for shuttle travel time
+      return "${totalDuration + 30} mins"; // Add 30 minutes for shuttle travel time
     }
     return duration;
   }
