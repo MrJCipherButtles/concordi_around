@@ -120,7 +120,7 @@ class _DirectionPanelState extends State<DirectionPanel> {
         AssetImage("assets/direction_icon/slight_left.png"),
         color: Colors.black,
       );
-    if (direction.toLowerCase().contains("slight right"))
+    else if (direction.toLowerCase().contains("slight right"))
       return ImageIcon(
         AssetImage("assets/direction_icon/slight_right.png"),
         color: Colors.black,
