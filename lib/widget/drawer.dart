@@ -61,7 +61,9 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => ShuttlePage(weekday: DateTime.now().weekday, now: TimeOfDay.now())));
+                              builder: (context) => ShuttlePage(
+                                  weekday: DateTime.now().weekday,
+                                  now: TimeOfDay.now())));
                     },
                   ),
                   ListTile(
@@ -104,7 +106,7 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
             StatefulBuilder(
               builder: (context, _setState) => CheckboxListTile(
                 secondary: Icon(Icons.accessible_forward),
-                activeColor: Color.fromRGBO(147, 35, 57, 1),
+                activeColor: constant.COLOR_CONCORDIA,
                 title: Text("Disability Mode"),
                 value: _isDisabilityOn,
                 onChanged: (bool value) {
@@ -115,7 +117,7 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
                     TODO: replace the global variable for the disability mode for a "config" file
                     where the choice of the user will be saved even after the app restarts
                     */
-                    _showToast(context);
+                    _showDisabilityToast(context);
                     Navigator.pop(context);
                   });
                 },
@@ -127,7 +129,7 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
     );
   }
 
-  void _showToast(BuildContext context) {
+  void _showDisabilityToast(BuildContext context) {
     final scaffold = Scaffold.of(context);
     scaffold.removeCurrentSnackBar();
     scaffold.showSnackBar(
@@ -144,7 +146,7 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
             label: 'UNDO',
             onPressed: () {
               global.disabilityMode = global.disabilityMode ? false : true;
-              _showToast(context);
+              _showDisabilityToast(context);
             }),
       ),
     );
