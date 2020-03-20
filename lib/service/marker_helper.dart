@@ -39,8 +39,7 @@ class MarkerHelper {
         ImageConfiguration(devicePixelRatio: 2.5),
         'assets/icon/stairs_icon.png');
     _flagIcon = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(devicePixelRatio: 2.5),
-        'assets/icon/flag_icon.png');
+        ImageConfiguration(devicePixelRatio: 2.5), 'assets/icon/flag_icon.png');
     _startIcon = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(devicePixelRatio: 2.5),
         'assets/icon/start_icon.png');
@@ -88,8 +87,7 @@ class MarkerHelper {
     return selectedFloor == 8 ? eightfloorMarker : ninthfloorMarker;
   }
 
-
-  void setStartEndMarker(RoomCoordinate start, RoomCoordinate end){
+  void setStartEndMarker(RoomCoordinate start, RoomCoordinate end) {
     Marker startMarker = Marker(
         markerId: MarkerId('start'),
         icon: _startIcon,
@@ -102,13 +100,19 @@ class MarkerHelper {
         infoWindow: InfoWindow(title: end.roomId),
         position: end.toLatLng());
 
-    eightfloorMarker.removeWhere((marker) =>  marker.markerId.value == 'start'
-        || marker.markerId.value == 'end');
-    ninthfloorMarker.removeWhere((marker) => marker.markerId.value == 'start'
-        || marker.markerId.value == 'end');
+    removeStartEndMarker();
+    end.floor == '8'
+        ? eightfloorMarker.add(endMarker)
+        : ninthfloorMarker.add(endMarker);
+    start.floor == '8'
+        ? eightfloorMarker.add(startMarker)
+        : ninthfloorMarker.add(startMarker);
+  }
 
-    end.floor == '8' ? eightfloorMarker.add(endMarker) : ninthfloorMarker.add(endMarker);
-    start.floor == '8' ? eightfloorMarker.add(startMarker) : ninthfloorMarker.add(startMarker);
-
+  void removeStartEndMarker() {
+    ninthfloorMarker.removeWhere((marker) =>
+        marker.markerId.value == 'start' || marker.markerId.value == 'end');
+    eightfloorMarker.removeWhere((marker) =>
+        marker.markerId.value == 'start' || marker.markerId.value == 'end');
   }
 }

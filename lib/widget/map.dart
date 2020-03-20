@@ -155,7 +155,9 @@ class _MapState extends State<Map> {
                                 ? drawShortestPath(
                                     startPointAndDestinationCoordinates[0],
                                     startPointAndDestinationCoordinates[1],
-                                    disabilityMode, mapNotifier)
+                                    disabilityMode,
+                                    mapNotifier,
+                                    directionNotifier)
                                 : drawDirectionPath(
                                     directionNotifier,
                                     startPointAndDestinationCoordinates[0],
@@ -186,7 +188,14 @@ class _MapState extends State<Map> {
           enterBuildingPressed: () => mapNotifier.goToHallSVG(),
         ),
         DirectionPanel(
-            removeDirectionPolyline: (bool removePolyline) => {direction = {}}),
+            removeDirectionPolyline: (bool removePolyline) => {
+              direction = {},
+              shortestPath = {},
+              markerHelper.removeStartEndMarker(),
+              mapMarkers.removeWhere((marker) =>
+              marker.markerId.value == 'start' ||
+                  marker.markerId.value == 'end'),
+            }),
       ],
     );
   }
@@ -223,10 +232,11 @@ class _MapState extends State<Map> {
     String value = await DefaultAssetBundle.of(context)
         .loadString('assets/map_style_reset.json');
     controller.setMapStyle(value);
+
     mapMarkers.removeAll(markerHelper.getFloorMarkers(8));
     mapMarkers.removeAll(markerHelper.getFloorMarkers(9));
-    mapMarkers.removeWhere((marker) =>  marker.markerId.value == 'start'
-       || marker.markerId.value == 'end');
+    mapMarkers.removeWhere((marker) =>
+    marker.markerId.value == 'start' || marker.markerId.value == 'end');
   }
 
   void goToCurrent() async {
@@ -238,7 +248,12 @@ class _MapState extends State<Map> {
   }
 
   void drawShortestPath(
-      Coordinate start, Coordinate end, bool isDisabilityEnabled, MapNotifier mapNotifier) {
+      Coordinate start,
+      Coordinate end,
+      bool isDisabilityEnabled,
+      MapNotifier mapNotifier,
+      DirectionNotifier directionNotifier) {
+    directionNotifier.setShowDirectionPanel(true);
     BuildingSingleton buildingSingleton = new BuildingSingleton();
     Building hall = buildingSingleton.buildings['H'];
     mapNotifier.setSelectedFloor(int.parse(start.floor));
@@ -246,7 +261,9 @@ class _MapState extends State<Map> {
     shortestPath = hall.shortestPath(start, end,
         isDisabilityFriendly: isDisabilityEnabled);
     setState(() {
-      direction = {shortestPath[mapNotifier.selectedFloorPlan.toString()].toPolyline()};
+      direction = {
+        shortestPath[mapNotifier.selectedFloorPlan.toString()].toPolyline()
+      };
       markerHelper.setStartEndMarker(start, end);
     });
   }
@@ -254,11 +271,13 @@ class _MapState extends State<Map> {
   Future<void> drawDirectionPath(DirectionNotifier directionNotifier,
       Coordinate startPoint, Coordinate endPoint) async {
     MapHelper.setShuttleStops(startPoint);
-    if (directionNotifier.mode == DrivingMode.shuttle && MapHelper.isShuttleRequired(endPoint)) {
+    if (directionNotifier.mode == DrivingMode.shuttle &&
+        MapHelper.isShuttleRequired(endPoint)) {
       // await keyword is very important for synchronizing the calls!!!!!!
       await directionNotifier.navigateByCoordinates(
           startPoint,
-          MapHelper.nearestShuttleStop); // Current position to closest shuttle stop
+          MapHelper
+              .nearestShuttleStop); // Current position to closest shuttle stop
       await directionNotifier.navigateByCoordinates(
           MapHelper.furthestShuttleStop,
           endPoint); // Furthest shuttle stop to end point
