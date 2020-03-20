@@ -46,7 +46,6 @@ class _MapState extends State<Map> {
     buildingHighlights = BuildingSingleton().getOutdoorBuildingHighlights();
     polygonHelper = PolygonHelper();
     markerHelper = MarkerHelper();
-    buildingHighlights.addAll(polygonHelper.getFloorPolygon(9));
     _geolocator = Geolocator()..forceAndroidLocationManager;
     LocationOptions locationOptions = LocationOptions(
         accuracy: LocationAccuracy.bestForNavigation, distanceFilter: 1);
@@ -105,7 +104,7 @@ class _MapState extends State<Map> {
             if (MapHelper.isWithinHall(cameraPosition.target) &&
                 cameraPosition.zoom >= 18.5) {
               mapNotifier.setFloorPlanVisibility(true);
-              _setStyle(_mapController);
+              _setStyle(_mapController, mapNotifier);
               mapMarkers.addAll(
                   markerHelper.getFloorMarkers(mapNotifier.selectedFloorPlan));
             } else {
@@ -222,10 +221,12 @@ class _MapState extends State<Map> {
     });
   }
 
-  void _setStyle(GoogleMapController controller) async {
+  void _setStyle(GoogleMapController controller, MapNotifier mapNotifier) async {
     String value = await DefaultAssetBundle.of(context)
         .loadString('assets/map_style.json');
     controller.setMapStyle(value);
+    buildingHighlights.removeWhere((polygon) => polygon.polygonId.value == 'Henry F. Hall');
+    buildingHighlights.addAll(polygonHelper.getFloorPolygon(mapNotifier.selectedFloorPlan));
   }
 
   void _resetStyle(GoogleMapController controller) async {
@@ -237,6 +238,8 @@ class _MapState extends State<Map> {
     mapMarkers.removeAll(markerHelper.getFloorMarkers(9));
     mapMarkers.removeWhere((marker) =>
     marker.markerId.value == 'start' || marker.markerId.value == 'end');
+    buildingHighlights = {};
+    buildingHighlights = BuildingSingleton().getOutdoorBuildingHighlights();
   }
 
   void goToCurrent() async {
