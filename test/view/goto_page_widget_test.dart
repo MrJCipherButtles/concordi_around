@@ -45,8 +45,8 @@ void main() {
     await tester.tap(find.byType(AnimatedIcon));
     await tester.pumpAndSettle();
 
-    expect(find.byIcon(Icons.directions_car), findsOneWidget);
-    await tester.tap(find.byIcon(Icons.directions_car));
+    expect(find.byIcon(Icons.directions_walk), findsOneWidget);
+    await tester.tap(find.byIcon(Icons.directions_walk));
     await tester.pumpAndSettle();
     expect(find.byWidgetPredicate((widget) => _testDrivingMode(widget, 0)),
         findsOneWidget);
@@ -57,16 +57,22 @@ void main() {
     expect(find.byWidgetPredicate((widget) => _testDrivingMode(widget, 1)),
         findsOneWidget);
 
-    expect(find.byIcon(Icons.directions_bike), findsOneWidget);
-    await tester.tap(find.byIcon(Icons.directions_bike));
+    expect(find.byIcon(Icons.airport_shuttle), findsOneWidget);
+    await tester.tap(find.byIcon(Icons.airport_shuttle));
     await tester.pumpAndSettle();
     expect(find.byWidgetPredicate((widget) => _testDrivingMode(widget, 2)),
         findsOneWidget);
 
-    expect(find.byIcon(Icons.directions_walk), findsOneWidget);
-    await tester.tap(find.byIcon(Icons.directions_walk));
+    expect(find.byIcon(Icons.directions_bike), findsOneWidget);
+    await tester.tap(find.byIcon(Icons.directions_bike));
     await tester.pumpAndSettle();
     expect(find.byWidgetPredicate((widget) => _testDrivingMode(widget, 3)),
+        findsOneWidget);
+
+    expect(find.byIcon(Icons.directions_car), findsOneWidget);
+    await tester.tap(find.byIcon(Icons.directions_car));
+    await tester.pumpAndSettle();
+    expect(find.byWidgetPredicate((widget) => _testDrivingMode(widget, 4)),
         findsOneWidget);
 
     //tap "GO" button before choosing a destination

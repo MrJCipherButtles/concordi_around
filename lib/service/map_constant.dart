@@ -22,5 +22,6 @@ enum DrivingMode {
   driving,
   walking,
   bicycling,
-  transit
+  transit,
+  shuttle
 } // Do not use toString method here to get value

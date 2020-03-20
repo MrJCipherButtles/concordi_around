@@ -19,6 +19,7 @@ dependencies:
   sliding_up_panel: ^1.0.0
   intl: ^0.15.8
   flutter_polyline_points: ^0.1.0
+  html: ^0.14.0+3
 
 dev_dependencies:
   flutter_test:
@@ -32,3 +33,4 @@ flutter:
    - assets/map_style.json
    - assets/map_style_reset.json
    - assets/icon/
+   - assets/direction_icon/
