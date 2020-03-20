@@ -82,7 +82,9 @@ class _DirectionPanelState extends State<DirectionPanel> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  Icon(Icons.directions),
+                  isCustomIconRequired(directions[i])
+                      ? getCustomDirectionIcon(directions[i])
+                      : getDirectionIcon(directions[i]),
                   SizedBox(
                     width: 10,
                   ),
@@ -103,6 +105,57 @@ class _DirectionPanelState extends State<DirectionPanel> {
     );
   }
 
+  bool isCustomIconRequired(String direction) {
+    if (direction.toLowerCase().contains("left") ||
+        direction.toLowerCase().contains("right") ||
+        direction.toLowerCase().contains("head") ||
+        direction.toLowerCase().contains("continue"))
+      return true;
+    return false;
+  }
+
+  ImageIcon getCustomDirectionIcon(String direction) {
+    if (direction.toLowerCase().contains("slight left"))
+      return ImageIcon(
+        AssetImage("assets/direction_icon/slight_left.png"),
+        color: Colors.black,
+      );
+    if (direction.toLowerCase().contains("slight right"))
+      return ImageIcon(
+        AssetImage("assets/direction_icon/slight_right.png"),
+        color: Colors.black,
+      );
+    else if (direction.toLowerCase().contains("left"))
+      return ImageIcon(
+        AssetImage("assets/direction_icon/turn_left.png"),
+        color: Colors.black,
+      );
+    else if (direction.toLowerCase().contains("right"))
+      return ImageIcon(
+        AssetImage("assets/direction_icon/turn_right.png"),
+        color: Colors.black,
+      );
+    else
+      return ImageIcon(
+        AssetImage("assets/direction_icon/straight.png"),
+        color: Colors.black,
+      );
+  }
+
+  Icon getDirectionIcon(String direction) {
+    if (direction.toLowerCase().contains("walk"))
+      return Icon(Icons.directions_walk);
+    else if (direction.toLowerCase().contains("bus"))
+      return Icon(Icons.directions_bus);
+    else if (direction.toLowerCase().contains("shuttle"))
+      return Icon(Icons.airport_shuttle);
+    else if (direction.toLowerCase().contains("walk"))
+      return Icon(Icons.directions_walk);
+    else if (direction.toLowerCase().contains("subway"))
+      return Icon(Icons.directions_subway);
+    return Icon(Icons.directions);
+  }
+
   Icon getModeIcon(DrivingMode mode) {
     if (mode == DrivingMode.driving)
       return Icon(Icons.directions_car);
@@ -110,7 +163,8 @@ class _DirectionPanelState extends State<DirectionPanel> {
       return Icon(Icons.directions_bus);
     else if (mode == DrivingMode.bicycling)
       return Icon(Icons.directions_bike);
-    else if (mode == DrivingMode.shuttle) return Icon(Icons.airport_shuttle);
+    else if (mode == DrivingMode.shuttle)
+      return Icon(Icons.airport_shuttle);
     return Icon(Icons.directions_walk);
   }
 }

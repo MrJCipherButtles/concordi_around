@@ -33,3 +33,4 @@ flutter:
    - assets/map_style.json
    - assets/map_style_reset.json
    - assets/icon/
+   - assets/direction_icon/

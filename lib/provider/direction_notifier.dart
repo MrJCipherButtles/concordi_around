@@ -153,16 +153,16 @@ class DirectionNotifier extends ChangeNotifier {
 
   String getDuration() {
     if (mode == DrivingMode.shuttle && MapHelper.isShuttleTaken) {
-      return "${totalDuration + 30} mins"; // Add 30 minutes for shuttle travel time
+      return "${totalDuration + 25} mins"; // Add 30 minutes for shuttle travel time
     }
     return duration;
   }
 
   String getDistance() {
     if (mode == DrivingMode.shuttle && MapHelper.isShuttleTaken) {
-      return "${totalDistance + 6.9} km"; // Add 7 km  for shuttle travel distance time
+      return "${(totalDistance + 6.9).toStringAsFixed(1)} km"; // Add 7 km  for shuttle travel distance time
     }
-    return "$totalDistance km";
+    return "${totalDistance.toStringAsFixed(1)} km";
   }
 
   Set<Polyline> getPolylines() {

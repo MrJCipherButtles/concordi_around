@@ -262,9 +262,7 @@ class _MapState extends State<Map> {
     } else {
       await directionNotifier.navigateByCoordinates(startPoint, endPoint);
     }
-
     directionNotifier.setShowDirectionPanel(true);
-
     setState(() {
       direction = directionNotifier.getPolylines();
     });
