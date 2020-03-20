@@ -93,15 +93,14 @@ class MapHelper {
     return _isShuttleTaken;
   }
 
-  static double calculateDistance(LatLng first, LatLng second) {
-    var p = 0.017453292519943295;
-    var c = cos;
-    var a = 0.5 -
-        c((second.latitude - first.latitude) * p) / 2 +
-        c(first.latitude * p) *
-            c(second.latitude * p) *
-            (1 - c((second.longitude - first.longitude) * p)) /
+  static double calculateDistance(LatLng firstLatlng, LatLng secondLatlng) {
+    var degree = 0.017453292519943295;
+    var result = 0.5 -
+        cos((secondLatlng.latitude - firstLatlng.latitude) * degree) / 2 +
+        cos(firstLatlng.latitude * degree) *
+            cos(secondLatlng.latitude * degree) *
+            (1 - cos((secondLatlng.longitude - firstLatlng.longitude) * degree)) /
             2;
-    return 12742 * asin(sqrt(a));
+    return asin(sqrt(result)) * 12742;
   }
 }
