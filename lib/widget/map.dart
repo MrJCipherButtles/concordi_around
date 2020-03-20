@@ -155,7 +155,7 @@ class _MapState extends State<Map> {
                                 ? drawShortestPath(
                                     startPointAndDestinationCoordinates[0],
                                     startPointAndDestinationCoordinates[1],
-                                    disabilityMode)
+                                    disabilityMode, mapNotifier)
                                 : drawDirectionPath(
                                     directionNotifier,
                                     startPointAndDestinationCoordinates[0],
@@ -225,6 +225,8 @@ class _MapState extends State<Map> {
     controller.setMapStyle(value);
     mapMarkers.removeAll(markerHelper.getFloorMarkers(8));
     mapMarkers.removeAll(markerHelper.getFloorMarkers(9));
+    mapMarkers.removeWhere((marker) =>  marker.markerId.value == 'start'
+       || marker.markerId.value == 'end');
   }
 
   void goToCurrent() async {
@@ -236,15 +238,16 @@ class _MapState extends State<Map> {
   }
 
   void drawShortestPath(
-      Coordinate start, Coordinate end, bool isDisabilityEnabled) {
+      Coordinate start, Coordinate end, bool isDisabilityEnabled, MapNotifier mapNotifier) {
     BuildingSingleton buildingSingleton = new BuildingSingleton();
     Building hall = buildingSingleton.buildings['H'];
-
+    mapNotifier.setSelectedFloor(int.parse(start.floor));
+    updateFloor(mapNotifier.selectedFloorPlan);
     shortestPath = hall.shortestPath(start, end,
         isDisabilityFriendly: isDisabilityEnabled);
-    // TODO: setState of direction should be set by listening to selectedFloor MapNotifier instead of hardcoded '9'
     setState(() {
-      direction = {shortestPath['9'].toPolyline()};
+      direction = {shortestPath[mapNotifier.selectedFloorPlan.toString()].toPolyline()};
+      markerHelper.setStartEndMarker(start, end);
     });
   }
 

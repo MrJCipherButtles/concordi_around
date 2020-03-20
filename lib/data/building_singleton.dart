@@ -459,7 +459,7 @@ class BuildingSingleton {
         type: "ROOM", roomId: "H860", adjCoordinates: {j8F9});
 
     RoomCoordinate h862 = RoomCoordinate(
-        45.4973047, -73.5787902, '9', 'H', 'SGW',
+        45.4973047, -73.5787902, '8', 'H', 'SGW',
         type: "ROOM", roomId: "H862", adjCoordinates: {j8F10, j8F12});
 
     RoomCoordinate h881 = RoomCoordinate(
