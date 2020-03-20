@@ -92,8 +92,14 @@ class DirectionNotifier extends ChangeNotifier {
       List<Routes> routes = direction.routes;
       for (Routes route in routes) {
         for (Legs leg in route.legs) {
-          totalDistance += double.parse(
+          if(leg.distance.text.toLowerCase().contains("km")) {
+            totalDistance += double.parse(
               leg.distance.text.replaceAll("km", "").replaceAll(" ", ""));
+          }
+          else if (leg.distance.text.toLowerCase().contains("m")) {
+            totalDistance += (double.parse(
+              leg.distance.text.replaceAll("m", "").replaceAll(" ", "")))/1000;
+          }
         }
       }
     }
