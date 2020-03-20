@@ -135,7 +135,6 @@ class _DirectionPanelState extends State<DirectionPanel> {
         AssetImage("assets/direction_icon/turn_right.png"),
         color: Colors.black,
       );
-    else
       return ImageIcon(
         AssetImage("assets/direction_icon/straight.png"),
         color: Colors.black,
