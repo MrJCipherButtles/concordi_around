@@ -5,12 +5,14 @@ import 'package:concordi_around/model/coordinate.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapHelper {
-  static String furthestShuttleCampus = "SGW";
-  static String nearestShuttleCampus = "LOY";
+  static String _furthestShuttleCampus = "SGW";
+  static String _nearestShuttleCampus = "LOY";
   static bool _isShuttleTaken = false;
   static Coordinate _nearestShuttleStop;
   static Coordinate _furthestShuttleStop;
 
+  static String get furthestShuttleCampus => _furthestShuttleCampus;
+  static String get nearestShuttleCampus => _nearestShuttleCampus;
   static bool get isShuttleTaken => _isShuttleTaken;
   static Coordinate get nearestShuttleStop => _nearestShuttleStop;
   static Coordinate get furthestShuttleStop => _furthestShuttleStop;
@@ -70,13 +72,13 @@ class MapHelper {
     double distanceToLOY = calculateDistance(
         startPoint.toLatLng(), shuttleStops['LOY'].toLatLng());
     if (distanceToLOY > distanceToSGW) {
-      nearestShuttleCampus = "SGW";
-      furthestShuttleCampus = "Loyola";
+      _nearestShuttleCampus = "SGW";
+      _furthestShuttleCampus = "Loyola";
       _nearestShuttleStop = shuttleStops['SGW'];
       _furthestShuttleStop = shuttleStops['LOY'];
     } else {
-      nearestShuttleCampus = "Loyola";
-      furthestShuttleCampus = "SGW";
+      _nearestShuttleCampus = "Loyola";
+      _furthestShuttleCampus = "SGW";
       _nearestShuttleStop = shuttleStops['LOY'];
       _furthestShuttleStop = shuttleStops['SGW'];
     }
