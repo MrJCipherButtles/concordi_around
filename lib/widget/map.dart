@@ -147,20 +147,34 @@ class _MapState extends State<Map> {
                           startPointAndDestinationCoordinates: (List<Coordinate>
                                   startPointAndDestinationCoordinates) =>
                               {
-                            (startPointAndDestinationCoordinates[0]
-                                        is RoomCoordinate &&
+                                if(startPointAndDestinationCoordinates[0]
+                                is RoomCoordinate &&
                                     startPointAndDestinationCoordinates[1]
-                                        is RoomCoordinate)
-                                ? drawShortestPath(
-                                    startPointAndDestinationCoordinates[0],
-                                    startPointAndDestinationCoordinates[1],
-                                    disabilityMode,
-                                    mapNotifier,
-                                    directionNotifier)
-                                : drawDirectionPath(
-                                    directionNotifier,
-                                    startPointAndDestinationCoordinates[0],
-                                    startPointAndDestinationCoordinates[1]),
+                                    is RoomCoordinate) {
+                                  drawIndoorPath(
+                                      startPointAndDestinationCoordinates[0],
+                                      startPointAndDestinationCoordinates[1],
+                                      disabilityMode,
+                                      mapNotifier,
+                                      directionNotifier),
+                                }
+                                else if(startPointAndDestinationCoordinates[0]
+                                is RoomCoordinate ||
+                                    startPointAndDestinationCoordinates[1]
+                                    is RoomCoordinate) {
+                                  drawCombinedPath(
+                                      startPointAndDestinationCoordinates[0],
+                                      startPointAndDestinationCoordinates[1],
+                                      disabilityMode,
+                                      mapNotifier,
+                                      directionNotifier)
+                                }
+                                else {
+                                  drawOutdoorPath(
+                                      directionNotifier,
+                                      startPointAndDestinationCoordinates[0],
+                                      startPointAndDestinationCoordinates[1])
+                                  },
                             //Moves camera to the starting point
                             mapNotifier.goToSpecifiedLatLng(
                                 coordinate:
@@ -249,7 +263,7 @@ class _MapState extends State<Map> {
     controller.animateCamera(CameraUpdate.newCameraPosition(_cameraPosition));
   }
 
-  void drawShortestPath(
+  void drawIndoorPath(
       Coordinate start,
       Coordinate end,
       bool isDisabilityEnabled,
@@ -270,7 +284,7 @@ class _MapState extends State<Map> {
     });
   }
 
-  Future<void> drawDirectionPath(DirectionNotifier directionNotifier,
+  Future<void> drawOutdoorPath(DirectionNotifier directionNotifier,
       Coordinate startPoint, Coordinate endPoint) async {
     MapHelper.setShuttleStops(startPoint);
     if (directionNotifier.mode == constant.DrivingMode.shuttle &&
@@ -290,5 +304,14 @@ class _MapState extends State<Map> {
     setState(() {
       direction = directionNotifier.getPolylines();
     });
+  }
+
+  Future<void> drawCombinedPath(Coordinate start,
+      Coordinate end,
+      bool isDisabilityEnabled,
+      MapNotifier mapNotifier,
+      DirectionNotifier directionNotifier) async {
+    drawOutdoorPath(directionNotifier, start, Coordinate(45.497009, -73.578551, "0", "Hall", "SGW"));
+    //drawIndoorPath(, end, isDisabilityEnabled, mapNotifier, directionNotifier);
   }
 }
