@@ -4,9 +4,8 @@ import 'package:provider/provider.dart';
 
 class FloorSelectorEnterBuilding extends StatefulWidget {
   final Function(int) selectedFloor;
-  final VoidCallback enterBuildingPressed;
 
-  FloorSelectorEnterBuilding({this.selectedFloor, this.enterBuildingPressed});
+  FloorSelectorEnterBuilding({this.selectedFloor});
 
   @override
   State<StatefulWidget> createState() {

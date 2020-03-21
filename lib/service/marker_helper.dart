@@ -9,10 +9,12 @@ class MarkerHelper {
 
   BitmapDescriptor _roomIcon;
   BitmapDescriptor _maleIcon;
-  BitmapDescriptor femaleIcon;
-  BitmapDescriptor wheelchairIcon;
-  BitmapDescriptor stairsIcon;
-  BitmapDescriptor escalatorIcon;
+  BitmapDescriptor _femaleIcon;
+  BitmapDescriptor _wheelchairIcon;
+  BitmapDescriptor _stairsIcon;
+  BitmapDescriptor _escalatorIcon;
+  BitmapDescriptor _flagIcon;
+  BitmapDescriptor _startIcon;
 
   MarkerHelper() {
     _initIcons();
@@ -24,18 +26,23 @@ class MarkerHelper {
         'assets/icon/class_icon.png');
     _maleIcon = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(devicePixelRatio: 2.5), 'assets/icon/male_icon.png');
-    femaleIcon = await BitmapDescriptor.fromAssetImage(
+    _femaleIcon = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(devicePixelRatio: 2.5),
         'assets/icon/female_icon.png');
-    wheelchairIcon = await BitmapDescriptor.fromAssetImage(
+    _wheelchairIcon = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(devicePixelRatio: 2.5),
         'assets/icon/wheelchair_icon.png');
-    escalatorIcon = await BitmapDescriptor.fromAssetImage(
+    _escalatorIcon = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(devicePixelRatio: 2.5),
         'assets/icon/escalator_icon.png');
-    stairsIcon = await BitmapDescriptor.fromAssetImage(
+    _stairsIcon = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(devicePixelRatio: 2.5),
         'assets/icon/stairs_icon.png');
+    _flagIcon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 2.5), 'assets/icon/flag_icon.png');
+    _startIcon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 2.5),
+        'assets/icon/start_icon.png');
     _setMarkers(8);
     _setMarkers(9);
   }
@@ -49,13 +56,13 @@ class MarkerHelper {
       if (roomName == 'MW') {
         icon = _maleIcon;
       } else if (roomName == 'WW') {
-        icon = femaleIcon;
+        icon = _femaleIcon;
       } else if (roomName.contains('EL')) {
-        icon = wheelchairIcon;
+        icon = _wheelchairIcon;
       } else if (roomName.contains('STAIRS')) {
-        icon = stairsIcon;
+        icon = _stairsIcon;
       } else if (roomName.contains('ESC')) {
-        icon = escalatorIcon;
+        icon = _escalatorIcon;
       } else {
         icon = _roomIcon;
       }
@@ -78,5 +85,34 @@ class MarkerHelper {
 
   Set<Marker> getFloorMarkers(int selectedFloor) {
     return selectedFloor == 8 ? eightfloorMarker : ninthfloorMarker;
+  }
+
+  void setStartEndMarker(RoomCoordinate start, RoomCoordinate end) {
+    Marker startMarker = Marker(
+        markerId: MarkerId('start'),
+        icon: _startIcon,
+        infoWindow: InfoWindow(title: start.roomId),
+        position: start.toLatLng());
+
+    Marker endMarker = Marker(
+        markerId: MarkerId('end'),
+        icon: _flagIcon,
+        infoWindow: InfoWindow(title: end.roomId),
+        position: end.toLatLng());
+
+    removeStartEndMarker();
+    end.floor == '8'
+        ? eightfloorMarker.add(endMarker)
+        : ninthfloorMarker.add(endMarker);
+    start.floor == '8'
+        ? eightfloorMarker.add(startMarker)
+        : ninthfloorMarker.add(startMarker);
+  }
+
+  void removeStartEndMarker() {
+    ninthfloorMarker.removeWhere((marker) =>
+        marker.markerId.value == 'start' || marker.markerId.value == 'end');
+    eightfloorMarker.removeWhere((marker) =>
+        marker.markerId.value == 'start' || marker.markerId.value == 'end');
   }
 }
