@@ -6,7 +6,7 @@ import 'package:concordi_around/model/coordinate.dart';
 import 'package:concordi_around/model/path.dart';
 import 'package:concordi_around/provider/direction_notifier.dart';
 import 'package:concordi_around/provider/map_notifier.dart';
-import 'package:concordi_around/service/map_constant.dart';
+import 'package:concordi_around/service/map_constant.dart' as constant;
 import 'package:concordi_around/service/map_helper.dart';
 import 'package:concordi_around/service/marker_helper.dart';
 import 'package:concordi_around/service/polygon_helper.dart';
@@ -55,7 +55,7 @@ class _MapState extends State<Map> {
         _position = pos;
         _cameraPosition = CameraPosition(
             target: LatLng(_position.latitude, _position.longitude),
-            zoom: CAMERA_DEFAULT_ZOOM);
+            zoom: constant.CAMERA_DEFAULT_ZOOM);
       });
     });
   }
@@ -102,7 +102,7 @@ class _MapState extends State<Map> {
           onCameraMove: (CameraPosition cameraPosition) async {
             GoogleMapController _mapController = await _completer.future;
             if (MapHelper.isWithinHall(cameraPosition.target) &&
-                cameraPosition.zoom >= 18.5) {
+                cameraPosition.zoom >= constant.CAMERA_INDOOR_ZOOM) {
               mapNotifier.setFloorPlanVisibility(true);
               _setStyle(_mapController, mapNotifier);
               mapMarkers.addAll(
@@ -127,7 +127,7 @@ class _MapState extends State<Map> {
                     goToCurrent();
                   },
                   backgroundColor: Colors.white,
-                  foregroundColor: COLOR_CONCORDIA,
+                  foregroundColor: constant.COLOR_CONCORDIA,
                   tooltip: 'Get Location',
                   child: Icon(Icons.my_location),
                 ),
@@ -142,7 +142,7 @@ class _MapState extends State<Map> {
                       MaterialPageRoute(
                         builder: (context) => GotoPage(
                           _position,
-                          drivingMode: (DrivingMode mode) =>
+                          drivingMode: (constant.DrivingMode mode) =>
                               {directionNotifier.setDrivingMode(mode)},
                           startPointAndDestinationCoordinates: (List<Coordinate>
                                   startPointAndDestinationCoordinates) =>
@@ -170,7 +170,7 @@ class _MapState extends State<Map> {
                       ),
                     );
                   },
-                  backgroundColor: COLOR_CONCORDIA,
+                  backgroundColor: constant.COLOR_CONCORDIA,
                   foregroundColor: Colors.white,
                   child: Icon(Icons.directions),
                 ),
@@ -184,7 +184,6 @@ class _MapState extends State<Map> {
         FloorSelectorEnterBuilding(
           selectedFloor: (int floor) =>
               {updateFloor(floor), mapNotifier.setSelectedFloor(floor)},
-          enterBuildingPressed: () => mapNotifier.goToHallSVG(),
         ),
         DirectionPanel(
             removeDirectionPolyline: (bool removePolyline) => {
@@ -246,7 +245,7 @@ class _MapState extends State<Map> {
     final GoogleMapController controller = await _completer.future;
     _cameraPosition = CameraPosition(
         target: LatLng(_position.latitude, _position.longitude),
-        zoom: CAMERA_DEFAULT_ZOOM);
+        zoom: constant.CAMERA_DEFAULT_ZOOM);
     controller.animateCamera(CameraUpdate.newCameraPosition(_cameraPosition));
   }
 
@@ -274,7 +273,7 @@ class _MapState extends State<Map> {
   Future<void> drawDirectionPath(DirectionNotifier directionNotifier,
       Coordinate startPoint, Coordinate endPoint) async {
     MapHelper.setShuttleStops(startPoint);
-    if (directionNotifier.mode == DrivingMode.shuttle &&
+    if (directionNotifier.mode == constant.DrivingMode.shuttle &&
         MapHelper.isShuttleRequired(endPoint)) {
       // await keyword is very important for synchronizing the calls!!!!!!
       await directionNotifier.navigateByCoordinates(

@@ -61,22 +61,9 @@ class MapNotifier with ChangeNotifier {
       c = await futureCoordinate;
     }
     CameraPosition _newPosition = CameraPosition(
-        target: c.toLatLng(), zoom: constant.CAMERA_DEFAULT_ZOOM);
+        target: c.toLatLng(), zoom: constant.CAMERA_INDOOR_ZOOM);
     controller.animateCamera(CameraUpdate.newCameraPosition(_newPosition));
   }
-
-  Future<void> goToHallSVG() async {
-    // May need return type of Future<void>, not sure yet
-    CameraPosition _currentPos = CameraPosition(
-        bearing: 123.31752014160156,
-        target: LatLng(45.49726709926478, -73.57894677668811),
-        tilt: 0.0,
-        zoom: 19.03557586669922);
-
-    final GoogleMapController controller = await _completer.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(_currentPos));
-  }
-
   Future<void> toggleCampus(LatLng latLng) async {
     final c = await _completer.future;
     final p = CameraPosition(
