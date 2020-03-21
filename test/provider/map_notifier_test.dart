@@ -33,9 +33,9 @@ void main() {
 
     //TODO: Test future methods in map_notifier.dart class
     test('Future methods should bring us to correct locations', () {
-      var mp = MapNotifier();
+      // var mp = MapNotifier();
 
-      Future<void> hall = mp.goToHallSVG();
+      // Future<void> hall = mp.goToHallSVG();
       // expect(hall, completion(matcher));
     });
   });
