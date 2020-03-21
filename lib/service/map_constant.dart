@@ -7,6 +7,7 @@ const Color COLOR_CONCORDIA = Color.fromRGBO(147, 35, 57, 1);
 const double BORDER_RADIUS = 20;
 
 const double CAMERA_DEFAULT_ZOOM = 17.2;
+const double CAMERA_INDOOR_ZOOM = 18.5;
 const double CAMERA_DEFAULT_TILT = 40;
 
 const LatLng LATLNG_SGW = LatLng(45.495536, -73.577974);

@@ -6,7 +6,7 @@ import 'package:concordi_around/model/coordinate.dart';
 import 'package:concordi_around/model/path.dart';
 import 'package:concordi_around/provider/direction_notifier.dart';
 import 'package:concordi_around/provider/map_notifier.dart';
-import 'package:concordi_around/service/map_constant.dart';
+import 'package:concordi_around/service/map_constant.dart' as constant;
 import 'package:concordi_around/service/map_helper.dart';
 import 'package:concordi_around/service/marker_helper.dart';
 import 'package:concordi_around/service/polygon_helper.dart';
@@ -47,7 +47,6 @@ class _MapState extends State<Map> {
     buildingHighlights = BuildingSingleton().getOutdoorBuildingHighlights();
     polygonHelper = PolygonHelper();
     markerHelper = MarkerHelper();
-    buildingHighlights.addAll(polygonHelper.getFloorPolygon(9));
     _geolocator = Geolocator()..forceAndroidLocationManager;
     LocationOptions locationOptions = LocationOptions(
         accuracy: LocationAccuracy.bestForNavigation, distanceFilter: 1);
@@ -57,7 +56,7 @@ class _MapState extends State<Map> {
         _position = pos;
         _cameraPosition = CameraPosition(
             target: LatLng(_position.latitude, _position.longitude),
-            zoom: CAMERA_DEFAULT_ZOOM);
+            zoom: constant.CAMERA_DEFAULT_ZOOM);
       });
     });
   }
@@ -104,9 +103,9 @@ class _MapState extends State<Map> {
           onCameraMove: (CameraPosition cameraPosition) async {
             GoogleMapController _mapController = await _completer.future;
             if (MapHelper.isWithinHall(cameraPosition.target) &&
-                cameraPosition.zoom >= 18.5) {
+                cameraPosition.zoom >= constant.CAMERA_INDOOR_ZOOM) {
               mapNotifier.setFloorPlanVisibility(true);
-              _setStyle(_mapController);
+              _setStyle(_mapController, mapNotifier);
               mapMarkers.addAll(
                   markerHelper.getFloorMarkers(mapNotifier.selectedFloorPlan));
             } else {
@@ -129,7 +128,7 @@ class _MapState extends State<Map> {
                     goToCurrent();
                   },
                   backgroundColor: Colors.white,
-                  foregroundColor: COLOR_CONCORDIA,
+                  foregroundColor: constant.COLOR_CONCORDIA,
                   tooltip: 'Get Location',
                   child: Icon(Icons.my_location),
                 ),
@@ -144,7 +143,7 @@ class _MapState extends State<Map> {
                       MaterialPageRoute(
                         builder: (context) => GotoPage(
                           _position,
-                          drivingMode: (DrivingMode mode) =>
+                          drivingMode: (constant.DrivingMode mode) =>
                               {directionNotifier.setDrivingMode(mode)},
                           startPointAndDestinationCoordinates: (List<Coordinate>
                                   startPointAndDestinationCoordinates) =>
@@ -156,7 +155,9 @@ class _MapState extends State<Map> {
                                 ? drawShortestPath(
                                     startPointAndDestinationCoordinates[0],
                                     startPointAndDestinationCoordinates[1],
-                                    disabilityMode, mapNotifier)
+                                    disabilityMode,
+                                    mapNotifier,
+                                    directionNotifier)
                                 : drawDirectionPath(
                                     directionNotifier,
                                     startPointAndDestinationCoordinates[0],
@@ -170,7 +171,7 @@ class _MapState extends State<Map> {
                       ),
                     );
                   },
-                  backgroundColor: COLOR_CONCORDIA,
+                  backgroundColor: constant.COLOR_CONCORDIA,
                   foregroundColor: Colors.white,
                   child: Icon(Icons.directions),
                 ),
@@ -184,10 +185,16 @@ class _MapState extends State<Map> {
         FloorSelectorEnterBuilding(
           selectedFloor: (int floor) =>
               {updateFloor(floor), mapNotifier.setSelectedFloor(floor)},
-          enterBuildingPressed: () => mapNotifier.goToHallSVG(),
         ),
         DirectionPanel(
-            removeDirectionPolyline: (bool removePolyline) => {direction = {}}),
+            removeDirectionPolyline: (bool removePolyline) => {
+              direction = {},
+              shortestPath = {},
+              markerHelper.removeStartEndMarker(),
+              mapMarkers.removeWhere((marker) =>
+              marker.markerId.value == 'start' ||
+                  marker.markerId.value == 'end'),
+            }),
       ],
     );
   }
@@ -214,32 +221,42 @@ class _MapState extends State<Map> {
     });
   }
 
-  void _setStyle(GoogleMapController controller) async {
+  void _setStyle(GoogleMapController controller, MapNotifier mapNotifier) async {
     String value = await DefaultAssetBundle.of(context)
         .loadString('assets/map_style.json');
     controller.setMapStyle(value);
+    buildingHighlights.removeWhere((polygon) => polygon.polygonId.value == 'Henry F. Hall');
+    buildingHighlights.addAll(polygonHelper.getFloorPolygon(mapNotifier.selectedFloorPlan));
   }
 
   void _resetStyle(GoogleMapController controller) async {
     String value = await DefaultAssetBundle.of(context)
         .loadString('assets/map_style_reset.json');
     controller.setMapStyle(value);
+
     mapMarkers.removeAll(markerHelper.getFloorMarkers(8));
     mapMarkers.removeAll(markerHelper.getFloorMarkers(9));
-    mapMarkers.removeWhere((marker) =>  marker.markerId.value == 'start'
-       || marker.markerId.value == 'end');
+    mapMarkers.removeWhere((marker) =>
+    marker.markerId.value == 'start' || marker.markerId.value == 'end');
+    buildingHighlights = {};
+    buildingHighlights = BuildingSingleton().getOutdoorBuildingHighlights();
   }
 
   void goToCurrent() async {
     final GoogleMapController controller = await _completer.future;
     _cameraPosition = CameraPosition(
         target: LatLng(_position.latitude, _position.longitude),
-        zoom: CAMERA_DEFAULT_ZOOM);
+        zoom: constant.CAMERA_DEFAULT_ZOOM);
     controller.animateCamera(CameraUpdate.newCameraPosition(_cameraPosition));
   }
 
   void drawShortestPath(
-      Coordinate start, Coordinate end, bool isDisabilityEnabled, MapNotifier mapNotifier) {
+      Coordinate start,
+      Coordinate end,
+      bool isDisabilityEnabled,
+      MapNotifier mapNotifier,
+      DirectionNotifier directionNotifier) {
+    directionNotifier.setShowDirectionPanel(true);
     BuildingSingleton buildingSingleton = new BuildingSingleton();
     Building hall = buildingSingleton.buildings['H'];
     mapNotifier.setSelectedFloor(int.parse(start.floor));
@@ -247,7 +264,9 @@ class _MapState extends State<Map> {
     shortestPath = hall.shortestPath(start, end,
         isDisabilityFriendly: isDisabilityEnabled);
     setState(() {
-      direction = {shortestPath[mapNotifier.selectedFloorPlan.toString()].toPolyline()};
+      direction = {
+        shortestPath[mapNotifier.selectedFloorPlan.toString()].toPolyline()
+      };
       markerHelper.setStartEndMarker(start, end);
     });
   }
@@ -255,11 +274,13 @@ class _MapState extends State<Map> {
   Future<void> drawDirectionPath(DirectionNotifier directionNotifier,
       Coordinate startPoint, Coordinate endPoint) async {
     MapHelper.setShuttleStops(startPoint);
-    if (directionNotifier.mode == DrivingMode.shuttle && MapHelper.isShuttleRequired(endPoint)) {
+    if (directionNotifier.mode == constant.DrivingMode.shuttle &&
+        MapHelper.isShuttleRequired(endPoint)) {
       // await keyword is very important for synchronizing the calls!!!!!!
       await directionNotifier.navigateByCoordinates(
           startPoint,
-          MapHelper.nearestShuttleStop); // Current position to closest shuttle stop
+          MapHelper
+              .nearestShuttleStop); // Current position to closest shuttle stop
       await directionNotifier.navigateByCoordinates(
           MapHelper.furthestShuttleStop,
           endPoint); // Furthest shuttle stop to end point
