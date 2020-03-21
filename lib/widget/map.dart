@@ -80,6 +80,10 @@ class _MapState extends State<Map> {
       return SplashPage();
     }
 
+    if (_cameraPosition == null) {
+      _cameraPosition = CameraPosition(target: LatLng(0, 0));
+    }
+
     return Stack(
       children: <Widget>[
         Container(
