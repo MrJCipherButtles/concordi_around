@@ -11,6 +11,7 @@ import 'package:concordi_around/service/map_helper.dart';
 import 'package:concordi_around/service/marker_helper.dart';
 import 'package:concordi_around/service/polygon_helper.dart';
 import 'package:concordi_around/view/goto_page.dart';
+import 'package:concordi_around/view/splash_page.dart';
 import 'package:concordi_around/widget/direction_panel.dart';
 import 'package:concordi_around/widget/search/main_search_bar.dart';
 import 'package:concordi_around/widget/svg_floor_plan/floor_selector_enter_building_column.dart';
@@ -76,8 +77,8 @@ class _MapState extends State<Map> {
         Provider.of<DirectionNotifier>(context);
     _completer = Provider.of<MapNotifier>(context, listen: false).getCompleter;
 
-    if (_cameraPosition == null) {
-      _cameraPosition = CameraPosition(target: LatLng(0, 0));
+    while (_position == null) {
+      return SplashPage();
     }
 
     return Stack(
