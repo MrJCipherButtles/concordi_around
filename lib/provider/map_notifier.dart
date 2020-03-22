@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:concordi_around/model/coordinate.dart';
 import 'package:concordi_around/service/map_constant.dart' as constant;
 import 'package:concordi_around/service/map_helper.dart';
@@ -15,11 +14,17 @@ class MapNotifier with ChangeNotifier {
   bool showFloorPlan = false;
   bool showEnterBuilding = false;
   bool showInfo = false;
+  LatLng selectedLatlng = LatLng(0, 0);
   int selectedFloorPlan = 9;
   String currentCampus = 'SGW';
   
   void setPopupInfoVisibility(bool visibility) {
     showInfo = visibility;
+    notifyListeners();
+  }
+
+  void setPlaceLatLng(LatLng latLng){
+    selectedLatlng = latLng;
     notifyListeners();
   }
 
@@ -69,6 +74,7 @@ class MapNotifier with ChangeNotifier {
     CameraPosition _newPosition = CameraPosition(
         target: c.toLatLng(), zoom: constant.CAMERA_DEFAULT_ZOOM);
     controller.animateCamera(CameraUpdate.newCameraPosition(_newPosition));
+    setPlaceLatLng(c.toLatLng());
   }
 
   Future<void> goToHallSVG() async {

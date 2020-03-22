@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:concordi_around/data/building_singleton.dart';
 import 'package:concordi_around/model/building.dart';
 import 'package:concordi_around/model/coordinate.dart';
@@ -8,6 +7,7 @@ import 'package:concordi_around/service/map_constant.dart' as constant;
 import 'package:concordi_around/service/map_helper.dart';
 import 'package:concordi_around/view/goto_page_new.dart';
 import 'package:concordi_around/widget/search/main_search_bar.dart';
+import 'package:concordi_around/widget/building_popup.dart';
 import 'package:concordi_around/widget/svg_floor_plan/floor_selector_enter_building_column.dart';
 import 'package:concordi_around/widget/svg_floor_plan/svg_floor_plans.dart';
 import 'package:flutter/material.dart';
@@ -163,15 +163,17 @@ class _MapState extends State<Map> {
               ]),
         ),
         SearchBar(
-            coordinate: (Future<Coordinate> coordinate) => {
+            coordinate: (Future<Coordinate> coordinate){
                   Provider.of<MapNotifier>(context, listen: false)
-                      .goToSpecifiedLatLng(futureCoordinate: coordinate)
+                  .goToSpecifiedLatLng(futureCoordinate: coordinate);
+                  mapNotifier.setPopupInfoVisibility(true);
                 }),
         SVGFloorPlans(),
         FloorSelectorEnterBuilding(
           selectedFloor: (int floor) => {mapNotifier.setSelectedFloor(floor)},
           enterBuildingPressed: () => mapNotifier.goToHallSVG(),
         ),
+        BuildingPopup()
       ],
     );
   }
