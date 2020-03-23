@@ -10,8 +10,13 @@ class SidebarDrawer extends StatefulWidget {
 }
 
 class _SidebarDrawerState extends State<SidebarDrawer> {
+  bool _isDisabilityOn = global.disabilityMode;
+
+  bool isDisabilityOn() {
+    return _isDisabilityOn;
+  }
+
   Widget build(BuildContext context) {
-    bool _isDisabilityOn = global.disabilityMode;
     return ClipRRect(
       borderRadius: BorderRadius.only(
           topRight: Radius.circular(constant.BORDER_RADIUS),
