@@ -18,7 +18,6 @@ class _BuildingPopupState extends State<BuildingPopup> {
   List<String> pictures = List<String>();
   LatLng currentPlace =  LatLng(0, 0);
   String name = '';
-  String icon = 'https://purepng.com/public/uploads/large/purepng.com-explosionnaturesmokefireflamewardangerexplosionburnblastburst-961524672766mjpai.png';
   String address = '';
   String phone = '';
   String website = '';
@@ -39,9 +38,6 @@ class _BuildingPopupState extends State<BuildingPopup> {
     );
   
     return Visibility(
-      //maintainSize: true,
-      //maintainAnimation: true,
-      //maintainState: true,
       visible: mapNotifier.showInfo,
       child: SlidingUpPanel(
         borderRadius: radius,
@@ -83,20 +79,8 @@ class _BuildingPopupState extends State<BuildingPopup> {
             fit: StackFit.loose,
             children: <Widget>[
               Positioned(
-                top: 18,
+                top: 9,
                 left: 20,
-                child:
-                  icon == null ? 
-                  Container() :
-                  Image(
-                    image:NetworkImage(icon) ,
-                    height: 25,
-                    width: 25,
-                  ) 
-              ),
-              Positioned(
-                top: 10,
-                left: 65,
                 child: Text(
                   name,
                   style: TextStyle(
@@ -106,8 +90,8 @@ class _BuildingPopupState extends State<BuildingPopup> {
                 ),
               ),
               Positioned(
-                top: 38,
-                left: 65,
+                top: 37,
+                left: 20,
                 child: Text(
                   address,
                   style: TextStyle(
@@ -213,7 +197,7 @@ class _BuildingPopupState extends State<BuildingPopup> {
         SizedBox(
           height: 173,
           child: ListView.builder(
-            itemCount: pictures != null ? pictures.length : 0,
+            itemCount: pictures.length > 2 ? pictures.length : 0,
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) => Image(
               image: NetworkImage(pictures[index]),
@@ -266,7 +250,6 @@ class _BuildingPopupState extends State<BuildingPopup> {
 
       name = result['name'];
       result['formatted_phone_number'] != null ? phone = result['formatted_phone_number'] : phone = 'Information Not Available';
-      result['icon'] != null? icon = result['icon'] : icon = null;
       result['website'] != null ? website = result['website'] : website = 'Information Not Available';
 
       if(result['opening_hours'] != null){
