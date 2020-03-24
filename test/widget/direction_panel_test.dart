@@ -46,7 +46,7 @@ void main() {
           Icons.directions_subway);
       expect(directionPanelState.getDirectionIcon('alkuhuttleubway').icon,
           Icons.info);
-      expect(directionPanelState.getDirectionIcon('').icon, Icons.directions);
+      expect(directionPanelState.getDirectionIcon('').icon, Icons.info);
     });
 
     test('Mode Icon should be returned', () {
