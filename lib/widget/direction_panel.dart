@@ -151,7 +151,7 @@ class _DirectionPanelState extends State<DirectionPanel> {
       return Icon(Icons.directions_walk);
     else if (direction.toLowerCase().contains("subway"))
       return Icon(Icons.directions_subway);
-    return Icon(Icons.directions);
+    return Icon(Icons.info);
   }
 
   Icon getModeIcon(DrivingMode mode) {

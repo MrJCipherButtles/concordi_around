@@ -172,12 +172,13 @@ class _MapState extends State<Map> {
         ),
         DirectionPanel(
             removeDirectionPolyline: (bool removePolyline) => {
-                  direction = {},
+                  direction.clear(),
                   shortestPath = {},
                   markerHelper.removeStartEndMarker(),
                   mapMarkers.removeWhere((marker) =>
                       marker.markerId.value == 'start' ||
-                      marker.markerId.value == 'end'),
+                      marker.markerId.value == 'end' ||
+                          marker.markerId.value == 'destination'),
                 }),
       ],
     );
@@ -187,9 +188,9 @@ class _MapState extends State<Map> {
     setState(() {
       if (shortestPath != null) {
         Path path = shortestPath['$floor'];
+        direction.removeWhere((polyline) =>
+        !(polyline.polylineId.toString().contains("outdoor")));
         if (path != null) {
-          direction.removeWhere((polyline) =>
-              !(polyline.polylineId.toString().contains("outdoor")));
           direction.addAll({path.toPolyline()});
         }
       }
@@ -292,6 +293,8 @@ class _MapState extends State<Map> {
     setState(() {
       direction.addAll(directionNotifier.getPolylines());
     });
+
+    mapMarkers.add(markerHelper.getDestinationMarker(destination.toLatLng()));
   }
 
   Future<void> drawCombinedPath(
