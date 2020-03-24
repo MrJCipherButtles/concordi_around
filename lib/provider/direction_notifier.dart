@@ -145,7 +145,7 @@ class DirectionNotifier extends ChangeNotifier {
       }
 
       polylines.add(Polyline(
-        polylineId: PolylineId("Direction $apiCallCounter"),
+        polylineId: PolylineId("outdoor $apiCallCounter"),
         points: latlngPoints,
         color: COLOR_CONCORDIA,
         width: 5,
