@@ -11,11 +11,11 @@ class DirectionPanel extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return _DirectionPanelState();
+    return DirectionPanelState();
   }
 }
 
-class _DirectionPanelState extends State<DirectionPanel> {
+class DirectionPanelState extends State<DirectionPanel> {
   BorderRadiusGeometry radius = BorderRadius.only(
     topLeft: Radius.circular(BORDER_RADIUS),
     topRight: Radius.circular(BORDER_RADIUS),
@@ -108,8 +108,7 @@ class _DirectionPanelState extends State<DirectionPanel> {
     if (direction.toLowerCase().contains("left") ||
         direction.toLowerCase().contains("right") ||
         direction.toLowerCase().contains("head") ||
-        direction.toLowerCase().contains("continue"))
-      return true;
+        direction.toLowerCase().contains("continue")) return true;
     return false;
   }
 
@@ -134,10 +133,10 @@ class _DirectionPanelState extends State<DirectionPanel> {
         AssetImage("assets/direction_icon/turn_right.png"),
         color: Colors.black,
       );
-      return ImageIcon(
-        AssetImage("assets/direction_icon/straight.png"),
-        color: Colors.black,
-      );
+    return ImageIcon(
+      AssetImage("assets/direction_icon/straight.png"),
+      color: Colors.black,
+    );
   }
 
   Icon getDirectionIcon(String direction) {
@@ -147,8 +146,6 @@ class _DirectionPanelState extends State<DirectionPanel> {
       return Icon(Icons.directions_bus);
     else if (direction.toLowerCase().contains("shuttle"))
       return Icon(Icons.airport_shuttle);
-    else if (direction.toLowerCase().contains("walk"))
-      return Icon(Icons.directions_walk);
     else if (direction.toLowerCase().contains("subway"))
       return Icon(Icons.directions_subway);
     return Icon(Icons.info);
@@ -161,8 +158,7 @@ class _DirectionPanelState extends State<DirectionPanel> {
       return Icon(Icons.directions_transit);
     else if (mode == DrivingMode.bicycling)
       return Icon(Icons.directions_bike);
-    else if (mode == DrivingMode.shuttle)
-      return Icon(Icons.airport_shuttle);
+    else if (mode == DrivingMode.shuttle) return Icon(Icons.airport_shuttle);
     return Icon(Icons.directions_walk);
   }
 }

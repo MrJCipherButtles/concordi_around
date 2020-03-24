@@ -55,7 +55,8 @@ void main() {
     floor1.coordinates = {a, b, c, d, e, f, x, y};
     floor2.coordinates = {a2, b2, c2, d2, e2, f2, x2, y2};
 
-    var building = Building('Hall');
+    var hallCoordinate = Coordinate(45.49726, -73.57893, "0", "H", "SGW");
+    var building = Building('Hall', coordinate: hallCoordinate);
     building.addFloor(floor1);
     building.addFloor(floor2);
 
@@ -76,6 +77,13 @@ void main() {
               .shortestPath(f, e2, isDisabilityFriendly: true)['2']
               .toString(),
           Path([x2, y2, d2, e2]).toString());
+    });
+    test('Building setters should set floor levels', () {
+      expect(building.coordinate, hallCoordinate);
+      building.floors = null;
+      expect(building.floors, null);
+      building.floors = {'1': floor1, '2': floor2};
+      expect(building.floors, {'1': floor1, '2': floor2});
     });
   });
 }
