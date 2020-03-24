@@ -178,7 +178,7 @@ class _MapState extends State<Map> {
                   mapMarkers.removeWhere((marker) =>
                       marker.markerId.value == 'start' ||
                       marker.markerId.value == 'end' ||
-                          marker.markerId.value == 'destination'),
+                      marker.markerId.value == 'destination'),
                 }),
       ],
     );
@@ -189,7 +189,7 @@ class _MapState extends State<Map> {
       if (shortestPath != null) {
         Path path = shortestPath['$floor'];
         direction.removeWhere((polyline) =>
-        !(polyline.polylineId.toString().contains("outdoor")));
+            !(polyline.polylineId.toString().contains("outdoor")));
         if (path != null) {
           direction.addAll({path.toPolyline()});
         }
@@ -304,28 +304,19 @@ class _MapState extends State<Map> {
       MapNotifier mapNotifier,
       DirectionNotifier directionNotifier) async {
     if (origin is RoomCoordinate) {
-      if (isDisabilityEnabled) {
-        drawOutdoorPath(mainEntrance["Hall"], destination, directionNotifier);
-        drawIndoorPath(origin, BuildingSingleton().h8F12, isDisabilityEnabled,
-            mapNotifier, directionNotifier);
-      }
-      else {
-        drawOutdoorPath(mainEntrance["Hall"], destination, directionNotifier);
-        drawIndoorPath(origin, BuildingSingleton().h8F16, isDisabilityEnabled,
-            mapNotifier, directionNotifier);
-      }
-    }
-    else {
-      if (isDisabilityEnabled) {
-        drawOutdoorPath(origin, mainEntrance["Hall"], directionNotifier);
-        drawIndoorPath(BuildingSingleton().h8F12, destination, isDisabilityEnabled,
-            mapNotifier, directionNotifier);
-      }
-      else {
-        drawOutdoorPath(origin, mainEntrance["Hall"], directionNotifier);
-        drawIndoorPath(BuildingSingleton().h8F16, destination, isDisabilityEnabled,
-            mapNotifier, directionNotifier);
-      }
+      drawOutdoorPath(mainEntrance["Hall"], destination, directionNotifier);
+      isDisabilityEnabled
+          ? drawIndoorPath(origin, BuildingSingleton().h8F12,
+              isDisabilityEnabled, mapNotifier, directionNotifier)
+          : drawIndoorPath(origin, BuildingSingleton().h8F16,
+              isDisabilityEnabled, mapNotifier, directionNotifier);
+    } else {
+      drawOutdoorPath(origin, mainEntrance["Hall"], directionNotifier);
+      isDisabilityEnabled
+          ? drawIndoorPath(BuildingSingleton().h8F12, destination,
+              isDisabilityEnabled, mapNotifier, directionNotifier)
+          : drawIndoorPath(BuildingSingleton().h8F16, destination,
+              isDisabilityEnabled, mapNotifier, directionNotifier);
     }
   }
 }
