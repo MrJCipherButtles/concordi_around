@@ -14,6 +14,7 @@ import 'package:concordi_around/view/goto_page.dart';
 import 'package:concordi_around/widget/direction_panel.dart';
 import 'package:concordi_around/widget/search/main_search_bar.dart';
 import 'package:concordi_around/widget/svg_floor_plan/floor_selector_enter_building_column.dart';
+import 'package:concordi_around/widget/building_popup.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -177,14 +178,16 @@ class _MapState extends State<Map> {
               ]),
         ),
         SearchBar(
-            coordinate: (Future<Coordinate> coordinate) => {
+            coordinate: (Future<Coordinate> coordinate) {
                   Provider.of<MapNotifier>(context, listen: false)
-                      .goToSpecifiedLatLng(futureCoordinate: coordinate)
+                      .goToSpecifiedLatLng(futureCoordinate: coordinate);
+                  mapNotifier.setPopupInfoVisibility(true);
                 }),
         FloorSelectorEnterBuilding(
           selectedFloor: (int floor) =>
               {updateFloor(floor), mapNotifier.setSelectedFloor(floor)},
         ),
+        BuildingPopup(),
         DirectionPanel(
             removeDirectionPolyline: (bool removePolyline) => {
               direction = {},

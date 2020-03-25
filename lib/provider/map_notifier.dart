@@ -14,8 +14,21 @@ class MapNotifier with ChangeNotifier {
 
   bool showFloorPlan = false;
   bool showEnterBuilding = false;
+  bool showInfo = false;
+  LatLng selectedLatlng = LatLng(0, 0);
   int selectedFloorPlan = 9;
   String currentCampus = 'SGW';
+
+  void setPopupInfoVisibility(bool visibility) {
+    showInfo = visibility;
+    notifyListeners();
+  }
+
+  void setPlaceLatLng(LatLng latLng){
+    selectedLatlng = latLng;
+    notifyListeners();
+  }
+
 
   void setFloorPlanVisibility(bool visibility) {
     showFloorPlan = visibility;
@@ -57,9 +70,11 @@ class MapNotifier with ChangeNotifier {
     Coordinate c;
     if (coordinate != null) {
       c = coordinate;
+      setPlaceLatLng(c.toLatLng());
     } else {
       c = await futureCoordinate;
     }
+
     CameraPosition _newPosition = CameraPosition(
         target: c.toLatLng(), zoom: constant.CAMERA_INDOOR_ZOOM);
     controller.animateCamera(CameraUpdate.newCameraPosition(_newPosition));
