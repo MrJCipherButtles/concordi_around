@@ -1,5 +1,5 @@
 import 'package:concordi_around/model/coordinate.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:concordi_around/data/data_points.dart' as data;
 
@@ -114,5 +114,12 @@ class MarkerHelper {
         marker.markerId.value == 'start' || marker.markerId.value == 'end');
     eightfloorMarker.removeWhere((marker) =>
         marker.markerId.value == 'start' || marker.markerId.value == 'end');
+  }
+
+  Marker getDestinationMarker(LatLng latLng) {
+    return Marker(
+        markerId: MarkerId('destination'),
+        icon: _flagIcon,
+        position: latLng);
   }
 }
