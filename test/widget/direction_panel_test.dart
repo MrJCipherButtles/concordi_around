@@ -44,7 +44,7 @@ void main() {
           Icons.directions_walk);
       expect(directionPanelState.getDirectionIcon('subway').icon,
           Icons.directions_subway);
-      expect(directionPanelState.getDirectionIcon('alkuhuttleubway').icon,
+      expect(directionPanelState.getDirectionIcon('alkuhutleuway').icon,
           Icons.info);
       expect(directionPanelState.getDirectionIcon('').icon, Icons.info);
     });
