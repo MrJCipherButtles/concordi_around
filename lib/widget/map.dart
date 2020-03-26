@@ -14,7 +14,7 @@ import 'package:concordi_around/service/polygon_helper.dart';
 import 'package:concordi_around/view/goto_page.dart';
 import 'package:concordi_around/widget/direction_panel.dart';
 import 'package:concordi_around/widget/search/main_search_bar.dart';
-import 'package:concordi_around/widget/svg_floor_plan/floor_selector_enter_building_column.dart';
+import 'package:concordi_around/widget/floor_selector/floor_selector_enter_building_column.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -38,6 +38,7 @@ class _MapState extends State<Map> {
   Set<Polyline> direction = {};
   Set<Polygon> buildingHighlights;
   Set<Marker> mapMarkers = {};
+  bool _myLocationEnabled = false;
 
   var shortestPath;
 
@@ -50,15 +51,18 @@ class _MapState extends State<Map> {
     _geolocator = Geolocator()..forceAndroidLocationManager;
     LocationOptions locationOptions = LocationOptions(
         accuracy: LocationAccuracy.bestForNavigation, distanceFilter: 1);
+
     _positionStream =
         _geolocator.getPositionStream(locationOptions).listen((Position pos) {
-      setState(() {
-        _position = pos;
-        _cameraPosition = CameraPosition(
-            target: LatLng(_position.latitude, _position.longitude),
-            zoom: constant.CAMERA_DEFAULT_ZOOM);
-      });
-    });
+          setState(() {
+            _position = pos;
+            _cameraPosition = CameraPosition(
+                target: LatLng(_position.latitude, _position.longitude),
+                zoom: constant.CAMERA_DEFAULT_ZOOM);
+            goToCurrent();
+            _myLocationEnabled = true;
+          });
+        });
   }
 
   @override
@@ -76,16 +80,12 @@ class _MapState extends State<Map> {
         Provider.of<DirectionNotifier>(context);
     _completer = Provider.of<MapNotifier>(context, listen: false).getCompleter;
 
-    if (_cameraPosition == null) {
-      _cameraPosition = CameraPosition(target: LatLng(0, 0));
-    }
-
     return Stack(
       children: <Widget>[
         Container(
             child: GoogleMap(
           mapType: MapType.normal,
-          myLocationEnabled: true,
+          myLocationEnabled: _myLocationEnabled,
           myLocationButtonEnabled: false,
           compassEnabled: false,
           indoorViewEnabled: false,
@@ -97,7 +97,7 @@ class _MapState extends State<Map> {
           polygons: buildingHighlights,
           polylines: direction,
           markers: mapMarkers,
-          initialCameraPosition: _cameraPosition,
+          initialCameraPosition: _cameraPosition ?? CameraPosition(target: LatLng(45.4977298, -73.579034)),
           onMapCreated: (GoogleMapController controller) {
             _completer.complete(controller);
           },
