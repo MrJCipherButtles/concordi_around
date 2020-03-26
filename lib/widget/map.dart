@@ -89,6 +89,7 @@ class _MapState extends State<Map> {
           myLocationButtonEnabled: false,
           compassEnabled: false,
           indoorViewEnabled: false,
+          mapToolbarEnabled: false,
           scrollGesturesEnabled: true,
           rotateGesturesEnabled: true,
           tiltGesturesEnabled: true,
