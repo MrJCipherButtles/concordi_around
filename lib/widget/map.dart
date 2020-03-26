@@ -85,8 +85,8 @@ class _MapState extends State<Map> {
         Container(
             child: GoogleMap(
           mapType: MapType.normal,
-          myLocationEnabled: true,
-          myLocationButtonEnabled: _myLocationEnabled,
+          myLocationEnabled: _myLocationEnabled,
+          myLocationButtonEnabled: false,
           compassEnabled: false,
           indoorViewEnabled: false,
           mapToolbarEnabled: false,
@@ -97,7 +97,7 @@ class _MapState extends State<Map> {
           polygons: buildingHighlights,
           polylines: direction,
           markers: mapMarkers,
-          initialCameraPosition: _cameraPosition ?? CameraPosition(target: LatLng(0,0)),
+          initialCameraPosition: _cameraPosition ?? CameraPosition(target: LatLng(45.4977298, -73.579034)),
           onMapCreated: (GoogleMapController controller) {
             _completer.complete(controller);
           },
