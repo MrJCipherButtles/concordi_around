@@ -12,6 +12,12 @@ class BuildingSingleton {
 
   Map<String, Building> _buildings;
 
+  RoomCoordinate _h8F16; // 8th floor escalator
+  RoomCoordinate _h8F12; // 8th floor elevator
+
+  RoomCoordinate get h8F16 => _h8F16;
+  RoomCoordinate get h8F12 => _h8F12;
+
   factory BuildingSingleton() {
     return _instance;
   }
@@ -459,12 +465,20 @@ class BuildingSingleton {
         type: "ROOM", roomId: "H860", adjCoordinates: {j8F9});
 
     RoomCoordinate h862 = RoomCoordinate(
-        45.4973047, -73.5787902, '9', 'H', 'SGW',
+        45.4973047, -73.5787902, '8', 'H', 'SGW',
         type: "ROOM", roomId: "H862", adjCoordinates: {j8F10, j8F12});
 
     RoomCoordinate h881 = RoomCoordinate(
         45.4974547, -73.5790906, '8', 'H', 'SGW',
         type: "ROOM", roomId: "H881", adjCoordinates: {j8F4, j8F17});
+
+    _h8F16 = RoomCoordinate( // 8th floor escalators
+        45.4972828, -73.5789415, '8', 'H', 'SGW',
+        adjCoordinates: {j8F16});
+
+    _h8F12 = RoomCoordinate( // 8th floor elevator
+        45.4973283, -73.5787676, '8', 'H', 'SGW',
+        adjCoordinates: {j8F12});
 
     Floor eightFloor = Floor('8', polygons: floorPolygons['8'], coordinates: {
       h811,
@@ -513,7 +527,9 @@ class BuildingSingleton {
       j8F14,
       j8F15,
       j8F16,
-      j8F17
+      j8F17,
+      _h8F16,
+      _h8F12
     });
     hall.addFloor(eightFloor);
 

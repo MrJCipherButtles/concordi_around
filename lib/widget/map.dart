@@ -1,12 +1,13 @@
 import 'dart:async';
 import 'package:concordi_around/data/building_singleton.dart';
+import 'package:concordi_around/data/data_points.dart';
 import 'package:concordi_around/global.dart';
 import 'package:concordi_around/model/building.dart';
 import 'package:concordi_around/model/coordinate.dart';
 import 'package:concordi_around/model/path.dart';
 import 'package:concordi_around/provider/direction_notifier.dart';
 import 'package:concordi_around/provider/map_notifier.dart';
-import 'package:concordi_around/service/map_constant.dart';
+import 'package:concordi_around/service/map_constant.dart' as constant;
 import 'package:concordi_around/service/map_helper.dart';
 import 'package:concordi_around/service/marker_helper.dart';
 import 'package:concordi_around/service/polygon_helper.dart';
@@ -34,7 +35,7 @@ class _MapState extends State<Map> {
   StreamSubscription _positionStream;
   MarkerHelper markerHelper;
   PolygonHelper polygonHelper;
-  Set<Polyline> direction;
+  Set<Polyline> direction = {};
   Set<Polygon> buildingHighlights;
   Set<Marker> mapMarkers = {};
 
@@ -46,7 +47,6 @@ class _MapState extends State<Map> {
     buildingHighlights = BuildingSingleton().getOutdoorBuildingHighlights();
     polygonHelper = PolygonHelper();
     markerHelper = MarkerHelper();
-    buildingHighlights.addAll(polygonHelper.getFloorPolygon(9));
     _geolocator = Geolocator()..forceAndroidLocationManager;
     LocationOptions locationOptions = LocationOptions(
         accuracy: LocationAccuracy.bestForNavigation, distanceFilter: 1);
@@ -56,7 +56,7 @@ class _MapState extends State<Map> {
         _position = pos;
         _cameraPosition = CameraPosition(
             target: LatLng(_position.latitude, _position.longitude),
-            zoom: CAMERA_DEFAULT_ZOOM);
+            zoom: constant.CAMERA_DEFAULT_ZOOM);
       });
     });
   }
@@ -103,9 +103,9 @@ class _MapState extends State<Map> {
           onCameraMove: (CameraPosition cameraPosition) async {
             GoogleMapController _mapController = await _completer.future;
             if (MapHelper.isWithinHall(cameraPosition.target) &&
-                cameraPosition.zoom >= 18.5) {
+                cameraPosition.zoom >= constant.CAMERA_INDOOR_ZOOM) {
               mapNotifier.setFloorPlanVisibility(true);
-              _setStyle(_mapController);
+              _setStyle(_mapController, mapNotifier);
               mapMarkers.addAll(
                   markerHelper.getFloorMarkers(mapNotifier.selectedFloorPlan));
             } else {
@@ -128,7 +128,7 @@ class _MapState extends State<Map> {
                     goToCurrent();
                   },
                   backgroundColor: Colors.white,
-                  foregroundColor: COLOR_CONCORDIA,
+                  foregroundColor: constant.COLOR_CONCORDIA,
                   tooltip: 'Get Location',
                   child: Icon(Icons.my_location),
                 ),
@@ -143,33 +143,19 @@ class _MapState extends State<Map> {
                       MaterialPageRoute(
                         builder: (context) => GotoPage(
                           _position,
-                          drivingMode: (DrivingMode mode) =>
+                          drivingMode: (constant.DrivingMode mode) =>
                               {directionNotifier.setDrivingMode(mode)},
                           startPointAndDestinationCoordinates: (List<Coordinate>
-                                  startPointAndDestinationCoordinates) =>
+                                  directionCoordinates) =>
                               {
-                            (startPointAndDestinationCoordinates[0]
-                                        is RoomCoordinate &&
-                                    startPointAndDestinationCoordinates[1]
-                                        is RoomCoordinate)
-                                ? drawShortestPath(
-                                    startPointAndDestinationCoordinates[0],
-                                    startPointAndDestinationCoordinates[1],
-                                    disabilityMode)
-                                : drawDirectionPath(
-                                    directionNotifier,
-                                    startPointAndDestinationCoordinates[0],
-                                    startPointAndDestinationCoordinates[1]),
-                            //Moves camera to the starting point
-                            mapNotifier.goToSpecifiedLatLng(
-                                coordinate:
-                                    startPointAndDestinationCoordinates[0]),
+                            drawPath(directionCoordinates[0], directionCoordinates[1],
+                                disabilityMode, mapNotifier, directionNotifier)
                           },
                         ),
                       ),
                     );
                   },
-                  backgroundColor: COLOR_CONCORDIA,
+                  backgroundColor: constant.COLOR_CONCORDIA,
                   foregroundColor: Colors.white,
                   child: Icon(Icons.directions),
                 ),
@@ -183,10 +169,17 @@ class _MapState extends State<Map> {
         FloorSelectorEnterBuilding(
           selectedFloor: (int floor) =>
               {updateFloor(floor), mapNotifier.setSelectedFloor(floor)},
-          enterBuildingPressed: () => mapNotifier.goToHallSVG(),
         ),
         DirectionPanel(
-            removeDirectionPolyline: (bool removePolyline) => {direction = {}}),
+            removeDirectionPolyline: (bool removePolyline) => {
+                  direction.clear(),
+                  shortestPath = {},
+                  markerHelper.removeStartEndMarker(),
+                  mapMarkers.removeWhere((marker) =>
+                      marker.markerId.value == 'start' ||
+                      marker.markerId.value == 'end' ||
+                      marker.markerId.value == 'destination'),
+                }),
       ],
     );
   }
@@ -195,10 +188,10 @@ class _MapState extends State<Map> {
     setState(() {
       if (shortestPath != null) {
         Path path = shortestPath['$floor'];
+        direction.removeWhere((polyline) =>
+            !(polyline.polylineId.toString().contains("outdoor")));
         if (path != null) {
-          direction = {path.toPolyline()};
-        } else {
-          direction = {};
+          direction.addAll({path.toPolyline()});
         }
       }
       if (floor == 9) {
@@ -213,58 +206,117 @@ class _MapState extends State<Map> {
     });
   }
 
-  void _setStyle(GoogleMapController controller) async {
+  void _setStyle(GoogleMapController controller, MapNotifier mapNotifier) async {
     String value = await DefaultAssetBundle.of(context)
         .loadString('assets/map_style.json');
     controller.setMapStyle(value);
+    buildingHighlights.removeWhere((polygon) => polygon.polygonId.value == 'Henry F. Hall');
+    buildingHighlights.addAll(polygonHelper.getFloorPolygon(mapNotifier.selectedFloorPlan));
   }
 
   void _resetStyle(GoogleMapController controller) async {
     String value = await DefaultAssetBundle.of(context)
         .loadString('assets/map_style_reset.json');
     controller.setMapStyle(value);
+
     mapMarkers.removeAll(markerHelper.getFloorMarkers(8));
     mapMarkers.removeAll(markerHelper.getFloorMarkers(9));
+    mapMarkers.removeWhere((marker) =>
+        marker.markerId.value == 'start' || marker.markerId.value == 'end');
+    buildingHighlights = {};
+    buildingHighlights = BuildingSingleton().getOutdoorBuildingHighlights();
   }
 
   void goToCurrent() async {
     final GoogleMapController controller = await _completer.future;
     _cameraPosition = CameraPosition(
         target: LatLng(_position.latitude, _position.longitude),
-        zoom: CAMERA_DEFAULT_ZOOM);
+        zoom: constant.CAMERA_DEFAULT_ZOOM);
     controller.animateCamera(CameraUpdate.newCameraPosition(_cameraPosition));
   }
 
-  void drawShortestPath(
-      Coordinate start, Coordinate end, bool isDisabilityEnabled) {
+  void drawPath(
+      Coordinate origin,
+      Coordinate destination,
+      bool isDisabilityEnabled,
+      MapNotifier mapNotifier,
+      DirectionNotifier directionNotifier) {
+    if (origin is RoomCoordinate && destination is RoomCoordinate)
+      drawIndoorPath(origin, destination, disabilityMode, mapNotifier, directionNotifier);
+    else if (origin is RoomCoordinate || destination is RoomCoordinate)
+      drawCombinedPath(origin, destination, disabilityMode, mapNotifier, directionNotifier);
+    else
+      drawOutdoorPath(origin, destination, directionNotifier);
+
+    directionNotifier.setShowDirectionPanel(true);
+
+    //Moves camera to the starting point
+    mapNotifier.goToSpecifiedLatLng(coordinate: origin);
+  }
+
+  void drawIndoorPath(
+      Coordinate origin,
+      Coordinate destination,
+      bool isDisabilityEnabled,
+      MapNotifier mapNotifier,
+      DirectionNotifier directionNotifier) {
     BuildingSingleton buildingSingleton = new BuildingSingleton();
     Building hall = buildingSingleton.buildings['H'];
-
-    shortestPath = hall.shortestPath(start, end,
+    mapNotifier.setSelectedFloor(int.parse(origin.floor));
+    updateFloor(mapNotifier.selectedFloorPlan);
+    shortestPath = hall.shortestPath(origin, destination,
         isDisabilityFriendly: isDisabilityEnabled);
-    // TODO: setState of direction should be set by listening to selectedFloor MapNotifier instead of hardcoded '9'
     setState(() {
-      direction = {shortestPath['9'].toPolyline()};
+      direction.addAll({
+        shortestPath[mapNotifier.selectedFloorPlan.toString()].toPolyline()
+      });
+      markerHelper.setStartEndMarker(origin, destination);
     });
   }
 
-  Future<void> drawDirectionPath(DirectionNotifier directionNotifier,
-      Coordinate startPoint, Coordinate endPoint) async {
-    MapHelper.setShuttleStops(startPoint);
-    if (directionNotifier.mode == DrivingMode.shuttle && MapHelper.isShuttleRequired(endPoint)) {
+  Future<void> drawOutdoorPath(Coordinate origin, Coordinate destination,
+      DirectionNotifier directionNotifier) async {
+    MapHelper.setShuttleStops(origin);
+    if (directionNotifier.mode == constant.DrivingMode.shuttle &&
+        MapHelper.isShuttleRequired(destination)) {
       // await keyword is very important for synchronizing the calls!!!!!!
       await directionNotifier.navigateByCoordinates(
-          startPoint,
-          MapHelper.nearestShuttleStop); // Current position to closest shuttle stop
+          origin,
+          MapHelper
+              .nearestShuttleStop); // Current position to closest shuttle stop
       await directionNotifier.navigateByCoordinates(
           MapHelper.furthestShuttleStop,
-          endPoint); // Furthest shuttle stop to end point
+          destination); // Furthest shuttle stop to end point
     } else {
-      await directionNotifier.navigateByCoordinates(startPoint, endPoint);
+      await directionNotifier.navigateByCoordinates(origin, destination);
     }
-    directionNotifier.setShowDirectionPanel(true);
     setState(() {
-      direction = directionNotifier.getPolylines();
+      direction.addAll(directionNotifier.getPolylines());
     });
+
+    mapMarkers.add(markerHelper.getDestinationMarker(destination.toLatLng()));
+  }
+
+  Future<void> drawCombinedPath(
+      Coordinate origin,
+      Coordinate destination,
+      bool isDisabilityEnabled,
+      MapNotifier mapNotifier,
+      DirectionNotifier directionNotifier) async {
+    if (origin is RoomCoordinate) {
+      drawOutdoorPath(mainEntrance["Hall"], destination, directionNotifier);
+      isDisabilityEnabled
+          ? drawIndoorPath(origin, BuildingSingleton().h8F12,
+              isDisabilityEnabled, mapNotifier, directionNotifier)
+          : drawIndoorPath(origin, BuildingSingleton().h8F16,
+              isDisabilityEnabled, mapNotifier, directionNotifier);
+    } else {
+      drawOutdoorPath(origin, mainEntrance["Hall"], directionNotifier);
+      isDisabilityEnabled
+          ? drawIndoorPath(BuildingSingleton().h8F12, destination,
+              isDisabilityEnabled, mapNotifier, directionNotifier)
+          : drawIndoorPath(BuildingSingleton().h8F16, destination,
+              isDisabilityEnabled, mapNotifier, directionNotifier);
+    }
   }
 }

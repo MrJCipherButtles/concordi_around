@@ -1,9 +1,7 @@
-import 'package:concordi_around/data/building_singleton.dart';
 import 'package:concordi_around/model/direction.dart';
 import 'package:concordi_around/service/map_constant.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:concordi_around/provider/direction_notifier.dart';
-import 'package:concordi_around/model/building.dart';
 import 'package:concordi_around/model/coordinate.dart';
 
 void main() {
