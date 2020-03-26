@@ -35,6 +35,7 @@ void main() {
       expect(MapHelper.furthestShuttleCampus, 'SGW');
       expect(MapHelper.nearestShuttleStop, shuttleStops['LOY']);
       expect(MapHelper.furthestShuttleStop, shuttleStops['SGW']);
+      expect(MapHelper.isShuttleTaken, false);
     });
 
     test('Results should be according to Hall live location', () {
@@ -44,6 +45,7 @@ void main() {
       expect(MapHelper.furthestShuttleCampus, 'Loyola');
       expect(MapHelper.nearestShuttleStop, shuttleStops['SGW']);
       expect(MapHelper.furthestShuttleStop, shuttleStops['LOY']);
+      expect(MapHelper.isShuttleTaken, false);
     });
 
     test('Shuttle should be required', () {
