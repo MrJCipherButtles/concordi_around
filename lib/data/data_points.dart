@@ -881,3 +881,7 @@ Map<String, Coordinate> shuttleStops = {
   'SGW': Coordinate(45.497148, -73.578447, "0", "Hall", "SGW"),
   'LOY': Coordinate(45.458451, -73.638270, "0", "Vanier", "LOY")
 };
+
+Map<String, Coordinate> mainEntrance = {
+  'Hall' : Coordinate(45.497009, -73.578551, "0", "Hall", "SGW")
+};
