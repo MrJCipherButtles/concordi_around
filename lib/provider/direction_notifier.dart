@@ -181,5 +181,6 @@ class DirectionNotifier extends ChangeNotifier {
     apiCallCounter = 0;
     totalDuration = 0;
     totalDistance = 0;
+    duration = "0 min";
   }
 }
