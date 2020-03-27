@@ -5,6 +5,6 @@
 // git update-index --assume-unchanged lib/credential.dart
 
 // TODO: Enter your own API keys
-const PLACES_API_KEY = '<ENTER YOUR API KEY HERE!>';;
-const DIRECTIONS_API_KEY = '<ENTER YOUR API KEY HERE!>';;
-const CALENDAR_API_KEY = '<ENTER YOUR API KEY HERE!>';;
+const PLACES_API_KEY = '<ENTER YOUR API KEY HERE!>';
+const DIRECTIONS_API_KEY = '<ENTER YOUR API KEY HERE!>';
+const CALENDAR_API_KEY = '<ENTER YOUR API KEY HERE!>';
