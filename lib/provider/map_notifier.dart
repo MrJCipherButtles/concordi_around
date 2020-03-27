@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:concordi_around/model/coordinate.dart';
 import 'package:concordi_around/service/map_constant.dart' as constant;
 import 'package:concordi_around/service/map_helper.dart';
@@ -28,7 +27,6 @@ class MapNotifier with ChangeNotifier {
     selectedLatlng = latLng;
     notifyListeners();
   }
-
 
   void setFloorPlanVisibility(bool visibility) {
     showFloorPlan = visibility;
@@ -70,15 +68,16 @@ class MapNotifier with ChangeNotifier {
     Coordinate c;
     if (coordinate != null) {
       c = coordinate;
-      setPlaceLatLng(c.toLatLng());
     } else {
       c = await futureCoordinate;
     }
-
+    
+    setPlaceLatLng(c.toLatLng());
     CameraPosition _newPosition = CameraPosition(
         target: c.toLatLng(), zoom: constant.CAMERA_INDOOR_ZOOM);
     controller.animateCamera(CameraUpdate.newCameraPosition(_newPosition));
   }
+
   Future<void> toggleCampus(LatLng latLng) async {
     final c = await _completer.future;
     final p = CameraPosition(
