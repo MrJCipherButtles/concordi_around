@@ -39,7 +39,6 @@ class _MapState extends State<Map> {
   Set<Polygon> buildingHighlights;
   Set<Marker> mapMarkers = {};
   bool _myLocationEnabled = false;
-  bool _firstStartUp = true;
   var shortestPath;
 
   @override
@@ -59,10 +58,9 @@ class _MapState extends State<Map> {
             _cameraPosition = CameraPosition(
                 target: LatLng(_position.latitude, _position.longitude),
                 zoom: constant.CAMERA_DEFAULT_ZOOM);
-            if(_firstStartUp){ // Need this so camera doesnt keep panning to your current location every few seconds
+            if(!_myLocationEnabled) {
             goToCurrent();
             _myLocationEnabled = true;
-            _firstStartUp = false;
             }
           });
         });
