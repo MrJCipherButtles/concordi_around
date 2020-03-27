@@ -137,6 +137,7 @@ class _MapState extends State<Map> {
                 ),
                 FloatingActionButton(
                   heroTag: 'direction',
+                  tooltip: "direction page button",
                   onPressed: () {
                     Navigator.push(
                       context,
