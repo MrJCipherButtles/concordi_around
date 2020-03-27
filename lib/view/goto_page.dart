@@ -66,6 +66,7 @@ class _GotoPageState extends State<GotoPage> {
                                   : "Choose starting point",
                               icon: Icon(Icons.my_location),
                             ),
+                            key: Key('Origin Field'),
                             readOnly: true,
                             onTap: () {
                               showSearch(
@@ -92,6 +93,7 @@ class _GotoPageState extends State<GotoPage> {
                                   : 'Choose destination',
                               icon: Icon(Icons.location_on),
                             ),
+                            key: Key('Destination Field'),
                             readOnly: true,
                             onTap: () {
                               showSearch(
