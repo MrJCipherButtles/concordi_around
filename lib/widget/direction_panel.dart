@@ -50,6 +50,7 @@ class DirectionPanelState extends State<DirectionPanel> {
                           ),
                         ),
                         IconButton(
+                            key: Key('Direction Panel close'),
                             icon: Icon(Icons.close),
                             onPressed: () => {
                                   directionNotifier
