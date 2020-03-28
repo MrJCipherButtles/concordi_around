@@ -375,7 +375,6 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
       for(int i = 0; i < result['photos'].length; i++){
         String photoRef = photosResult[i]['photo_reference'];
         String picture = '$baseURL/photo?maxwidth=500&photoreference=$photoRef&key=$PLACES_API_KEY';
-        print(picture);
         pictures.add(picture);
       }
     }
