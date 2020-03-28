@@ -72,7 +72,7 @@ class _BuildingPopupState extends State<BuildingPopup> {
           Icon(
             Icons.maximize,
             color: Colors.grey[350],
-            size: 50,
+            size: 40,
           )
         ],
       ),
@@ -258,7 +258,7 @@ class _BuildingPopupState extends State<BuildingPopup> {
 
     if(result.gPlaceWebsite != null){
         _website = result.gPlaceWebsite;
-      }else{
+      } else{
         _website = 'Information Not Available';
        }
 
