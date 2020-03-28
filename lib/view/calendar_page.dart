@@ -4,7 +4,6 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:concordi_around/service/map_constant.dart' as constant;
 import 'package:provider/provider.dart';
 
-
 class MyCalendar extends StatefulWidget {
   MyCalendar({Key key, this.title}) : super(key: key);
 
@@ -24,8 +23,6 @@ class _MyCalendarState extends State<MyCalendar> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     final _selectedDay = DateTime.now();
-
-  
 
     _selectedEvents = _events[_selectedDay] ?? [];
     _calendarController = CalendarController();
@@ -60,42 +57,41 @@ class _MyCalendarState extends State<MyCalendar> with TickerProviderStateMixin {
   void _onCalendarCreated(
       DateTime first, DateTime last, CalendarFormat format) {
     print('CALLBACK: _onCalendarCreated');
-    //  Provider.of<CalendarNotifier>(context).setEvents(); 
-
+    //  Provider.of<CalendarNotifier>(context).setEvents();
   }
 
   @override
   Widget build(BuildContext context) {
-   return ChangeNotifierProvider<CalendarNotifier>( //      <--- ChangeNotifierProvider
-      create: (context) => CalendarNotifier(),
-      child: Scaffold(
-      appBar: AppBar(
-          leading: new IconButton(
-            icon: new Icon(Icons.dehaze, color: Colors.white),
-            onPressed: () => Navigator.of(context).pop(),
+    return ChangeNotifierProvider<CalendarNotifier>(
+        //      <--- ChangeNotifierProvider
+        create: (context) => CalendarNotifier(),
+        child: Scaffold(
+          appBar: AppBar(
+              leading: new IconButton(
+                icon: new Icon(Icons.dehaze, color: Colors.white),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+              title: Text(widget.title),
+              backgroundColor: constant.COLOR_CONCORDIA),
+          body: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: <Widget>[
+              Consumer<CalendarNotifier>(
+                //                    <--- Consumer
+                builder: (context, myModel, child) {
+                  return _buildTableCalendar(myModel);
+                },
+              ),
+              const SizedBox(height: 8.0),
+              Expanded(child: _buildEventList()),
+            ],
           ),
-          title: Text(widget.title),
-          backgroundColor: constant.COLOR_CONCORDIA),
-      body: Column(
-        mainAxisSize: MainAxisSize.max,
-        children: <Widget>[  
-          Consumer<CalendarNotifier>( //                    <--- Consumer
-                  builder: (context, myModel, child) {
-                    return _buildTableCalendar(myModel);
-                  },
-                ),
-                
-          const SizedBox(height: 8.0),
-          Expanded(child: _buildEventList()),
-        ],
-      ),
-    ));
+        ));
   }
 
   // Simple TableCalendar configuration (using Styles)
   Widget _buildTableCalendar(myModel) {
-
-  // var eventsNotifier = Provider.of<CalendarNotifier>(context);
+    // var eventsNotifier = Provider.of<CalendarNotifier>(context);
     return TableCalendar(
       calendarController: _calendarController,
       events: myModel.events,
@@ -126,7 +122,6 @@ class _MyCalendarState extends State<MyCalendar> with TickerProviderStateMixin {
   }
 
   Widget _buildEventList() {
-  
     return ListView(
       children: _selectedEvents
           .map((event) => Container(

@@ -1,8 +1,4 @@
 import 'dart:async';
-import 'dart:convert' show json;
-
-import "package:http/http.dart" as http;
-import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 GoogleSignIn _googleSignIn = GoogleSignIn(
@@ -13,7 +9,6 @@ GoogleSignIn _googleSignIn = GoogleSignIn(
 );
 
 class GoogleLogIn extends _GoogleLogIn {
-
   GoogleLogIn._privateConstructor() {}
   static final GoogleLogIn instance = GoogleLogIn._privateConstructor();
 }
@@ -22,15 +17,27 @@ class _GoogleLogIn {
   GoogleSignInAccount _currentUser;
 
   getCurrentUser() async {
+    Map<String, String> auth;
+
+    _currentUser = await _googleSignIn.signInSilently();
+
+    _googleSignIn.onCurrentUserChanged
+        .listen((GoogleSignInAccount account) async {
+      print("got new account" + account.toString());
+      _currentUser = account;
+      auth = await _currentUser.authHeaders;
+      return auth;
+    });
+
+    if (_currentUser != null) {
+      auth = await _currentUser.authHeaders;
+      return auth;
+    }
+
     if (_googleSignIn.currentUser == null) {
-      _currentUser = await _googleSignIn.signInSilently();
       if (_currentUser == null) {
         await _handleSignIn();
       }
-    }
-
-    if (_currentUser != null) {
-      return _currentUser;
     }
   }
 
@@ -41,6 +48,4 @@ class _GoogleLogIn {
       print(error);
     }
   }
-
-
 }
