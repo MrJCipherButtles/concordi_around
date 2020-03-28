@@ -72,8 +72,6 @@ class _BuildingPopupState extends State<BuildingPopup> {
           children: <Widget>[
             Icon(
               Icons.maximize,
-              color: Colors.grey[350],
-              size: 40,
             )
           ],
         ),
