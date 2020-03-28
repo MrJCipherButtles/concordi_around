@@ -1,7 +1,9 @@
+import 'package:concordi_around/provider/calendar_notifier.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/date_symbol_data_local.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:concordi_around/service/map_constant.dart' as constant;
+import 'package:provider/provider.dart';
+
 
 class MyCalendar extends StatefulWidget {
   MyCalendar({Key key, this.title}) : super(key: key);
@@ -13,7 +15,7 @@ class MyCalendar extends StatefulWidget {
 }
 
 class _MyCalendarState extends State<MyCalendar> with TickerProviderStateMixin {
-  Map<DateTime, List> _events;
+  Map<DateTime, List> _events = {};
   List _selectedEvents;
   AnimationController _animationController;
   CalendarController _calendarController;
@@ -23,59 +25,7 @@ class _MyCalendarState extends State<MyCalendar> with TickerProviderStateMixin {
     super.initState();
     final _selectedDay = DateTime.now();
 
-    _events = {
-      _selectedDay.subtract(Duration(days: 30)): [
-        'Event A0',
-        'Event B0',
-        'Event C0'
-      ],
-      _selectedDay.subtract(Duration(days: 27)): ['Event A1'],
-      _selectedDay.subtract(Duration(days: 20)): [
-        'Event A2',
-        'Event B2',
-        'Event C2',
-        'Event D2'
-      ],
-      _selectedDay.subtract(Duration(days: 16)): ['Event A3', 'Event B3'],
-      _selectedDay.subtract(Duration(days: 10)): [
-        'Event A4',
-        'Event B4',
-        'Event C4'
-      ],
-      _selectedDay.subtract(Duration(days: 4)): [
-        'Event A5',
-        'Event B5',
-        'Event C5'
-      ],
-      _selectedDay.subtract(Duration(days: 2)): ['Event A6', 'Event B6'],
-      _selectedDay: ['Event A7', 'Event B7', 'Event C7', 'Event D7'],
-      _selectedDay.add(Duration(days: 1)): [
-        'COMP 232 12:00pm at H937',
-        'Event B8',
-        'Event C8',
-        'Event D8'
-      ],
-      _selectedDay.add(Duration(days: 3)):
-          Set.from(['Event A9', 'Event A9', 'Event B9']).toList(),
-      _selectedDay.add(Duration(days: 7)): [
-        'Event A10',
-        'Event B10',
-        'Event C10'
-      ],
-      _selectedDay.add(Duration(days: 11)): ['Event A11', 'Event B11'],
-      _selectedDay.add(Duration(days: 17)): [
-        'Event A12',
-        'Event B12',
-        'Event C12',
-        'Event D12'
-      ],
-      _selectedDay.add(Duration(days: 22)): ['Event A13', 'Event B13'],
-      _selectedDay.add(Duration(days: 26)): [
-        'Event A14',
-        'Event B14',
-        'Event C14'
-      ],
-    };
+  
 
     _selectedEvents = _events[_selectedDay] ?? [];
     _calendarController = CalendarController();
@@ -110,11 +60,15 @@ class _MyCalendarState extends State<MyCalendar> with TickerProviderStateMixin {
   void _onCalendarCreated(
       DateTime first, DateTime last, CalendarFormat format) {
     print('CALLBACK: _onCalendarCreated');
+    //  Provider.of<CalendarNotifier>(context).setEvents(); 
+
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+   return ChangeNotifierProvider<CalendarNotifier>( //      <--- ChangeNotifierProvider
+      create: (context) => CalendarNotifier(),
+      child: Scaffold(
       appBar: AppBar(
           leading: new IconButton(
             icon: new Icon(Icons.dehaze, color: Colors.white),
@@ -124,25 +78,33 @@ class _MyCalendarState extends State<MyCalendar> with TickerProviderStateMixin {
           backgroundColor: constant.COLOR_CONCORDIA),
       body: Column(
         mainAxisSize: MainAxisSize.max,
-        children: <Widget>[
-          _buildTableCalendar(),
+        children: <Widget>[  
+          Consumer<CalendarNotifier>( //                    <--- Consumer
+                  builder: (context, myModel, child) {
+                    return _buildTableCalendar(myModel);
+                  },
+                ),
+                
           const SizedBox(height: 8.0),
           Expanded(child: _buildEventList()),
         ],
       ),
-    );
+    ));
   }
 
   // Simple TableCalendar configuration (using Styles)
-  Widget _buildTableCalendar() {
+  Widget _buildTableCalendar(myModel) {
+
+  // var eventsNotifier = Provider.of<CalendarNotifier>(context);
     return TableCalendar(
       calendarController: _calendarController,
-      events: _events,
+      events: myModel.events,
       startingDayOfWeek: StartingDayOfWeek.monday,
       calendarStyle: CalendarStyle(
         selectedColor: constant.COLOR_CONCORDIA,
-        todayColor: constant.COLOR_CONCORDIA,
-        markersColor: constant.COLOR_CONCORDIA,
+        todayColor: Color.fromRGBO(140, 139, 137, 1),
+        markersColor: Colors.grey[300],
+        markersPositionBottom: 9,
         weekendStyle: TextStyle(color: constant.COLOR_CONCORDIA),
         outsideDaysVisible: false,
       ),
@@ -164,6 +126,7 @@ class _MyCalendarState extends State<MyCalendar> with TickerProviderStateMixin {
   }
 
   Widget _buildEventList() {
+  
     return ListView(
       children: _selectedEvents
           .map((event) => Container(
