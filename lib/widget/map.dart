@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:concordi_around/data/building_singleton.dart';
+import 'package:concordi_around/data/data_points.dart';
 import 'package:concordi_around/global.dart';
 import 'package:concordi_around/model/building.dart';
 import 'package:concordi_around/model/coordinate.dart';
@@ -13,7 +14,7 @@ import 'package:concordi_around/service/polygon_helper.dart';
 import 'package:concordi_around/view/goto_page.dart';
 import 'package:concordi_around/widget/direction_panel.dart';
 import 'package:concordi_around/widget/search/main_search_bar.dart';
-import 'package:concordi_around/widget/svg_floor_plan/floor_selector_enter_building_column.dart';
+import 'package:concordi_around/widget/floor_selector/floor_selector_enter_building_column.dart';
 import 'package:concordi_around/widget/building_popup.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -35,9 +36,10 @@ class _MapState extends State<Map> {
   StreamSubscription _positionStream;
   MarkerHelper markerHelper;
   PolygonHelper polygonHelper;
-  Set<Polyline> direction;
+  Set<Polyline> direction = {};
   Set<Polygon> buildingHighlights;
   Set<Marker> mapMarkers = {};
+  bool _myLocationEnabled = false;
 
   var shortestPath;
 
@@ -50,15 +52,18 @@ class _MapState extends State<Map> {
     _geolocator = Geolocator()..forceAndroidLocationManager;
     LocationOptions locationOptions = LocationOptions(
         accuracy: LocationAccuracy.bestForNavigation, distanceFilter: 1);
+
     _positionStream =
         _geolocator.getPositionStream(locationOptions).listen((Position pos) {
-      setState(() {
-        _position = pos;
-        _cameraPosition = CameraPosition(
-            target: LatLng(_position.latitude, _position.longitude),
-            zoom: constant.CAMERA_DEFAULT_ZOOM);
-      });
-    });
+          setState(() {
+            _position = pos;
+            _cameraPosition = CameraPosition(
+                target: LatLng(_position.latitude, _position.longitude),
+                zoom: constant.CAMERA_DEFAULT_ZOOM);
+            goToCurrent();
+            _myLocationEnabled = true;
+          });
+        });
   }
 
   @override
@@ -76,19 +81,16 @@ class _MapState extends State<Map> {
         Provider.of<DirectionNotifier>(context);
     _completer = Provider.of<MapNotifier>(context, listen: false).getCompleter;
 
-    if (_cameraPosition == null) {
-      _cameraPosition = CameraPosition(target: LatLng(0, 0));
-    }
-
     return Stack(
       children: <Widget>[
         Container(
             child: GoogleMap(
           mapType: MapType.normal,
-          myLocationEnabled: true,
+          myLocationEnabled: _myLocationEnabled,
           myLocationButtonEnabled: false,
           compassEnabled: false,
           indoorViewEnabled: false,
+          mapToolbarEnabled: false,
           scrollGesturesEnabled: true,
           rotateGesturesEnabled: true,
           tiltGesturesEnabled: true,
@@ -96,7 +98,7 @@ class _MapState extends State<Map> {
           polygons: buildingHighlights,
           polylines: direction,
           markers: mapMarkers,
-          initialCameraPosition: _cameraPosition,
+          initialCameraPosition: _cameraPosition ?? CameraPosition(target: LatLng(45.4977298, -73.579034)),
           onMapCreated: (GoogleMapController controller) {
             _completer.complete(controller);
           },
@@ -146,26 +148,10 @@ class _MapState extends State<Map> {
                           drivingMode: (constant.DrivingMode mode) =>
                               {directionNotifier.setDrivingMode(mode)},
                           startPointAndDestinationCoordinates: (List<Coordinate>
-                                  startPointAndDestinationCoordinates) =>
+                                  directionCoordinates) =>
                               {
-                            (startPointAndDestinationCoordinates[0]
-                                        is RoomCoordinate &&
-                                    startPointAndDestinationCoordinates[1]
-                                        is RoomCoordinate)
-                                ? drawShortestPath(
-                                    startPointAndDestinationCoordinates[0],
-                                    startPointAndDestinationCoordinates[1],
-                                    disabilityMode,
-                                    mapNotifier,
-                                    directionNotifier)
-                                : drawDirectionPath(
-                                    directionNotifier,
-                                    startPointAndDestinationCoordinates[0],
-                                    startPointAndDestinationCoordinates[1]),
-                            //Moves camera to the starting point
-                            mapNotifier.goToSpecifiedLatLng(
-                                coordinate:
-                                    startPointAndDestinationCoordinates[0]),
+                            drawPath(directionCoordinates[0], directionCoordinates[1],
+                                disabilityMode, mapNotifier, directionNotifier)
                           },
                         ),
                       ),
@@ -190,13 +176,14 @@ class _MapState extends State<Map> {
         BuildingPopup(),
         DirectionPanel(
             removeDirectionPolyline: (bool removePolyline) => {
-              direction = {},
-              shortestPath = {},
-              markerHelper.removeStartEndMarker(),
-              mapMarkers.removeWhere((marker) =>
-              marker.markerId.value == 'start' ||
-                  marker.markerId.value == 'end'),
-            }),
+                  direction.clear(),
+                  shortestPath = {},
+                  markerHelper.removeStartEndMarker(),
+                  mapMarkers.removeWhere((marker) =>
+                      marker.markerId.value == 'start' ||
+                      marker.markerId.value == 'end' ||
+                      marker.markerId.value == 'destination'),
+                }),
       ],
     );
   }
@@ -205,10 +192,10 @@ class _MapState extends State<Map> {
     setState(() {
       if (shortestPath != null) {
         Path path = shortestPath['$floor'];
+        direction.removeWhere((polyline) =>
+            !(polyline.polylineId.toString().contains("outdoor")));
         if (path != null) {
-          direction = {path.toPolyline()};
-        } else {
-          direction = {};
+          direction.addAll({path.toPolyline()});
         }
       }
       if (floor == 9) {
@@ -239,7 +226,7 @@ class _MapState extends State<Map> {
     mapMarkers.removeAll(markerHelper.getFloorMarkers(8));
     mapMarkers.removeAll(markerHelper.getFloorMarkers(9));
     mapMarkers.removeWhere((marker) =>
-    marker.markerId.value == 'start' || marker.markerId.value == 'end');
+        marker.markerId.value == 'start' || marker.markerId.value == 'end');
     buildingHighlights = {};
     buildingHighlights = BuildingSingleton().getOutdoorBuildingHighlights();
   }
@@ -252,46 +239,88 @@ class _MapState extends State<Map> {
     controller.animateCamera(CameraUpdate.newCameraPosition(_cameraPosition));
   }
 
-  void drawShortestPath(
-      Coordinate start,
-      Coordinate end,
+  void drawPath(
+      Coordinate origin,
+      Coordinate destination,
       bool isDisabilityEnabled,
       MapNotifier mapNotifier,
       DirectionNotifier directionNotifier) {
+    if (origin is RoomCoordinate && destination is RoomCoordinate)
+      drawIndoorPath(origin, destination, disabilityMode, mapNotifier, directionNotifier);
+    else if (origin is RoomCoordinate || destination is RoomCoordinate)
+      drawCombinedPath(origin, destination, disabilityMode, mapNotifier, directionNotifier);
+    else
+      drawOutdoorPath(origin, destination, directionNotifier);
+
     directionNotifier.setShowDirectionPanel(true);
+
+    //Moves camera to the starting point
+    mapNotifier.goToSpecifiedLatLng(coordinate: origin);
+  }
+
+  void drawIndoorPath(
+      Coordinate origin,
+      Coordinate destination,
+      bool isDisabilityEnabled,
+      MapNotifier mapNotifier,
+      DirectionNotifier directionNotifier) {
     BuildingSingleton buildingSingleton = new BuildingSingleton();
     Building hall = buildingSingleton.buildings['H'];
-    mapNotifier.setSelectedFloor(int.parse(start.floor));
+    mapNotifier.setSelectedFloor(int.parse(origin.floor));
     updateFloor(mapNotifier.selectedFloorPlan);
-    shortestPath = hall.shortestPath(start, end,
+    shortestPath = hall.shortestPath(origin, destination,
         isDisabilityFriendly: isDisabilityEnabled);
     setState(() {
-      direction = {
+      direction.addAll({
         shortestPath[mapNotifier.selectedFloorPlan.toString()].toPolyline()
-      };
-      markerHelper.setStartEndMarker(start, end);
+      });
+      markerHelper.setStartEndMarker(origin, destination);
     });
   }
 
-  Future<void> drawDirectionPath(DirectionNotifier directionNotifier,
-      Coordinate startPoint, Coordinate endPoint) async {
-    MapHelper.setShuttleStops(startPoint);
+  Future<void> drawOutdoorPath(Coordinate origin, Coordinate destination,
+      DirectionNotifier directionNotifier) async {
+    MapHelper.setShuttleStops(origin);
     if (directionNotifier.mode == constant.DrivingMode.shuttle &&
-        MapHelper.isShuttleRequired(endPoint)) {
+        MapHelper.isShuttleRequired(destination)) {
       // await keyword is very important for synchronizing the calls!!!!!!
       await directionNotifier.navigateByCoordinates(
-          startPoint,
+          origin,
           MapHelper
               .nearestShuttleStop); // Current position to closest shuttle stop
       await directionNotifier.navigateByCoordinates(
           MapHelper.furthestShuttleStop,
-          endPoint); // Furthest shuttle stop to end point
+          destination); // Furthest shuttle stop to end point
     } else {
-      await directionNotifier.navigateByCoordinates(startPoint, endPoint);
+      await directionNotifier.navigateByCoordinates(origin, destination);
     }
-    directionNotifier.setShowDirectionPanel(true);
     setState(() {
-      direction = directionNotifier.getPolylines();
+      direction.addAll(directionNotifier.getPolylines());
     });
+
+    mapMarkers.add(markerHelper.getDestinationMarker(destination.toLatLng()));
+  }
+
+  Future<void> drawCombinedPath(
+      Coordinate origin,
+      Coordinate destination,
+      bool isDisabilityEnabled,
+      MapNotifier mapNotifier,
+      DirectionNotifier directionNotifier) async {
+    if (origin is RoomCoordinate) {
+      drawOutdoorPath(mainEntrance["Hall"], destination, directionNotifier);
+      isDisabilityEnabled
+          ? drawIndoorPath(origin, BuildingSingleton().h8F12,
+              isDisabilityEnabled, mapNotifier, directionNotifier)
+          : drawIndoorPath(origin, BuildingSingleton().h8F16,
+              isDisabilityEnabled, mapNotifier, directionNotifier);
+    } else {
+      drawOutdoorPath(origin, mainEntrance["Hall"], directionNotifier);
+      isDisabilityEnabled
+          ? drawIndoorPath(BuildingSingleton().h8F12, destination,
+              isDisabilityEnabled, mapNotifier, directionNotifier)
+          : drawIndoorPath(BuildingSingleton().h8F16, destination,
+              isDisabilityEnabled, mapNotifier, directionNotifier);
+    }
   }
 }

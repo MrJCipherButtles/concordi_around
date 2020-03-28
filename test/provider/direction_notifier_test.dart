@@ -1,9 +1,8 @@
-import 'package:concordi_around/data/building_singleton.dart';
 import 'package:concordi_around/model/direction.dart';
 import 'package:concordi_around/service/map_constant.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:concordi_around/provider/direction_notifier.dart';
-import 'package:concordi_around/model/building.dart';
+import 'package:concordi_around/model/coordinate.dart';
 
 void main() {
   group("Direction Notifier Unit tests: ", () {
@@ -45,6 +44,18 @@ void main() {
     test('Navigating by name', () {
       DirectionNotifier directionNotifier = DirectionNotifier();
       //Future<Direction> futureDirection = directionNotifier.navigateByCoordinates(originCoordinates, destinationCoordinates);
+    });
+
+    test('Navigate by Coordinates', () {
+      DirectionNotifier directionNotifier = DirectionNotifier();
+
+      //Calculating from Hall to JMSB
+      Future<Direction> navCoord = directionNotifier.navigateByCoordinates(
+          Coordinate(45.49726, -73.57893, "0", "H", "SGW"),
+          Coordinate(45.4954, -73.57909, "0", "JMSB", "SGW"));
+      directionNotifier.setDrivingMode(DrivingMode.shuttle);
+      expect(directionNotifier.apiCallCounter, 1);
+      expect(directionNotifier.direction, null);
     });
   });
 }

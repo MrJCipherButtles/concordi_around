@@ -1,6 +1,6 @@
 import 'package:concordi_around/main.dart';
+import 'package:concordi_around/widget/floor_selector/floor_selector_enter_building_column.dart';
 import 'package:concordi_around/widget/search/main_search_bar.dart';
-import 'package:concordi_around/widget/svg_floor_plan/floor_selector_enter_building_column.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
