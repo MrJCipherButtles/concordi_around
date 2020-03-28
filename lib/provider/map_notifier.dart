@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:concordi_around/model/coordinate.dart';
 import 'package:concordi_around/service/map_constant.dart' as constant;
 import 'package:concordi_around/service/map_helper.dart';
@@ -23,7 +24,7 @@ class MapNotifier with ChangeNotifier {
     notifyListeners();
   }
 
-  void setPlaceLatLng(LatLng latLng){
+  void setPlaceLatLng(LatLng latLng) {
     selectedLatlng = latLng;
     notifyListeners();
   }
@@ -71,10 +72,9 @@ class MapNotifier with ChangeNotifier {
     } else {
       c = await futureCoordinate;
     }
-    
     setPlaceLatLng(c.toLatLng());
-    CameraPosition _newPosition = CameraPosition(
-        target: c.toLatLng(), zoom: constant.CAMERA_INDOOR_ZOOM);
+    CameraPosition _newPosition =
+        CameraPosition(target: c.toLatLng(), zoom: constant.CAMERA_INDOOR_ZOOM);
     controller.animateCamera(CameraUpdate.newCameraPosition(_newPosition));
   }
 
