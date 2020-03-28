@@ -112,3 +112,22 @@ class RoomCoordinate extends Coordinate {
   @override
   String toString() => '$roomId';
 }
+
+class PlaceCoordinate extends Coordinate {
+  final String _gPlaceAddress;
+  final String _gPlacePhone;
+  final String _gPlaceWebsite;
+  final bool _gPlaceOpenClosed;
+  final List<String> _gPlacePictures;
+
+  PlaceCoordinate(lat, lng, floorLevel, building, campus, this._gPlaceAddress,
+      this._gPlacePhone, this._gPlaceWebsite, this._gPlaceOpenClosed, this._gPlacePictures, {type, adjCoordinates})
+      : super(lat, lng, floorLevel, building, campus,
+            type: type, adjCoordinates: adjCoordinates);
+
+  String get gPlaceAddress => _gPlaceAddress;
+  String get gPlacePhone => _gPlacePhone;
+  String get gPlaceWebsite => _gPlaceWebsite;
+  bool get gPlaceOpenClosed => _gPlaceOpenClosed;
+  List<String> get gPlacePictures => _gPlacePictures;
+}

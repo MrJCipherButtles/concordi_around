@@ -12,6 +12,7 @@ import 'package:uuid/uuid.dart';
 class SearchBar extends StatefulWidget {
   final Function(Future<Coordinate>) coordinate;
   SearchBar({this.coordinate});
+  static PlaceCoordinate searchResult;
 
   @override
   State<StatefulWidget> createState() {
@@ -342,14 +343,13 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
       }
     }
 
-    String baseURL = 'https://maps.googleapis.com/maps/api/place/details/json';
-    String fields = 'address_component,name,geometry';
+    String baseURL = 'https://maps.googleapis.com/maps/api/place';
+    String fields = 'geometry,name,formatted_phone_number,formatted_address,website,photos,opening_hours';
 
     // Send place details request
     String request =
-        '$baseURL?place_id=$placeId&fields=$fields&sessiontoken=$_sessionToken&key=$PLACES_API_KEY';
+        '$baseURL/details/json?place_id=$placeId&fields=$fields&sessiontoken=$_sessionToken&key=$PLACES_API_KEY';
     Response response = await Dio().get(request);
-
     // session token must be cleared after getting place details
     _sessionToken = null;
 
@@ -357,11 +357,31 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
     final result = response.data['result'];
     final geometry = result['geometry'];
     final location = geometry['location'];
-
+    
     double lat = location['lat'];
     double lng = location['lng'];
-    String building = result['name'];
+    String title = result['name'];
+    String address = result['formatted_address'];
+    String phone = result['formatted_phone_number'];
+    String website = result['website'];
+    bool openClosed;
+    if(result['opening_hours'] != null){
+      openClosed = result['opening_hours']['open_now'];
+    }
+    dynamic photosResult = result['photos'];
+    List<String> pictures = List<String>();
 
-    return Coordinate(lat, lng, '', building, '');
+    if(photosResult != null && result['photos'].length > 2){
+      for(int i = 0; i < result['photos'].length; i++){
+        String photoRef = photosResult[i]['photo_reference'];
+        String picture = '$baseURL/photo?maxwidth=500&photoreference=$photoRef&key=$PLACES_API_KEY';
+        print(picture);
+        pictures.add(picture);
+      }
+    }
+    
+    SearchBar.searchResult = PlaceCoordinate(lat, lng, '', title, '', address, phone, website, openClosed, pictures);
+    
+    return Coordinate(lat, lng, '', title, '');
   }
 }
