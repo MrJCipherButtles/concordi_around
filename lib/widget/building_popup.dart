@@ -8,6 +8,10 @@ import 'package:concordi_around/model/coordinate.dart';
 import 'package:concordi_around/widget/search/main_search_bar.dart';
 
 class BuildingPopup extends StatefulWidget {
+  final VoidCallback onGetDirectionSelected;
+
+  BuildingPopup({this.onGetDirectionSelected});
+
   State<StatefulWidget> createState() {
     return _BuildingPopupState();
   }
@@ -218,8 +222,7 @@ class _BuildingPopupState extends State<BuildingPopup> {
             ButtonTheme(
               height: 48,
               child: RaisedButton(
-                //TODO: Add Directions onPressed, taking user to the goto page and setting destination
-                onPressed: () {},
+                onPressed: () => widget.onGetDirectionSelected(),
                 color: constant.COLOR_CONCORDIA,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,

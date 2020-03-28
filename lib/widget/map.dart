@@ -54,17 +54,17 @@ class _MapState extends State<Map> {
 
     _positionStream =
         _geolocator.getPositionStream(locationOptions).listen((Position pos) {
-          setState(() {
-            _position = pos;
-            _cameraPosition = CameraPosition(
-                target: LatLng(_position.latitude, _position.longitude),
-                zoom: constant.CAMERA_DEFAULT_ZOOM);
-            if(!_myLocationEnabled) {
-            goToCurrent();
-            _myLocationEnabled = true;
-            }
-          });
-        });
+      setState(() {
+        _position = pos;
+        _cameraPosition = CameraPosition(
+            target: LatLng(_position.latitude, _position.longitude),
+            zoom: constant.CAMERA_DEFAULT_ZOOM);
+        if (!_myLocationEnabled) {
+          goToCurrent();
+          _myLocationEnabled = true;
+        }
+      });
+    });
   }
 
   @override
@@ -99,7 +99,8 @@ class _MapState extends State<Map> {
           polygons: buildingHighlights,
           polylines: direction,
           markers: mapMarkers,
-          initialCameraPosition: _cameraPosition ?? CameraPosition(target: LatLng(45.4977298, -73.579034)),
+          initialCameraPosition: _cameraPosition ??
+              CameraPosition(target: LatLng(45.4977298, -73.579034)),
           onMapCreated: (GoogleMapController controller) {
             _completer.complete(controller);
           },
@@ -149,11 +150,14 @@ class _MapState extends State<Map> {
                           _position,
                           drivingMode: (constant.DrivingMode mode) =>
                               {directionNotifier.setDrivingMode(mode)},
-                          startPointAndDestinationCoordinates: (List<Coordinate>
-                                  directionCoordinates) =>
-                              {
-                            drawPath(directionCoordinates[0], directionCoordinates[1],
-                                disabilityMode, mapNotifier, directionNotifier)
+                          startPointAndDestinationCoordinates:
+                              (List<Coordinate> directionCoordinates) => {
+                            drawPath(
+                                directionCoordinates[0],
+                                directionCoordinates[1],
+                                disabilityMode,
+                                mapNotifier,
+                                directionNotifier)
                           },
                         ),
                       ),
@@ -165,17 +169,44 @@ class _MapState extends State<Map> {
                 ),
               ]),
         ),
-        SearchBar(
-            coordinate: (Future<Coordinate> coordinate) {
-                  Provider.of<MapNotifier>(context, listen: false)
-                      .goToSpecifiedLatLng(futureCoordinate: coordinate);
-                  mapNotifier.setPopupInfoVisibility(true);
-                }),
+        SearchBar(coordinate: (Future<Coordinate> coordinate) async {
+          Provider.of<MapNotifier>(context, listen: false)
+              .goToSpecifiedLatLng(futureCoordinate: coordinate);
+              var result = await coordinate;
+              if(!(result is RoomCoordinate)){
+                mapNotifier.setPopupInfoVisibility(true);
+              }
+        }),
         FloorSelectorEnterBuilding(
           selectedFloor: (int floor) =>
               {updateFloor(floor), mapNotifier.setSelectedFloor(floor)},
         ),
-        BuildingPopup(),
+        BuildingPopup(
+          onGetDirectionSelected: () => {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => GotoPage(
+                  _position,
+                  drivingMode: (constant.DrivingMode mode) =>
+                      {directionNotifier.setDrivingMode(mode)},
+                  destination: Coordinate(
+                      SearchBar.searchResult.lat,
+                      SearchBar.searchResult.lng,
+                      "",
+                      "${SearchBar.searchResult.building}",
+                      ""),
+                  startPointAndDestinationCoordinates:
+                      (List<Coordinate> directionCoordinates) => {
+                    drawPath(directionCoordinates[0], directionCoordinates[1],
+                        disabilityMode, mapNotifier, directionNotifier)
+                  },
+                ),
+              ),
+            ),
+            mapNotifier.setPopupInfoVisibility(false)
+          },
+        ),
         DirectionPanel(
             removeDirectionPolyline: (bool removePolyline) => {
                   direction.clear(),
@@ -212,12 +243,15 @@ class _MapState extends State<Map> {
     });
   }
 
-  void _setStyle(GoogleMapController controller, MapNotifier mapNotifier) async {
+  void _setStyle(
+      GoogleMapController controller, MapNotifier mapNotifier) async {
     String value = await DefaultAssetBundle.of(context)
         .loadString('assets/map_style.json');
     controller.setMapStyle(value);
-    buildingHighlights.removeWhere((polygon) => polygon.polygonId.value == 'Henry F. Hall');
-    buildingHighlights.addAll(polygonHelper.getFloorPolygon(mapNotifier.selectedFloorPlan));
+    buildingHighlights
+        .removeWhere((polygon) => polygon.polygonId.value == 'Henry F. Hall');
+    buildingHighlights
+        .addAll(polygonHelper.getFloorPolygon(mapNotifier.selectedFloorPlan));
   }
 
   void _resetStyle(GoogleMapController controller) async {
@@ -248,9 +282,11 @@ class _MapState extends State<Map> {
       MapNotifier mapNotifier,
       DirectionNotifier directionNotifier) {
     if (origin is RoomCoordinate && destination is RoomCoordinate)
-      drawIndoorPath(origin, destination, disabilityMode, mapNotifier, directionNotifier);
+      drawIndoorPath(
+          origin, destination, disabilityMode, mapNotifier, directionNotifier);
     else if (origin is RoomCoordinate || destination is RoomCoordinate)
-      drawCombinedPath(origin, destination, disabilityMode, mapNotifier, directionNotifier);
+      drawCombinedPath(
+          origin, destination, disabilityMode, mapNotifier, directionNotifier);
     else
       drawOutdoorPath(origin, destination, directionNotifier);
 
