@@ -19,7 +19,7 @@ class _GoogleLogIn {
   getCurrentUser() async {
     Map<String, String> auth;
 
-    _currentUser = await _googleSignIn.signInSilently();
+    
 
     _googleSignIn.onCurrentUserChanged
         .listen((GoogleSignInAccount account) async {
@@ -39,6 +39,8 @@ class _GoogleLogIn {
         await _handleSignIn();
       }
     }
+
+    _currentUser = await _googleSignIn.signInSilently();
   }
 
   Future<void> _handleSignIn() async {
