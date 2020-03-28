@@ -8,13 +8,11 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class SearchBar extends StatefulWidget {
   final Function(Future<Coordinate>) coordinate;
   SearchBar({this.coordinate});
   static PlaceCoordinate searchResult;
-  static Set<Marker> searchResultMarker = Set();
 
   @override
   State<StatefulWidget> createState() {
@@ -63,9 +61,6 @@ class _SearchBarState extends State<SearchBar> {
                         contentPadding: EdgeInsets.symmetric(horizontal: 15),
                         hintText: "Search"),
                     onTap: () {
-                      if (SearchBar.searchResultMarker != null) {
-                        SearchBar.searchResultMarker.clear();
-                      }
                       showSearch(
                           context: context,
                           delegate: PositionedFloatingSearchBar(
@@ -347,20 +342,6 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
     List<RoomCoordinate> rooms = BuildingSingleton().getAllRooms();
     for (var room in rooms) {
       if (room.roomId == placeId) {
-        Marker m = Marker(
-            markerId: MarkerId(placeId),
-            infoWindow: InfoWindow(title: placeId),
-            position: LatLng(
-              room.lat,
-              room.lng,
-            ),
-            onTap: () {
-              // TODO: creating popUp window when tapped
-            });
-        SearchBar.searchResultMarker =
-            Set(); // to overcome a null exception error
-        SearchBar.searchResultMarker.add(m);
-
         return room;
       }
     }
@@ -384,7 +365,7 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
 
     double lat = location['lat'];
     double lng = location['lng'];
-    String title = result['name'];
+    String building = result['name'];
     String address = result['formatted_address'];
     String phone = result['formatted_phone_number'];
     String website = result['website'];
@@ -404,19 +385,9 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
       }
     }
 
-//creating a google maps marker based on the search results
-    Marker m = Marker(
-      markerId: MarkerId('searchResult'),
-      infoWindow: InfoWindow(title: title),
-      position: LatLng(
-        lat,
-        lng,
-      ),
-    );
-    SearchBar.searchResult = PlaceCoordinate(
-        lat, lng, '', title, '', address, phone, website, openClosed, pictures);
-    SearchBar.searchResultMarker = Set(); // to overcome a null exception error
-    SearchBar.searchResultMarker.add(m);
-    return Coordinate(lat, lng, '', title, '');
+    SearchBar.searchResult = PlaceCoordinate(lat, lng, '', building, '',
+        address, phone, website, openClosed, pictures);
+
+    return Coordinate(lat, lng, '', building, '');
   }
 }
