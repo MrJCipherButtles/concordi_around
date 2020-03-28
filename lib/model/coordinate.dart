@@ -120,8 +120,19 @@ class PlaceCoordinate extends Coordinate {
   final bool _gPlaceOpenClosed;
   final List<String> _gPlacePictures;
 
-  PlaceCoordinate(lat, lng, floorLevel, building, campus, this._gPlaceAddress,
-      this._gPlacePhone, this._gPlaceWebsite, this._gPlaceOpenClosed, this._gPlacePictures, {type, adjCoordinates})
+  PlaceCoordinate(
+      lat,
+      lng,
+      floorLevel,
+      building,
+      campus,
+      this._gPlaceAddress,
+      this._gPlacePhone,
+      this._gPlaceWebsite,
+      this._gPlaceOpenClosed,
+      this._gPlacePictures,
+      {type,
+      adjCoordinates})
       : super(lat, lng, floorLevel, building, campus,
             type: type, adjCoordinates: adjCoordinates);
 
