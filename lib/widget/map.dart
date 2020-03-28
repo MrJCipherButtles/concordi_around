@@ -38,7 +38,7 @@ class _MapState extends State<Map> {
   PolygonHelper polygonHelper;
   Set<Polyline> direction = {};
   Set<Polygon> buildingHighlights;
-  Set<Marker> mapMarkers = {};
+  Set<Marker> marker = {};
   bool _myLocationEnabled = false;
   var shortestPath;
 
@@ -98,19 +98,46 @@ class _MapState extends State<Map> {
           zoomGesturesEnabled: true,
           polygons: buildingHighlights,
           polylines: direction,
-          markers: mapMarkers,
+          markers: marker,
           initialCameraPosition: _cameraPosition ??
               CameraPosition(target: LatLng(45.4977298, -73.579034)),
           onMapCreated: (GoogleMapController controller) {
             _completer.complete(controller);
           },
           onCameraMove: (CameraPosition cameraPosition) async {
+             String searchResultTitle =
+                SearchBar.searchResultMarker.first.infoWindow.title;
+            // if it's not a room or we are not inside a building always show the marker
+            if (cameraPosition.zoom < 18.5 ||
+                (!searchResultTitle.startsWith('H8') &&
+                    !searchResultTitle.startsWith('H9'))) {
+              marker = SearchBar.searchResultMarker;
+            }
             GoogleMapController _mapController = await _completer.future;
             if (MapHelper.isWithinHall(cameraPosition.target) &&
-                cameraPosition.zoom >= constant.CAMERA_INDOOR_ZOOM) {
+                cameraPosition.zoom >= 18.5) {
+              // Remove marker if searchResults and selected floor do not match
+              if (searchResultTitle.startsWith('H8') &&
+                  mapNotifier.selectedFloorPlan == 9 &&
+                  marker.isNotEmpty) {
+                marker = Set();
+              }
+              if (searchResultTitle.startsWith('H9') &&
+                  mapNotifier.selectedFloorPlan == 9) {
+                marker.add(SearchBar.searchResultMarker.first);
+              }
+              if (searchResultTitle.startsWith('H9') &&
+                  mapNotifier.selectedFloorPlan == 8 &&
+                  marker.isNotEmpty) {
+                marker = Set();
+              }
+              if (searchResultTitle.startsWith('H8') &&
+                  mapNotifier.selectedFloorPlan == 8) {
+                marker.add(SearchBar.searchResultMarker.first);
+              }
               mapNotifier.setFloorPlanVisibility(true);
               _setStyle(_mapController, mapNotifier);
-              mapMarkers.addAll(
+              marker.addAll(
                   markerHelper.getFloorMarkers(mapNotifier.selectedFloorPlan));
             } else {
               mapNotifier.setFloorPlanVisibility(false);
@@ -212,7 +239,7 @@ class _MapState extends State<Map> {
                   direction.clear(),
                   shortestPath = {},
                   markerHelper.removeStartEndMarker(),
-                  mapMarkers.removeWhere((marker) =>
+                  marker.removeWhere((marker) =>
                       marker.markerId.value == 'start' ||
                       marker.markerId.value == 'end' ||
                       marker.markerId.value == 'destination'),
@@ -233,12 +260,12 @@ class _MapState extends State<Map> {
       }
       if (floor == 9) {
         buildingHighlights.removeAll(polygonHelper.getFloorPolygon(8));
-        mapMarkers.removeAll(markerHelper.getFloorMarkers(8));
+        marker.removeAll(markerHelper.getFloorMarkers(8));
       } else if (floor == 8) {
         buildingHighlights.removeAll(polygonHelper.getFloorPolygon(9));
-        mapMarkers.removeAll(markerHelper.getFloorMarkers(9));
+        marker.removeAll(markerHelper.getFloorMarkers(9));
       }
-      mapMarkers.addAll(markerHelper.getFloorMarkers(floor));
+      marker.addAll(markerHelper.getFloorMarkers(floor));
       buildingHighlights.addAll(polygonHelper.getFloorPolygon(floor));
     });
   }
@@ -259,9 +286,9 @@ class _MapState extends State<Map> {
         .loadString('assets/map_style_reset.json');
     controller.setMapStyle(value);
 
-    mapMarkers.removeAll(markerHelper.getFloorMarkers(8));
-    mapMarkers.removeAll(markerHelper.getFloorMarkers(9));
-    mapMarkers.removeWhere((marker) =>
+    marker.removeAll(markerHelper.getFloorMarkers(8));
+    marker.removeAll(markerHelper.getFloorMarkers(9));
+    marker.removeWhere((marker) =>
         marker.markerId.value == 'start' || marker.markerId.value == 'end');
     buildingHighlights = {};
     buildingHighlights = BuildingSingleton().getOutdoorBuildingHighlights();
@@ -336,7 +363,7 @@ class _MapState extends State<Map> {
       direction.addAll(directionNotifier.getPolylines());
     });
 
-    mapMarkers.add(markerHelper.getDestinationMarker(destination.toLatLng()));
+    marker.add(markerHelper.getDestinationMarker(destination.toLatLng()));
   }
 
   Future<void> drawCombinedPath(
