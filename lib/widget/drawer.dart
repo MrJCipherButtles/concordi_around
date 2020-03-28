@@ -1,4 +1,5 @@
 import 'package:concordi_around/service/map_constant.dart' as constant;
+import 'package:concordi_around/view/calendar_page.dart';
 import 'package:flutter/material.dart';
 import 'package:concordi_around/view/shuttle_page.dart';
 
@@ -55,7 +56,10 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
                     title: Text('My Calendar'),
                     onTap: () {
                       // Update the state of the app.
-                      Navigator.pop(context);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MyCalendar(title: "My Calendar")));
                     },
                   ),
                   ListTile(
