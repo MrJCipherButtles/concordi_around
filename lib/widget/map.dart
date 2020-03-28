@@ -105,7 +105,7 @@ class _MapState extends State<Map> {
             _completer.complete(controller);
           },
           onCameraMove: (CameraPosition cameraPosition) async {
-             String searchResultTitle =
+            String searchResultTitle =
                 SearchBar.searchResultMarker.first.infoWindow.title;
             // if it's not a room or we are not inside a building always show the marker
             if (cameraPosition.zoom < 18.5 ||
@@ -199,10 +199,10 @@ class _MapState extends State<Map> {
         SearchBar(coordinate: (Future<Coordinate> coordinate) async {
           Provider.of<MapNotifier>(context, listen: false)
               .goToSpecifiedLatLng(futureCoordinate: coordinate);
-              var result = await coordinate;
-              if(!(result is RoomCoordinate)){
-                mapNotifier.setPopupInfoVisibility(true);
-              }
+          var result = await coordinate;
+          if (!(result is RoomCoordinate)) {
+            mapNotifier.setPopupInfoVisibility(true);
+          }
         }),
         FloorSelectorEnterBuilding(
           selectedFloor: (int floor) =>

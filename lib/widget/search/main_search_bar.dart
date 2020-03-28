@@ -16,7 +16,6 @@ class SearchBar extends StatefulWidget {
   static PlaceCoordinate searchResult;
   static Set<Marker> searchResultMarker = Set();
 
-
   @override
   State<StatefulWidget> createState() {
     return _SearchBarState();
@@ -407,16 +406,17 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
 
 //creating a google maps marker based on the search results
     Marker m = Marker(
-        markerId: MarkerId('searchResult'),
-        infoWindow: InfoWindow(title: title),
-        position: LatLng(
-          lat,
-          lng,
-        ),
-        );
-    SearchBar.searchResult = PlaceCoordinate(lat, lng, '', title, '',
-        address, phone, website, openClosed, pictures);
-
+      markerId: MarkerId('searchResult'),
+      infoWindow: InfoWindow(title: title),
+      position: LatLng(
+        lat,
+        lng,
+      ),
+    );
+    SearchBar.searchResult = PlaceCoordinate(
+        lat, lng, '', title, '', address, phone, website, openClosed, pictures);
+    SearchBar.searchResultMarker = Set(); // to overcome a null exception error
+    SearchBar.searchResultMarker.add(m);
     return Coordinate(lat, lng, '', title, '');
   }
 }
