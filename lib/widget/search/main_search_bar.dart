@@ -142,6 +142,7 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
       // then build ListView from history
       if (_history != null) {
         return ListView.builder(
+          key: Key('search_list'),
           itemCount: _history.length,
           itemBuilder: (context, index) {
             if (_history[index] is HeadingItem) {
@@ -159,7 +160,8 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
                   this.coordinate(_getPlaceDetails(selected.placeId));
                 },
                 leading: Icon(Icons.place),
-                title: Text(_history[index].description),
+                title: Text(_history[index].description,
+                    key: Key('list_text')),
               );
             }
           },
@@ -188,6 +190,7 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
               places = List<ListItem>();
             }
             return ListView.builder(
+              key: Key('search_list'),
               itemCount: places.length,
               itemBuilder: (context, index) {
                 if (places[index] is HeadingItem) {
@@ -205,7 +208,8 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
                       this.coordinate(_getPlaceDetails(selected.placeId));
                     },
                     leading: Icon(Icons.place),
-                    title: Text(places[index].description),
+                    title: Text(places[index].description,
+                        key: Key('list_text')),
                   );
                 }
               },

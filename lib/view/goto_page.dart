@@ -66,6 +66,7 @@ class _GotoPageState extends State<GotoPage> {
                                   : "Choose starting point",
                               icon: Icon(Icons.my_location),
                             ),
+                            key: Key('Origin Field'),
                             readOnly: true,
                             onTap: () {
                               showSearch(
@@ -92,6 +93,7 @@ class _GotoPageState extends State<GotoPage> {
                                   : 'Choose destination',
                               icon: Icon(Icons.location_on),
                             ),
+                            key: Key('Destination Field'),
                             readOnly: true,
                             onTap: () {
                               showSearch(
@@ -150,6 +152,7 @@ class _GotoPageState extends State<GotoPage> {
                                     : Colors.transparent,
                               ),
                               child: Icon(Icons.directions_walk),
+                                key: Key("walk"),
                             ),
                             Container(
                               constraints: BoxConstraints(
@@ -164,6 +167,7 @@ class _GotoPageState extends State<GotoPage> {
                                     : Colors.transparent,
                               ),
                               child: Icon(Icons.directions_transit),
+                              key: Key("transit"),
                             ),
                             Container(
                               constraints: BoxConstraints(
@@ -178,6 +182,7 @@ class _GotoPageState extends State<GotoPage> {
                                     : Colors.transparent,
                               ),
                               child: Icon(Icons.airport_shuttle),
+                              key: Key("shuttle"),
                             ),
                             Container(
                               constraints: BoxConstraints(
@@ -192,6 +197,7 @@ class _GotoPageState extends State<GotoPage> {
                                     : Colors.transparent,
                               ),
                               child: Icon(Icons.directions_bike),
+                              key: Key("bike"),
                             ),
                             Container(
                               constraints: BoxConstraints(
@@ -206,6 +212,7 @@ class _GotoPageState extends State<GotoPage> {
                                     : Colors.transparent,
                               ),
                               child: Icon(Icons.directions_car),
+                              key: Key("car"),
                             ),
                           ],
                           isSelected: travelMode,
@@ -238,6 +245,7 @@ class _GotoPageState extends State<GotoPage> {
       floatingActionButton: FloatingActionButton(
           backgroundColor: COLOR_CONCORDIA,
           foregroundColor: Colors.white,
+          key: Key("go button"),
           child: Text("GO"),
           onPressed: () {
             if (this._destination != null &&

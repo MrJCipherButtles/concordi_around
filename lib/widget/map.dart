@@ -40,7 +40,6 @@ class _MapState extends State<Map> {
   Set<Polygon> buildingHighlights;
   Set<Marker> mapMarkers = {};
   bool _myLocationEnabled = false;
-
   var shortestPath;
 
   @override
@@ -60,8 +59,10 @@ class _MapState extends State<Map> {
             _cameraPosition = CameraPosition(
                 target: LatLng(_position.latitude, _position.longitude),
                 zoom: constant.CAMERA_DEFAULT_ZOOM);
+            if(!_myLocationEnabled) {
             goToCurrent();
             _myLocationEnabled = true;
+            }
           });
         });
   }
@@ -139,6 +140,7 @@ class _MapState extends State<Map> {
                 ),
                 FloatingActionButton(
                   heroTag: 'direction',
+                  tooltip: "direction page button",
                   onPressed: () {
                     Navigator.push(
                       context,
