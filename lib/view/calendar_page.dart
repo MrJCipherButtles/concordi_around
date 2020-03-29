@@ -32,14 +32,22 @@ class _MyCalendarState extends State<MyCalendar> with TickerProviderStateMixin {
   );
 
   _login() async {
-    try {
-      await _googleSignIn.signIn();
+    await _googleSignIn.signInSilently();
+    if (_googleSignIn.currentUser != null) {
       events = await getEvents();
       setState(() {
         _isLoggedIn = true;
       });
-    } catch (err) {
-      print(err);
+    } else {
+      try {
+        await _googleSignIn.signIn();
+        events = await getEvents();
+        setState(() {
+          _isLoggedIn = true;
+        });
+      } catch (err) {
+        print(err);
+      }
     }
   }
 
@@ -126,6 +134,7 @@ class _MyCalendarState extends State<MyCalendar> with TickerProviderStateMixin {
   void _onCalendarCreated(
       DateTime first, DateTime last, CalendarFormat format) {
     print('CALLBACK: _onCalendarCreated');
+    _login();
   }
 
   @override
@@ -138,24 +147,11 @@ class _MyCalendarState extends State<MyCalendar> with TickerProviderStateMixin {
           ),
           title: Text(widget.title),
           backgroundColor: constant.COLOR_CONCORDIA),
-      body: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: _isLoggedIn
-              ? <Widget>[
-                  _buildTableCalendar(),
-                  const SizedBox(height: 8.0),
-                  Expanded(child: _buildEventList()),
-                ]
-              : <Widget>[
-                  Center(
-                    child: OutlineButton(
-                      child: Text("Login with Google"),
-                      onPressed: () {
-                        _login();
-                      },
-                    ),
-                  )
-                ]),
+      body: Column(mainAxisSize: MainAxisSize.max, children: <Widget>[
+        _buildTableCalendar(),
+        const SizedBox(height: 8.0),
+        Expanded(child: _buildEventList()),
+      ]),
     );
   }
 
