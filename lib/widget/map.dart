@@ -15,6 +15,7 @@ import 'package:concordi_around/view/goto_page.dart';
 import 'package:concordi_around/widget/direction_panel.dart';
 import 'package:concordi_around/widget/search/main_search_bar.dart';
 import 'package:concordi_around/widget/floor_selector/floor_selector_enter_building_column.dart';
+import 'package:concordi_around/widget/building_popup.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -53,17 +54,17 @@ class _MapState extends State<Map> {
 
     _positionStream =
         _geolocator.getPositionStream(locationOptions).listen((Position pos) {
-          setState(() {
-            _position = pos;
-            _cameraPosition = CameraPosition(
-                target: LatLng(_position.latitude, _position.longitude),
-                zoom: constant.CAMERA_DEFAULT_ZOOM);
-            if(!_myLocationEnabled) {
-            goToCurrent();
-            _myLocationEnabled = true;
-            }
-          });
-        });
+      setState(() {
+        _position = pos;
+        _cameraPosition = CameraPosition(
+            target: LatLng(_position.latitude, _position.longitude),
+            zoom: constant.CAMERA_DEFAULT_ZOOM);
+        if (!_myLocationEnabled) {
+          goToCurrent();
+          _myLocationEnabled = true;
+        }
+      });
+    });
   }
 
   @override
@@ -98,7 +99,8 @@ class _MapState extends State<Map> {
           polygons: buildingHighlights,
           polylines: direction,
           markers: mapMarkers,
-          initialCameraPosition: _cameraPosition ?? CameraPosition(target: LatLng(45.4977298, -73.579034)),
+          initialCameraPosition: _cameraPosition ??
+              CameraPosition(target: LatLng(45.4977298, -73.579034)),
           onMapCreated: (GoogleMapController controller) {
             _completer.complete(controller);
           },
@@ -141,6 +143,7 @@ class _MapState extends State<Map> {
                   heroTag: 'direction',
                   tooltip: "direction page button",
                   onPressed: () {
+                    mapMarkers.removeWhere((marker) =>marker.markerId.value == 'pop-up');
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -148,11 +151,14 @@ class _MapState extends State<Map> {
                           _position,
                           drivingMode: (constant.DrivingMode mode) =>
                               {directionNotifier.setDrivingMode(mode)},
-                          startPointAndDestinationCoordinates: (List<Coordinate>
-                                  directionCoordinates) =>
-                              {
-                            drawPath(directionCoordinates[0], directionCoordinates[1],
-                                disabilityMode, mapNotifier, directionNotifier)
+                          startPointAndDestinationCoordinates:
+                              (List<Coordinate> directionCoordinates) => {
+                            drawPath(
+                                directionCoordinates[0],
+                                directionCoordinates[1],
+                                disabilityMode,
+                                mapNotifier,
+                                directionNotifier)
                           },
                         ),
                       ),
@@ -164,14 +170,49 @@ class _MapState extends State<Map> {
                 ),
               ]),
         ),
-        SearchBar(
-            coordinate: (Future<Coordinate> coordinate) => {
-                  Provider.of<MapNotifier>(context, listen: false)
-                      .goToSpecifiedLatLng(futureCoordinate: coordinate)
-                }),
+        SearchBar(coordinate: (Future<Coordinate> coordinate) async {
+          setState(() {
+            directionNotifier.setShowDirectionPanel(false);
+            mapMarkers.removeWhere((marker) =>marker.markerId.value == 'pop-up');
+          });
+          mapNotifier.goToSpecifiedLatLng(futureCoordinate: coordinate);
+          var result = await coordinate;
+          if(!(result is RoomCoordinate)){
+            mapNotifier.setPopupInfoVisibility(true);
+          }
+          mapMarkers.add(Marker(markerId: MarkerId("pop-up"), position: LatLng(result.lat, result.lng), infoWindow: InfoWindow(title: "${result.building}")));
+        }),
         FloorSelectorEnterBuilding(
           selectedFloor: (int floor) =>
               {updateFloor(floor), mapNotifier.setSelectedFloor(floor)},
+        ),
+        BuildingPopup(
+          onClosePanel: () => {mapMarkers.removeWhere((marker) =>marker.markerId.value == 'pop-up')},
+          onGetDirectionSelected: () => {
+            mapMarkers.removeWhere((marker) =>marker.markerId.value == 'pop-up'),
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => GotoPage(
+                  _position,
+                  drivingMode: (constant.DrivingMode mode) =>
+                      {directionNotifier.setDrivingMode(mode)},
+                  destination: Coordinate(
+                      SearchBar.searchResult.lat,
+                      SearchBar.searchResult.lng,
+                      "",
+                      "${SearchBar.searchResult.building}",
+                      ""),
+                  startPointAndDestinationCoordinates:
+                      (List<Coordinate> directionCoordinates) => {
+                    drawPath(directionCoordinates[0], directionCoordinates[1],
+                        disabilityMode, mapNotifier, directionNotifier)
+                  },
+                ),
+              ),
+            ),
+            mapNotifier.setPopupInfoVisibility(false)
+          },
         ),
         DirectionPanel(
             removeDirectionPolyline: (bool removePolyline) => {
@@ -209,12 +250,15 @@ class _MapState extends State<Map> {
     });
   }
 
-  void _setStyle(GoogleMapController controller, MapNotifier mapNotifier) async {
+  void _setStyle(
+      GoogleMapController controller, MapNotifier mapNotifier) async {
     String value = await DefaultAssetBundle.of(context)
         .loadString('assets/map_style.json');
     controller.setMapStyle(value);
-    buildingHighlights.removeWhere((polygon) => polygon.polygonId.value == 'Henry F. Hall');
-    buildingHighlights.addAll(polygonHelper.getFloorPolygon(mapNotifier.selectedFloorPlan));
+    buildingHighlights
+        .removeWhere((polygon) => polygon.polygonId.value == 'Henry F. Hall');
+    buildingHighlights
+        .addAll(polygonHelper.getFloorPolygon(mapNotifier.selectedFloorPlan));
   }
 
   void _resetStyle(GoogleMapController controller) async {
@@ -245,9 +289,11 @@ class _MapState extends State<Map> {
       MapNotifier mapNotifier,
       DirectionNotifier directionNotifier) {
     if (origin is RoomCoordinate && destination is RoomCoordinate)
-      drawIndoorPath(origin, destination, disabilityMode, mapNotifier, directionNotifier);
+      drawIndoorPath(
+          origin, destination, disabilityMode, mapNotifier, directionNotifier);
     else if (origin is RoomCoordinate || destination is RoomCoordinate)
-      drawCombinedPath(origin, destination, disabilityMode, mapNotifier, directionNotifier);
+      drawCombinedPath(
+          origin, destination, disabilityMode, mapNotifier, directionNotifier);
     else
       drawOutdoorPath(origin, destination, directionNotifier);
 
