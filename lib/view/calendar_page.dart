@@ -29,6 +29,7 @@ class _MyCalendarState extends State<MyCalendar> with TickerProviderStateMixin {
       'email',
       'https://www.googleapis.com/auth/calendar.readonly',
     ],
+    clientId: "19404702725-vcev74de8eansnanla18c67p61s2cv80.apps.googleusercontent.com"
   );
 
   _login() async {
