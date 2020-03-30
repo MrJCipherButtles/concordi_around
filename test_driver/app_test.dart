@@ -46,7 +46,7 @@ void main() {
     test(
       'US-10: Toggle between campuses',
       () async {
-        await Future.delayed(Duration(seconds: 5));
+        await Future.delayed(Duration(seconds: 3));
         await driver.tap(find.text('SGW'));
         await Future.delayed(Duration(seconds: 3));
         await driver.tap(find.text('LOY'));
@@ -73,9 +73,9 @@ void main() {
           () async {
             final SerializableFinder myLocation =
                 find.byTooltip('direction page button');
-            await Future.delayed(Duration(seconds: 5));
+            await Future.delayed(Duration(seconds: 2));
             await driver.tap(myLocation);
-            await Future.delayed(Duration(seconds: 5));
+            await Future.delayed(Duration(seconds: 2));
 
             //enter starting location
             await driver.tap(find.byValueKey('Origin Field'));
@@ -105,17 +105,17 @@ void main() {
             driver.tap(find.byValueKey("list_text"));
 
             //select mode of transport
-            await Future.delayed(Duration(seconds: 3));
+            await Future.delayed(Duration(seconds: 1));
             await driver.tap(find.byValueKey("walk"));
 
             //tap go button
-            await Future.delayed(Duration(seconds: 4));
+            await Future.delayed(Duration(seconds: 1));
             await driver.tap(find.byValueKey("go button"));
             await Future.delayed(Duration(seconds: 4));
 
             //closing the direction menu
             await driver.tap(find.byValueKey('Direction Panel close'));
-            await Future.delayed(Duration(seconds: 5));
+            await Future.delayed(Duration(seconds: 1));
           },
           timeout: Timeout(
             Duration(minutes: 1),
@@ -142,7 +142,7 @@ void main() {
             await driver.tap(find.byValueKey('Destination Field'));
             await Future.delayed(Duration(seconds: 1));
             await driver.enterText('H860');
-            await Future.delayed(Duration(seconds: 2));
+            await Future.delayed(Duration(seconds: 1));
             await driver.scrollUntilVisible(
                 find.byValueKey("search_list"), find.byValueKey("list_text"),
                 dyScroll: -100.0);
@@ -155,8 +155,14 @@ void main() {
             await driver.tap(find.byValueKey('${v}'));
 
             //tap go button
-            await Future.delayed(Duration(seconds: 3));
+            await Future.delayed(Duration(seconds: 1));
             await driver.tap(find.byValueKey("go button"));
+            await Future.delayed(Duration(seconds: 3));
+
+            //viewing the direction menu
+            await driver.scroll(find.byValueKey("Direction Panel close"), 0, -600, Duration(milliseconds: 500));
+            await Future.delayed(Duration(seconds: 3));
+            await driver.scroll(find.byValueKey("Direction Panel close"), 0, 600, Duration(milliseconds: 500));
             await Future.delayed(Duration(seconds: 3));
 
             //closing the direction menu

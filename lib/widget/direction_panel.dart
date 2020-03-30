@@ -48,6 +48,7 @@ class DirectionPanelState extends State<DirectionPanel> {
                             "${directionNotifier.getDuration()} (${directionNotifier.getDistance()})",
                             style: TextStyle(color: Colors.black, fontSize: 18),
                           ),
+                          key: Key('Direction Panel open'),
                         ),
                         IconButton(
                             key: Key('Direction Panel close'),

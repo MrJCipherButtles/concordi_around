@@ -208,13 +208,8 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
                       this.coordinate(_getPlaceDetails(selected.placeId));
                     },
                     leading: Icon(Icons.place),
-<<<<<<< HEAD
                     title: Text(places[index].description,
                         key: Key('list_text')),
-=======
-                    title:
-                        Text(places[index].description, key: Key('list_text')),
->>>>>>> master
                   );
                 }
               },
