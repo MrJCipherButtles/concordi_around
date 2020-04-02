@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:concordi_around/service/map_constant.dart' as constant;
 
 class ShuttlePage extends StatelessWidget {
-  int weekday;
-  TimeOfDay now;
+  final int weekday;
+  final TimeOfDay now;
   ShuttlePage({this.weekday, this.now});
 
   @override

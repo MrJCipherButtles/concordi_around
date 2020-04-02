@@ -1,5 +1,5 @@
 import 'dart:math';
-import 'coordinate.dart';
+import 'package:concordi_around/model/coordinate.dart';
 
 class Segment {
   final Coordinate _source;

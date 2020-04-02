@@ -7,7 +7,7 @@ import 'package:concordi_around/model/coordinate.dart';
 import 'package:concordi_around/model/path.dart';
 import 'package:concordi_around/provider/direction_notifier.dart';
 import 'package:concordi_around/provider/map_notifier.dart';
-import 'package:concordi_around/service/map_constant.dart' as constant;
+import 'package:concordi_around/service/map_constant.dart';
 import 'package:concordi_around/service/map_helper.dart';
 import 'package:concordi_around/service/marker_helper.dart';
 import 'package:concordi_around/service/polygon_helper.dart';
@@ -58,7 +58,7 @@ class _MapState extends State<Map> {
         _position = pos;
         _cameraPosition = CameraPosition(
             target: LatLng(_position.latitude, _position.longitude),
-            zoom: constant.CAMERA_DEFAULT_ZOOM);
+            zoom: CAMERA_DEFAULT_ZOOM);
         if (!_myLocationEnabled) {
           goToCurrent();
           _myLocationEnabled = true;
@@ -107,7 +107,7 @@ class _MapState extends State<Map> {
           onCameraMove: (CameraPosition cameraPosition) async {
             GoogleMapController _mapController = await _completer.future;
             if (MapHelper.isWithinHall(cameraPosition.target) &&
-                cameraPosition.zoom >= constant.CAMERA_INDOOR_ZOOM) {
+                cameraPosition.zoom >= CAMERA_INDOOR_ZOOM) {
               mapNotifier.setFloorPlanVisibility(true);
               _setStyle(_mapController, mapNotifier);
               mapMarkers.addAll(
@@ -132,7 +132,7 @@ class _MapState extends State<Map> {
                     goToCurrent();
                   },
                   backgroundColor: Colors.white,
-                  foregroundColor: constant.COLOR_CONCORDIA,
+                  foregroundColor: COLOR_CONCORDIA,
                   tooltip: 'Get Location',
                   child: Icon(Icons.my_location),
                 ),
@@ -149,7 +149,7 @@ class _MapState extends State<Map> {
                       MaterialPageRoute(
                         builder: (context) => GotoPage(
                           _position,
-                          drivingMode: (constant.DrivingMode mode) =>
+                          drivingMode: (DrivingMode mode) =>
                               {directionNotifier.setDrivingMode(mode)},
                           startPointAndDestinationCoordinates:
                               (List<Coordinate> directionCoordinates) => {
@@ -164,7 +164,7 @@ class _MapState extends State<Map> {
                       ),
                     );
                   },
-                  backgroundColor: constant.COLOR_CONCORDIA,
+                  backgroundColor: COLOR_CONCORDIA,
                   foregroundColor: Colors.white,
                   child: Icon(Icons.directions),
                 ),
@@ -195,7 +195,7 @@ class _MapState extends State<Map> {
               MaterialPageRoute(
                 builder: (context) => GotoPage(
                   _position,
-                  drivingMode: (constant.DrivingMode mode) =>
+                  drivingMode: (DrivingMode mode) =>
                       {directionNotifier.setDrivingMode(mode)},
                   destination: Coordinate(
                       SearchBar.searchResult.lat,
@@ -278,7 +278,7 @@ class _MapState extends State<Map> {
     final GoogleMapController controller = await _completer.future;
     _cameraPosition = CameraPosition(
         target: LatLng(_position.latitude, _position.longitude),
-        zoom: constant.CAMERA_DEFAULT_ZOOM);
+        zoom: CAMERA_DEFAULT_ZOOM);
     controller.animateCamera(CameraUpdate.newCameraPosition(_cameraPosition));
   }
 
@@ -326,7 +326,7 @@ class _MapState extends State<Map> {
   Future<void> drawOutdoorPath(Coordinate origin, Coordinate destination,
       DirectionNotifier directionNotifier) async {
     MapHelper.setShuttleStops(origin);
-    if (directionNotifier.mode == constant.DrivingMode.shuttle &&
+    if (directionNotifier.mode == DrivingMode.shuttle &&
         MapHelper.isShuttleRequired(destination)) {
       // await keyword is very important for synchronizing the calls!!!!!!
       await directionNotifier.navigateByCoordinates(

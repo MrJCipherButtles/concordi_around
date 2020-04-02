@@ -1,7 +1,7 @@
 import 'dart:collection';
-import 'coordinate.dart';
-import 'floor.dart';
-import 'path.dart';
+import 'package:concordi_around/model/coordinate.dart';
+import 'package:concordi_around/model/floor.dart';
+import 'package:concordi_around/model/path.dart';
 
 class Building {
   final String _building;

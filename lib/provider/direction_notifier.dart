@@ -3,11 +3,10 @@ import 'package:concordi_around/model/direction.dart';
 import 'package:concordi_around/service/map_constant.dart';
 import 'package:concordi_around/service/map_direction.dart';
 import 'package:concordi_around/service/map_helper.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:html/parser.dart';
-import '../service/map_constant.dart';
 
 class DirectionNotifier extends ChangeNotifier {
   bool showDirectionPanel = false;

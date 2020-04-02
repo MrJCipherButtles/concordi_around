@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 const Color COLOR_CONCORDIA = Color.fromRGBO(147, 35, 57, 1);

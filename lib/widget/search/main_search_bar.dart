@@ -3,7 +3,7 @@ import 'package:concordi_around/data/building_singleton.dart';
 import 'package:concordi_around/model/coordinate.dart';
 import 'package:concordi_around/model/list_item.dart';
 import 'package:concordi_around/provider/map_notifier.dart';
-import 'package:concordi_around/service/map_constant.dart' as constant;
+import 'package:concordi_around/service/map_constant.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -39,7 +39,7 @@ class _SearchBarState extends State<SearchBar> {
           padding: EdgeInsets.only(bottom: 10),
           child: Container(
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(constant.BORDER_RADIUS),
+                borderRadius: BorderRadius.circular(BORDER_RADIUS),
                 color: Colors.white),
             child: Row(
               children: <Widget>[
@@ -74,17 +74,17 @@ class _SearchBarState extends State<SearchBar> {
                   child: RaisedButton(
                     child: Text(mapNotifier.currentCampus),
                     textColor: Colors.white,
-                    color: constant.COLOR_CONCORDIA,
+                    color: COLOR_CONCORDIA,
                     shape: RoundedRectangleBorder(
                         borderRadius:
-                            new BorderRadius.circular(constant.BORDER_RADIUS)),
+                            new BorderRadius.circular(BORDER_RADIUS)),
                     onPressed: () {
                       if (mapNotifier.currentCampus == 'SGW') {
                         mapNotifier.setCampusString("LOY");
-                        mapNotifier.toggleCampus(constant.LATLNG_LOYOLA);
+                        mapNotifier.toggleCampus(LATLNG_LOYOLA);
                       } else {
                         mapNotifier.setCampusString("SGW");
-                        mapNotifier.toggleCampus(constant.LATLNG_GM);
+                        mapNotifier.toggleCampus(LATLNG_GM);
                       }
                     },
                   ),
