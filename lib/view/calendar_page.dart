@@ -85,6 +85,14 @@ class _MyCalendarState extends State<MyCalendar> with TickerProviderStateMixin {
               Expanded(child: _buildEventList()),
             ],
           ),
+          floatingActionButton: FloatingActionButton(
+      onPressed: () {
+        // Add your onPressed code here!
+      },
+      child: Icon(Icons.school),
+      backgroundColor: constant.COLOR_CONCORDIA,
+      tooltip:  "directions to next class",
+    ),
         ));
   }
 
