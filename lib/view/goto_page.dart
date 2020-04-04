@@ -1,6 +1,6 @@
-import 'package:concordi_around/model/coordinate.dart';
-import 'package:concordi_around/service/map_constant.dart';
-import 'package:concordi_around/widget/search/main_search_bar.dart';
+import '../model/coordinate.dart';
+import '../service/map_constant.dart';
+import '../widget/search/main_search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 

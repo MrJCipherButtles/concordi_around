@@ -1,6 +1,6 @@
-import 'package:concordi_around/service/shuttle_schedule.dart';
+import '../service/shuttle_schedule.dart';
 import 'package:flutter/material.dart';
-import 'package:concordi_around/service/map_constant.dart' as constant;
+import '../service/map_constant.dart' as constant;
 
 class ShuttlePage extends StatelessWidget {
   final int weekday;

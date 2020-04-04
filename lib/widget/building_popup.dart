@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
-import 'package:concordi_around/provider/map_notifier.dart';
+import '../provider/map_notifier.dart';
 import 'package:provider/provider.dart';
-import 'package:concordi_around/service/map_constant.dart';
-import 'package:concordi_around/model/coordinate.dart';
-import 'package:concordi_around/widget/search/main_search_bar.dart';
+import '../service/map_constant.dart';
+import '../model/coordinate.dart';
+import 'search/main_search_bar.dart';
 
 class BuildingPopup extends StatefulWidget {
   final VoidCallback onGetDirectionSelected;

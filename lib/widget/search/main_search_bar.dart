@@ -1,9 +1,9 @@
-import 'package:concordi_around/credential.dart';
-import 'package:concordi_around/data/building_singleton.dart';
-import 'package:concordi_around/model/coordinate.dart';
-import 'package:concordi_around/model/list_item.dart';
-import 'package:concordi_around/provider/map_notifier.dart';
-import 'package:concordi_around/service/map_constant.dart';
+import '../../credential.dart';
+import '../../data/building_singleton.dart';
+import '../../model/coordinate.dart';
+import '../../model/list_item.dart';
+import '../../provider/map_notifier.dart';
+import '../../service/map_constant.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

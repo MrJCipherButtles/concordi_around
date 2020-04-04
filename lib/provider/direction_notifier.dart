@@ -1,8 +1,8 @@
-import 'package:concordi_around/model/coordinate.dart';
-import 'package:concordi_around/model/direction.dart';
-import 'package:concordi_around/service/map_constant.dart';
-import 'package:concordi_around/service/map_direction.dart';
-import 'package:concordi_around/service/map_helper.dart';
+import '../model/coordinate.dart';
+import '../model/direction.dart';
+import '../service/map_constant.dart';
+import '../service/map_direction.dart';
+import '../service/map_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';

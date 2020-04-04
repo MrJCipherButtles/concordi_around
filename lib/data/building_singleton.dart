@@ -1,8 +1,8 @@
 import 'dart:math';
-import 'package:concordi_around/model/building.dart';
-import 'package:concordi_around/model/coordinate.dart';
-import 'package:concordi_around/model/floor.dart';
-import 'package:concordi_around/service/map_constant.dart';
+import '../model/building.dart';
+import '../model/coordinate.dart';
+import '../model/floor.dart';
+import '../service/map_constant.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'data_points.dart';
 import 'building_list.dart' as building_list_data;

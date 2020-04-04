@@ -1,6 +1,6 @@
 import 'dart:math';
-import 'package:concordi_around/data/data_points.dart';
-import 'package:concordi_around/model/coordinate.dart';
+import '../data/data_points.dart';
+import '../model/coordinate.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapHelper {

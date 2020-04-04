@@ -1,4 +1,4 @@
-import 'package:concordi_around/model/coordinate.dart';
+import '../model/coordinate.dart';
 
 Map<String, List<Coordinate>> bounds = {
   //SGW

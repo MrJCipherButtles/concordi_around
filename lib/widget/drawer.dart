@@ -1,7 +1,7 @@
-import 'package:concordi_around/global.dart';
-import 'package:concordi_around/service/map_constant.dart';
+import '../global.dart';
+import '../service/map_constant.dart';
 import 'package:flutter/material.dart';
-import 'package:concordi_around/view/shuttle_page.dart';
+import '../view/shuttle_page.dart';
 
 class SidebarDrawer extends StatefulWidget {
   @override

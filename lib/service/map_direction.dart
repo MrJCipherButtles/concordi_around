@@ -1,6 +1,6 @@
 import 'dart:convert';
-import 'package:concordi_around/credential.dart';
-import 'package:concordi_around/model/direction.dart';
+import '../credential.dart';
+import '../model/direction.dart';
 import 'package:dio/dio.dart';
 
 class MapDirection {
