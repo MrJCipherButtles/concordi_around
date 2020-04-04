@@ -1,10 +1,8 @@
+import 'package:concordi_around/provider/calendar_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'dart:async';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:concordi_around/service/map_constant.dart' as constant;
-import "package:http/http.dart" as http;
-import 'dart:convert' show json;
+import 'package:provider/provider.dart';
 
 class MyCalendar extends StatefulWidget {
   MyCalendar({Key key, this.title}) : super(key: key);
@@ -16,91 +14,15 @@ class MyCalendar extends StatefulWidget {
 }
 
 class _MyCalendarState extends State<MyCalendar> with TickerProviderStateMixin {
-  Map<DateTime, List> _events;
+  Map<DateTime, List> _events = {};
   List _selectedEvents;
   AnimationController _animationController;
   CalendarController _calendarController;
-
-  bool _isLoggedIn = false;
-  dynamic events;
-
-  GoogleSignIn _googleSignIn = GoogleSignIn(
-    scopes: <String>[
-      'email',
-      'https://www.googleapis.com/auth/calendar.readonly',
-    ],
-    clientId: "19404702725-vcev74de8eansnanla18c67p61s2cv80.apps.googleusercontent.com"
-  );
-
-  _login() async {
-    await _googleSignIn.signInSilently();
-    if (_googleSignIn.currentUser != null) {
-      events = await getEvents();
-      setState(() {
-        _isLoggedIn = true;
-      });
-    } else {
-      try {
-        await _googleSignIn.signIn();
-        events = await getEvents();
-        setState(() {
-          _isLoggedIn = true;
-        });
-      } catch (err) {
-        print(err);
-      }
-    }
-  }
-
-  getEvents() async {
-    http.Response response = await http.get(
-      'https://www.googleapis.com/calendar/v3/calendars/primary/events',
-      headers: await _googleSignIn.currentUser.authHeaders,
-    );
-
-    print(response.body);
-    if (response.statusCode != 200) {
-      print(
-          'Calendar Events API ${response.statusCode} response: ${response.body}');
-      return null;
-    }
-
-    Map<String, dynamic> data = json.decode(response.body);
-
-    var items = data['items'];
-    print(items);
-    items.forEach((item) => {
-          if (item['start']['dateTime'] != null)
-            {
-              if (_events[DateTime.parse(item['start']['dateTime'])] == null)
-                {
-                  _events[DateTime.parse(item['start']['dateTime'])] = [
-                    item['summary']
-                  ]
-                }
-              else
-                {
-                  _events[DateTime.parse(item['start']['dateTime'])] =
-                      _events[DateTime.parse(item['start']['dateTime'])] +
-                          [item['summary']]
-                }
-            }
-        });
-  }
-
-  _logout() {
-    _googleSignIn.signOut();
-    setState(() {
-      _isLoggedIn = false;
-    });
-  }
 
   @override
   void initState() {
     super.initState();
     final _selectedDay = DateTime.now();
-
-    _events = {};
 
     _selectedEvents = _events[_selectedDay] ?? [];
     _calendarController = CalendarController();
@@ -135,39 +57,50 @@ class _MyCalendarState extends State<MyCalendar> with TickerProviderStateMixin {
   void _onCalendarCreated(
       DateTime first, DateTime last, CalendarFormat format) {
     print('CALLBACK: _onCalendarCreated');
-    _login();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-          leading: new IconButton(
-            icon: new Icon(Icons.dehaze, color: Colors.white),
-            onPressed: () => Navigator.of(context).pop(),
+    return ChangeNotifierProvider<CalendarNotifier>(
+        //      <--- ChangeNotifierProvider
+        create: (context) => CalendarNotifier(),
+        child: Scaffold(
+          appBar: AppBar(
+              leading: new IconButton(
+                icon: new Icon(Icons.dehaze, color: Colors.white),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+              title: Text(widget.title),
+              backgroundColor: constant.COLOR_CONCORDIA),
+          body: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: <Widget>[
+              Consumer<CalendarNotifier>(
+                //                    <--- Consumer
+                builder: (context, myModel, child) {
+                  return _buildTableCalendar(myModel);
+                },
+              ),
+              const SizedBox(height: 8.0),
+              Expanded(child: _buildEventList()),
+            ],
           ),
-          title: Text(widget.title),
-          backgroundColor: constant.COLOR_CONCORDIA),
-      body: Column(mainAxisSize: MainAxisSize.max, children: <Widget>[
-        _buildTableCalendar(),
-        const SizedBox(height: 8.0),
-        Expanded(child: _buildEventList()),
-      ]),
-    );
+        ));
   }
 
   // Simple TableCalendar configuration (using Styles)
-  Widget _buildTableCalendar() {
+  Widget _buildTableCalendar(myModel) {
+    // var eventsNotifier = Provider.of<CalendarNotifier>(context);
     return TableCalendar(
       calendarController: _calendarController,
-      events: _events,
+      events: myModel.events,
       startingDayOfWeek: StartingDayOfWeek.monday,
       calendarStyle: CalendarStyle(
         selectedColor: constant.COLOR_CONCORDIA,
         todayColor: Color.fromRGBO(140, 139, 137, 1),
         markersColor: Colors.grey[300],
-        weekendStyle: TextStyle(color: constant.COLOR_CONCORDIA),
         markersPositionBottom: 9,
+        weekendStyle: TextStyle(color: constant.COLOR_CONCORDIA),
         outsideDaysVisible: false,
       ),
       headerStyle: HeaderStyle(

@@ -29,6 +29,8 @@ class _GoogleLogIn {
       return auth;
     });
 
+    _currentUser = await _googleSignIn.signInSilently();
+
     if (_currentUser != null) {
       auth = await _currentUser.authHeaders;
       return auth;
@@ -40,7 +42,6 @@ class _GoogleLogIn {
       }
     }
 
-    _currentUser = await _googleSignIn.signInSilently();
   }
 
   Future<void> _handleSignIn() async {
