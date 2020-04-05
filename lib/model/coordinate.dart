@@ -11,7 +11,7 @@ class Coordinate {
   Set<Coordinate> _adjCoordinates = HashSet<Coordinate>();
 
   Coordinate(this._lat, this._lng, this._floor, this._building, this._campus,
-      {String type, adjCoordinates}) {
+      {type, adjCoordinates}) {
     _type = type;
     if (adjCoordinates != null) {
       _adjCoordinates = adjCoordinates;
