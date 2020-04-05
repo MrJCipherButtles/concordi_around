@@ -10,7 +10,7 @@ class ShuttlePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ShuttleTimes shuttleTimes =
-        new ShuttleTimes(weekday: this.weekday, now: this.now);
+        ShuttleTimes(weekday: this.weekday, now: this.now);
     shuttleTimes.findNextShuttleSGW();
     shuttleTimes.findNextShuttleLOYOLA();
 
@@ -98,8 +98,8 @@ class ShuttlePage extends StatelessWidget {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        appBar: new AppBar(
-            title: new Text("Shuttle Bus Departures"),
+        appBar: AppBar(
+            title: Text("Shuttle Bus Departures"),
             backgroundColor: constant.COLOR_CONCORDIA,
             bottom: TabBar(
               tabs: <Widget>[

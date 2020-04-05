@@ -6,8 +6,8 @@ class ShuttleTimes {
   List<TimeOfDay> loyWeekdays = List(37);
   List<TimeOfDay> sgwFriday = List(27);
   List<TimeOfDay> loyFriday = List(27);
-  List<TimeOfDay> sgwNextDepartures = List();
-  List<TimeOfDay> loyNextDepartures = List();
+  List<TimeOfDay> sgwNextDepartures = [];
+  List<TimeOfDay> loyNextDepartures = [];
   int weekday;
   TimeOfDay nextShuttle;
   TimeOfDay now;
@@ -156,7 +156,7 @@ class ShuttleTimes {
   //Depending on the day of the week, and the time of the days, returns the time for the soonest shuttle available
   TimeOfDay findNextShuttleTime(List weekdays, List fridays) {
     if (weekday == 6 || weekday == 7) {
-      return (weekdays[0]);
+      return weekdays[0];
     } else {
       TimeOfDay nextShuttleTime(List shuttles) {
         var i = 0;
@@ -217,7 +217,7 @@ class ShuttleTimes {
   }
 
   String formatTimeOfDay(TimeOfDay today) {
-    final now = new DateTime.now();
+    final now = DateTime.now();
     final dt = DateTime(now.year, now.month, now.day, today.hour, today.minute);
     final format = DateFormat.jm();
 

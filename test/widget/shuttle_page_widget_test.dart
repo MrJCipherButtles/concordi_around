@@ -30,7 +30,7 @@ void main() {
         expect(find.text('Shuttle Bus Departures'), findsOneWidget);
         expect(find.text('LOY'), findsWidgets);
         expect(find.text('SGW'), findsWidgets);
-        expect(find.text(" " + startingCampus + ' Campus'), findsWidgets);
+        expect(find.text(" $startingCampus Campus"), findsWidgets);
         expect(find.byType(Tab), findsNWidgets(2));
         expect(find.byType(DefaultTabController), findsOneWidget);
 

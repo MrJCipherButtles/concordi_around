@@ -128,9 +128,7 @@ class _MapState extends State<Map> {
               children: <Widget>[
                 FloatingActionButton(
                   heroTag: 'location',
-                  onPressed: () {
-                    goToCurrent();
-                  },
+                  onPressed: goToCurrent,
                   backgroundColor: Colors.white,
                   foregroundColor: COLOR_CONCORDIA,
                   tooltip: 'Get Location',
@@ -143,7 +141,8 @@ class _MapState extends State<Map> {
                   heroTag: 'direction',
                   tooltip: "direction page button",
                   onPressed: () {
-                    mapMarkers.removeWhere((marker) =>marker.markerId.value == 'pop-up');
+                    mapMarkers.removeWhere(
+                        (marker) => marker.markerId.value == 'pop-up');
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -173,23 +172,31 @@ class _MapState extends State<Map> {
         SearchBar(coordinate: (Future<Coordinate> coordinate) async {
           setState(() {
             directionNotifier.setShowDirectionPanel(false);
-            mapMarkers.removeWhere((marker) =>marker.markerId.value == 'pop-up');
+            mapMarkers
+                .removeWhere((marker) => marker.markerId.value == 'pop-up');
           });
           mapNotifier.goToSpecifiedLatLng(futureCoordinate: coordinate);
           var result = await coordinate;
-          if(!(result is RoomCoordinate)){
+          if (!(result is RoomCoordinate)) {
             mapNotifier.setPopupInfoVisibility(true);
           }
-          mapMarkers.add(Marker(markerId: MarkerId("pop-up"), position: LatLng(result.lat, result.lng), infoWindow: InfoWindow(title: "${result.building}")));
+          mapMarkers.add(Marker(
+              markerId: MarkerId("pop-up"),
+              position: LatLng(result.lat, result.lng),
+              infoWindow: InfoWindow(title: "${result.building}")));
         }),
         FloorSelectorEnterBuilding(
           selectedFloor: (int floor) =>
               {updateFloor(floor), mapNotifier.setSelectedFloor(floor)},
         ),
         BuildingPopup(
-          onClosePanel: () => {mapMarkers.removeWhere((marker) =>marker.markerId.value == 'pop-up')},
+          onClosePanel: () => {
+            mapMarkers
+                .removeWhere((marker) => marker.markerId.value == 'pop-up')
+          },
           onGetDirectionSelected: () => {
-            mapMarkers.removeWhere((marker) =>marker.markerId.value == 'pop-up'),
+            mapMarkers
+                .removeWhere((marker) => marker.markerId.value == 'pop-up'),
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -232,8 +239,8 @@ class _MapState extends State<Map> {
     setState(() {
       if (shortestPath != null) {
         Path path = shortestPath['$floor'];
-        direction.removeWhere((polyline) =>
-            !(polyline.polylineId.toString().contains("outdoor")));
+        direction.removeWhere(
+            (polyline) => !polyline.polylineId.toString().contains("outdoor"));
         if (path != null) {
           direction.addAll({path.toPolyline()});
         }
@@ -288,14 +295,15 @@ class _MapState extends State<Map> {
       bool isDisabilityEnabled,
       MapNotifier mapNotifier,
       DirectionNotifier directionNotifier) {
-    if (origin is RoomCoordinate && destination is RoomCoordinate)
+    if (origin is RoomCoordinate && destination is RoomCoordinate) {
       drawIndoorPath(
           origin, destination, disabilityMode, mapNotifier, directionNotifier);
-    else if (origin is RoomCoordinate || destination is RoomCoordinate)
+    } else if (origin is RoomCoordinate || destination is RoomCoordinate) {
       drawCombinedPath(
           origin, destination, disabilityMode, mapNotifier, directionNotifier);
-    else
+    } else {
       drawOutdoorPath(origin, destination, directionNotifier);
+    }
 
     directionNotifier.setShowDirectionPanel(true);
 
@@ -309,7 +317,7 @@ class _MapState extends State<Map> {
       bool isDisabilityEnabled,
       MapNotifier mapNotifier,
       DirectionNotifier directionNotifier) {
-    BuildingSingleton buildingSingleton = new BuildingSingleton();
+    BuildingSingleton buildingSingleton = BuildingSingleton();
     Building hall = buildingSingleton.buildings['H'];
     mapNotifier.setSelectedFloor(int.parse(origin.floor));
     updateFloor(mapNotifier.selectedFloorPlan);

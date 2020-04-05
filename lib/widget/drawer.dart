@@ -141,8 +141,7 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(15), topRight: Radius.circular(15))),
-        backgroundColor:
-            disabilityMode ? COLOR_CONCORDIA : null,
+        backgroundColor: disabilityMode ? COLOR_CONCORDIA : null,
         content: disabilityMode
             ? Text('Disability Mode turned ON')
             : Text('Disability Mode turned OFF'),

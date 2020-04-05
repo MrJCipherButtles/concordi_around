@@ -11,7 +11,7 @@ class Coordinate {
   Set<Coordinate> _adjCoordinates = HashSet<Coordinate>();
 
   Coordinate(this._lat, this._lng, this._floor, this._building, this._campus,
-      {type, adjCoordinates}) {
+      {String type, Set<Coordinate> adjCoordinates}) {
     _type = type;
     if (adjCoordinates != null) {
       _adjCoordinates = adjCoordinates;
@@ -66,14 +66,14 @@ class Coordinate {
       identical(this, other) ||
       other is Coordinate &&
           runtimeType == other.runtimeType &&
-          this.lat == other.lat &&
-          this.lng == other.lng &&
-          this.floor == other.floor &&
-          this.building == other.building &&
-          this.campus == other.campus &&
-          this.type == other.type &&
-          this.adjCoordinates.containsAll(other.adjCoordinates) &&
-          other.adjCoordinates.containsAll(this.adjCoordinates);
+          lat == other.lat &&
+          lng == other.lng &&
+          floor == other.floor &&
+          building == other.building &&
+          campus == other.campus &&
+          type == other.type &&
+          adjCoordinates.containsAll(other.adjCoordinates) &&
+          other.adjCoordinates.containsAll(adjCoordinates);
 
   @override
   int get hashCode => toString().hashCode;
@@ -83,7 +83,7 @@ class PortalCoordinate extends Coordinate {
   bool _isDisabilityFriendly;
 
   PortalCoordinate(lat, lng, floorLevel, building, campus,
-      {type, adjCoordinates, isDisabilityFriendly = false})
+      {type, adjCoordinates, bool isDisabilityFriendly = false})
       : super(lat, lng, floorLevel, building, campus,
             type: type, adjCoordinates: adjCoordinates) {
     _isDisabilityFriendly = isDisabilityFriendly;

@@ -10,7 +10,7 @@ import 'search/main_search_bar.dart';
 class BuildingPopup extends StatefulWidget {
   final VoidCallback onGetDirectionSelected;
   final VoidCallback onClosePanel;
-  
+
   BuildingPopup({this.onGetDirectionSelected, this.onClosePanel});
 
   State<StatefulWidget> createState() {
@@ -19,7 +19,7 @@ class BuildingPopup extends StatefulWidget {
 }
 
 class _BuildingPopupState extends State<BuildingPopup> {
-  List<String> _pictures = List<String>();
+  List<String> _pictures = <String>[];
   LatLng currentPlace = LatLng(0, 0);
   String _name = '';
   String _address = '';
@@ -48,7 +48,7 @@ class _BuildingPopupState extends State<BuildingPopup> {
           maxHeight: 450,
           borderRadius: radius,
           backdropEnabled: true,
-          panelBuilder: (ScrollController sc) => _scrollingList(sc),
+          panelBuilder: _scrollingList,
           collapsed: Container(
               padding: EdgeInsets.fromLTRB(100, 0, 0, 0),
               child: Row(
@@ -58,9 +58,10 @@ class _BuildingPopupState extends State<BuildingPopup> {
                 children: <Widget>[
                   IconButton(
                     icon: Icon(Icons.close),
-                    onPressed: () =>
-                        {mapNotifier.setPopupInfoVisibility(false),
-                        widget.onClosePanel()},
+                    onPressed: () => {
+                      mapNotifier.setPopupInfoVisibility(false),
+                      widget.onClosePanel()
+                    },
                   ),
                 ],
               )),
@@ -174,8 +175,7 @@ class _BuildingPopupState extends State<BuildingPopup> {
                 Positioned(
                     top: 12,
                     left: 20,
-                    child:
-                        Icon(Icons.schedule, color: COLOR_CONCORDIA)),
+                    child: Icon(Icons.schedule, color: COLOR_CONCORDIA)),
                 Positioned(
                   top: 16,
                   left: 80,

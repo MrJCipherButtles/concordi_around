@@ -37,7 +37,7 @@ class BuildingSingleton {
 
   List<RoomCoordinate> getAllRooms() {
     List<RoomCoordinate> roomList = <RoomCoordinate>[];
-    for (Building building in this.buildings.values) {
+    for (Building building in buildings.values) {
       building.floors.forEach((floorName, floor) => floor
           .coordinatesByGivenTypes({"ROOM"}).forEach(
               (room) => roomList.add(room)));
@@ -48,7 +48,7 @@ class BuildingSingleton {
   Set<Polygon> getOutdoorBuildingHighlights() {
     Set<Polygon> result = {};
     for (var building in buildings.values) {
-      List<LatLng> latlngs = new List();
+      List<LatLng> latlngs = <LatLng>[];
 
       if (building.polygon == null) {
         continue;
@@ -78,7 +78,7 @@ class BuildingSingleton {
           var floor = building.floors[floorName];
           if (floor != null && floor.polygons != null) {
             for (List<Coordinate> list in floor.polygons) {
-              List<LatLng> points = new List();
+              List<LatLng> points = [];
               list.forEach((coordinate) => points.add(coordinate.toLatLng()));
               Random rnd = Random();
               result.add(Polygon(
@@ -472,12 +472,22 @@ class BuildingSingleton {
         45.4974547, -73.5790906, '8', 'H', 'SGW',
         type: "ROOM", roomId: "H881", adjCoordinates: {j8F4, j8F17});
 
-    _h8F16 = RoomCoordinate( // 8th floor escalators
-        45.4972828, -73.5789415, '8', 'H', 'SGW',
+    _h8F16 = RoomCoordinate(
+        // 8th floor escalators
+        45.4972828,
+        -73.5789415,
+        '8',
+        'H',
+        'SGW',
         adjCoordinates: {j8F16});
 
-    _h8F12 = RoomCoordinate( // 8th floor elevator
-        45.4973283, -73.5787676, '8', 'H', 'SGW',
+    _h8F12 = RoomCoordinate(
+        // 8th floor elevator
+        45.4973283,
+        -73.5787676,
+        '8',
+        'H',
+        'SGW',
         adjCoordinates: {j8F12});
 
     Floor eightFloor = Floor('8', polygons: floorPolygons['8'], coordinates: {

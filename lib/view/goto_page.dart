@@ -37,8 +37,8 @@ class _GotoPageState extends State<GotoPage> {
       body: Column(
         children: <Widget>[
           Container(
-            margin: new EdgeInsets.only(
-                top: MediaQuery.of(context).padding.top + 5.0),
+            margin:
+                EdgeInsets.only(top: MediaQuery.of(context).padding.top + 5.0),
             child: Column(
               children: <Widget>[
                 Row(
@@ -152,7 +152,7 @@ class _GotoPageState extends State<GotoPage> {
                                     : Colors.transparent,
                               ),
                               child: Icon(Icons.directions_walk),
-                                key: Key("walk"),
+                              key: Key("walk"),
                             ),
                             Container(
                               constraints: BoxConstraints(
@@ -253,8 +253,7 @@ class _GotoPageState extends State<GotoPage> {
               widget.drivingMode(getSelectedMode(
                   travelMode)); // This callback must occur first
               widget.startPointAndDestinationCoordinates(
-                  new List<Coordinate>.from(
-                      [this._startPoint, this._destination]));
+                  List<Coordinate>.from([this._startPoint, this._destination]));
               Navigator.pop(context);
             }
           }),
@@ -262,13 +261,15 @@ class _GotoPageState extends State<GotoPage> {
   }
 
   DrivingMode getSelectedMode(List<bool> modes) {
-    if (modes[0] == true)
+    if (modes[0] == true) {
       return DrivingMode.walking;
-    else if (modes[1] == true)
+    } else if (modes[1] == true) {
       return DrivingMode.transit;
-    else if (modes[2] == true)
+    } else if (modes[2] == true) {
       return DrivingMode.shuttle;
-    else if (modes[3] == true) return DrivingMode.bicycling;
+    } else if (modes[3] == true) {
+      return DrivingMode.bicycling;
+    }
     return DrivingMode.driving;
   }
 }

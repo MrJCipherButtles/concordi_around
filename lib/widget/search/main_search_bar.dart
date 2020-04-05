@@ -32,7 +32,7 @@ class _SearchBarState extends State<SearchBar> {
       builder: (BuildContext context, MapNotifier mapNotifier, Widget child) =>
           Column(children: <Widget>[
         Container(
-          margin: new EdgeInsets.only(
+          margin: EdgeInsets.only(
               left: 15.0,
               top: MediaQuery.of(context).padding.top + 5.0,
               right: 15.0),
@@ -76,8 +76,7 @@ class _SearchBarState extends State<SearchBar> {
                     textColor: Colors.white,
                     color: COLOR_CONCORDIA,
                     shape: RoundedRectangleBorder(
-                        borderRadius:
-                            new BorderRadius.circular(BORDER_RADIUS)),
+                        borderRadius: BorderRadius.circular(BORDER_RADIUS)),
                     onPressed: () {
                       if (mapNotifier.currentCampus == 'SGW') {
                         mapNotifier.setCampusString("LOY");
@@ -178,7 +177,7 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
         // start fetching when search query is not empty
         future: query.length > 0
             ? _getSuggestions(query)
-            : Future.value(List<ListItem>()),
+            : Future.value(<ListItem>[]),
         builder:
             (BuildContext context, AsyncSnapshot<List<ListItem>> snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
@@ -186,7 +185,7 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
             if (snapshot.hasData) {
               places = snapshot.data;
             } else {
-              places = List<ListItem>();
+              places = <ListItem>[];
             }
             return ListView.builder(
               key: Key('search_list'),
@@ -374,7 +373,7 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
       openClosed = result['opening_hours']['open_now'];
     }
     dynamic photosResult = result['photos'];
-    List<String> pictures = List<String>();
+    List<String> pictures = <String>[];
 
     if (photosResult != null && result['photos'].length > 2) {
       for (int i = 0; i < result['photos'].length; i++) {

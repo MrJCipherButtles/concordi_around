@@ -118,8 +118,6 @@ class MarkerHelper {
 
   Marker getDestinationMarker(LatLng latLng) {
     return Marker(
-        markerId: MarkerId('destination'),
-        icon: _flagIcon,
-        position: latLng);
+        markerId: MarkerId('destination'), icon: _flagIcon, position: latLng);
   }
 }

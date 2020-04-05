@@ -10,7 +10,7 @@ class Building {
   Map<String, Floor> _floors = HashMap<String, Floor>();
   Coordinate _coordinate; //The central coordinate of building
 
-  Building(this._building, {polygon, coordinate}) {
+  Building(this._building, {List<Coordinate> polygon, Coordinate coordinate}) {
     _polygon = polygon;
     _coordinate = coordinate;
   }
@@ -33,7 +33,7 @@ class Building {
   Map<String, Path> shortestPath(Coordinate s, Coordinate d,
       {bool isDisabilityFriendly = false}) {
     assert(s != null && d != null);
-    var indoorNavigationMap = LinkedHashMap<String, Path>();
+    var indoorNavigationMap = <String, Path>{};
     var sFloor = _floors[s.floor];
     var dFloor = _floors[d.floor];
     if (sFloor.floor == dFloor.floor) {
