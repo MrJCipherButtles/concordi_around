@@ -11,7 +11,7 @@ class Coordinate {
   Set<Coordinate> _adjCoordinates = HashSet<Coordinate>();
 
   Coordinate(this._lat, this._lng, this._floor, this._building, this._campus,
-      {String type, Set<Coordinate> adjCoordinates}) {
+      {String type, adjCoordinates}) {
     _type = type;
     if (adjCoordinates != null) {
       _adjCoordinates = adjCoordinates;
@@ -83,7 +83,7 @@ class PortalCoordinate extends Coordinate {
   bool _isDisabilityFriendly;
 
   PortalCoordinate(lat, lng, floorLevel, building, campus,
-      {type, adjCoordinates, bool isDisabilityFriendly = false})
+      {type, adjCoordinates, isDisabilityFriendly = false})
       : super(lat, lng, floorLevel, building, campus,
             type: type, adjCoordinates: adjCoordinates) {
     _isDisabilityFriendly = isDisabilityFriendly;

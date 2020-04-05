@@ -3,7 +3,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import '../provider/map_notifier.dart';
 import 'package:provider/provider.dart';
-import '../service/map_constant.dart';
+import '../service/map_constant.dart' as constant;
 import '../model/coordinate.dart';
 import 'search/main_search_bar.dart';
 
@@ -125,7 +125,7 @@ class _BuildingPopupState extends State<BuildingPopup> {
                 Positioned(
                     top: 12,
                     left: 20,
-                    child: Icon(Icons.phone, color: COLOR_CONCORDIA)),
+                    child: Icon(Icons.phone, color: constant.COLOR_CONCORDIA)),
                 Positioned(
                   top: 16,
                   left: 80,
@@ -150,7 +150,7 @@ class _BuildingPopupState extends State<BuildingPopup> {
                 Positioned(
                     top: 12,
                     left: 20,
-                    child: Icon(Icons.public, color: COLOR_CONCORDIA)),
+                    child: Icon(Icons.public, color: constant.COLOR_CONCORDIA)),
                 Positioned(
                   top: 16,
                   left: 80,
@@ -175,7 +175,7 @@ class _BuildingPopupState extends State<BuildingPopup> {
                 Positioned(
                     top: 12,
                     left: 20,
-                    child: Icon(Icons.schedule, color: COLOR_CONCORDIA)),
+                    child: Icon(Icons.schedule, color: constant.COLOR_CONCORDIA)),
                 Positioned(
                   top: 16,
                   left: 80,
@@ -200,7 +200,7 @@ class _BuildingPopupState extends State<BuildingPopup> {
               height: 48,
               child: RaisedButton(
                 onPressed: () => widget.onGetDirectionSelected(),
-                color: COLOR_CONCORDIA,
+                color: constant.COLOR_CONCORDIA,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[

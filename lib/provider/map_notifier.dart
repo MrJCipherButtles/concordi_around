@@ -1,6 +1,6 @@
 import 'dart:async';
 import '../model/coordinate.dart';
-import '../service/map_constant.dart';
+import '../service/map_constant.dart' as constant;
 import '../service/map_helper.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -73,7 +73,7 @@ class MapNotifier with ChangeNotifier {
     }
     setPlaceLatLng(c.toLatLng());
     CameraPosition _newPosition =
-        CameraPosition(target: c.toLatLng(), zoom: CAMERA_INDOOR_ZOOM);
+        CameraPosition(target: c.toLatLng(), zoom: constant.CAMERA_INDOOR_ZOOM);
     controller.animateCamera(CameraUpdate.newCameraPosition(_newPosition));
   }
 
@@ -81,7 +81,7 @@ class MapNotifier with ChangeNotifier {
     final c = await _completer.future;
     final p = CameraPosition(
       target: latLng,
-      zoom: CAMERA_DEFAULT_ZOOM,
+      zoom: constant.CAMERA_DEFAULT_ZOOM,
     );
     c.animateCamera(CameraUpdate.newCameraPosition(p));
   }

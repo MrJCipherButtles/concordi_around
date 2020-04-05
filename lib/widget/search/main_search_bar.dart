@@ -3,7 +3,7 @@ import '../../data/building_singleton.dart';
 import '../../model/coordinate.dart';
 import '../../model/list_item.dart';
 import '../../provider/map_notifier.dart';
-import '../../service/map_constant.dart';
+import '../../service/map_constant.dart' as constant;
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -39,7 +39,7 @@ class _SearchBarState extends State<SearchBar> {
           padding: EdgeInsets.only(bottom: 10),
           child: Container(
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(BORDER_RADIUS),
+                borderRadius: BorderRadius.circular(constant.BORDER_RADIUS),
                 color: Colors.white),
             child: Row(
               children: <Widget>[
@@ -74,16 +74,16 @@ class _SearchBarState extends State<SearchBar> {
                   child: RaisedButton(
                     child: Text(mapNotifier.currentCampus),
                     textColor: Colors.white,
-                    color: COLOR_CONCORDIA,
+                    color: constant.COLOR_CONCORDIA,
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(BORDER_RADIUS)),
+                        borderRadius: BorderRadius.circular(constant.BORDER_RADIUS)),
                     onPressed: () {
                       if (mapNotifier.currentCampus == 'SGW') {
                         mapNotifier.setCampusString("LOY");
-                        mapNotifier.toggleCampus(LATLNG_LOYOLA);
+                        mapNotifier.toggleCampus(constant.LATLNG_LOYOLA);
                       } else {
                         mapNotifier.setCampusString("SGW");
-                        mapNotifier.toggleCampus(LATLNG_GM);
+                        mapNotifier.toggleCampus(constant.LATLNG_GM);
                       }
                     },
                   ),

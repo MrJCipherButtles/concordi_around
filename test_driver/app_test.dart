@@ -7,6 +7,20 @@ void main() {
     FlutterDriver driver;
 
     setUpAll(() async {
+      // Make sure environment variable ANDROID_SDK_ROOT is set to path to Android sdk folder
+      final Map<String, String> envVars = Platform.environment;
+      final String root =
+          envVars['ANDROID_SDK_ROOT'] ?? envVars['ANDROID_HOME'];
+      final String adbPath = root + '/platform-tools/adb';
+      await Process.run(adbPath, [
+        'shell',
+        'pm',
+        'grant',
+        'ca.concordia.w20.soen390.concordi_around', // replace with your app id
+        'android.permission.ACCESS_FINE_LOCATION',
+        'android.permission.ACCESS_BACKGROUND_LOCATION',
+        'android.permission.WAKE_LOCK'
+      ]);
       driver = await FlutterDriver.connect();
     });
 

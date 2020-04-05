@@ -1,5 +1,5 @@
-import '../global.dart';
-import '../service/map_constant.dart';
+import '../global.dart' as global;
+import '../service/map_constant.dart' as constant;
 import 'package:flutter/material.dart';
 import '../view/shuttle_page.dart';
 
@@ -9,7 +9,7 @@ class SidebarDrawer extends StatefulWidget {
 }
 
 class _SidebarDrawerState extends State<SidebarDrawer> {
-  bool _isDisabilityOn = disabilityMode;
+  bool _isDisabilityOn = global.disabilityMode;
 
   bool isDisabilityOn() {
     return _isDisabilityOn;
@@ -18,8 +18,8 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.only(
-          topRight: Radius.circular(BORDER_RADIUS),
-          bottomRight: Radius.circular(BORDER_RADIUS)),
+          topRight: Radius.circular(constant.BORDER_RADIUS),
+          bottomRight: Radius.circular(constant.BORDER_RADIUS)),
       child: Drawer(
         child: Column(
           children: <Widget>[
@@ -38,7 +38,7 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
                     decoration: BoxDecoration(
                         color: Color.fromRGBO(147, 35, 57, 1),
                         borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(BORDER_RADIUS))),
+                            topRight: Radius.circular(constant.BORDER_RADIUS))),
                     currentAccountPicture: CircleAvatar(
                       backgroundColor: Colors.white,
                       foregroundColor: Colors.black,
@@ -110,13 +110,13 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
             StatefulBuilder(
               builder: (context, _setState) => CheckboxListTile(
                 secondary: Icon(Icons.accessible_forward),
-                activeColor: COLOR_CONCORDIA,
+                activeColor: constant.COLOR_CONCORDIA,
                 title: Text("Disability Mode"),
                 value: _isDisabilityOn,
                 onChanged: (bool value) {
                   _setState(() {
                     _isDisabilityOn = value;
-                    disabilityMode = value;
+                    global.disabilityMode = value;
                     /*
                     TODO: replace the global variable for the disability mode for a "config" file
                     where the choice of the user will be saved even after the app restarts
@@ -141,14 +141,14 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(15), topRight: Radius.circular(15))),
-        backgroundColor: disabilityMode ? COLOR_CONCORDIA : null,
-        content: disabilityMode
+        backgroundColor: global.disabilityMode ? constant.COLOR_CONCORDIA : null,
+        content: global.disabilityMode
             ? Text('Disability Mode turned ON')
             : Text('Disability Mode turned OFF'),
         action: SnackBarAction(
             label: 'UNDO',
             onPressed: () {
-              disabilityMode = disabilityMode ? false : true;
+              global.disabilityMode = global.disabilityMode ? false : true;
               _showDisabilityToast(context);
             }),
       ),

@@ -10,7 +10,7 @@ class Building {
   Map<String, Floor> _floors = HashMap<String, Floor>();
   Coordinate _coordinate; //The central coordinate of building
 
-  Building(this._building, {List<Coordinate> polygon, Coordinate coordinate}) {
+  Building(this._building, {polygon, coordinate}) {
     _polygon = polygon;
     _coordinate = coordinate;
   }
