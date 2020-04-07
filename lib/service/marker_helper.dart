@@ -1,4 +1,5 @@
 import 'package:concordi_around/model/coordinate.dart';
+import 'package:concordi_around/widget/building_popup.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:concordi_around/data/data_points.dart' as data;
@@ -6,7 +7,7 @@ import 'package:concordi_around/data/data_points.dart' as data;
 class MarkerHelper {
   Set<Marker> eightfloorMarker = {};
   Set<Marker> ninthfloorMarker = {};
-
+  Set<Marker> buildingMarker= {};
   BitmapDescriptor _roomIcon;
   BitmapDescriptor _maleIcon;
   BitmapDescriptor _femaleIcon;
@@ -15,6 +16,18 @@ class MarkerHelper {
   BitmapDescriptor _escalatorIcon;
   BitmapDescriptor _flagIcon;
   BitmapDescriptor _startIcon;
+  BitmapDescriptor _evIcon;
+  BitmapDescriptor _cbIcon;
+  BitmapDescriptor _spIcon;
+  BitmapDescriptor _cjIcon;
+  BitmapDescriptor _pbIcon;
+  BitmapDescriptor _fcIcon;
+  BitmapDescriptor _vlIcon;
+  BitmapDescriptor _hIcon;
+  BitmapDescriptor _lbIcon;
+  BitmapDescriptor _gmIcon;
+  BitmapDescriptor _jmsbIcon;
+  BitmapDescriptor _psbIcon;
 
   MarkerHelper() {
     _initIcons();
@@ -43,6 +56,42 @@ class MarkerHelper {
     _startIcon = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(devicePixelRatio: 2.5),
         'assets/icon/start_icon.png');
+    _evIcon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 2.5),
+        'assets/building_markers/EV.png');
+    _cbIcon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 2.5),
+        'assets/building_markers/CB.png');
+    _spIcon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 2.5),
+        'assets/building_markers/SP.png');
+    _cjIcon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 2.5),
+        'assets/building_markers/CJ.png');
+    _pbIcon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 2.5),
+        'assets/building_markers/PB.png');
+    _fcIcon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 2.5),
+        'assets/building_markers/FC.png');
+    _vlIcon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 2.5),
+        'assets/building_markers/VL.png');
+    _hIcon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 2.5),
+        'assets/building_markers/H.png');
+    _lbIcon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 2.5),
+        'assets/building_markers/LB.png');
+    _gmIcon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 2.5),
+        'assets/building_markers/GM.png');
+    _jmsbIcon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 2.5),
+        'assets/building_markers/JMSB.png');
+    _psbIcon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 2.5),
+        'assets/building_markers/PSB.png');
     _setMarkers(8);
     _setMarkers(9);
   }
@@ -118,8 +167,115 @@ class MarkerHelper {
 
   Marker getDestinationMarker(LatLng latLng) {
     return Marker(
-        markerId: MarkerId('destination'),
-        icon: _flagIcon,
-        position: latLng);
+        markerId: MarkerId('destination'), icon: _flagIcon, position: latLng);
+  }
+
+  Set<Marker> getBuildingMarkers() {
+    buildingMarker= {
+      Marker(
+          markerId: MarkerId('buildingMarker1'),
+          infoWindow: InfoWindow(title: 'EV'),
+          icon: _evIcon,
+          position: LatLng(
+            45.49558,
+            -73.57801,
+          ),
+          onTap: () {}),
+      Marker(
+          markerId: MarkerId('buildingMarker2'),
+          infoWindow: InfoWindow(title: 'JMSB'),
+          icon: _jmsbIcon,
+          position: LatLng(
+            45.4954,
+            -73.57909,
+          ),
+           onTap: () {}),
+      Marker(
+          markerId: MarkerId('buildingMarker3'),
+          infoWindow: InfoWindow(title: 'GM'),
+          icon: _gmIcon,
+          position: LatLng(
+            45.495949,
+            -73.578839,
+          ), onTap: () {}),
+
+      Marker(
+          markerId: MarkerId('buildingMarkerLB'),
+          infoWindow: InfoWindow(title: 'LB'),
+          icon: _lbIcon,
+          position: LatLng(
+            45.496865,
+            -73.578041,
+          ), onTap: () {}),
+      Marker(
+          markerId: MarkerId('buildingMarkerH'),
+          infoWindow: InfoWindow(title: 'H'),
+          icon: _hIcon,
+          position: LatLng(
+            45.49726,
+            -73.57893,
+          ), onTap: () {}),
+
+      // LOYOLA
+
+      Marker(
+          markerId: MarkerId('buildingMarkerVL'),
+          infoWindow: InfoWindow(title: 'VL'),
+          icon: _vlIcon,
+          position: LatLng(
+            45.459053,
+            -73.638683,
+          ), onTap: () {}),
+      Marker(
+          markerId: MarkerId('buildingMarkerFC'),
+          infoWindow: InfoWindow(title: 'FC'),
+          icon: _fcIcon,
+          position: LatLng(
+            45.458563,
+            -73.639277,
+          ), onTap: () {}),
+      Marker(
+          markerId: MarkerId('buildingMarkerPB'),
+          infoWindow: InfoWindow(title: 'PB'),
+          icon: _pbIcon,
+          position: LatLng(
+            45.459068,
+            -73.640577,
+          ), onTap: () {}),
+      Marker(
+          markerId: MarkerId('buildingMarkerCJ'),
+          infoWindow: InfoWindow(title: 'CJ'),
+          icon: _cjIcon,
+          position: LatLng(
+            45.457523,
+            -73.640375,
+          ), onTap: () {}),
+      Marker(
+          markerId: MarkerId('buildingMarkerSP'),
+          infoWindow: InfoWindow(title: 'SP'),
+          icon: _spIcon,
+          position: LatLng(
+            45.457832,
+            -73.641494,
+          ), onTap: () {}),
+      Marker(
+          markerId: MarkerId('buildingMarkerCB'),
+          infoWindow: InfoWindow(title: 'CB'),
+          icon: _cbIcon,
+          position: LatLng(
+            45.458306,
+            -73.640352,
+          ), onTap: () {}),
+      Marker(
+        markerId: MarkerId('buildingMarkerPSB'),
+        infoWindow: InfoWindow(title: 'PSB'),
+        icon: _psbIcon,
+        position: LatLng(
+          45.459647,
+          -73.639784,
+        ), onTap: () {}
+      ),
+    };
+    return buildingMarker;
   }
 }

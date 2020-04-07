@@ -38,3 +38,4 @@ flutter:
    - assets/map_style_reset.json
    - assets/icon/
    - assets/direction_icon/
+   - assets/building_markers/

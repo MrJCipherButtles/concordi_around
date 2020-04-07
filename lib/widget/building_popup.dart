@@ -10,7 +10,7 @@ import 'package:concordi_around/widget/search/main_search_bar.dart';
 class BuildingPopup extends StatefulWidget {
   final VoidCallback onGetDirectionSelected;
   final VoidCallback onClosePanel;
-  
+
   BuildingPopup({this.onGetDirectionSelected, this.onClosePanel});
 
   State<StatefulWidget> createState() {
@@ -58,9 +58,10 @@ class _BuildingPopupState extends State<BuildingPopup> {
                 children: <Widget>[
                   IconButton(
                     icon: Icon(Icons.close),
-                    onPressed: () =>
-                        {mapNotifier.setPopupInfoVisibility(false),
-                        widget.onClosePanel()},
+                    onPressed: () => {
+                      mapNotifier.setPopupInfoVisibility(false),
+                      widget.onClosePanel()
+                    },
                   ),
                 ],
               )),
@@ -247,4 +248,10 @@ class _BuildingPopupState extends State<BuildingPopup> {
       _openClosed = 'Information Not Available';
     }
   }
+  
 }
+
+
+
+
+

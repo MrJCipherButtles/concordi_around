@@ -106,6 +106,12 @@ class _MapState extends State<Map> {
           },
           onCameraMove: (CameraPosition cameraPosition) async {
             GoogleMapController _mapController = await _completer.future;
+            if (cameraPosition.zoom >= 16.5) {
+              mapMarkers.addAll(markerHelper.getBuildingMarkers());
+            } else {
+              mapMarkers.removeWhere(
+                  (marker) => marker.markerId.value.startsWith('buildingMarker'));
+            }
             if (MapHelper.isWithinHall(cameraPosition.target) &&
                 cameraPosition.zoom >= constant.CAMERA_INDOOR_ZOOM) {
               mapNotifier.setFloorPlanVisibility(true);
@@ -143,7 +149,8 @@ class _MapState extends State<Map> {
                   heroTag: 'direction',
                   tooltip: "direction page button",
                   onPressed: () {
-                    mapMarkers.removeWhere((marker) =>marker.markerId.value == 'pop-up');
+                    mapMarkers.removeWhere(
+                        (marker) => marker.markerId.value == 'pop-up');
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -173,23 +180,31 @@ class _MapState extends State<Map> {
         SearchBar(coordinate: (Future<Coordinate> coordinate) async {
           setState(() {
             directionNotifier.setShowDirectionPanel(false);
-            mapMarkers.removeWhere((marker) =>marker.markerId.value == 'pop-up');
+            mapMarkers
+                .removeWhere((marker) => marker.markerId.value == 'pop-up');
           });
           mapNotifier.goToSpecifiedLatLng(futureCoordinate: coordinate);
           var result = await coordinate;
-          if(!(result is RoomCoordinate)){
+          if (!(result is RoomCoordinate)) {
             mapNotifier.setPopupInfoVisibility(true);
           }
-          mapMarkers.add(Marker(markerId: MarkerId("pop-up"), position: LatLng(result.lat, result.lng), infoWindow: InfoWindow(title: "${result.building}")));
+          mapMarkers.add(Marker(
+              markerId: MarkerId("pop-up"),
+              position: LatLng(result.lat, result.lng),
+              infoWindow: InfoWindow(title: "${result.building}")));
         }),
         FloorSelectorEnterBuilding(
           selectedFloor: (int floor) =>
               {updateFloor(floor), mapNotifier.setSelectedFloor(floor)},
         ),
         BuildingPopup(
-          onClosePanel: () => {mapMarkers.removeWhere((marker) =>marker.markerId.value == 'pop-up')},
+          onClosePanel: () => {
+            mapMarkers
+                .removeWhere((marker) => marker.markerId.value == 'pop-up')
+          },
           onGetDirectionSelected: () => {
-            mapMarkers.removeWhere((marker) =>marker.markerId.value == 'pop-up'),
+            mapMarkers
+                .removeWhere((marker) => marker.markerId.value == 'pop-up'),
             Navigator.push(
               context,
               MaterialPageRoute(
