@@ -23,7 +23,6 @@ class _GoogleLogIn {
 
     _googleSignIn.onCurrentUserChanged
         .listen((GoogleSignInAccount account) async {
-      print("got new account" + account.toString());
       _currentUser = account;
       auth = await _currentUser.authHeaders;
       return auth;

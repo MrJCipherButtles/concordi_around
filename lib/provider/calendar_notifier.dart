@@ -3,7 +3,7 @@ import 'package:concordi_around/service/google_calendar.dart';
 import 'package:flutter/widgets.dart';
 
 class CalendarNotifier with ChangeNotifier {
-  var calendarService = new CalendarService();
+  var calendarService = CalendarService();
   Map<DateTime, List> events = {};
 
   CalendarNotifier() {
