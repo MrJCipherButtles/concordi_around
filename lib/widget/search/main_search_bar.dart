@@ -12,6 +12,7 @@ import 'package:uuid/uuid.dart';
 class SearchBar extends StatefulWidget {
   final Function(Future<Coordinate>) coordinate;
   SearchBar({this.coordinate});
+  static PlaceCoordinate searchResult;
 
   @override
   State<StatefulWidget> createState() {
@@ -141,6 +142,7 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
       // then build ListView from history
       if (_history != null) {
         return ListView.builder(
+          key: Key('search_list'),
           itemCount: _history.length,
           itemBuilder: (context, index) {
             if (_history[index] is HeadingItem) {
@@ -158,7 +160,7 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
                   this.coordinate(_getPlaceDetails(selected.placeId));
                 },
                 leading: Icon(Icons.place),
-                title: Text(_history[index].description),
+                title: Text(_history[index].description, key: Key('list_text')),
               );
             }
           },
@@ -187,6 +189,7 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
               places = List<ListItem>();
             }
             return ListView.builder(
+              key: Key('search_list'),
               itemCount: places.length,
               itemBuilder: (context, index) {
                 if (places[index] is HeadingItem) {
@@ -204,7 +207,8 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
                       this.coordinate(_getPlaceDetails(selected.placeId));
                     },
                     leading: Icon(Icons.place),
-                    title: Text(places[index].description),
+                    title:
+                        Text(places[index].description, key: Key('list_text')),
                   );
                 }
               },
@@ -343,7 +347,8 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
     }
 
     String baseURL = 'https://maps.googleapis.com/maps/api/place/details/json';
-    String fields = 'address_component,name,geometry';
+    String fields =
+        'geometry,name,formatted_phone_number,formatted_address,website,photos,opening_hours';
 
     // Send place details request
     String request =
@@ -361,6 +366,27 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
     double lat = location['lat'];
     double lng = location['lng'];
     String building = result['name'];
+    String address = result['formatted_address'];
+    String phone = result['formatted_phone_number'];
+    String website = result['website'];
+    bool openClosed;
+    if (result['opening_hours'] != null) {
+      openClosed = result['opening_hours']['open_now'];
+    }
+    dynamic photosResult = result['photos'];
+    List<String> pictures = List<String>();
+
+    if (photosResult != null && result['photos'].length > 2) {
+      for (int i = 0; i < result['photos'].length; i++) {
+        String photoRef = photosResult[i]['photo_reference'];
+        String picture =
+            'https://maps.googleapis.com/maps/api/place/photo?maxwidth=500&photoreference=$photoRef&key=$PLACES_API_KEY';
+        pictures.add(picture);
+      }
+    }
+
+    SearchBar.searchResult = PlaceCoordinate(lat, lng, '', building, '',
+        address, phone, website, openClosed, pictures);
 
     return Coordinate(lat, lng, '', building, '');
   }

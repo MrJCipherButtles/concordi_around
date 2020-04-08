@@ -21,6 +21,9 @@ class DirectionNotifier extends ChangeNotifier {
   int apiCallCounter = 0;
 
   void setShowDirectionPanel(bool visiblity) {
+    if(!visiblity)  {
+      clearAll();
+    }
     showDirectionPanel = visiblity;
     notifyListeners();
   }

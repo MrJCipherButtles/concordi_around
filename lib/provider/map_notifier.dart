@@ -14,8 +14,20 @@ class MapNotifier with ChangeNotifier {
 
   bool showFloorPlan = false;
   bool showEnterBuilding = false;
+  bool showInfo = false;
+  LatLng selectedLatlng = LatLng(0, 0);
   int selectedFloorPlan = 9;
   String currentCampus = 'SGW';
+
+  void setPopupInfoVisibility(bool visibility) {
+    showInfo = visibility;
+    notifyListeners();
+  }
+
+  void setPlaceLatLng(LatLng latLng) {
+    selectedLatlng = latLng;
+    notifyListeners();
+  }
 
   void setFloorPlanVisibility(bool visibility) {
     showFloorPlan = visibility;
@@ -60,10 +72,12 @@ class MapNotifier with ChangeNotifier {
     } else {
       c = await futureCoordinate;
     }
-    CameraPosition _newPosition = CameraPosition(
-        target: c.toLatLng(), zoom: constant.CAMERA_INDOOR_ZOOM);
+    setPlaceLatLng(c.toLatLng());
+    CameraPosition _newPosition =
+        CameraPosition(target: c.toLatLng(), zoom: constant.CAMERA_INDOOR_ZOOM);
     controller.animateCamera(CameraUpdate.newCameraPosition(_newPosition));
   }
+
   Future<void> toggleCampus(LatLng latLng) async {
     final c = await _completer.future;
     final p = CameraPosition(
