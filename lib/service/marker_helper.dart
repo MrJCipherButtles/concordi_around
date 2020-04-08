@@ -173,45 +173,30 @@ class MarkerHelper {
   Set<Marker> getBuildingMarkers() {
     buildingMarker = {
       Marker(
-          markerId: MarkerId('buildingMarker_EV'),
-          icon: _evIcon,
-          position: LatLng(
-            45.49547,
-            -73.57763,
-          ),
-          onTap: () {}),
+        markerId: MarkerId('buildingMarker_EV'),
+        icon: _evIcon,
+        position: LatLng(45.4954741, -73.5776316),
+      ),
       Marker(
         markerId: MarkerId('buildingMarker_JMSB'),
         icon: _jmsbIcon,
-        position: LatLng(
-          45.4954,
-          -73.57909,
-        ),
+        position: LatLng(45.495495, -73.5791717),
       ),
       Marker(
         markerId: MarkerId('buildingMarker_GM'),
         icon: _gmIcon,
-        position: LatLng(
-          45.495949,
-          -73.578839,
-        ),
+        position: LatLng(45.49592680000001, -73.57884349999999),
       ),
 
       Marker(
         markerId: MarkerId('buildingMarker_LB'),
         icon: _lbIcon,
-        position: LatLng(
-          45.496865,
-          -73.578041,
-        ),
+        position: LatLng(45.4971439, -73.5778801),
       ),
       Marker(
         markerId: MarkerId('buildingMarker_H'),
         icon: _hIcon,
-        position: LatLng(
-          45.49726,
-          -73.57893,
-        ),
+        position: LatLng(45.4973223, -73.5790288),
       ),
 
       // LOYOLA
@@ -219,58 +204,37 @@ class MarkerHelper {
       Marker(
         markerId: MarkerId('buildingMarker_VL'),
         icon: _vlIcon,
-        position: LatLng(
-          45.459053,
-          -73.638683,
-        ),
+        position: LatLng(45.4589885, -73.6386031),
       ),
       Marker(
         markerId: MarkerId('buildingMarker_FC'),
         icon: _fcIcon,
-        position: LatLng(
-          45.458563,
-          -73.639277,
-        ),
+        position: LatLng(45.4585971, -73.6405597),
       ),
       Marker(
         markerId: MarkerId('buildingMarker_PB'),
         icon: _pbIcon,
-        position: LatLng(
-          45.459068,
-          -73.640577,
-        ),
+        position: LatLng(45.4590401, -73.6405948),
       ),
       Marker(
         markerId: MarkerId('buildingMarker_CJ'),
         icon: _cjIcon,
-        position: LatLng(
-          45.457523,
-          -73.640375,
-        ),
+        position: LatLng(45.457415, -73.64013299999999),
       ),
       Marker(
         markerId: MarkerId('buildingMarker_SP'),
         icon: _spIcon,
-        position: LatLng(
-          45.457832,
-          -73.641494,
-        ),
+        position: LatLng(45.4578426, -73.6415682),
       ),
       Marker(
         markerId: MarkerId('buildingMarker_CB'),
         icon: _cbIcon,
-        position: LatLng(
-          45.458306,
-          -73.640352,
-        ),
+        position: LatLng(45.45825139999999, -73.64031419999),
       ),
       Marker(
         markerId: MarkerId('buildingMarker_PSB'),
         icon: _psbIcon,
-        position: LatLng(
-          45.459647,
-          -73.639784,
-        ),
+        position: LatLng(45.4596546, -73.639771),
       ),
     };
     return buildingMarker;

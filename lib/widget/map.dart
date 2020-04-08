@@ -395,8 +395,8 @@ class _MapState extends State<Map> {
                       pow(point.longitude - building.coordinate.lng, 2)),
                   0.5) *
               100000 <
-          60) {
-        print('\n\n\n\nIf you long press on marker you will see me!\n\n\n\n\n');
+          20) {
+        print('\n\n\n\nYou long pressed on ${building.building}!\n\n\n\n\n');
         //TODO an api call here using the latLng of the building.coordinate.lat and building.coordinate.lng
       }
     }
