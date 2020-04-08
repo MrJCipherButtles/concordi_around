@@ -5,7 +5,7 @@ import 'data_points.dart';
 Map<String, Building> buildings = {
   //SGW
   'EV': Building("Engineering, Computer Science and Visual Arts",
-      coordinate: Coordinate(45.49558, -73.57801, "0", "EV", "SGW"),
+      coordinate: Coordinate(45.49547, -73.57763, "0", "EV", "SGW"),
       polygon: bounds['EV']),
 
   'JMSB': Building("John Molson School of Business",

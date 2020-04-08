@@ -1,13 +1,13 @@
 import 'package:concordi_around/model/coordinate.dart';
-import 'package:concordi_around/widget/building_popup.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:concordi_around/data/data_points.dart' as data;
+import 'package:concordi_around/widget/map.dart';
 
 class MarkerHelper {
   Set<Marker> eightfloorMarker = {};
   Set<Marker> ninthfloorMarker = {};
-  Set<Marker> buildingMarker= {};
+  Set<Marker> buildingMarker = {};
   BitmapDescriptor _roomIcon;
   BitmapDescriptor _maleIcon;
   BitmapDescriptor _femaleIcon;
@@ -171,109 +171,106 @@ class MarkerHelper {
   }
 
   Set<Marker> getBuildingMarkers() {
-    buildingMarker= {
+    buildingMarker = {
       Marker(
-          markerId: MarkerId('buildingMarker1'),
-          infoWindow: InfoWindow(title: 'EV'),
+          markerId: MarkerId('buildingMarker_EV'),
           icon: _evIcon,
           position: LatLng(
-            45.49558,
-            -73.57801,
+            45.49547,
+            -73.57763,
           ),
           onTap: () {}),
       Marker(
-          markerId: MarkerId('buildingMarker2'),
-          infoWindow: InfoWindow(title: 'JMSB'),
-          icon: _jmsbIcon,
-          position: LatLng(
-            45.4954,
-            -73.57909,
-          ),
-           onTap: () {}),
+        markerId: MarkerId('buildingMarker_JMSB'),
+        icon: _jmsbIcon,
+        position: LatLng(
+          45.4954,
+          -73.57909,
+        ),
+      ),
       Marker(
-          markerId: MarkerId('buildingMarker3'),
-          infoWindow: InfoWindow(title: 'GM'),
-          icon: _gmIcon,
-          position: LatLng(
-            45.495949,
-            -73.578839,
-          ), onTap: () {}),
+        markerId: MarkerId('buildingMarker_GM'),
+        icon: _gmIcon,
+        position: LatLng(
+          45.495949,
+          -73.578839,
+        ),
+      ),
 
       Marker(
-          markerId: MarkerId('buildingMarkerLB'),
-          infoWindow: InfoWindow(title: 'LB'),
-          icon: _lbIcon,
-          position: LatLng(
-            45.496865,
-            -73.578041,
-          ), onTap: () {}),
+        markerId: MarkerId('buildingMarker_LB'),
+        icon: _lbIcon,
+        position: LatLng(
+          45.496865,
+          -73.578041,
+        ),
+      ),
       Marker(
-          markerId: MarkerId('buildingMarkerH'),
-          infoWindow: InfoWindow(title: 'H'),
-          icon: _hIcon,
-          position: LatLng(
-            45.49726,
-            -73.57893,
-          ), onTap: () {}),
+        markerId: MarkerId('buildingMarker_H'),
+        icon: _hIcon,
+        position: LatLng(
+          45.49726,
+          -73.57893,
+        ),
+      ),
 
       // LOYOLA
 
       Marker(
-          markerId: MarkerId('buildingMarkerVL'),
-          infoWindow: InfoWindow(title: 'VL'),
-          icon: _vlIcon,
-          position: LatLng(
-            45.459053,
-            -73.638683,
-          ), onTap: () {}),
+        markerId: MarkerId('buildingMarker_VL'),
+        icon: _vlIcon,
+        position: LatLng(
+          45.459053,
+          -73.638683,
+        ),
+      ),
       Marker(
-          markerId: MarkerId('buildingMarkerFC'),
-          infoWindow: InfoWindow(title: 'FC'),
-          icon: _fcIcon,
-          position: LatLng(
-            45.458563,
-            -73.639277,
-          ), onTap: () {}),
+        markerId: MarkerId('buildingMarker_FC'),
+        icon: _fcIcon,
+        position: LatLng(
+          45.458563,
+          -73.639277,
+        ),
+      ),
       Marker(
-          markerId: MarkerId('buildingMarkerPB'),
-          infoWindow: InfoWindow(title: 'PB'),
-          icon: _pbIcon,
-          position: LatLng(
-            45.459068,
-            -73.640577,
-          ), onTap: () {}),
+        markerId: MarkerId('buildingMarker_PB'),
+        icon: _pbIcon,
+        position: LatLng(
+          45.459068,
+          -73.640577,
+        ),
+      ),
       Marker(
-          markerId: MarkerId('buildingMarkerCJ'),
-          infoWindow: InfoWindow(title: 'CJ'),
-          icon: _cjIcon,
-          position: LatLng(
-            45.457523,
-            -73.640375,
-          ), onTap: () {}),
+        markerId: MarkerId('buildingMarker_CJ'),
+        icon: _cjIcon,
+        position: LatLng(
+          45.457523,
+          -73.640375,
+        ),
+      ),
       Marker(
-          markerId: MarkerId('buildingMarkerSP'),
-          infoWindow: InfoWindow(title: 'SP'),
-          icon: _spIcon,
-          position: LatLng(
-            45.457832,
-            -73.641494,
-          ), onTap: () {}),
+        markerId: MarkerId('buildingMarker_SP'),
+        icon: _spIcon,
+        position: LatLng(
+          45.457832,
+          -73.641494,
+        ),
+      ),
       Marker(
-          markerId: MarkerId('buildingMarkerCB'),
-          infoWindow: InfoWindow(title: 'CB'),
-          icon: _cbIcon,
-          position: LatLng(
-            45.458306,
-            -73.640352,
-          ), onTap: () {}),
+        markerId: MarkerId('buildingMarker_CB'),
+        icon: _cbIcon,
+        position: LatLng(
+          45.458306,
+          -73.640352,
+        ),
+      ),
       Marker(
-        markerId: MarkerId('buildingMarkerPSB'),
-        infoWindow: InfoWindow(title: 'PSB'),
+        markerId: MarkerId('buildingMarker_PSB'),
         icon: _psbIcon,
         position: LatLng(
           45.459647,
           -73.639784,
-        ), onTap: () {}
+        ),
       ),
     };
     return buildingMarker;
