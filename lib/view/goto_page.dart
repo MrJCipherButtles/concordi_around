@@ -1,3 +1,4 @@
+import 'package:concordi_around/service/map_constant.dart' as constant;
 import 'package:concordi_around/model/coordinate.dart';
 import 'package:concordi_around/service/map_constant.dart';
 import 'package:concordi_around/widget/search/main_search_bar.dart';
@@ -20,6 +21,10 @@ class GotoPage extends StatefulWidget {
 }
 
 class _GotoPageState extends State<GotoPage> {
+
+  //global key is needed to obtain the right scaffold for the warning snackbar
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
   Coordinate _startPoint;
   Coordinate _destination;
   List<bool> travelMode = [true, false, false, false, false];
@@ -34,6 +39,7 @@ class _GotoPageState extends State<GotoPage> {
 
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       body: Column(
         children: <Widget>[
           Container(
@@ -152,7 +158,7 @@ class _GotoPageState extends State<GotoPage> {
                                     : Colors.transparent,
                               ),
                               child: Icon(Icons.directions_walk),
-                                key: Key("walk"),
+                              key: Key("walk"),
                             ),
                             Container(
                               constraints: BoxConstraints(
@@ -256,6 +262,22 @@ class _GotoPageState extends State<GotoPage> {
                   new List<Coordinate>.from(
                       [this._startPoint, this._destination]));
               Navigator.pop(context);
+            } else {
+              final _warningToast = SnackBar(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(15),
+                        topRight: Radius.circular(15))),
+                backgroundColor: constant.COLOR_CONCORDIA,
+                content: Text("Please enter a valid destination"),
+              );
+              /*
+              removing previous snackbar if they exist so the warning 
+              isn't queued up for a long time if the user triggers the warning
+              multiple time in a row
+              */
+              _scaffoldKey.currentState.removeCurrentSnackBar();
+              _scaffoldKey.currentState.showSnackBar(_warningToast);
             }
           }),
     );
