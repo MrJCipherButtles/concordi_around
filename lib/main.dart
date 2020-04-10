@@ -1,3 +1,4 @@
+import 'package:concordi_around/provider/calendar_notifier.dart';
 import 'package:concordi_around/provider/direction_notifier.dart';
 import 'package:concordi_around/provider/map_notifier.dart';
 import 'package:concordi_around/view/home_page.dart';
@@ -16,7 +17,8 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(
             create: (context) => MapNotifier(),
           ),
-          ChangeNotifierProvider(create: (context) => DirectionNotifier())
+          ChangeNotifierProvider(create: (context) => DirectionNotifier()),
+          ChangeNotifierProvider(create: (context) => CalendarNotifier())
         ], child: HomePage()));
   }
 }

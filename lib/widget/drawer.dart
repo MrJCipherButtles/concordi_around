@@ -1,7 +1,9 @@
+import 'package:concordi_around/provider/calendar_notifier.dart';
 import 'package:concordi_around/service/map_constant.dart' as constant;
 import 'package:concordi_around/view/calendar_page.dart';
 import 'package:flutter/material.dart';
 import 'package:concordi_around/view/shuttle_page.dart';
+import 'package:provider/provider.dart';
 
 import '../global.dart' as global;
 
@@ -59,7 +61,11 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => MyCalendar(title: "My Calendar")));
+                              builder: (context) =>
+                                  ChangeNotifierProvider<CalendarNotifier>(
+                                      create: (_) => CalendarNotifier(),
+                                      child:
+                                          MyCalendar(title: "My Calendar"))));
                     },
                   ),
                   ListTile(

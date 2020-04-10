@@ -18,6 +18,7 @@ class _MyCalendarState extends State<MyCalendar> with TickerProviderStateMixin {
   List _selectedEvents;
   AnimationController _animationController;
   CalendarController _calendarController;
+  CalendarNotifier calendarNotifier;
 
   @override
   void initState() {
@@ -52,56 +53,56 @@ class _MyCalendarState extends State<MyCalendar> with TickerProviderStateMixin {
   void _onVisibleDaysChanged(
       DateTime first, DateTime last, CalendarFormat format) {
     print('CALLBACK: _onVisibleDaysChanged');
+    calendarNotifier.setEvents();
   }
 
   void _onCalendarCreated(
       DateTime first, DateTime last, CalendarFormat format) {
+    calendarNotifier.setEvents();
+    _events = calendarNotifier.events;
+    print(calendarNotifier.events);
     print('CALLBACK: _onCalendarCreated');
   }
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<CalendarNotifier>(
-        //      <--- ChangeNotifierProvider
-        create: (context) => CalendarNotifier(),
-        child: Scaffold(
-          appBar: AppBar(
-              leading: new IconButton(
-                icon: new Icon(Icons.dehaze, color: Colors.white),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-              title: Text(widget.title),
-              backgroundColor: constant.COLOR_CONCORDIA),
-          body: Column(
-            mainAxisSize: MainAxisSize.max,
-            children: <Widget>[
-              Consumer<CalendarNotifier>(
-                //                    <--- Consumer
-                builder: (context, myModel, child) {
-                  return _buildTableCalendar(myModel);
-                },
-              ),
-              const SizedBox(height: 8.0),
-              Expanded(child: _buildEventList()),
-            ],
+    calendarNotifier = Provider.of<CalendarNotifier>(context);
+
+    return Scaffold(
+      appBar: AppBar(
+          leading: new IconButton(
+            icon: new Icon(Icons.dehaze, color: Colors.white),
+            onPressed: () => Navigator.of(context).pop(),
           ),
-          floatingActionButton: FloatingActionButton(
-      onPressed: () {
-        // Add your onPressed code here!
-      },
-      child: Icon(Icons.school),
-      backgroundColor: constant.COLOR_CONCORDIA,
-      tooltip:  "directions to next class",
-    ),
-        ));
+          title: Text(widget.title),
+          backgroundColor: constant.COLOR_CONCORDIA),
+      body: Column(
+        mainAxisSize: MainAxisSize.max,
+        children: <Widget>[
+          _buildTableCalendar(),
+          const SizedBox(height: 8.0),
+          Expanded(child: _buildEventList()),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Add your onPressed code here!
+
+          print(calendarNotifier.getNextClass());
+        },
+        child: Icon(Icons.school),
+        backgroundColor: constant.COLOR_CONCORDIA,
+        tooltip: "directions to next class",
+      ),
+    );
   }
 
   // Simple TableCalendar configuration (using Styles)
-  Widget _buildTableCalendar(myModel) {
+  Widget _buildTableCalendar() {
     // var eventsNotifier = Provider.of<CalendarNotifier>(context);
     return TableCalendar(
       calendarController: _calendarController,
-      events: myModel.events,
+      events: _events,
       startingDayOfWeek: StartingDayOfWeek.monday,
       calendarStyle: CalendarStyle(
         selectedColor: constant.COLOR_CONCORDIA,
