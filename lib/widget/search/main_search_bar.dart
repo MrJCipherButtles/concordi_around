@@ -157,7 +157,7 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
                 onTap: () {
                   PlaceItem selected = _history[index];
                   Navigator.pop(context);
-                  this.coordinate(_getPlaceDetails(selected.placeId));
+                  this.coordinate(getPlaceDetails(selected.placeId));
                 },
                 leading: Icon(Icons.place),
                 title: Text(_history[index].description, key: Key('list_text')),
@@ -204,7 +204,7 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
                     onTap: () {
                       PlaceItem selected = places[index];
                       Navigator.pop(context);
-                      this.coordinate(_getPlaceDetails(selected.placeId));
+                      this.coordinate(getPlaceDetails(selected.placeId));
                     },
                     leading: Icon(Icons.place),
                     title:
@@ -243,7 +243,7 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
               onTap: () {
                 PlaceItem selected = _history[index];
                 Navigator.pop(context);
-                this.coordinate(_getPlaceDetails(selected.placeId));
+                this.coordinate(getPlaceDetails(selected.placeId));
                 // session token must be cleared after getting place details
                 _sessionToken = null;
               },
@@ -328,7 +328,7 @@ class PositionedFloatingSearchBar extends SearchDelegate<String> {
   }
 
   // Google places API request for Place Details
-  Future<Coordinate> _getPlaceDetails(String placeId) async {
+  Future<Coordinate> getPlaceDetails(String placeId) async {
     if (_sessionToken == null) {
       _sessionToken = uuid.v4();
     }

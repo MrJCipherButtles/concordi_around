@@ -100,7 +100,10 @@ class _MapState extends State<Map> {
           polygons: buildingHighlights,
           polylines: direction,
           markers: mapMarkers,
-          onLongPress: handleMapOnLongPress,
+          onLongPress: (LatLng curr) {
+            handleMapOnLongPress(curr, mapNotifier: mapNotifier);
+            mapNotifier.selectedLatlng = curr;
+          },
           initialCameraPosition: _cameraPosition ??
               CameraPosition(target: LatLng(45.4977298, -73.579034)),
           onMapCreated: (GoogleMapController controller) {
@@ -387,7 +390,7 @@ class _MapState extends State<Map> {
   }
 
   // If user long presses on a buildings marker it will show the pop up
-  void handleMapOnLongPress(LatLng point) {
+  Future<void> handleMapOnLongPress(LatLng point, {MapNotifier mapNotifier}) async {
     List<Building> buildingsList = BuildingSingleton().getBuildingList();
     for (Building building in buildingsList) {
       if (pow(
@@ -396,8 +399,8 @@ class _MapState extends State<Map> {
                   0.5) *
               100000 <
           20) {
-        print('\n\n\n\nYou long pressed on ${building.building}!\n\n\n\n\n');
-        //TODO an api call here using the latLng of the building.coordinate.lat and building.coordinate.lng
+        await PositionedFloatingSearchBar().getPlaceDetails(building.placeId);
+        mapNotifier.setPopupInfoVisibility(true);
       }
     }
   }
