@@ -72,7 +72,7 @@ void main() {
           'US-${k}: ${v['story']}',
           () async {
             final SerializableFinder myLocation =
-                find.byTooltip('direction page button');
+                find.byTooltip('Get directions');
             await Future.delayed(Duration(seconds: 5));
             await driver.tap(myLocation);
             await Future.delayed(Duration(seconds: 5));

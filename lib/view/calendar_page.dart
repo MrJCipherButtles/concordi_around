@@ -1,3 +1,6 @@
+import 'package:concordi_around/data/building_singleton.dart';
+import 'package:concordi_around/data/data_points.dart';
+import 'package:concordi_around/model/coordinate.dart';
 import 'package:concordi_around/provider/calendar_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -5,9 +8,10 @@ import 'package:concordi_around/service/map_constant.dart' as constant;
 import 'package:provider/provider.dart';
 
 class MyCalendar extends StatefulWidget {
-  MyCalendar({Key key, this.title}) : super(key: key);
-
+  final Function(Coordinate) destination;
   final String title;
+
+  MyCalendar({Key key, this.title, this.destination}) : super(key: key);
 
   @override
   _MyCalendarState createState() => _MyCalendarState();
@@ -44,7 +48,6 @@ class _MyCalendarState extends State<MyCalendar> with TickerProviderStateMixin {
   }
 
   void _onDaySelected(DateTime day, List events) {
-    print('CALLBACK: _onDaySelected');
     setState(() {
       _selectedEvents = events;
     });
@@ -52,7 +55,6 @@ class _MyCalendarState extends State<MyCalendar> with TickerProviderStateMixin {
 
   void _onVisibleDaysChanged(
       DateTime first, DateTime last, CalendarFormat format) {
-    print('CALLBACK: _onVisibleDaysChanged');
     calendarNotifier.setEvents();
   }
 
@@ -60,22 +62,16 @@ class _MyCalendarState extends State<MyCalendar> with TickerProviderStateMixin {
       DateTime first, DateTime last, CalendarFormat format) {
     calendarNotifier.setEvents();
     _events = calendarNotifier.events;
-    print(calendarNotifier.events);
-    print('CALLBACK: _onCalendarCreated');
   }
 
   @override
   Widget build(BuildContext context) {
+    List<RoomCoordinate> rooms = BuildingSingleton().getAllRooms();
     calendarNotifier = Provider.of<CalendarNotifier>(context);
 
     return Scaffold(
       appBar: AppBar(
-          leading: new IconButton(
-            icon: new Icon(Icons.dehaze, color: Colors.white),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-          title: Text(widget.title),
-          backgroundColor: constant.COLOR_CONCORDIA),
+          title: Text(widget.title), backgroundColor: constant.COLOR_CONCORDIA),
       body: Column(
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
@@ -86,20 +82,27 @@ class _MyCalendarState extends State<MyCalendar> with TickerProviderStateMixin {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Add your onPressed code here!
-
-          print(calendarNotifier.getNextClass());
+          RoomCoordinate foundRoom = null;
+          Navigator.pop(context);
+          for (var room in rooms) {
+            if (calendarNotifier
+                .getNextClass()
+                .toLowerCase()
+                .contains(room.roomId.toLowerCase())) {
+              foundRoom = room;
+            }
+          }
+          widget.destination(foundRoom ?? mainEntrance["Hall"]);
         },
-        child: Icon(Icons.school),
+        child: Icon(Icons.arrow_forward),
         backgroundColor: constant.COLOR_CONCORDIA,
-        tooltip: "directions to next class",
+        tooltip: 'Directions to my next class',
       ),
     );
   }
 
   // Simple TableCalendar configuration (using Styles)
   Widget _buildTableCalendar() {
-    // var eventsNotifier = Provider.of<CalendarNotifier>(context);
     return TableCalendar(
       calendarController: _calendarController,
       events: _events,
@@ -141,7 +144,7 @@ class _MyCalendarState extends State<MyCalendar> with TickerProviderStateMixin {
                     const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
                 child: ListTile(
                   title: Text(event.toString()),
-                  onTap: () => print('$event tapped!'),
+                  onTap: () => {},
                 ),
               ))
           .toList(),

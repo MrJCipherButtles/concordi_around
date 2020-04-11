@@ -67,10 +67,10 @@ class CalendarNotifier with ChangeNotifier {
         });
   }
 
-  getNextClass() {
+  String getNextClass() {
     var now = new DateTime.now().toLocal();
     var min = 999999;
-    var nextCourse = "";
+    String nextCourse = "";
 
     detailedEvents.forEach((key, value) => {
           if (key.difference(now).inMinutes >= 0 &&

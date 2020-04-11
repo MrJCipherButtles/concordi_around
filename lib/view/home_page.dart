@@ -1,4 +1,3 @@
-import 'package:concordi_around/widget/drawer.dart';
 import 'package:concordi_around/widget/map.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -19,7 +18,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Map(), drawer: SidebarDrawer(), resizeToAvoidBottomInset: false);
+    return Map();
   }
 }

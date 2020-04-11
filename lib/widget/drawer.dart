@@ -1,3 +1,4 @@
+import 'package:concordi_around/model/coordinate.dart';
 import 'package:concordi_around/provider/calendar_notifier.dart';
 import 'package:concordi_around/service/map_constant.dart' as constant;
 import 'package:concordi_around/view/calendar_page.dart';
@@ -8,6 +9,9 @@ import 'package:provider/provider.dart';
 import '../global.dart' as global;
 
 class SidebarDrawer extends StatefulWidget {
+  final Function(Coordinate) destination;
+  SidebarDrawer({this.destination});
+
   @override
   _SidebarDrawerState createState() => _SidebarDrawerState();
 }
@@ -58,14 +62,18 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
                     title: Text('My Calendar'),
                     onTap: () {
                       // Update the state of the app.
+                      Navigator.pop(context);
                       Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
                                   ChangeNotifierProvider<CalendarNotifier>(
                                       create: (_) => CalendarNotifier(),
-                                      child:
-                                          MyCalendar(title: "My Calendar"))));
+                                      child: MyCalendar(
+                                          title: "My Calendar",
+                                          destination: (destination) => {
+                                                widget.destination(destination)
+                                              }))));
                     },
                   ),
                   ListTile(
