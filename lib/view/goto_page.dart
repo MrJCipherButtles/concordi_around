@@ -266,7 +266,7 @@ class _GotoPageState extends State<GotoPage> {
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(15),
                         topRight: Radius.circular(15))),
-                backgroundColor: constant.COLOR_CONCORDIA,
+                backgroundColor: COLOR_CONCORDIA,
                 content: Text("Please enter a valid destination"),
               );
               /*
