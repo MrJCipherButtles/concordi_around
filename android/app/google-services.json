@@ -15,6 +15,30 @@
       },
       "oauth_client": [
         {
+          "client_id": "19404702725-lg95hv3k39qsqrt57bt7heqf1e1ihqou.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ca.concordia.w20.soen390.concordi_around",
+            "certificate_hash": "1627716f8da96f0a086f31ff9403af698e68c417"
+          }
+        },
+        {
+          "client_id": "19404702725-n367q423fcphn1os2psqflanplakfn12.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ca.concordia.w20.soen390.concordi_around",
+            "certificate_hash": "abff61e1095652c377f1c961e502b7e69f7bad30"
+          }
+        },
+        {
+          "client_id": "19404702725-fk8vsgkdqnpd1vtlovl4inmhk9qnmm0j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ca.concordia.w20.soen390.concordi_around",
+            "certificate_hash": "0058bbbf28b15017e6284bea3eb95eeca83a3dfd"
+          }
+        },
+        {
           "client_id": "19404702725-vcev74de8eansnanla18c67p61s2cv80.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
