@@ -1,8 +1,7 @@
 import 'dart:async';
-
-import 'package:concordi_around/model/coordinate.dart';
-import 'package:concordi_around/service/map_constant.dart' as constant;
-import 'package:concordi_around/service/map_helper.dart';
+import '../model/coordinate.dart';
+import '../service/map_constant.dart' as constant;
+import '../service/map_helper.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 

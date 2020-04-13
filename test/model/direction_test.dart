@@ -17,11 +17,11 @@ void main() {
         duration: dur,
         distance: dist,
         htmlInstructions: "Instructions");
-    List<Steps> stepsList = new List(1);
+    List<Steps> stepsList = List(1);
     stepsList[0] = stps;
 
     Legs lgs = Legs(steps: stepsList, distance: dist, duration: dur);
-    List<Legs> legsList = new List(1);
+    List<Legs> legsList = List(1);
     legsList[0] = lgs;
 
     Routes rts = Routes(
@@ -31,7 +31,7 @@ void main() {
         endLocation: locMod2,
         startAddress: 'the start address',
         endAddress: 'the end address');
-    List<Routes> routesList = new List(1);
+    List<Routes> routesList = List(1);
     routesList[0] = rts;
 
     Direction dir = Direction(routes: routesList);
