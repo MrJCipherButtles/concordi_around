@@ -1,3 +1,4 @@
+import '../view/calendar_page.dart';
 import '../global.dart' as global;
 import '../service/map_constant.dart' as constant;
 import 'package:flutter/material.dart';
@@ -54,7 +55,10 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
                     title: Text('My Calendar'),
                     onTap: () {
                       // Update the state of the app.
-                      Navigator.pop(context);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MyCalendar(title: "My Calendar")));
                     },
                   ),
                   ListTile(
