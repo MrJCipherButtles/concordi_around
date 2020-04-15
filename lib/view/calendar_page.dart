@@ -144,7 +144,6 @@ class _MyCalendarState extends State<MyCalendar> with TickerProviderStateMixin {
                     const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
                 child: ListTile(
                   title: Text(event.toString()),
-                  onTap: () => {},
                 ),
               ))
           .toList(),
