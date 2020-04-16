@@ -33,8 +33,8 @@ void main() {
     expect(find.byIcon(Icons.directions), findsOneWidget);
 
     //test the direction button
-    await tester.tap(find.byIcon(Icons.directions));
-    await tester.pumpAndSettle();
+    //await tester.tap(find.byIcon(Icons.directions));
+    //await tester.pumpAndSettle();
 
   });
 }
