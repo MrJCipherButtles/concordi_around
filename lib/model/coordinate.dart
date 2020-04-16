@@ -66,14 +66,14 @@ class Coordinate {
       identical(this, other) ||
       other is Coordinate &&
           runtimeType == other.runtimeType &&
-          this.lat == other.lat &&
-          this.lng == other.lng &&
-          this.floor == other.floor &&
-          this.building == other.building &&
-          this.campus == other.campus &&
-          this.type == other.type &&
-          this.adjCoordinates.containsAll(other.adjCoordinates) &&
-          other.adjCoordinates.containsAll(this.adjCoordinates);
+          lat == other.lat &&
+          lng == other.lng &&
+          floor == other.floor &&
+          building == other.building &&
+          campus == other.campus &&
+          type == other.type &&
+          adjCoordinates.containsAll(other.adjCoordinates) &&
+          other.adjCoordinates.containsAll(adjCoordinates);
 
   @override
   int get hashCode => toString().hashCode;

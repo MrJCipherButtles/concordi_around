@@ -1,19 +1,18 @@
-import 'package:concordi_around/model/coordinate.dart';
-import 'package:concordi_around/model/direction.dart';
-import 'package:concordi_around/service/map_constant.dart';
-import 'package:concordi_around/service/map_direction.dart';
-import 'package:concordi_around/service/map_helper.dart';
-import 'package:flutter/cupertino.dart';
+import '../model/coordinate.dart';
+import '../model/direction.dart';
+import '../service/map_constant.dart';
+import '../service/map_direction.dart';
+import '../service/map_helper.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:html/parser.dart';
-import '../service/map_constant.dart';
 
 class DirectionNotifier extends ChangeNotifier {
   bool showDirectionPanel = false;
   DrivingMode mode = DrivingMode.walking;
   Direction direction;
-  List<String> directionSteps = List();
+  List<String> directionSteps = [];
   Set<Polyline> polylines = {};
   String duration = "0 min";
   int totalDuration = 0; // Only used for shuttle
@@ -21,7 +20,7 @@ class DirectionNotifier extends ChangeNotifier {
   int apiCallCounter = 0;
 
   void setShowDirectionPanel(bool visiblity) {
-    if(!visiblity)  {
+    if (!visiblity) {
       clearAll();
     }
     showDirectionPanel = visiblity;
@@ -95,13 +94,14 @@ class DirectionNotifier extends ChangeNotifier {
       List<Routes> routes = direction.routes;
       for (Routes route in routes) {
         for (Legs leg in route.legs) {
-          if(leg.distance.text.toLowerCase().contains("km")) {
+          if (leg.distance.text.toLowerCase().contains("km")) {
             totalDistance += double.parse(
-              leg.distance.text.replaceAll("km", "").replaceAll(" ", ""));
-          }
-          else if (leg.distance.text.toLowerCase().contains("m")) {
-            totalDistance += (double.parse(
-              leg.distance.text.replaceAll("m", "").replaceAll(" ", "")))/1000;
+                leg.distance.text.replaceAll("km", "").replaceAll(" ", ""));
+          } else if (leg.distance.text.toLowerCase().contains("m")) {
+            totalDistance += (double.parse(leg.distance.text
+                    .replaceAll("m", "")
+                    .replaceAll(" ", ""))) /
+                1000;
           }
         }
       }
@@ -110,7 +110,9 @@ class DirectionNotifier extends ChangeNotifier {
 
   void setStepDirections() {
     if (direction != null) {
-      if (apiCallCounter == 2 && mode == DrivingMode.shuttle && MapHelper.isShuttleTaken) {
+      if (apiCallCounter == 2 &&
+          mode == DrivingMode.shuttle &&
+          MapHelper.isShuttleTaken) {
         // If statement is true, this is the 2nd api call for a shuttle direction
         directionSteps
             .add("Shuttle towards ${MapHelper.furthestShuttleCampus}");
@@ -133,7 +135,7 @@ class DirectionNotifier extends ChangeNotifier {
     if (direction != null) {
       PolylinePoints polylinePoints = PolylinePoints();
       List<Routes> routes = direction.routes;
-      List<PointLatLng> points = List();
+      List<PointLatLng> points = [];
       for (Routes route in routes) {
         for (Legs leg in route.legs) {
           for (Steps step in leg.steps) {
@@ -142,7 +144,7 @@ class DirectionNotifier extends ChangeNotifier {
         }
       }
 
-      List<LatLng> latlngPoints = new List();
+      List<LatLng> latlngPoints = [];
       for (PointLatLng latlng in points) {
         latlngPoints.add(LatLng(latlng.latitude, latlng.longitude));
       }

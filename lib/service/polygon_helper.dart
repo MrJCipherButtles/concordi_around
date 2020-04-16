@@ -1,4 +1,4 @@
-import 'package:concordi_around/data/building_singleton.dart';
+import '../data/building_singleton.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class PolygonHelper {

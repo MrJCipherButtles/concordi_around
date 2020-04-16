@@ -1,6 +1,6 @@
 import 'dart:convert';
-import 'package:concordi_around/credential.dart';
-import 'package:concordi_around/model/direction.dart';
+import '../credential.dart';
+import '../model/direction.dart';
 import 'package:dio/dio.dart';
 
 class MapDirection {
@@ -10,7 +10,7 @@ class MapDirection {
   Future<Direction> getDirection(
       String origin, String destination, String mode) async {
     if (origin.isEmpty || destination.isEmpty) {
-      throw ("Origin or destination is empty");
+      throw "Origin or destination is empty";
     }
 
     String baseURL = 'https://maps.googleapis.com/maps/api/directions/json';

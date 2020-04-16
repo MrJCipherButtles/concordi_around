@@ -14,8 +14,8 @@ void main() {
       expect(dn.mode, DrivingMode.walking);
       expect(dn.direction, null);
       expect(dn.getDirection(), null);
-      expect(dn.directionSteps, List());
-      expect(dn.getStepDirections(), List());
+      expect(dn.directionSteps, []);
+      expect(dn.getStepDirections(), []);
       expect(dn.polylines, []);
       expect(dn.getPolylines(), []);
       expect(dn.duration, '0 min');
