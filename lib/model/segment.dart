@@ -18,8 +18,8 @@ class Segment {
     if (_source is PortalCoordinate &&
         _destination is PortalCoordinate &&
         _source.floor != _destination.floor) {
-      return ((_source as PortalCoordinate).isDisabilityFriendly &&
-          (_destination as PortalCoordinate).isDisabilityFriendly);
+      return (_source as PortalCoordinate).isDisabilityFriendly &&
+          (_destination as PortalCoordinate).isDisabilityFriendly;
     }
     //else one coordinate must not be a portal; therefore, true by default
     return true;
@@ -38,5 +38,5 @@ class Segment {
   static double _rad(double deg) => deg * pi / 180;
 
   @override
-  String toString() => _source.toString() + '->' + _destination.toString();
+  String toString() => '${_source.toString()} -> ${_destination.toString()}';
 }

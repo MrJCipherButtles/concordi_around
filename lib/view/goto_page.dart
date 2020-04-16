@@ -1,7 +1,6 @@
-import 'package:concordi_around/service/map_constant.dart' as constant;
-import 'package:concordi_around/model/coordinate.dart';
-import 'package:concordi_around/service/map_constant.dart';
-import 'package:concordi_around/widget/search/main_search_bar.dart';
+import '../model/coordinate.dart';
+import '../service/map_constant.dart';
+import '../widget/search/main_search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -43,8 +42,8 @@ class _GotoPageState extends State<GotoPage> {
       body: Column(
         children: <Widget>[
           Container(
-            margin: new EdgeInsets.only(
-                top: MediaQuery.of(context).padding.top + 5.0),
+            margin:
+                EdgeInsets.only(top: MediaQuery.of(context).padding.top + 5.0),
             child: Column(
               children: <Widget>[
                 Row(
@@ -259,8 +258,7 @@ class _GotoPageState extends State<GotoPage> {
               widget.drivingMode(getSelectedMode(
                   travelMode)); // This callback must occur first
               widget.startPointAndDestinationCoordinates(
-                  new List<Coordinate>.from(
-                      [this._startPoint, this._destination]));
+                  List<Coordinate>.from([this._startPoint, this._destination]));
               Navigator.pop(context);
             } else {
               final _warningToast = SnackBar(
@@ -268,7 +266,7 @@ class _GotoPageState extends State<GotoPage> {
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(15),
                         topRight: Radius.circular(15))),
-                backgroundColor: constant.COLOR_CONCORDIA,
+                backgroundColor: COLOR_CONCORDIA,
                 content: Text("Please enter a valid destination"),
               );
               /*
@@ -284,13 +282,15 @@ class _GotoPageState extends State<GotoPage> {
   }
 
   DrivingMode getSelectedMode(List<bool> modes) {
-    if (modes[0] == true)
+    if (modes[0] == true) {
       return DrivingMode.walking;
-    else if (modes[1] == true)
+    } else if (modes[1] == true) {
       return DrivingMode.transit;
-    else if (modes[2] == true)
+    } else if (modes[2] == true) {
       return DrivingMode.shuttle;
-    else if (modes[3] == true) return DrivingMode.bicycling;
+    } else if (modes[3] == true) {
+      return DrivingMode.bicycling;
+    }
     return DrivingMode.driving;
   }
 }

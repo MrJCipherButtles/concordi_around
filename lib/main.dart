@@ -1,6 +1,6 @@
-import 'package:concordi_around/provider/direction_notifier.dart';
-import 'package:concordi_around/provider/map_notifier.dart';
-import 'package:concordi_around/view/home_page.dart';
+import 'provider/direction_notifier.dart';
+import 'provider/map_notifier.dart';
+import 'view/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

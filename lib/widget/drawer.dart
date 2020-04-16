@@ -1,9 +1,8 @@
-import 'package:concordi_around/service/map_constant.dart' as constant;
-import 'package:concordi_around/view/calendar_page.dart';
-import 'package:flutter/material.dart';
-import 'package:concordi_around/view/shuttle_page.dart';
-
+import '../view/calendar_page.dart';
 import '../global.dart' as global;
+import '../service/map_constant.dart' as constant;
+import 'package:flutter/material.dart';
+import '../view/shuttle_page.dart';
 
 class SidebarDrawer extends StatefulWidget {
   @override
@@ -146,8 +145,7 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(15), topRight: Radius.circular(15))),
-        backgroundColor:
-            global.disabilityMode ? constant.COLOR_CONCORDIA : null,
+        backgroundColor: global.disabilityMode ? constant.COLOR_CONCORDIA : null,
         content: global.disabilityMode
             ? Text('Disability Mode turned ON')
             : Text('Disability Mode turned OFF'),

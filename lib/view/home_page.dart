@@ -1,5 +1,5 @@
-import 'package:concordi_around/widget/drawer.dart';
-import 'package:concordi_around/widget/map.dart';
+import '../widget/drawer.dart';
+import '../widget/map.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
