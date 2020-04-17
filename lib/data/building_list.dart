@@ -1,5 +1,5 @@
-import 'package:concordi_around/model/building.dart';
-import 'package:concordi_around/model/coordinate.dart';
+import '../model/building.dart';
+import '../model/coordinate.dart';
 import 'data_points.dart';
 
 Map<String, Building> buildings = {

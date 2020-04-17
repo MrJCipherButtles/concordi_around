@@ -1,22 +1,22 @@
 import 'dart:async';
-import 'package:concordi_around/data/building_singleton.dart';
-import 'package:concordi_around/data/data_points.dart';
-import 'package:concordi_around/global.dart';
-import 'package:concordi_around/model/building.dart';
-import 'package:concordi_around/model/coordinate.dart';
-import 'package:concordi_around/model/path.dart';
-import 'package:concordi_around/provider/direction_notifier.dart';
-import 'package:concordi_around/provider/map_notifier.dart';
-import 'package:concordi_around/service/map_constant.dart' as constant;
-import 'package:concordi_around/service/map_helper.dart';
-import 'package:concordi_around/service/marker_helper.dart';
-import 'package:concordi_around/service/polygon_helper.dart';
-import 'package:concordi_around/view/goto_page.dart';
-import 'package:concordi_around/widget/direction_panel.dart';
-import 'package:concordi_around/widget/drawer.dart';
-import 'package:concordi_around/widget/search/main_search_bar.dart';
-import 'package:concordi_around/widget/floor_selector/floor_selector_enter_building_column.dart';
-import 'package:concordi_around/widget/building_popup.dart';
+import '../data/building_singleton.dart';
+import '../data/data_points.dart';
+import '../global.dart';
+import '../model/building.dart';
+import '../model/coordinate.dart';
+import '../model/path.dart';
+import '../provider/direction_notifier.dart';
+import '../provider/map_notifier.dart';
+import '../service/map_constant.dart' as constant;
+import '../service/map_helper.dart';
+import '../service/marker_helper.dart';
+import '../service/polygon_helper.dart';
+import '../view/goto_page.dart';
+import 'direction_panel.dart';
+import 'drawer.dart';
+import 'search/main_search_bar.dart';
+import 'floor_selector/floor_selector_enter_building_column.dart';
+import 'building_popup.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -253,8 +253,8 @@ class _MapState extends State<Map> {
     setState(() {
       if (shortestPath != null) {
         Path path = shortestPath['$floor'];
-        direction.removeWhere((polyline) =>
-            !(polyline.polylineId.toString().contains("outdoor")));
+        direction.removeWhere(
+            (polyline) => !polyline.polylineId.toString().contains("outdoor"));
         if (path != null) {
           direction.addAll({path.toPolyline()});
         }
@@ -315,14 +315,15 @@ class _MapState extends State<Map> {
       bool isDisabilityEnabled,
       MapNotifier mapNotifier,
       DirectionNotifier directionNotifier) {
-    if (origin is RoomCoordinate && destination is RoomCoordinate)
+    if (origin is RoomCoordinate && destination is RoomCoordinate) {
       drawIndoorPath(
           origin, destination, disabilityMode, mapNotifier, directionNotifier);
-    else if (origin is RoomCoordinate || destination is RoomCoordinate)
+    } else if (origin is RoomCoordinate || destination is RoomCoordinate) {
       drawCombinedPath(
           origin, destination, disabilityMode, mapNotifier, directionNotifier);
-    else
+    } else {
       drawOutdoorPath(origin, destination, directionNotifier);
+    }
 
     directionNotifier.setShowDirectionPanel(true);
 
@@ -339,7 +340,7 @@ class _MapState extends State<Map> {
       bool isDisabilityEnabled,
       MapNotifier mapNotifier,
       DirectionNotifier directionNotifier) {
-    BuildingSingleton buildingSingleton = new BuildingSingleton();
+    BuildingSingleton buildingSingleton = BuildingSingleton();
     Building hall = buildingSingleton.buildings['H'];
     mapNotifier.setSelectedFloor(int.parse(origin.floor));
     updateFloor(mapNotifier.selectedFloorPlan);

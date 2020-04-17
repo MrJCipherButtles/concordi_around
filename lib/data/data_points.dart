@@ -1,4 +1,4 @@
-import 'package:concordi_around/model/coordinate.dart';
+import '../model/coordinate.dart';
 
 Map<String, List<Coordinate>> bounds = {
   //SGW
@@ -883,5 +883,5 @@ Map<String, Coordinate> shuttleStops = {
 };
 
 Map<String, Coordinate> mainEntrance = {
-  'Hall' : Coordinate(45.497009, -73.578551, "0", "Hall", "SGW")
+  'Hall': Coordinate(45.497009, -73.578551, "0", "Hall", "SGW")
 };
