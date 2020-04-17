@@ -1,16 +1,16 @@
-import 'package:concordi_around/service/shuttle_schedule.dart';
+import '../service/shuttle_schedule.dart';
 import 'package:flutter/material.dart';
-import 'package:concordi_around/service/map_constant.dart' as constant;
+import '../service/map_constant.dart' as constant;
 
 class ShuttlePage extends StatelessWidget {
-  int weekday;
-  TimeOfDay now;
+  final int weekday;
+  final TimeOfDay now;
   ShuttlePage({this.weekday, this.now});
 
   @override
   Widget build(BuildContext context) {
     ShuttleTimes shuttleTimes =
-        new ShuttleTimes(weekday: this.weekday, now: this.now);
+        ShuttleTimes(weekday: this.weekday, now: this.now);
     shuttleTimes.findNextShuttleSGW();
     shuttleTimes.findNextShuttleLOYOLA();
 
@@ -98,8 +98,8 @@ class ShuttlePage extends StatelessWidget {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        appBar: new AppBar(
-            title: new Text("Shuttle Bus Departures"),
+        appBar: AppBar(
+            title: Text("Shuttle Bus Departures"),
             backgroundColor: constant.COLOR_CONCORDIA,
             bottom: TabBar(
               tabs: <Widget>[

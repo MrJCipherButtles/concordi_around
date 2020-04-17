@@ -69,10 +69,10 @@ void main() {
     };
 
     indoorStories.forEach((k, v) => test(
-          'US-${k}: ${v['story']}',
+          'US-$k: ${v['story']}',
           () async {
             final SerializableFinder myLocation =
-                find.byTooltip('direction page button');
+                find.byTooltip('Get directions');
             await Future.delayed(Duration(seconds: 5));
             await driver.tap(myLocation);
             await Future.delayed(Duration(seconds: 5));
@@ -130,7 +130,7 @@ void main() {
       18: 'car'
     };
     transportationMethods.forEach((k, v) => test(
-          'US-${k}: Outdoor Directions from starting location with transportation method: ${v}',
+          'US-$k: Outdoor Directions from starting location with transportation method: $v',
           () async {
             final SerializableFinder myLocation =
                 find.byTooltip('direction page button');
@@ -152,7 +152,7 @@ void main() {
 
             //select mode of transport
             await Future.delayed(Duration(seconds: 1));
-            await driver.tap(find.byValueKey('${v}'));
+            await driver.tap(find.byValueKey('$v'));
 
             //tap go button
             await Future.delayed(Duration(seconds: 3));

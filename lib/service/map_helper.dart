@@ -1,7 +1,6 @@
 import 'dart:math';
-
-import 'package:concordi_around/data/data_points.dart';
-import 'package:concordi_around/model/coordinate.dart';
+import '../data/data_points.dart';
+import '../model/coordinate.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapHelper {
@@ -20,9 +19,9 @@ class MapHelper {
   static bool isWithinHallStrictBound(LatLng latLng) {
     List<LatLng> coordsList = [LatLng(45.49726709926478, -73.57894677668811)];
 
-    return (latLng == null
+    return latLng == null
         ? false
-        : boundsFromLatLngList(coordsList).contains(latLng));
+        : boundsFromLatLngList(coordsList).contains(latLng);
   }
 
   static bool isWithinHall(LatLng latLng) {
@@ -32,9 +31,9 @@ class MapHelper {
       LatLng(45.49741, -73.57819),
       LatLng(45.49781, -73.57906)
     ];
-    return (latLng == null
+    return latLng == null
         ? false
-        : boundsFromLatLngList(coordsList).contains(latLng));
+        : boundsFromLatLngList(coordsList).contains(latLng);
   }
 
   static bool isWithinLoyola(LatLng latLng) {
@@ -44,9 +43,9 @@ class MapHelper {
       LatLng(45.457324, -73.642574),
       LatLng(45.455706, -73.638207)
     ];
-    return (latLng == null
+    return latLng == null
         ? false
-        : boundsFromLatLngList(coordsList).contains(latLng));
+        : boundsFromLatLngList(coordsList).contains(latLng);
   }
 
   static LatLngBounds boundsFromLatLngList(List<LatLng> list) {
@@ -57,10 +56,18 @@ class MapHelper {
         x0 = x1 = latLng.latitude;
         y0 = y1 = latLng.longitude;
       } else {
-        if (latLng.latitude > x1) x1 = latLng.latitude;
-        if (latLng.latitude < x0) x0 = latLng.latitude;
-        if (latLng.longitude > y1) y1 = latLng.longitude;
-        if (latLng.longitude < y0) y0 = latLng.longitude;
+        if (latLng.latitude > x1) {
+          x1 = latLng.latitude;
+        }
+        if (latLng.latitude < x0) {
+          x0 = latLng.latitude;
+        }
+        if (latLng.longitude > y1) {
+          y1 = latLng.longitude;
+        }
+        if (latLng.longitude < y0) {
+          y0 = latLng.longitude;
+        }
       }
     }
     return LatLngBounds(northeast: LatLng(x1, y1), southwest: LatLng(x0, y0));
@@ -85,10 +92,10 @@ class MapHelper {
   }
 
   static bool isShuttleRequired(Coordinate endPoint) {
-    double distanceToClosestStop = calculateDistance(
-        endPoint.toLatLng(),_nearestShuttleStop.toLatLng());
-    double distanceToFurthestStop = calculateDistance(
-        endPoint.toLatLng(), _furthestShuttleStop.toLatLng());
+    double distanceToClosestStop =
+        calculateDistance(endPoint.toLatLng(), _nearestShuttleStop.toLatLng());
+    double distanceToFurthestStop =
+        calculateDistance(endPoint.toLatLng(), _furthestShuttleStop.toLatLng());
     _isShuttleTaken = distanceToFurthestStop < distanceToClosestStop;
     return _isShuttleTaken;
   }
@@ -99,7 +106,9 @@ class MapHelper {
         cos((secondLatlng.latitude - firstLatlng.latitude) * degree) / 2 +
         cos(firstLatlng.latitude * degree) *
             cos(secondLatlng.latitude * degree) *
-            (1 - cos((secondLatlng.longitude - firstLatlng.longitude) * degree)) /
+            (1 -
+                cos((secondLatlng.longitude - firstLatlng.longitude) *
+                    degree)) /
             2;
     return asin(sqrt(result)) * 12742;
   }

@@ -36,7 +36,7 @@ class Building {
   Map<String, Path> shortestPath(Coordinate s, Coordinate d,
       {bool isDisabilityFriendly = false}) {
     assert(s != null && d != null);
-    var indoorNavigationMap = LinkedHashMap<String, Path>();
+    var indoorNavigationMap = <String, Path>{};
     var sFloor = _floors[s.floor];
     var dFloor = _floors[d.floor];
     if (sFloor.floor == dFloor.floor) {

@@ -1,10 +1,16 @@
-import 'package:concordi_around/service/map_constant.dart' as constant;
-import 'package:flutter/material.dart';
-import 'package:concordi_around/view/shuttle_page.dart';
-
+import '../provider/calendar_notifier.dart';
+import 'package:provider/provider.dart';
+import '../model/coordinate.dart';
+import '../view/calendar_page.dart';
 import '../global.dart' as global;
+import '../service/map_constant.dart' as constant;
+import 'package:flutter/material.dart';
+import '../view/shuttle_page.dart';
 
 class SidebarDrawer extends StatefulWidget {
+  final Function(Coordinate) destination;
+  SidebarDrawer({this.destination});
+
   @override
   _SidebarDrawerState createState() => _SidebarDrawerState();
 }
@@ -56,6 +62,17 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
                     onTap: () {
                       // Update the state of the app.
                       Navigator.pop(context);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  ChangeNotifierProvider<CalendarNotifier>(
+                                      create: (_) => CalendarNotifier(),
+                                      child: MyCalendar(
+                                          title: "My Calendar",
+                                          destination: (destination) => {
+                                                widget.destination(destination)
+                                              }))));
                     },
                   ),
                   ListTile(
@@ -142,8 +159,7 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(15), topRight: Radius.circular(15))),
-        backgroundColor:
-            global.disabilityMode ? constant.COLOR_CONCORDIA : null,
+        backgroundColor: global.disabilityMode ? constant.COLOR_CONCORDIA : null,
         content: global.disabilityMode
             ? Text('Disability Mode turned ON')
             : Text('Disability Mode turned OFF'),
