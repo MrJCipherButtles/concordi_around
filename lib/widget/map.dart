@@ -21,6 +21,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
+import 'dart:math';
 
 class Map extends StatefulWidget {
   @override
@@ -112,6 +113,10 @@ class _MapState extends State<Map> {
             polygons: buildingHighlights,
             polylines: direction,
             markers: mapMarkers,
+            onLongPress: (LatLng curr) {
+              handleMapOnLongPress(curr, mapNotifier: mapNotifier);
+              mapNotifier.selectedLatlng = curr;
+            }, 
             initialCameraPosition: _cameraPosition ??
                 CameraPosition(target: LatLng(45.4977298, -73.579034)),
             onMapCreated: (GoogleMapController controller) {
@@ -119,6 +124,12 @@ class _MapState extends State<Map> {
             },
             onCameraMove: (CameraPosition cameraPosition) async {
               GoogleMapController _mapController = await _completer.future;
+              if (cameraPosition.zoom >= 16.5) {
+              mapMarkers.addAll(markerHelper.getBuildingMarkers());
+              } else {
+                mapMarkers.removeWhere((marker) =>
+                  marker.markerId.value.startsWith('buildingMarker'));
+              }
               if (MapHelper.isWithinHall(cameraPosition.target) &&
                   cameraPosition.zoom >= constant.CAMERA_INDOOR_ZOOM) {
                 mapNotifier.setFloorPlanVisibility(true);
@@ -403,6 +414,22 @@ class _MapState extends State<Map> {
               isDisabilityEnabled, mapNotifier, directionNotifier)
           : drawIndoorPath(BuildingSingleton().h8F16, destination,
               isDisabilityEnabled, mapNotifier, directionNotifier);
+    }
+  }
+
+  // If user long presses on a buildings marker it will show the pop up
+  Future<void> handleMapOnLongPress(LatLng point, {MapNotifier mapNotifier}) async {
+    List<Building> buildingsList = BuildingSingleton().getBuildingList();
+    for (Building building in buildingsList) {
+      if (pow(
+                  (pow(point.latitude - building.coordinate.lat, 2) +
+                      pow(point.longitude - building.coordinate.lng, 2)),
+                  0.5) *
+              100000 <
+          20) {
+        await PositionedFloatingSearchBar().getPlaceDetails(building.placeId);
+        mapNotifier.setPopupInfoVisibility(true);
+      }
     }
   }
 }
