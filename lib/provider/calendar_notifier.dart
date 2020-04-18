@@ -1,13 +1,45 @@
 import 'dart:async';
-import 'package:concordi_around/service/google_calendar.dart';
+import '../widget/user/user_info.dart';
+import 'package:flutter/material.dart';
+import '../service/google_calendar.dart';
+import '../service/google_signin.dart';
 import 'package:flutter/widgets.dart';
 
 class CalendarNotifier with ChangeNotifier {
   var calendarService = CalendarService();
+  var name = UserInfoWidgets.name;
+  var email = UserInfoWidgets.email;
+  Widget avatar = UserInfoWidgets.avatar;
+
   Map<DateTime, List> events = {};
   Map<DateTime, List> detailedEvents = {};
 
-  CalendarNotifier() {}
+  getCurrentName() async {
+    var user = await GoogleLogIn.instance.silentSignIn();
+
+    if (user != null) {
+      name = UserInfoWidgets.setName(await user.displayName);
+      notifyListeners();
+    }
+  }
+
+  getCurrentEmail() async {
+    var user = await GoogleLogIn.instance.silentSignIn();
+
+    if (user != null) {
+      email = UserInfoWidgets.setEmail(await user.email);
+      notifyListeners();
+    }
+  }
+
+  getCurrentAvatar() async {
+    var user = await GoogleLogIn.instance.silentSignIn();
+
+    if (user != null) {
+      avatar = UserInfoWidgets.setAvatar(await user.photoUrl);
+      notifyListeners();
+    }
+  }
 
   Future<void> setEvents() async {
     events = {};

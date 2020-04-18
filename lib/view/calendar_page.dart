@@ -1,10 +1,10 @@
-import 'package:concordi_around/data/building_singleton.dart';
-import 'package:concordi_around/data/data_points.dart';
-import 'package:concordi_around/model/coordinate.dart';
-import 'package:concordi_around/provider/calendar_notifier.dart';
+import '../data/building_singleton.dart';
+import '../data/data_points.dart';
+import '../model/coordinate.dart';
+import '../provider/calendar_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:concordi_around/service/map_constant.dart' as constant;
+import '../service/map_constant.dart' as constant;
 import 'package:provider/provider.dart';
 
 class MyCalendar extends StatefulWidget {

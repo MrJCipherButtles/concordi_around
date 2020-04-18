@@ -16,10 +16,19 @@ class GoogleLogIn extends _GoogleLogIn {
 class _GoogleLogIn {
   GoogleSignInAccount _currentUser;
 
-  getCurrentUser() async {
-    Map<String, String> auth;
+  GoogleSignInAccount get currentUser => _currentUser;
 
-    
+  silentSignIn() async {
+    _googleSignIn.onCurrentUserChanged
+        .listen((GoogleSignInAccount account) async {
+      _currentUser = account;
+    });
+
+    return await _googleSignIn.signInSilently();
+  }
+
+  getCurrentUserAuth() async {
+    Map<String, String> auth;
 
     _googleSignIn.onCurrentUserChanged
         .listen((GoogleSignInAccount account) async {
@@ -40,7 +49,6 @@ class _GoogleLogIn {
         await _handleSignIn();
       }
     }
-
   }
 
   Future<void> _handleSignIn() async {
