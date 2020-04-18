@@ -50,6 +50,24 @@ void main() {
       tempSetLength = marker.getFloorMarkers(9).length;
       marker.removeStartEndMarker();
       expect(tempSetLength > marker.ninthfloorMarker.length , true );
+
+      //getBuildingMarkers
+      tempSetLength = 0;
+      Set<Marker> tempSet = marker.getBuildingMarkers();
+      expect(tempSet.length > tempSetLength, true);
+      expect(tempSet.any((mark) => mark.markerId.value == 'buildingMarker_EV'), true);
+      expect(tempSet.any((mark) => mark.markerId.value == 'buildingMarker_JMSB'), true);
+      expect(tempSet.any((mark) => mark.markerId.value == 'buildingMarker_GM'), true);
+      expect(tempSet.any((mark) => mark.markerId.value == 'buildingMarker_LB'), true);
+      expect(tempSet.any((mark) => mark.markerId.value == 'buildingMarker_H'), true);
+      expect(tempSet.any((mark) => mark.markerId.value == 'buildingMarker_VL'), true);
+      expect(tempSet.any((mark) => mark.markerId.value == 'buildingMarker_FC'), true);
+      expect(tempSet.any((mark) => mark.markerId.value == 'buildingMarker_PB'), true);
+      expect(tempSet.any((mark) => mark.markerId.value == 'buildingMarker_CJ'), true);
+      expect(tempSet.any((mark) => mark.markerId.value == 'buildingMarker_SP'), true);
+      expect(tempSet.any((mark) => mark.markerId.value == 'buildingMarker_CB'), true);
+      expect(tempSet.any((mark) => mark.markerId.value == 'buildingMarker_PSB'), true);
+
     });
   });
 }
