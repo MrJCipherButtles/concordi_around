@@ -13,6 +13,7 @@ import '../service/marker_helper.dart';
 import '../service/polygon_helper.dart';
 import '../view/goto_page.dart';
 import 'direction_panel.dart';
+import 'drawer.dart';
 import 'search/main_search_bar.dart';
 import 'floor_selector/floor_selector_enter_building_column.dart';
 import 'building_popup.dart';
@@ -82,158 +83,171 @@ class _MapState extends State<Map> {
         Provider.of<DirectionNotifier>(context);
     _completer = Provider.of<MapNotifier>(context, listen: false).getCompleter;
 
-    return Stack(
-      children: <Widget>[
-        Container(
-            child: GoogleMap(
-          mapType: MapType.normal,
-          myLocationEnabled: _myLocationEnabled,
-          myLocationButtonEnabled: false,
-          compassEnabled: false,
-          indoorViewEnabled: false,
-          mapToolbarEnabled: false,
-          scrollGesturesEnabled: true,
-          rotateGesturesEnabled: true,
-          tiltGesturesEnabled: true,
-          zoomGesturesEnabled: true,
-          polygons: buildingHighlights,
-          polylines: direction,
-          markers: mapMarkers,
-          initialCameraPosition: _cameraPosition ??
-              CameraPosition(target: LatLng(45.4977298, -73.579034)),
-          onMapCreated: (GoogleMapController controller) {
-            _completer.complete(controller);
-          },
-          onCameraMove: (CameraPosition cameraPosition) async {
-            GoogleMapController _mapController = await _completer.future;
-            if (MapHelper.isWithinHall(cameraPosition.target) &&
-                cameraPosition.zoom >= constant.CAMERA_INDOOR_ZOOM) {
-              mapNotifier.setFloorPlanVisibility(true);
-              _setStyle(_mapController, mapNotifier);
-              mapMarkers.addAll(
-                  markerHelper.getFloorMarkers(mapNotifier.selectedFloorPlan));
-            } else {
-              mapNotifier.setFloorPlanVisibility(false);
-              _resetStyle(_mapController);
-            }
-            mapNotifier.setCampusLatLng(cameraPosition.target);
-          },
-        )),
-        Positioned(
-          bottom: MediaQuery.of(context).padding.bottom + 16,
-          right: MediaQuery.of(context).padding.right + 16,
-          child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                FloatingActionButton(
-                  heroTag: 'location',
-                  onPressed: goToCurrent,
-                  backgroundColor: Colors.white,
-                  foregroundColor: constant.COLOR_CONCORDIA,
-                  tooltip: 'Get Location',
-                  child: Icon(Icons.my_location),
-                ),
-                SizedBox(
-                  height: 16,
-                ),
-                FloatingActionButton(
-                  heroTag: 'direction',
-                  tooltip: "direction page button",
-                  onPressed: () {
-                    mapMarkers.removeWhere(
-                        (marker) => marker.markerId.value == 'pop-up');
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => GotoPage(
-                          _position,
-                          drivingMode: (constant.DrivingMode mode) =>
-                              {directionNotifier.setDrivingMode(mode)},
-                          startPointAndDestinationCoordinates:
-                              (List<Coordinate> directionCoordinates) => {
-                            drawPath(
-                                directionCoordinates[0],
-                                directionCoordinates[1],
-                                disabilityMode,
-                                mapNotifier,
-                                directionNotifier)
-                          },
+    return Scaffold(
+      drawer: SidebarDrawer(destination: (destination) {
+        directionNotifier.clearAll();
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                buildGotoPage(directionNotifier, mapNotifier, destination),
+          ),
+        );
+      }),
+      resizeToAvoidBottomInset: false,
+      body: Stack(
+        children: <Widget>[
+          Container(
+              child: GoogleMap(
+            mapType: MapType.normal,
+            myLocationEnabled: _myLocationEnabled,
+            myLocationButtonEnabled: false,
+            compassEnabled: false,
+            indoorViewEnabled: false,
+            mapToolbarEnabled: false,
+            scrollGesturesEnabled: true,
+            rotateGesturesEnabled: true,
+            tiltGesturesEnabled: true,
+            zoomGesturesEnabled: true,
+            polygons: buildingHighlights,
+            polylines: direction,
+            markers: mapMarkers,
+            initialCameraPosition: _cameraPosition ??
+                CameraPosition(target: LatLng(45.4977298, -73.579034)),
+            onMapCreated: (GoogleMapController controller) {
+              _completer.complete(controller);
+            },
+            onCameraMove: (CameraPosition cameraPosition) async {
+              GoogleMapController _mapController = await _completer.future;
+              if (MapHelper.isWithinHall(cameraPosition.target) &&
+                  cameraPosition.zoom >= constant.CAMERA_INDOOR_ZOOM) {
+                mapNotifier.setFloorPlanVisibility(true);
+                _setStyle(_mapController, mapNotifier);
+                mapMarkers.addAll(markerHelper
+                    .getFloorMarkers(mapNotifier.selectedFloorPlan));
+              } else {
+                mapNotifier.setFloorPlanVisibility(false);
+                _resetStyle(_mapController);
+              }
+              mapNotifier.setCampusLatLng(cameraPosition.target);
+            },
+          )),
+          Positioned(
+            bottom: MediaQuery.of(context).padding.bottom + 16,
+            right: MediaQuery.of(context).padding.right + 16,
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  FloatingActionButton(
+                    heroTag: 'location',
+                    onPressed: () {
+                      goToCurrent();
+                    },
+                    backgroundColor: Colors.white,
+                    foregroundColor: constant.COLOR_CONCORDIA,
+                    tooltip: 'Get Location',
+                    child: Icon(Icons.my_location),
+                  ),
+                  SizedBox(
+                    height: 16,
+                  ),
+                  FloatingActionButton(
+                    heroTag: 'direction',
+                    tooltip: 'Get directions',
+                    onPressed: () {
+                      mapMarkers.removeWhere(
+                          (marker) => marker.markerId.value == 'pop-up');
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => buildGotoPage(
+                              directionNotifier, mapNotifier, null),
                         ),
-                      ),
-                    );
-                  },
-                  backgroundColor: constant.COLOR_CONCORDIA,
-                  foregroundColor: Colors.white,
-                  child: Icon(Icons.directions),
-                ),
-              ]),
-        ),
-        SearchBar(coordinate: (Future<Coordinate> coordinate) async {
-          setState(() {
-            directionNotifier.setShowDirectionPanel(false);
-            mapMarkers
-                .removeWhere((marker) => marker.markerId.value == 'pop-up');
-          });
-          mapNotifier.goToSpecifiedLatLng(futureCoordinate: coordinate);
-          var result = await coordinate;
-          if (!(result is RoomCoordinate)) {
-            mapNotifier.setPopupInfoVisibility(true);
-          }
-          mapMarkers.add(Marker(
-              markerId: MarkerId("pop-up"),
-              position: LatLng(result.lat, result.lng),
-              infoWindow: InfoWindow(title: "${result.building}")));
-        }),
-        FloorSelectorEnterBuilding(
-          selectedFloor: (int floor) =>
-              {updateFloor(floor), mapNotifier.setSelectedFloor(floor)},
-        ),
-        BuildingPopup(
-          onClosePanel: () => {
-            mapMarkers
-                .removeWhere((marker) => marker.markerId.value == 'pop-up')
-          },
-          onGetDirectionSelected: () => {
-            mapMarkers
-                .removeWhere((marker) => marker.markerId.value == 'pop-up'),
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => GotoPage(
-                  _position,
-                  drivingMode: (constant.DrivingMode mode) =>
-                      {directionNotifier.setDrivingMode(mode)},
-                  destination: Coordinate(
-                      SearchBar.searchResult.lat,
-                      SearchBar.searchResult.lng,
-                      "",
-                      "${SearchBar.searchResult.building}",
-                      ""),
-                  startPointAndDestinationCoordinates:
-                      (List<Coordinate> directionCoordinates) => {
-                    drawPath(directionCoordinates[0], directionCoordinates[1],
-                        disabilityMode, mapNotifier, directionNotifier)
-                  },
+                      );
+                    },
+                    backgroundColor: constant.COLOR_CONCORDIA,
+                    foregroundColor: Colors.white,
+                    child: Icon(Icons.directions),
+                  ),
+                ]),
+          ),
+          SearchBar(coordinate: (Future<Coordinate> coordinate) async {
+            setState(() {
+              directionNotifier.setShowDirectionPanel(false);
+              mapMarkers
+                  .removeWhere((marker) => marker.markerId.value == 'pop-up');
+            });
+            mapNotifier.goToSpecifiedLatLng(futureCoordinate: coordinate);
+            var result = await coordinate;
+            if (!(result is RoomCoordinate)) {
+              mapNotifier.setPopupInfoVisibility(true);
+            }
+            mapMarkers.add(Marker(
+                markerId: MarkerId("pop-up"),
+                position: LatLng(result.lat, result.lng),
+                infoWindow: InfoWindow(title: "${result.building}")));
+          }),
+          FloorSelectorEnterBuilding(
+            selectedFloor: (int floor) =>
+                {updateFloor(floor), mapNotifier.setSelectedFloor(floor)},
+          ),
+          BuildingPopup(
+            onClosePanel: () => {
+              mapMarkers
+                  .removeWhere((marker) => marker.markerId.value == 'pop-up')
+            },
+            onGetDirectionSelected: () => {
+              mapMarkers
+                  .removeWhere((marker) => marker.markerId.value == 'pop-up'),
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => buildGotoPage(
+                      directionNotifier,
+                      mapNotifier,
+                      Coordinate(
+                          SearchBar.searchResult.lat,
+                          SearchBar.searchResult.lng,
+                          "",
+                          "${SearchBar.searchResult.building}",
+                          "")),
                 ),
               ),
-            ),
-            mapNotifier.setPopupInfoVisibility(false)
-          },
-        ),
-        DirectionPanel(
-            removeDirectionPolyline: (bool removePolyline) => {
-                  direction.clear(),
-                  shortestPath = {},
-                  markerHelper.removeStartEndMarker(),
-                  mapMarkers.removeWhere((marker) =>
-                      marker.markerId.value == 'start' ||
-                      marker.markerId.value == 'end' ||
-                      marker.markerId.value == 'destination'),
-                }),
-      ],
+              mapNotifier.setPopupInfoVisibility(false)
+            },
+          ),
+          DirectionPanel(
+              removeDirectionPolyline: (bool removePolyline) => {
+                    direction.clear(),
+                    shortestPath = {},
+                    markerHelper.removeStartEndMarker(),
+                    mapMarkers.removeWhere((marker) =>
+                        marker.markerId.value == 'start' ||
+                        marker.markerId.value == 'end' ||
+                        marker.markerId.value == 'destination'),
+                  }),
+        ],
+      ),
     );
   }
+
+  /*
+  Pass destination param as null if you have no destination selected
+   */
+  GotoPage buildGotoPage(DirectionNotifier directionNotifier,
+          MapNotifier mapNotifier, Coordinate destination) =>
+      GotoPage(
+        _position,
+        drivingMode: (constant.DrivingMode mode) =>
+            {directionNotifier.setDrivingMode(mode)},
+        destination: destination,
+        startPointAndDestinationCoordinates:
+            (List<Coordinate> directionCoordinates) => {
+          drawPath(directionCoordinates[0], directionCoordinates[1],
+              disabilityMode, mapNotifier, directionNotifier)
+        },
+      );
 
   void updateFloor(int floor) {
     setState(() {
@@ -281,6 +295,9 @@ class _MapState extends State<Map> {
     buildingHighlights = BuildingSingleton().getOutdoorBuildingHighlights();
   }
 
+  /*
+  Go to current location
+   */
   void goToCurrent() async {
     final GoogleMapController controller = await _completer.future;
     _cameraPosition = CameraPosition(
@@ -289,6 +306,9 @@ class _MapState extends State<Map> {
     controller.animateCamera(CameraUpdate.newCameraPosition(_cameraPosition));
   }
 
+  /*
+  Call this method to draw the path, this method will handle any necessary delgation to the appropriate methods
+   */
   void drawPath(
       Coordinate origin,
       Coordinate destination,
@@ -311,6 +331,9 @@ class _MapState extends State<Map> {
     mapNotifier.goToSpecifiedLatLng(coordinate: origin);
   }
 
+  /*
+  This method is called by drawPath and will draw indoor directions ONLY
+   */
   void drawIndoorPath(
       Coordinate origin,
       Coordinate destination,
@@ -331,6 +354,9 @@ class _MapState extends State<Map> {
     });
   }
 
+  /*
+  This method is called by drawPath and will draw outdoor directions ONLY
+   */
   Future<void> drawOutdoorPath(Coordinate origin, Coordinate destination,
       DirectionNotifier directionNotifier) async {
     MapHelper.setShuttleStops(origin);
@@ -354,6 +380,9 @@ class _MapState extends State<Map> {
     mapMarkers.add(markerHelper.getDestinationMarker(destination.toLatLng()));
   }
 
+  /*
+  This method is called by drawPath when indoor and outdoor directions are combined
+   */
   Future<void> drawCombinedPath(
       Coordinate origin,
       Coordinate destination,
