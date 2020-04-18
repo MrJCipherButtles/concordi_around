@@ -247,4 +247,10 @@ class _BuildingPopupState extends State<BuildingPopup> {
       _openClosed = 'Information Not Available';
     }
   }
+  
 }
+
+
+
+
+

@@ -2,24 +2,13 @@ import 'package:concordi_around/view/shuttle_page.dart';
 import 'package:concordi_around/widget/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:concordi_around/main.dart';
 
 void main() {
-  //need this since we need a mediaQuery ancestor such as materialapp
-  Widget makeTestableWidget({Widget child}) {
-    return MaterialApp(
-      // home: child,
-      home: Scaffold(
-        body: child,
-      ),
-    );
-  }
-
   testWidgets('Testing the SideBar widget', (WidgetTester tester) async {
-    //building the sidebar
-    //SidebarDrawer is created inside of a scaffold so we need to make it inside a materialapp
-    SidebarDrawer sidebarDrawer = SidebarDrawer();
-    await tester.pumpWidget(makeTestableWidget(child: sidebarDrawer));
-    await tester.pump();
+    await tester.pumpWidget(MyApp());
+    await tester.tap(find.byIcon(Icons.menu));
+    await tester.pumpAndSettle();
 
     //making sure that the side bar exists and everything we need is there
     expect(find.byType(SidebarDrawer), findsOneWidget);
@@ -55,7 +44,6 @@ void main() {
 
     //Making sure disability button works
     await tester.tap(find.text('Disability Mode'));
-    expect(sidebarDrawer.createState().isDisabilityOn(), true);
     await tester.pump();
     expect(find.byType(SnackBarAction), findsOneWidget);
     expect(find.text('Disability Mode turned ON'), findsOneWidget);
