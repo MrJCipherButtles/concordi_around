@@ -59,7 +59,7 @@ class BuildingSingleton {
       }
 
       result.add(Polygon(
-          polygonId: PolygonId(building.building),
+          polygonId: PolygonId(building.buildingName),
           fillColor: COLOR_CONCORDIA.withOpacity(0.4),
           strokeWidth: 3,
           points: latlngs,
@@ -71,7 +71,7 @@ class BuildingSingleton {
   Set<Polygon> getFloorPolygon(String buildingName, String floorName) {
     Set<Polygon> result = {};
     for (var building in _buildings.values) {
-      if (building.building
+      if (building.buildingName
           .toUpperCase()
           .contains(buildingName.toUpperCase())) {
         if (building.floors != null) {
@@ -83,7 +83,7 @@ class BuildingSingleton {
               Random rnd = Random();
               result.add(Polygon(
                   polygonId:
-                      PolygonId('${floor.floor}-${rnd.nextInt(100000000)}'),
+                      PolygonId('${floor.floorName}-${rnd.nextInt(100000000)}'),
                   points: points,
                   fillColor: COLOR_CONCORDIA.withOpacity(0.4),
                   strokeWidth: 3,
@@ -99,7 +99,7 @@ class BuildingSingleton {
   Set<Marker> getFloorMarker(String buildingName, String floorName) {
     Set<Marker> result = {};
     for (var building in _buildings.values) {
-      if (building.building
+      if (building.buildingName
           .toUpperCase()
           .contains(buildingName.toUpperCase())) {
         if (building.floors != null) {

@@ -4,7 +4,15 @@ import 'segment.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class Path {
+  /*
+  -------ATTRIBUTES-------
+  */
+
   final List<Segment> _segments = <Segment>[];
+
+  /*
+  -------CONSTRUCTOR-------
+   */
 
   Path(List<Coordinate> coordinateList) {
     assert(coordinateList != null && coordinateList.length > 1);
@@ -13,19 +21,26 @@ class Path {
     }
   }
 
+  /*
+  -------GETTER-------
+   */
+
   List<Segment> get segments => _segments;
 
+  /*
+  -------PUBLIC METHODS-------
+   */
+
+  //Converts path to list of coordinates (order is important)
   List<Coordinate> coordinatesInOrder() {
-    var ls = <Coordinate>[];
+    var orderedCoordinateList = <Coordinate>[];
     //add the source coordinate of the first segment
-    ls.add(_segments[0].source);
+    orderedCoordinateList.add(_segments[0].source);
     for (var segment in _segments) {
-      //then add all destination coordinates for each segment
-      //(avoids duplicate coordinates although set data structure enforces this)
-      //So should we keep Set or change to List? TBD
-      ls.add(segment.destination);
+      //then add all destination coordinates for each segment (avoids duplicates)
+      orderedCoordinateList.add(segment.destination);
     }
-    return ls;
+    return orderedCoordinateList;
   }
 
   //A path is disability-friendly if all its segments are disability-friendly
@@ -47,6 +62,7 @@ class Path {
     return length;
   }
 
+  //Converts path to polyline for Google Maps compatibility
   Polyline toPolyline() {
     var coordinates = coordinatesInOrder();
     var points = <LatLng>[];
@@ -63,6 +79,7 @@ class Path {
         color: Color.fromRGBO(147, 0, 47, 1));
   }
 
+  //prints path in order
   @override
   String toString() {
     var buffer = StringBuffer();
