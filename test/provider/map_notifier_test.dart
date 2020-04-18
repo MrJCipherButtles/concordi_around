@@ -38,14 +38,5 @@ void main() {
       mp.setCampusString("SGW");
       expect(mp.currentCampus, 'SGW');
     });
-
-    //TODO: Test future methods in map_notifier.dart class
-    test('Future methods should bring us to correct locations', () async {
-      
-      var mp = MapNotifier();
-
-      mp.goToSpecifiedLatLng(
-          coordinate: Coordinate(45.458279, -73.640436, '', '', ''));
-    });
   });
 }
