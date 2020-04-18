@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class DirectionPanel extends StatefulWidget {
-  final Function(bool) removeDirectionPolyline;
+  final VoidCallback removeDirectionPolyline;
 
   DirectionPanel({this.removeDirectionPolyline});
 
@@ -56,7 +56,7 @@ class DirectionPanelState extends State<DirectionPanel> {
                                   directionNotifier
                                       .setShowDirectionPanel(false),
                                   directionNotifier.clearAll(),
-                                  widget.removeDirectionPolyline(true)
+                                  widget.removeDirectionPolyline()
                                 })
                       ],
                     ),
