@@ -23,6 +23,11 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
   }
 
   Widget build(BuildContext context) {
+    var user = Provider.of<CalendarNotifier>(context);
+    user.getCurrentName();
+    user.getCurrentAvatar();
+    user.getCurrentEmail();
+
     return ClipRRect(
       borderRadius: BorderRadius.only(
           topRight: Radius.circular(constant.BORDER_RADIUS),
@@ -39,23 +44,14 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
                 padding: EdgeInsets.zero,
                 children: <Widget>[
                   UserAccountsDrawerHeader(
-                    //TODO: remove hard-coded info
-                    accountName: Text("John Doe"),
-                    accountEmail: Text("40022345"),
-                    decoration: BoxDecoration(
-                        color: Color.fromRGBO(147, 35, 57, 1),
-                        borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(constant.BORDER_RADIUS))),
-                    currentAccountPicture: CircleAvatar(
-                      backgroundColor: Colors.white,
-                      foregroundColor: Colors.black,
-                      //TODO: remove hard-coded info
-                      child: Text(
-                        "JD",
-                        style: TextStyle(fontSize: 40.0),
-                      ),
-                    ),
-                  ),
+                      accountName: user.name,
+                      accountEmail: user.email,
+                      decoration: BoxDecoration(
+                          color: Color.fromRGBO(147, 35, 57, 1),
+                          borderRadius: BorderRadius.only(
+                              topRight:
+                                  Radius.circular(constant.BORDER_RADIUS))),
+                      currentAccountPicture: user.avatar),
                   ListTile(
                     leading: Icon(Icons.calendar_today),
                     title: Text('My Calendar'),
@@ -159,7 +155,8 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(15), topRight: Radius.circular(15))),
-        backgroundColor: global.disabilityMode ? constant.COLOR_CONCORDIA : null,
+        backgroundColor:
+            global.disabilityMode ? constant.COLOR_CONCORDIA : null,
         content: global.disabilityMode
             ? Text('Disability Mode turned ON')
             : Text('Disability Mode turned OFF'),
