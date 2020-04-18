@@ -7,8 +7,8 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="concordi_around"
-        android:icon="@mipmap/ic_launcher">
+        android:label="Concordi Around"
+        android:icon="@mipmap/concordi_around">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
