@@ -29,7 +29,6 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('My Calendar'), findsOneWidget);
-    expect(find.byIcon(Icons.arrow_forward), findsOneWidget);
     expect(find.byType(TableCalendar), findsOneWidget);
   });
 }
