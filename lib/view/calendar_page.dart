@@ -1,5 +1,5 @@
+import '../service/map_constant.dart';
 import '../data/building_singleton.dart';
-import '../data/data_points.dart';
 import '../model/coordinate.dart';
 import '../provider/calendar_notifier.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +23,9 @@ class _MyCalendarState extends State<MyCalendar> with TickerProviderStateMixin {
   AnimationController _animationController;
   CalendarController _calendarController;
   CalendarNotifier calendarNotifier;
+
+  //global key is needed to obtain the right scaffold for the warning snackbar
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -70,6 +73,7 @@ class _MyCalendarState extends State<MyCalendar> with TickerProviderStateMixin {
     calendarNotifier = Provider.of<CalendarNotifier>(context);
 
     return Scaffold(
+        key: _scaffoldKey,
       appBar: AppBar(
           title: Text(widget.title), backgroundColor: constant.COLOR_CONCORDIA),
       body: Column(
@@ -80,10 +84,16 @@ class _MyCalendarState extends State<MyCalendar> with TickerProviderStateMixin {
           Expanded(child: _buildEventList()),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
+
+      floatingActionButton: RaisedButton(
+
+        child: Text("Go To My Next Class"),
+        textColor: Colors.white,
+        color: constant.COLOR_CONCORDIA,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(constant.BORDER_RADIUS)),
         onPressed: () {
           RoomCoordinate foundRoom = null;
-          Navigator.pop(context);
           for (var room in rooms) {
             if (calendarNotifier
                 .getNextClass()
@@ -92,12 +102,24 @@ class _MyCalendarState extends State<MyCalendar> with TickerProviderStateMixin {
               foundRoom = room;
             }
           }
-          widget.destination(foundRoom ?? mainEntrance["Hall"]);
-        },
-        child: Icon(Icons.arrow_forward),
-        backgroundColor: constant.COLOR_CONCORDIA,
-        tooltip: 'Directions to my next class',
-      ),
+          if(foundRoom != null) {
+            Navigator.pop(context);
+            widget.destination(foundRoom);
+          }
+          else {
+            final _warningToast = SnackBar(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(15),
+                      topRight: Radius.circular(15))),
+              backgroundColor: COLOR_CONCORDIA,
+              content: Text("You have no upcoming classes"),
+            );
+            _scaffoldKey.currentState.removeCurrentSnackBar();
+            _scaffoldKey.currentState.showSnackBar(_warningToast);
+          }
+        }
+      )
     );
   }
 
