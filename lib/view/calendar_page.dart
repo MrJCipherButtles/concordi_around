@@ -80,7 +80,14 @@ class _MyCalendarState extends State<MyCalendar> with TickerProviderStateMixin {
           Expanded(child: _buildEventList()),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
+
+      floatingActionButton: RaisedButton(
+
+        child: Text("Go To My Next Class"),
+        textColor: Colors.white,
+        color: constant.COLOR_CONCORDIA,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(constant.BORDER_RADIUS)),
         onPressed: () {
           RoomCoordinate foundRoom = null;
           Navigator.pop(context);
@@ -93,11 +100,8 @@ class _MyCalendarState extends State<MyCalendar> with TickerProviderStateMixin {
             }
           }
           widget.destination(foundRoom ?? mainEntrance["Hall"]);
-        },
-        child: Icon(Icons.arrow_forward),
-        backgroundColor: constant.COLOR_CONCORDIA,
-        tooltip: 'Directions to my next class',
-      ),
+        }
+      )
     );
   }
 
