@@ -29,7 +29,6 @@ void main() {
     expect(find.byIcon(Icons.close), findsOneWidget);
     expect(find.byType(ListView), findsWidgets);
     expect(find.byType(RaisedButton), findsOneWidget);
-    expect(find.byIcon(Icons.my_location), findsOneWidget);
 
   });
 }
