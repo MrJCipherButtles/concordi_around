@@ -56,6 +56,7 @@ class _SearchBarState extends State<SearchBar> {
                 Expanded(
                   flex: 10,
                   child: TextField(
+                    textAlign: TextAlign.center,
                     readOnly: true,
                     cursorColor: Colors.black,
                     keyboardType: TextInputType.text,
@@ -63,7 +64,7 @@ class _SearchBarState extends State<SearchBar> {
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       contentPadding: EdgeInsets.symmetric(horizontal: 15),
-                      hintText: "    Search",
+                      hintText: "Search",
                     ),
                     onTap: () {
                       showSearch(
