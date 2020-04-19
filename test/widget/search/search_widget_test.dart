@@ -32,13 +32,18 @@ void main() {
     await tester.pumpAndSettle();
 
     //Testing the raised button
-    var campusButton = find.byType(RaisedButton);
+    var campusButtonLoy = find.byType(RaisedButton);
+    var campusButtonSgw = find.byType(RaisedButton);
 
-    expect(campusButton, findsOneWidget);
+    expect(campusButtonLoy, findsOneWidget);
+    expect(campusButtonSgw,findsOneWidget);
     expect(find.text('SGW'), findsOneWidget);
-    await tester.tap(campusButton);
-    await tester.pump();
     expect(find.text('LOY'), findsOneWidget);
+    await tester.tap(campusButtonLoy);
+    await tester.pump();
+    await tester.tap(campusButtonSgw);
+    await tester.pump();
+    
 
     // //Testing the SideBarDrawer button
     var sidemenuButton = find.byType(IconButton);
