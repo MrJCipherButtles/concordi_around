@@ -46,10 +46,10 @@ void main() {
     test(
       'US-10: Toggle between campuses',
       () async {
-        await Future.delayed(Duration(seconds: 5));
-        await driver.tap(find.text('SGW'));
-        await Future.delayed(Duration(seconds: 3));
+        await Future.delayed(Duration(seconds: 4));
         await driver.tap(find.text('LOY'));
+        await Future.delayed(Duration(seconds: 3));
+        await driver.tap(find.text('SGW'));
         await Future.delayed(Duration(seconds: 3));
       },
       timeout: Timeout(
@@ -73,9 +73,9 @@ void main() {
           () async {
             final SerializableFinder myLocation =
                 find.byTooltip('Get directions');
-            await Future.delayed(Duration(seconds: 5));
+            await Future.delayed(Duration(seconds: 4));
             await driver.tap(myLocation);
-            await Future.delayed(Duration(seconds: 5));
+            await Future.delayed(Duration(seconds: 4));
 
             //enter starting location
             await driver.tap(find.byValueKey('Origin Field'));
@@ -109,13 +109,13 @@ void main() {
             await driver.tap(find.byValueKey("walk"));
 
             //tap go button
-            await Future.delayed(Duration(seconds: 4));
+            await Future.delayed(Duration(seconds: 3));
             await driver.tap(find.byValueKey("go button"));
-            await Future.delayed(Duration(seconds: 4));
+            await Future.delayed(Duration(seconds: 3));
 
             //closing the direction menu
             await driver.tap(find.byValueKey('Direction Panel close'));
-            await Future.delayed(Duration(seconds: 5));
+            await Future.delayed(Duration(seconds: 3));
           },
           timeout: Timeout(
             Duration(minutes: 1),
@@ -133,7 +133,7 @@ void main() {
           'US-$k: Outdoor Directions from starting location with transportation method: $v',
           () async {
             final SerializableFinder myLocation =
-                find.byTooltip('direction page button');
+                find.byTooltip('Get directions');
             await Future.delayed(Duration(seconds: 1));
             await driver.tap(myLocation);
             await Future.delayed(Duration(seconds: 1));
