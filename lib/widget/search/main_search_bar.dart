@@ -44,7 +44,7 @@ class _SearchBarState extends State<SearchBar> {
             child: Row(
               children: <Widget>[
                 Expanded(
-                  flex: 1,
+                  flex: 2,
                   child: Container(
                     child: IconButton(
                       splashColor: Colors.grey,
@@ -54,9 +54,9 @@ class _SearchBarState extends State<SearchBar> {
                   ),
                 ),
                 Expanded(
-                  flex: 10,
+                  flex: 9,
                   child: TextField(
-                    textAlign: TextAlign.center,
+                    textAlign: TextAlign.left,
                     readOnly: true,
                     cursorColor: Colors.black,
                     keyboardType: TextInputType.text,
