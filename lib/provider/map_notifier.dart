@@ -4,6 +4,7 @@ import '../service/map_constant.dart' as constant;
 import '../service/map_helper.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:flutter/material.dart';
 
 class MapNotifier with ChangeNotifier {
   Completer<GoogleMapController> _completer = Completer();
@@ -17,6 +18,11 @@ class MapNotifier with ChangeNotifier {
   LatLng selectedLatlng = LatLng(0, 0);
   int selectedFloorPlan = 9;
   String currentCampus = 'SGW';
+  Set<Color> campusSelected = {Colors.white, constant.COLOR_CONCORDIA};
+  Set<Color> campusNotSelected = {constant.COLOR_CONCORDIA, Colors.white};
+
+  Set<Color> sgwButtonColor = {constant.COLOR_CONCORDIA, Colors.white};
+  Set<Color> loyButtonColor = {constant.COLOR_CONCORDIA, Colors.white};
 
   void setPopupInfoVisibility(bool visibility) {
     showInfo = visibility;
@@ -54,6 +60,14 @@ class MapNotifier with ChangeNotifier {
 
   void setCampusString(String campus) {
     currentCampus = campus;
+    if (campus == 'SGW') {
+      sgwButtonColor = campusSelected;
+      loyButtonColor = campusNotSelected;
+    }
+    if (campus == 'LOY') {
+      sgwButtonColor = campusNotSelected;
+      loyButtonColor = campusSelected;
+    }
     notifyListeners();
   }
 
