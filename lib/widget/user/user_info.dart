@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
 class UserInfoWidgets {
-  static var name = Text("John Doe");
-  static var email = Text("40022345");
+  static var name = Text("User Unavailable");
+  static var email = Text("Sign in with My Calendar");
 
   static Widget avatar = CircleAvatar(
     backgroundColor: Colors.white,
     foregroundColor: Colors.black,
     child: Text(
-      "JD",
+      "UU",
       style: TextStyle(fontSize: 40.0),
     ),
   );

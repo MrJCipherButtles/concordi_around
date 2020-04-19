@@ -32,8 +32,8 @@ void main() {
     expect(find.text('Contact Us'), findsOneWidget);
     expect(find.text('About'), findsOneWidget);
     expect(find.text('Disability Mode'), findsOneWidget);
-    expect(find.text('John Doe'), findsOneWidget);
-    expect(find.text('40022345'), findsOneWidget);
+    expect(find.text('User Unavailable'), findsOneWidget);
+    expect(find.text('Sign in with My Calendar'), findsOneWidget);
 
     //Verifying shuttle schedule button leads to the right page
     await tester.tap(find.byIcon(Icons.airport_shuttle));
