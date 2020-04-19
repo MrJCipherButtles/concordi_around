@@ -2,6 +2,10 @@ import 'dart:collection';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class Coordinate {
+  /*
+  -------ATTRIBUTES-------
+  */
+
   final double _lat;
   final double _lng;
   final String _floor;
@@ -9,6 +13,10 @@ class Coordinate {
   final String _campus;
   String _type;
   Set<Coordinate> _adjCoordinates = HashSet<Coordinate>();
+
+  /*
+  -------CONSTRUCTOR-------
+   */
 
   Coordinate(this._lat, this._lng, this._floor, this._building, this._campus,
       {type, adjCoordinates}) {
@@ -21,6 +29,10 @@ class Coordinate {
     }
   }
 
+  /*
+  -------GETTERS AND SETTERS-------
+   */
+
   double get lat => _lat;
   double get lng => _lng;
   String get floor => _floor;
@@ -32,6 +44,10 @@ class Coordinate {
   set type(String type) => _type = type;
   set adjCoordinates(Set<Coordinate> adjCoordinates) =>
       _adjCoordinates = adjCoordinates;
+
+  /*
+  -------PUBLIC METHODS-------
+   */
 
   //if I am your neighbor, then you must be my neighbor
   bool addAdjCoordinate(Coordinate coordinate) =>
@@ -79,8 +95,18 @@ class Coordinate {
   int get hashCode => toString().hashCode;
 }
 
+//////////////////////////////////////////////////////////////////
+
 class PortalCoordinate extends Coordinate {
+  /*
+  -------ATTRIBUTE-------
+  */
+
   bool _isDisabilityFriendly;
+
+  /*
+  -------CONSTRUCTOR-------
+   */
 
   PortalCoordinate(lat, lng, floorLevel, building, campus,
       {type, adjCoordinates, isDisabilityFriendly = false})
@@ -89,14 +115,28 @@ class PortalCoordinate extends Coordinate {
     _isDisabilityFriendly = isDisabilityFriendly;
   }
 
+  /*
+  -------GETTERS AND SETTERS-------
+   */
+
   bool get isDisabilityFriendly => _isDisabilityFriendly;
 
   set isDisabilityFriendly(bool isDisabilityFriendly) =>
       _isDisabilityFriendly = isDisabilityFriendly;
 }
 
+//////////////////////////////////////////////////////////////////
+
 class RoomCoordinate extends Coordinate {
+  /*
+  -------ATTRIBUTE-------
+  */
+
   String _roomId;
+
+  /*
+  -------CONSTRUCTOR-------
+   */
 
   RoomCoordinate(lat, lng, floorLevel, building, campus,
       {type, adjCoordinates, roomId})
@@ -105,20 +145,38 @@ class RoomCoordinate extends Coordinate {
     _roomId = roomId;
   }
 
+  /*
+  -------GETTERS AND SETTERS-------
+   */
+
   String get roomId => _roomId;
 
   set roomId(String roomId) => _roomId = roomId;
+
+  /*
+  -------PUBLIC METHOD-------
+   */
 
   @override
   String toString() => '$roomId';
 }
 
+//////////////////////////////////////////////////////////////////
+
 class PlaceCoordinate extends Coordinate {
+  /*
+  -------ATTRIBUTES-------
+  */
+
   final String _gPlaceAddress;
   final String _gPlacePhone;
   final String _gPlaceWebsite;
   final bool _gPlaceOpenClosed;
   final List<String> _gPlacePictures;
+
+  /*
+  -------CONSTRUCTOR-------
+   */
 
   PlaceCoordinate(
       lat,
@@ -135,6 +193,10 @@ class PlaceCoordinate extends Coordinate {
       adjCoordinates})
       : super(lat, lng, floorLevel, building, campus,
             type: type, adjCoordinates: adjCoordinates);
+
+  /*
+  -------GETTERS-------
+   */
 
   String get gPlaceAddress => _gPlaceAddress;
   String get gPlacePhone => _gPlacePhone;

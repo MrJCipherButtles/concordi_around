@@ -4,20 +4,34 @@ import 'floor.dart';
 import 'path.dart';
 
 class Building {
-  final String _building;
-  List<Coordinate>
-      _polygon; //A polygon includes a duplicated point for google maps
+  /*
+  -------ATTRIBUTES-------
+  The building's polygon includes a duplicated point for compatibility with Google Maps
+  The building's placeId refers to a Google map place ID
+  The building's coordinate is the location of the building
+  */
+
+  final String _buildingName;
+  List<Coordinate> _polygon;
   Map<String, Floor> _floors = HashMap<String, Floor>();
   String _placeId;
-  Coordinate _coordinate; //The central coordinate of building
+  Coordinate _coordinate;
 
-  Building(this._building, {polygon, coordinate, placeId}) {
+  /*
+  -------CONSTRUCTOR-------
+   */
+
+  Building(this._buildingName, {polygon, coordinate, placeId}) {
     _polygon = polygon;
     _coordinate = coordinate;
     _placeId = placeId;
   }
 
-  String get building => _building;
+  /*
+  -------GETTERS AND SETTERS-------
+   */
+
+  String get buildingName => _buildingName;
   String get placeId => _placeId;
   Coordinate get coordinate => _coordinate;
   List<Coordinate> get polygon => _polygon;
@@ -27,53 +41,84 @@ class Building {
   set polygon(List<Coordinate> polygon) => _polygon = polygon;
 
   void addFloor(Floor floor) {
-    _floors[floor.floor] = floor;
+    _floors[floor.floorName] = floor;
   }
 
-  //Would template method apply here to improve extensibility?
-  //May set disability to true using optional named parameter
-  //spans at most 2 floors per building
-  Map<String, Path> shortestPath(Coordinate s, Coordinate d,
-      {bool isDisabilityFriendly = false}) {
-    assert(s != null && d != null);
+  /*
+  -------PUBLIC METHOD-------
+   */
+
+  //the shortest path spans at most 2 floors, and you can
+  //set isDisabilityFriendly named parameter to true for a disability path
+  Map<String, Path> shortestPath(Coordinate startCoordinate, Coordinate finishCoordinate, {bool isDisabilityFriendly = false}) {
+    //check inputs for nulls
+    if (startCoordinate == null || finishCoordinate == null){
+      return null;
+    }
+
     var indoorNavigationMap = <String, Path>{};
-    var sFloor = _floors[s.floor];
-    var dFloor = _floors[d.floor];
-    if (sFloor.floor == dFloor.floor) {
-      indoorNavigationMap[s.floor] = sFloor.shortestPath(s, d);
+    final startFloor = _floors[startCoordinate.floor];
+    final finishFloor = _floors[finishCoordinate.floor];
+
+    //-------If start and finish are on the same floor-------
+
+    if (startFloor.floorName == finishFloor.floorName) {
+      indoorNavigationMap[startCoordinate.floor] = startFloor.shortestPath(startCoordinate, finishCoordinate);
       return indoorNavigationMap;
     }
-    //How should I get the closest exit/entry coordinates in a
-    // more efficient method than below? KTree/Graph method maybe?
-    //Get all valid exits
-    var exits = sFloor.validExitCoordinates(d.floor,
-        isDisabilityFriendly: isDisabilityFriendly);
-    //Get all paths to the exits found
+
+    //-------Else-------
+
+    //Get all valid exits on start floor
+    var startFloorExits = startFloor.validExitCoordinates(finishCoordinate.floor, isDisabilityFriendly: isDisabilityFriendly);
+
+    //Get all paths for every exit found on start floor
     var exitPaths = <Path>[];
-    for (var exit in exits) {
-      if (s == exit) {
-        exitPaths.add(Path(<Coordinate>[s, exit]));
+    for (var startFloorExit in startFloorExits) {
+      if (startCoordinate == startFloorExit) {
+        exitPaths.add(Path(<Coordinate>[startCoordinate, startFloorExit]));
       }
-      exitPaths.add(sFloor.shortestPath(s, exit));
+      exitPaths.add(startFloor.shortestPath(startCoordinate, startFloorExit));
     }
-    //Get the shortest of all the paths found
+
+    //Get the shortest path from start coordinate to an exit on start floor
+    final shortestStartToExitPath = _shortestExitPath(exitPaths);
+
+    //Find entrance to finish floor from the exit taken on start floor based on the shortest path found
+    final destinationFloorEntrance = _getDestinationEntranceCoordinate(finishCoordinate.floor, shortestStartToExitPath);
+
+    //Get the shortest path from finish floor entrance to finish coordinate
+    final shortestEntranceToFinishPath = finishFloor.shortestPath(destinationFloorEntrance, finishCoordinate);
+    
+    //Complete the navigation map
+    indoorNavigationMap[startCoordinate.floor] = shortestStartToExitPath;
+    indoorNavigationMap[finishCoordinate.floor] = shortestEntranceToFinishPath;
+
+    //Return the navigation map
+    return indoorNavigationMap;
+  }
+
+  /*
+  -------PRIVATE METHODS-------
+   */
+
+  Coordinate _getDestinationEntranceCoordinate(String destinationFloorName, Path exitPath) {
+    final exitAdjacentCoordinates = exitPath.segments.last.destination.adjCoordinates;
+    for (var exitAdjacentCoordinate in exitAdjacentCoordinates) {
+      if (exitAdjacentCoordinate.floor == destinationFloorName) {
+        return exitAdjacentCoordinate;
+      }
+    }
+    return null;
+  }
+
+  Path _shortestExitPath(List<Path> exitPaths) {
     var shortestExitPath = exitPaths[0];
-    for (var exitPath in exitPaths) {
+    for (Path exitPath in exitPaths) {
       if (exitPath.length() < shortestExitPath.length()) {
         shortestExitPath = exitPath;
       }
     }
-    indoorNavigationMap[s.floor] = shortestExitPath;
-    //Find the coordinate of the destination floor from the exit found
-    var sExitAdjacentExitCoordinates =
-        shortestExitPath.segments.last.destination.adjCoordinates;
-    var dEntry;
-    for (var sExitAdjacentCoordinate in sExitAdjacentExitCoordinates) {
-      if (sExitAdjacentCoordinate.floor == dFloor.floor) {
-        dEntry = sExitAdjacentCoordinate;
-      }
-    }
-    indoorNavigationMap[d.floor] = dFloor.shortestPath(dEntry, d);
-    return indoorNavigationMap;
+    return shortestExitPath;
   }
 }

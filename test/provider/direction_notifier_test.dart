@@ -23,6 +23,9 @@ void main() {
       expect(dn.getDuration(), '0 min');
       expect(dn.totalDistance, 0);
       expect(dn.apiCallCounter, 0);
+
+      dn.setShowDirectionPanel(false);
+      expect(dn.showDirectionPanel, false);
     });
 
     test('Setter methods should work as expected', () {

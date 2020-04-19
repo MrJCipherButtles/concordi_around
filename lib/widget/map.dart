@@ -205,6 +205,7 @@ class _MapState extends State<Map> {
           SearchBar(coordinate: (Future<Coordinate> coordinate) async {
             setState(() {
               directionNotifier.setShowDirectionPanel(false);
+              clearAllDirections();
               mapMarkers
                   .removeWhere((marker) => marker.markerId.value == 'pop-up');
             });
@@ -248,18 +249,23 @@ class _MapState extends State<Map> {
             },
           ),
           DirectionPanel(
-              removeDirectionPolyline: (bool removePolyline) => {
-                    direction.clear(),
-                    shortestPath = {},
-                    markerHelper.removeStartEndMarker(),
-                    mapMarkers.removeWhere((marker) =>
-                        marker.markerId.value == 'start' ||
-                        marker.markerId.value == 'end' ||
-                        marker.markerId.value == 'destination'),
-                  }),
+              removeDirectionPolyline: clearAllDirections),
         ],
       ),
     );
+  }
+
+  /*
+  Call this method to remove all direction related polyline and markers
+   */
+  void clearAllDirections() {
+    direction.clear();
+    shortestPath = {};
+    markerHelper.removeStartEndMarker();
+    mapMarkers.removeWhere((marker) =>
+    marker.markerId.value == 'start' ||
+    marker.markerId.value == 'end' ||
+    marker.markerId.value == 'destination');
   }
 
   /*
