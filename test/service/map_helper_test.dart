@@ -63,5 +63,25 @@ void main() {
               Coordinate(45.4954, -73.57909, "0", "JMSB", "SGW")),
           false);
     });
+  
+    test('Should be within the bounds of SGW Campus on the map', () {
+      expect(
+          MapHelper.isWithinSGW(
+              LatLng(45.49726709926478, -73.57894677668811)),
+          true);
+      expect(MapHelper.isWithinSGW(LatLng(45.504315, -73.683897)),
+          false);
+      expect(MapHelper.isWithinSGW(null), false);
+    });
+     test('Should be within the bounds of LOY Campus on the map', () {
+      expect(
+          MapHelper.isWithinLOY(
+              LatLng(45.458065, -73.640538)),
+          true);
+      expect(MapHelper.isWithinLOY(LatLng(45.504315, -73.683897)),
+          false);
+      expect(MapHelper.isWithinLOY(null), false);
+    });
   });
+
 }

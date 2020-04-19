@@ -116,7 +116,7 @@ class _MapState extends State<Map> {
             onLongPress: (LatLng curr) {
               handleMapOnLongPress(curr, mapNotifier: mapNotifier);
               mapNotifier.selectedLatlng = curr;
-            }, 
+            },
             initialCameraPosition: _cameraPosition ??
                 CameraPosition(target: LatLng(45.4977298, -73.579034)),
             onMapCreated: (GoogleMapController controller) {
@@ -125,10 +125,10 @@ class _MapState extends State<Map> {
             onCameraMove: (CameraPosition cameraPosition) async {
               GoogleMapController _mapController = await _completer.future;
               if (cameraPosition.zoom >= 16.5) {
-              mapMarkers.addAll(markerHelper.getBuildingMarkers());
+                mapMarkers.addAll(markerHelper.getBuildingMarkers());
               } else {
                 mapMarkers.removeWhere((marker) =>
-                  marker.markerId.value.startsWith('buildingMarker'));
+                    marker.markerId.value.startsWith('buildingMarker'));
               }
               if (MapHelper.isWithinHall(cameraPosition.target) &&
                   cameraPosition.zoom >= constant.CAMERA_INDOOR_ZOOM) {
@@ -140,7 +140,26 @@ class _MapState extends State<Map> {
                 mapNotifier.setFloorPlanVisibility(false);
                 _resetStyle(_mapController);
               }
+
               mapNotifier.setCampusLatLng(cameraPosition.target);
+              
+              if (cameraPosition.zoom >= 16&& mapNotifier.currentCampus == 'SGW' && MapHelper.isWithinSGW(cameraPosition.target)) {
+                mapNotifier.sgwButtonColor = mapNotifier.campusSelected;
+                mapNotifier.loyButtonColor = mapNotifier.campusNotSelected;
+              }
+              else{
+              if (mapNotifier.currentCampus == 'LOY' || MapHelper.isWithinLOY(cameraPosition.target) ) {
+                if(cameraPosition.zoom >= 16){
+                mapNotifier.sgwButtonColor = mapNotifier.campusNotSelected;
+                mapNotifier.loyButtonColor = mapNotifier.campusSelected;
+                }
+              }
+              else{
+              mapNotifier.sgwButtonColor = mapNotifier.campusNotSelected;
+              mapNotifier.loyButtonColor = mapNotifier.campusNotSelected;
+              }
+              }
+              
             },
           )),
           Positioned(
@@ -424,7 +443,8 @@ class _MapState extends State<Map> {
   }
 
   // If user long presses on a buildings marker it will show the pop up
-  Future<void> handleMapOnLongPress(LatLng point, {MapNotifier mapNotifier}) async {
+  Future<void> handleMapOnLongPress(LatLng point,
+      {MapNotifier mapNotifier}) async {
     List<Building> buildingsList = BuildingSingleton().getBuildingList();
     for (Building building in buildingsList) {
       if (pow(

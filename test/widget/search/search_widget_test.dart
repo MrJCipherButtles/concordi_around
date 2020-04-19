@@ -13,7 +13,6 @@ void main() {
     var searchButton = find.byType(SearchBar);
     expect(searchButton, findsOneWidget);
     expect(find.text('Search'), findsOneWidget);
-    
 
     //Testing the building list from search menu
     await tester.tap(find.text('Search'));
@@ -27,18 +26,22 @@ void main() {
 
     expect(find.byType(ListView), findsOneWidget);
     expect(find.byType(AnimatedIcon), findsOneWidget);
-    
+
     await tester.tap(find.byType(AnimatedIcon));
     await tester.pumpAndSettle();
 
-    //Testing the raised button
-    var campusButton = find.byType(RaisedButton);
+    //Testing the raised buttons
+    var campusButtonLoy = find.widgetWithText(RaisedButton, "LOY");
+    var campusButtonSgw = find.widgetWithText(RaisedButton, "SGW");
 
-    expect(campusButton, findsOneWidget);
+    expect(campusButtonLoy, findsOneWidget);
+    expect(campusButtonSgw, findsOneWidget);
     expect(find.text('SGW'), findsOneWidget);
-    await tester.tap(campusButton);
-    await tester.pump();
     expect(find.text('LOY'), findsOneWidget);
+    await tester.tap(campusButtonLoy);
+    await tester.pump();
+    await tester.tap(campusButtonSgw);
+    await tester.pump();
 
     // //Testing the SideBarDrawer button
     var sidemenuButton = find.byType(IconButton);

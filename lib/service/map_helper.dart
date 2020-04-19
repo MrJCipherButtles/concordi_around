@@ -112,4 +112,27 @@ class MapHelper {
             2;
     return asin(sqrt(result)) * 12742;
   }
+
+  static bool isWithinSGW(LatLng latLng) {
+    List<LatLng> coordsList = [
+      LatLng(45.495297, -73.596093),
+      LatLng(45.485428, -73.578481),
+      LatLng(45.499641, -73.563666),
+      LatLng(45.508279, -73.580088)
+    ];
+    return latLng == null
+        ? false
+        : boundsFromLatLngList(coordsList).contains(latLng);
+  }
+   static bool isWithinLOY(LatLng latLng) {
+    List<LatLng> coordsList = [
+      LatLng(45.459349, -73.662023),
+      LatLng(45.450637, -73.636624),
+      LatLng(45.463577, -73.628755),
+      LatLng(45.471625, -73.647830)
+    ];
+    return latLng == null
+        ? false
+        : boundsFromLatLngList(coordsList).contains(latLng);
+  }
 }

@@ -43,23 +43,29 @@ class _SearchBarState extends State<SearchBar> {
                 color: Colors.white),
             child: Row(
               children: <Widget>[
-                Container(
-                  child: IconButton(
-                    splashColor: Colors.grey,
-                    icon: Icon(Icons.menu),
-                    onPressed: () => Scaffold.of(context).openDrawer(),
+                Expanded(
+                  flex: 2,
+                  child: Container(
+                    child: IconButton(
+                      splashColor: Colors.grey,
+                      icon: Icon(Icons.menu),
+                      onPressed: () => Scaffold.of(context).openDrawer(),
+                    ),
                   ),
                 ),
                 Expanded(
+                  flex: 9,
                   child: TextField(
+                    textAlign: TextAlign.left,
                     readOnly: true,
                     cursorColor: Colors.black,
                     keyboardType: TextInputType.text,
                     textInputAction: TextInputAction.go,
                     decoration: InputDecoration(
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.symmetric(horizontal: 15),
-                        hintText: "Search"),
+                      border: InputBorder.none,
+                      contentPadding: EdgeInsets.symmetric(horizontal: 15),
+                      hintText: "Search",
+                    ),
                     onTap: () {
                       showSearch(
                           context: context,
@@ -69,25 +75,42 @@ class _SearchBarState extends State<SearchBar> {
                     },
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
-                  child: RaisedButton(
-                    child: Text(mapNotifier.currentCampus),
-                    textColor: Colors.white,
-                    color: constant.COLOR_CONCORDIA,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(constant.BORDER_RADIUS)),
-                    onPressed: () {
-                      if (mapNotifier.currentCampus == 'SGW') {
+                Expanded(
+                  flex: 4,
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 2.0),
+                    child: RaisedButton(
+                      child: Text("LOY"),
+                      textColor: mapNotifier.loyButtonColor.elementAt(0),
+                      color: mapNotifier.loyButtonColor.elementAt(1),
+                      shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.circular(constant.BORDER_RADIUS)),
+                      onPressed: () {
                         mapNotifier.setCampusString("LOY");
                         mapNotifier.toggleCampus(constant.LATLNG_LOYOLA);
-                      } else {
+                      },
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 4,
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 2.0),
+                    child: RaisedButton(
+                      child: Text("SGW"),
+                      textColor: mapNotifier.sgwButtonColor.elementAt(0),
+                      color: mapNotifier.sgwButtonColor.elementAt(1),
+                      shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.circular(constant.BORDER_RADIUS)),
+                      onPressed: () {
                         mapNotifier.setCampusString("SGW");
                         mapNotifier.toggleCampus(constant.LATLNG_GM);
-                      }
-                    },
+                      },
+                    ),
                   ),
-                )
+                ),
               ],
             ),
           ),
