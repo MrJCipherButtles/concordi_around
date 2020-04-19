@@ -9,7 +9,7 @@ GoogleSignIn _googleSignIn = GoogleSignIn(
 );
 
 class GoogleLogIn extends _GoogleLogIn {
-  GoogleLogIn._privateConstructor() {}
+  GoogleLogIn._privateConstructor();
   static final GoogleLogIn instance = GoogleLogIn._privateConstructor();
 }
 
@@ -55,7 +55,7 @@ class _GoogleLogIn {
     try {
       await _googleSignIn.signIn();
     } catch (error) {
-      print(error);
+      //do nothing
     }
   }
 }

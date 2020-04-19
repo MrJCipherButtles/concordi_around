@@ -171,9 +171,7 @@ class _MapState extends State<Map> {
                 children: <Widget>[
                   FloatingActionButton(
                     heroTag: 'location',
-                    onPressed: () {
-                      goToCurrent();
-                    },
+                    onPressed: goToCurrent,
                     backgroundColor: Colors.white,
                     foregroundColor: constant.COLOR_CONCORDIA,
                     tooltip: 'Get Location',
@@ -448,8 +446,8 @@ class _MapState extends State<Map> {
     List<Building> buildingsList = BuildingSingleton().getBuildingList();
     for (Building building in buildingsList) {
       if (pow(
-                  (pow(point.latitude - building.coordinate.lat, 2) +
-                      pow(point.longitude - building.coordinate.lng, 2)),
+                  pow(point.latitude - building.coordinate.lat, 2) +
+                      pow(point.longitude - building.coordinate.lng, 2),
                   0.5) *
               100000 <
           20) {

@@ -100,7 +100,7 @@ class CalendarNotifier with ChangeNotifier {
   }
 
   String getNextClass() {
-    var now = new DateTime.now().toLocal();
+    var now = DateTime.now().toLocal();
     var min = 999999;
     String nextCourse = "";
 

@@ -93,7 +93,7 @@ class _MyCalendarState extends State<MyCalendar> with TickerProviderStateMixin {
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(constant.BORDER_RADIUS)),
         onPressed: () {
-          RoomCoordinate foundRoom = null;
+          RoomCoordinate foundRoom;
           for (var room in rooms) {
             if (calendarNotifier
                 .getNextClass()
